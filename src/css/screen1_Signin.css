@@ -1,0 +1,82 @@
+/* 
+    Created on : 18. 3. 2021, 22:46:58
+    Author     : adamf
+*/
+.border-pane {
+    -fx-background-color: transparent;
+    -fx-background-radius: 32px;
+    -fx-pref-width: 900px;
+    -fx-pref-height: 600px;
+}
+
+.left-pane {
+    -fx-background-color: #5F2EEA;
+    -fx-background-radius: 32px;
+    -fx-pref-width: 300px;
+    -fx-pref-height: 600px;
+}
+
+.center-pane {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 32px;
+    -fx-pref-width: 600px;
+    -fx-pref-height: 600px;
+}
+
+.tf-email {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 16px;
+    -fx-background-color: #EFF0F6; 
+    -fx-background-radius: 16px;
+    -fx-pref-height: 60px;
+    -fx-pref-width: 340px;
+}
+
+.pf-password {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 16px;
+    -fx-background-color: #EFF0F6;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+    -fx-border-color: #5F2EEA;
+    -fx-pref-height: 60px;
+    -fx-pref-width: 340px;
+}
+
+.btn-signin {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: #5F2EEA;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 60px;
+    -fx-pref-width: 340px;
+}
+
+.btn-signin:pressed {
+    -fx-background-color: #8258F9;
+}
+
+.btn-signup {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14px;
+    -fx-border-color: #BCA4FF;
+    -fx-border-radius: 16px;
+    -fx-text-fill: #BCA4FF;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 45px;
+    -fx-pref-width: 170px;
+    -fx-background-insets: 0;
+}
+
+.btn-signup:hover {
+    -fx-background-insets: 0;
+}
+
+.lbl-signin {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+}

@@ -1,0 +1,26 @@
+/*
+ VAVA Project
+
+*/
+/* 
+    Created on : 20. 3. 2021, 0:05:00
+    Author     : adamf
+*/
+
+.hbox-control-buttons {
+    -fx-spacing: 5;
+}
+
+.btn-exit {
+    -fx-fill: #e80909;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+    -fx-scale-z: 1;
+}
+
+.btn-minimize {
+    -fx-fill: #5f2eea;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+    -fx-scale-z: 1;
+}
