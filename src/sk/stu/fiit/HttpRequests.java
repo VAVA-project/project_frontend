@@ -16,11 +16,11 @@ import org.apache.http.util.EntityUtils;
  * @author adamf
  */
 public class HttpRequests {
-    
+
     static void sendPost() throws Exception {
 
         HttpPost httpPost = new HttpPost("http://localhost:8080/api/v1/register");
-        
+
         httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
         StringBuilder postXmlRequestBody = new StringBuilder();
         postXmlRequestBody.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
