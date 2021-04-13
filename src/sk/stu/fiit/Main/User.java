@@ -2,7 +2,7 @@
  *  VAVA Project
  * 
  */
-package sk.stu.fiit;
+package sk.stu.fiit.Main;
 
 /**
  *

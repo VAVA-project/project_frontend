@@ -1,4 +1,4 @@
-package sk.stu.fiit;
+package sk.stu.fiit.Main;
 
 import java.io.IOException;
 import javafx.fxml.FXML;
