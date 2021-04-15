@@ -10,7 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.Arrays;
+import java.time.LocalDate;
 import java.util.Base64;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,7 +34,18 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import sk.stu.fiit.User.User;
+import sk.stu.fiit.User.UserType;
+import sk.stu.fiit.parsers.Requests.IRequestVisitor;
+import sk.stu.fiit.parsers.Requests.XMLRequestParser;
+import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
+import sk.stu.fiit.parsers.Responses.IResponseParser;
+import sk.stu.fiit.parsers.Responses.XMLResponseParser;
 
 /**
  * FXML Controller class
@@ -43,13 +54,13 @@ import javafx.stage.Stage;
  */
 public class SignupController {
 
-    private String userType;
+    private UserType userType;
     private String email;
     private String password;
     private String firstName;
     private String lastName;
-    private String dateOfBirth;
-    private String photoString = null;
+    private LocalDate dateOfBirth;
+    private String photo = null;
 
     private boolean photoSet = false;
 
@@ -125,12 +136,10 @@ public class SignupController {
         if (event.getSource().equals(btnExit)) {
             System.exit(0);
         }
-        
         if (event.getSource().equals(btnMinimize)) {
             Stage actual_stage = (Stage) ((Circle) event.getSource()).getScene().getWindow();
             actual_stage.setIconified(true);
         }
-        
         if (event.getSource().equals(btnBackCustomerAccount)) {
             Parent signIn_node = FXMLLoader.load(getClass().getResource("Signin.fxml"));
             Scene signIn_scene = new Scene(signIn_node);
@@ -139,7 +148,6 @@ public class SignupController {
             appStage.setScene(signIn_scene);
             appStage.show();
         }
-        
         if (event.getSource().equals(btnCreateCustomer)) {
             stackPaneSignupLeft.getChildren().clear();
             stackPaneSignupLeft.getChildren().add(paneSignupLeft);
@@ -154,9 +162,8 @@ public class SignupController {
             hboxControlButtonsAccountInformations.getChildren().add(btnExit);
 
             lblUserType.setText("Customer");
-            userType = "NORMAL_USER";
+            userType = UserType.NORMAL_USER;
         }
-        
         if (event.getSource().equals(btnCreateGuide)) {
             stackPaneSignupLeft.getChildren().clear();
             stackPaneSignupLeft.getChildren().add(paneSignupLeft);
@@ -171,9 +178,9 @@ public class SignupController {
             hboxControlButtonsAccountInformations.getChildren().add(btnExit);
 
             lblUserType.setText("Guide");
-            userType = "GUIDE";
+            userType = UserType.GUIDE;
+            //userType = "GUIDE";
         }
-
         if (event.getSource().equals(btnBackAccountInformations)) {
             stackPaneSignupLeft.getChildren().clear();
             stackPaneSignupLeft.getChildren().add(paneSignupCustomerAccount);
@@ -197,9 +204,202 @@ public class SignupController {
                 photoSet = false;
             }
         }
-        
         if (event.getSource().equals(btnNextAccountInformations)) {
-            if (Validator.validateFieldsAreEmpty(Arrays.asList(tfEmail, tfPassword))) {
+            if (UserRegistrationValidator.areEmpty.test(tfEmail, tfPassword)) {
+                if (UserRegistrationValidator.isEmailValid.test(tfEmail.getText())) {
+                    if (UserRegistrationValidator.isPasswordValid.test(tfPassword.getText())) {
+                        email = tfEmail.getText();
+                        password = tfPassword.getText();
+
+                        stackPaneSignupRight.getChildren().clear();
+                        stackPaneSignupRight.getChildren().add(paneSignupPersonalInformations);
+
+                        paneSignupLeft.getChildren().remove(btnBackAccountInformations);
+                        paneSignupLeft.getChildren().add(btnBackPersonalInformations);
+
+                        hboxControlButtonsPersonalInformations.getChildren().add(btnMinimize);
+                        hboxControlButtonsPersonalInformations.getChildren().add(btnExit);
+                    } else {
+                        Alerts.fieldsValidation("Please, enter password without spaces, tabs or linebreaks and at least 8 characters long");
+                    }
+                } else {
+                    Alerts.fieldsValidation("Please, enter email with valid format\n" + "(e.g. joseph123@gmail.com)");
+                }
+            } else {
+                Alerts.fieldsValidation("Please, fill in all fields");
+            }
+        }
+        if (event.getSource().equals(btnBackPersonalInformations)) {
+            stackPaneSignupRight.getChildren().clear();
+            stackPaneSignupRight.getChildren().add(paneSignupAccountInformations);
+
+            paneSignupLeft.getChildren().remove(btnBackPersonalInformations);
+            paneSignupLeft.getChildren().add(btnBackAccountInformations);
+
+            hboxControlButtonsAccountInformations.getChildren().add(btnMinimize);
+            hboxControlButtonsAccountInformations.getChildren().add(btnExit);
+        }
+        if (event.getSource().equals(btnNextPersonalInformations)) {
+            if (UserRegistrationValidator.areEmpty.test(tfFirstname, tfLastname)) {
+                if (datePickerDateOfBirth.getValue() != null) {
+                    if (UserRegistrationValidator.isDateValid.test(datePickerDateOfBirth.getValue())) {
+                        firstName = tfFirstname.getText();
+                        lastName = tfLastname.getText();
+                        dateOfBirth = datePickerDateOfBirth.getValue();
+
+                        stackPaneSignupRight.getChildren().clear();
+                        stackPaneSignupRight.getChildren().add(paneSignupPhoto);
+                        paneSignupPhoto.getChildren().remove(btnChangePhoto);
+
+                        paneSignupLeft.getChildren().remove(btnBackPersonalInformations);
+                        paneSignupLeft.getChildren().add(btnBackPhoto);
+
+                        hboxControlButtonsPhoto.getChildren().add(btnMinimize);
+                        hboxControlButtonsPhoto.getChildren().add(btnExit);
+                        if (photoSet) {
+                            paneSignupPhoto.getChildren().add(btnChangePhoto);
+                        }
+                    } else {
+                        Alerts.fieldsValidation("Incorrect date range");
+                    }
+                } else {
+                    Alerts.fieldsValidation("Please, fill in date of birth");
+                }
+
+            } else {
+                Alerts.fieldsValidation("Please, fill in all fields");
+            }
+        }
+        if (event.getSource().equals(btnBackPhoto)) {
+            stackPaneSignupRight.getChildren().clear();
+            stackPaneSignupRight.getChildren().add(paneSignupPersonalInformations);
+
+            paneSignupLeft.getChildren().remove(btnBackPhoto);
+            paneSignupLeft.getChildren().add(btnBackPersonalInformations);
+
+            hboxControlButtonsPersonalInformations.getChildren().add(btnMinimize);
+            hboxControlButtonsPersonalInformations.getChildren().add(btnExit);
+        }
+        if (event.getSource().equals(lblSelectPhoto)) {
+            try {
+                FileChooser fileChooser = new FileChooser();
+
+                // Nastavenie filtra len na .jpg a .png subory
+                FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
+                FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
+                fileChooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
+
+                // Zobrazenie okna na vyberanie suborov
+                File file = fileChooser.showOpenDialog(null);
+                String fileNamePath = file.getAbsolutePath();
+
+                // Encode
+                byte[] fileContent = Files.readAllBytes(file.toPath());
+                photo = Base64.getEncoder().encodeToString(fileContent);
+
+                // Decode
+                //byte[] decode = Base64.getDecoder().decode(photoString);
+                //Files.write(Paths.get("C:/Users/adamf/Desktop/greta2.jpg"), decode);
+                try {
+                    InputStream inputStream = new FileInputStream(fileNamePath);
+                    Image image = new Image(inputStream);
+                    imageViewPhoto.setImage(image);
+
+                    Rectangle clip = new Rectangle();
+                    clip.setWidth(190.0f);
+                    clip.setHeight(190.0f);
+                    clip.setArcWidth(30);
+                    clip.setArcHeight(30);
+
+                    imageViewPhoto.setClip(clip);
+                    paneSignupPhoto.getChildren().add(btnChangePhoto);
+                    paneSignupPhoto.getChildren().remove(lblSelectPhoto);
+                    photoSet = true;
+                } catch (FileNotFoundException ex) {
+                    Alerts.photoChoosing();
+                }
+            } catch (NullPointerException e) {
+                // User had opened fileChooser.showOpenDialog, but he doesn't choose his image
+            }
+        }
+        if (event.getSource().equals(btnChangePhoto)) {
+            try {
+                FileChooser fileChooser = new FileChooser();
+
+                FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
+                FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
+                fileChooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
+
+                File file = fileChooser.showOpenDialog(null);
+                String fileNamePath = file.getAbsolutePath();
+
+                // Encode
+                byte[] fileContent = Files.readAllBytes(file.toPath());
+                photo = Base64.getEncoder().encodeToString(fileContent);
+
+                try {
+                    InputStream inputStream = new FileInputStream(fileNamePath);
+                    Image image = new Image(inputStream);
+                    imageViewPhoto.setImage(image);
+
+                    Rectangle clip = new Rectangle();
+                    clip.setWidth(190.0f);
+                    clip.setHeight(190.0f);
+                    clip.setArcWidth(30);
+                    clip.setArcHeight(30);
+
+                    imageViewPhoto.setClip(clip);
+                } catch (FileNotFoundException ex) {
+                    Alerts.photoChoosing();
+                }
+            } catch (NullPointerException e) {
+                // User had opened fileChooser.showOpenDialog, but he doesn't choose his image
+            }
+        }
+        if (event.getSource().equals(btnRegister)) {
+            //imageViewPhoto.setImage(null);
+
+            IRequestVisitor parser = new XMLRequestParser();
+            HttpPost httpPost = new HttpPost("http://localhost:8080/api/v1/register");
+            httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
+
+            HttpEntity registerEntity = parser.constructRegisterRequest(new RegisterRequest(email, password, userType.name(), firstName, lastName, dateOfBirth, photo));
+
+            httpPost.setEntity(registerEntity);
+
+            IResponseParser responseParser = new XMLResponseParser();
+
+            try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                    CloseableHttpResponse response = httpClient.execute(httpPost)) {
+                //System.out.println(responseParser.parseRegisterData(response).getJwtToken());
+                Singleton.getInstance().setJwtToken(responseParser.parseRegisterData(response).getJwtToken());
+                Singleton.getInstance().setUser(new User(userType, email, firstName, lastName, photo));
+                System.out.println("Token:" + Singleton.getInstance().getJwtToken());
+                System.out.println("firstName:" + Singleton.getInstance().getUser().getFirstName());
+                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Welcome.fxml");
+            }
+
+        }
+    }
+
+}
+
+/*
+            try {
+                User user = new User(userType, email, password, firstName, lastName, dateOfBirth, photoString);
+                Singleton.getInstance().setUser(user);
+                HttpRequests.sendPost();
+
+                System.out.println("SINGLETON jwtToken: " + Singleton.getInstance().getJwtToken());
+                System.out.println("SINGLETON user firstName: " + Singleton.getInstance().getUser().getFirstName());
+            } catch (Exception ex) {
+                System.out.println("\n\nNeuspesna registracia\n\n");
+                //Logger.getLogger(SignupController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+ */
+ /*
+if (event.getSource().equals(btnNextAccountInformations)) {
+            if (UserRegistrationValidator.validateFieldsAreEmpty(Arrays.asList(tfEmail, tfPassword))) {
                 if (tfEmail.getText().matches("^[^\\s@]+@([^\\s@.,]+\\.)+[^\\s@.,]{2,}$")) {
                     email = tfEmail.getText();
                     if (tfPassword.getText().matches("[^\\s]{8,}")) {
@@ -236,9 +436,9 @@ public class SignupController {
         }
 
         if (event.getSource().equals(btnNextPersonalInformations)) {
-            if (Validator.validateFieldsAreEmpty(Arrays.asList(tfFirstname, tfLastname))) {
+            if (UserRegistrationValidator.validateFieldsAreEmpty(Arrays.asList(tfFirstname, tfLastname))) {
                 if (datePickerDateOfBirth.getValue() != null) {
-                    if (Validator.validateDateRange(datePickerDateOfBirth.getValue().toString())) {
+                    if (UserRegistrationValidator.validateDateRange(datePickerDateOfBirth.getValue().toString())) {
                         firstName = tfFirstname.getText();
                         lastName = tfLastname.getText();
                         dateOfBirth = datePickerDateOfBirth.getValue().toString();
@@ -266,109 +466,4 @@ public class SignupController {
                 Alerts.fieldsValidation("Please, fill in all fields");
             }
         }
-        
-        if (event.getSource().equals(btnBackPhoto)) {
-            stackPaneSignupRight.getChildren().clear();
-            stackPaneSignupRight.getChildren().add(paneSignupPersonalInformations);
-
-            paneSignupLeft.getChildren().remove(btnBackPhoto);
-            paneSignupLeft.getChildren().add(btnBackPersonalInformations);
-
-            hboxControlButtonsPersonalInformations.getChildren().add(btnMinimize);
-            hboxControlButtonsPersonalInformations.getChildren().add(btnExit);
-        }
-        
-        if (event.getSource().equals(lblSelectPhoto)) {
-            try {
-                FileChooser fileChooser = new FileChooser();
-
-                // Nastavenie filtra len na .jpg a .png subory
-                FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
-                FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
-                fileChooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
-
-                // Zobrazenie okna na vyberanie suborov
-                File file = fileChooser.showOpenDialog(null);
-                String fileNamePath = file.getAbsolutePath();
-
-                // Encode
-                byte[] fileContent = Files.readAllBytes(file.toPath());
-                photoString = Base64.getEncoder().encodeToString(fileContent);
-
-                // Decode
-                //byte[] decode = Base64.getDecoder().decode(photoString);
-                //Files.write(Paths.get("C:/Users/adamf/Desktop/greta2.jpg"), decode);
-                try {
-                    InputStream inputStream = new FileInputStream(fileNamePath);
-                    Image photo = new Image(inputStream);
-                    imageViewPhoto.setImage(photo);
-                    
-                    Rectangle clip = new Rectangle();
-                    clip.setWidth(190.0f);
-                    clip.setHeight(190.0f);
-                    clip.setArcWidth(30);
-                    clip.setArcHeight(30);
-                    
-                    imageViewPhoto.setClip(clip);
-                    paneSignupPhoto.getChildren().add(btnChangePhoto);
-                    paneSignupPhoto.getChildren().remove(lblSelectPhoto);
-                    photoSet = true;
-                } catch (FileNotFoundException ex) {
-                    Alerts.photoChoosing();
-                }
-            } catch (NullPointerException e) {
-                // User had opened fileChooser.showOpenDialog, but he doesn't choose his photo
-            }
-        }
-        if (event.getSource().equals(btnChangePhoto)) {
-            try {
-                FileChooser fileChooser = new FileChooser();
-
-                FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
-                FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
-                fileChooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
-
-                File file = fileChooser.showOpenDialog(null);
-                String fileNamePath = file.getAbsolutePath();
-
-                // Encode
-                byte[] fileContent = Files.readAllBytes(file.toPath());
-                photoString = Base64.getEncoder().encodeToString(fileContent);
-
-                try {
-                    InputStream inputStream = new FileInputStream(fileNamePath);
-                    Image photo = new Image(inputStream);
-                    imageViewPhoto.setImage(photo);
-                    
-                    Rectangle clip = new Rectangle();
-                    clip.setWidth(190.0f);
-                    clip.setHeight(190.0f);
-                    clip.setArcWidth(30);
-                    clip.setArcHeight(30);
-                    
-                    imageViewPhoto.setClip(clip);
-                } catch (FileNotFoundException ex) {
-                    Alerts.photoChoosing();
-                }
-            } catch (NullPointerException e) {
-                // User had opened fileChooser.showOpenDialog, but he doesn't choose his photo
-            }
-        }
-        
-        if (event.getSource().equals(btnRegister)) {
-            //imageViewPhoto.setImage(null);
-            try {
-                User user = new User(userType, email, password, firstName, lastName, dateOfBirth, photoString);
-                Singleton.getInstance().setUser(user);
-                HttpRequests.sendPost();
-                
-                System.out.println("SINGLETON jwtToken: " + Singleton.getInstance().getJwtToken());
-                System.out.println("SINGLETON user firstName: " + Singleton.getInstance().getUser().getFirstName());
-            } catch (Exception ex) {
-                System.out.println("\n\nNeuspesna registracia\n\n");
-                //Logger.getLogger(SignupController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-
-}
+ */

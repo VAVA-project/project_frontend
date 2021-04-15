@@ -10,5 +10,6 @@ package sk.stu.fiit.User;
  * @author Adam Bublavý
  */
 public enum UserType {
-    GUIDE, NORMAL_USER
+    GUIDE, 
+    NORMAL_USER
 }

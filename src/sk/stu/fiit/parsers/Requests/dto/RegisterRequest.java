@@ -17,7 +17,7 @@ public class RegisterRequest implements IRequest {
     
     private String email;
     private String password;
-    private String type;
+    private String userType;
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
@@ -28,7 +28,7 @@ public class RegisterRequest implements IRequest {
             String photo) {
         this.email = email;
         this.password = password;
-        this.type = type;
+        this.userType = type;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -48,8 +48,8 @@ public class RegisterRequest implements IRequest {
         return password;
     }
 
-    public String getType() {
-        return type;
+    public String getUserType() {
+        return userType;
     }
 
     public String getFirstName() {

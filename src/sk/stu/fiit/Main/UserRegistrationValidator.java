@@ -4,18 +4,38 @@
  */
 package sk.stu.fiit.Main;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 import javafx.scene.control.TextField;
 
 /**
  *
  * @author adamf
  */
-public final class Validator {
+public class UserRegistrationValidator {
+
+    static BiPredicate<TextField, TextField> areEmpty = (tf1, tf2) -> {
+        return !(tf1.getText().isEmpty() || tf2.getText().isEmpty());
+    };
+
+    static Predicate<String> isEmailValid = email -> {
+        return email.matches("^[^\\s@]+@([^\\s@.,]+\\.)+[^\\s@.,]{2,}$");
+    };
+
+    static Predicate<String> isPasswordValid = password -> {
+        return password.matches("[^\\s]{8,}");
+    };
+
+    static Predicate<LocalDate> isDateValid = date -> {
+        return Period.between(date, LocalDate.now()).getYears() >= 15;
+    };
+
+}
+
+/*
+public final class UserRegistrationValidator {
 
     // Validating that the given fields are not empty
     static boolean validateFieldsAreEmpty(List<TextField> textFields) {
@@ -53,3 +73,5 @@ public final class Validator {
     }
 
 }
+ */
+

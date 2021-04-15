@@ -4,6 +4,8 @@
  */
 package sk.stu.fiit.Main;
 
+import sk.stu.fiit.User.User;
+
 /**
  *
  * @author adamf

@@ -17,6 +17,7 @@ import org.apache.http.util.EntityUtils;
  */
 public class HttpRequests {
     
+    /*
     static void sendPost() throws Exception {
 
         HttpPost httpPost = new HttpPost("http://localhost:8080/api/v1/register");
@@ -41,4 +42,5 @@ public class HttpRequests {
             Singleton.getInstance().setJwtToken(EntityUtils.toString(response.getEntity()));
         }
     }
+*/
 }

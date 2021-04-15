@@ -62,11 +62,11 @@ public class XMLResponseParser implements IResponseParser {
 
             String token = (String) xPath.compile("//jwtToken/text()").evaluate(
                     document, XPathConstants.STRING);
-
-            String email = (String) xPath.compile("//user/email/text()").
-                    evaluate(document, XPathConstants.STRING);
+            
             String type = (String) xPath.compile("//user/type/text()").evaluate(
                     document, XPathConstants.STRING);
+            String email = (String) xPath.compile("//user/email/text()").
+                    evaluate(document, XPathConstants.STRING);
             String firstName = (String) xPath.compile("//user/firstName/text()").
                     evaluate(document, XPathConstants.STRING);
             String lastName = (String) xPath.compile("//user/lastName/text()").
@@ -74,8 +74,8 @@ public class XMLResponseParser implements IResponseParser {
             String photo = (String) xPath.compile("//user/photo/text()").
                     evaluate(document, XPathConstants.STRING);
             
-            return new LoginResponse(token, new User(email, UserType.valueOf(
-                    type), firstName, lastName, photo));
+            return new LoginResponse(token, new User(UserType.valueOf(
+                    type), email, firstName, lastName, photo));
         } catch (IOException ex) {
             Logger.getLogger(XMLResponseParser.class.getName()).
                     log(Level.SEVERE, null, ex);

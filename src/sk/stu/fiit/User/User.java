@@ -11,35 +11,35 @@ package sk.stu.fiit.User;
  */
 public class User {
     
+    private UserType userType;
     private String email;
-    private UserType type;
     private String firstName;
     private String lastName;
     private String photo;
 
-    public User(String email, UserType type, String firstName, String lastName,
+    public User(UserType type, String email, String firstName, String lastName,
             String photo) {
+        this.userType = type;
         this.email = email;
-        this.type = type;
         this.firstName = firstName;
         this.lastName = lastName;
         this.photo = photo;
     }
+    
+    public UserType getUserType() {
+        return userType;
+    }
 
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+    
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public UserType getType() {
-        return type;
-    }
-
-    public void setType(UserType type) {
-        this.type = type;
     }
 
     public String getFirstName() {

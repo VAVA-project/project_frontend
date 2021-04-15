@@ -80,7 +80,7 @@ public class XMLRequestParser implements IRequestVisitor {
         Map<String, Object> data = new HashMap<>();
         data.put("email", request.getEmail());
         data.put("password", request.getPassword());
-        data.put("type", request.getType());
+        data.put("type", request.getUserType());
         data.put("firstName", request.getFirstName());
         data.put("lastName", request.getLastName());
         data.put("dateOfBirth", request.getDateOfBirth().format(

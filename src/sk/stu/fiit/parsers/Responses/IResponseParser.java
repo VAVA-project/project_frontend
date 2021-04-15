@@ -14,7 +14,6 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 public interface IResponseParser {
 
     public RegisterResponse parseRegisterData(CloseableHttpResponse response);
-
     public LoginResponse parseLoginData(CloseableHttpResponse response);
 
 }
