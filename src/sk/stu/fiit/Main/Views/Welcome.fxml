@@ -20,7 +20,7 @@
       </HBox>
    </children>
    <stylesheets>
-      <URL value="@../../../../css/screen3_Welcome.css" />
-      <URL value="@../../../../css/buttons_control.css" />
+      <URL value="@../../../../../css/buttons_control.css" />
+      <URL value="@../../../../../css/screen3_Welcome.css" />
    </stylesheets>
 </Pane>

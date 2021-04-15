@@ -36,7 +36,7 @@
                      </color>
                   </DropShadow>
                </effect></Label>
-            <TextField focusTraversable="false" layoutX="88.0" layoutY="175.0" promptText="E-mail" styleClass="tf-email">
+            <TextField fx:id="tfEmail" focusTraversable="false" layoutX="88.0" layoutY="175.0" promptText="E-mail" styleClass="tf-email">
                <effect>
                   <DropShadow height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0">
                      <color>
@@ -47,7 +47,7 @@
                <opaqueInsets>
                   <Insets />
                </opaqueInsets></TextField>
-            <PasswordField focusTraversable="false" layoutX="88.0" layoutY="258.0" promptText="Password" styleClass="pf-password">
+            <PasswordField fx:id="pfPassword" focusTraversable="false" layoutX="88.0" layoutY="258.0" promptText="Password" styleClass="pf-password">
                <effect>
                   <DropShadow height="30.0" offsetY="2.0" radius="14.5" spread="0.44" width="30.0">
                      <color>
@@ -94,7 +94,7 @@
       </Pane>
    </center>
    <stylesheets>
-      <URL value="@../../../../css/screen1_Signin.css" />
-      <URL value="@../../../../css/buttons_control.css" />
+      <URL value="@../../../../../css/buttons_control.css" />
+      <URL value="@../../../../../css/screen1_Signin.css" />
    </stylesheets>
 </BorderPane>

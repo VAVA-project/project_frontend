@@ -46,6 +46,7 @@ import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
 import sk.stu.fiit.parsers.Responses.IResponseParser;
 import sk.stu.fiit.parsers.Responses.XMLResponseParser;
+import sk.stu.fiit.Validators.UserRegistrationValidator;
 
 /**
  * FXML Controller class
@@ -200,6 +201,7 @@ public class SignupController {
             if (photoSet) {
                 imageViewPhoto.setImage(null);
                 paneSignupPhoto.getChildren().remove(btnChangePhoto);
+                paneSignupPhoto.getChildren().remove(btnChangePhoto);
                 paneSignupPhoto.getChildren().add(lblSelectPhoto);
                 photoSet = false;
             }
@@ -249,6 +251,7 @@ public class SignupController {
 
                         stackPaneSignupRight.getChildren().clear();
                         stackPaneSignupRight.getChildren().add(paneSignupPhoto);
+                        paneSignupPhoto.getChildren().remove(btnRegister);
                         paneSignupPhoto.getChildren().remove(btnChangePhoto);
 
                         paneSignupLeft.getChildren().remove(btnBackPersonalInformations);
@@ -257,6 +260,7 @@ public class SignupController {
                         hboxControlButtonsPhoto.getChildren().add(btnMinimize);
                         hboxControlButtonsPhoto.getChildren().add(btnExit);
                         if (photoSet) {
+                            paneSignupPhoto.getChildren().add(btnRegister);
                             paneSignupPhoto.getChildren().add(btnChangePhoto);
                         }
                     } else {
@@ -296,10 +300,8 @@ public class SignupController {
                 // Encode
                 byte[] fileContent = Files.readAllBytes(file.toPath());
                 photo = Base64.getEncoder().encodeToString(fileContent);
+                //photo = new String(fileContent);
 
-                // Decode
-                //byte[] decode = Base64.getDecoder().decode(photoString);
-                //Files.write(Paths.get("C:/Users/adamf/Desktop/greta2.jpg"), decode);
                 try {
                     InputStream inputStream = new FileInputStream(fileNamePath);
                     Image image = new Image(inputStream);
@@ -312,6 +314,7 @@ public class SignupController {
                     clip.setArcHeight(30);
 
                     imageViewPhoto.setClip(clip);
+                    paneSignupPhoto.getChildren().add(btnRegister);
                     paneSignupPhoto.getChildren().add(btnChangePhoto);
                     paneSignupPhoto.getChildren().remove(lblSelectPhoto);
                     photoSet = true;
@@ -336,6 +339,7 @@ public class SignupController {
                 // Encode
                 byte[] fileContent = Files.readAllBytes(file.toPath());
                 photo = Base64.getEncoder().encodeToString(fileContent);
+                //photo = new String(fileContent);
 
                 try {
                     InputStream inputStream = new FileInputStream(fileNamePath);
@@ -353,7 +357,7 @@ public class SignupController {
                     Alerts.photoChoosing();
                 }
             } catch (NullPointerException e) {
-                // User had opened fileChooser.showOpenDialog, but he doesn't choose his image
+                // User had opened fileChooser.showOpenDialog, but he doesn't choose a photo
             }
         }
         if (event.getSource().equals(btnRegister)) {
@@ -371,99 +375,17 @@ public class SignupController {
 
             try (CloseableHttpClient httpClient = HttpClients.createDefault();
                     CloseableHttpResponse response = httpClient.execute(httpPost)) {
-                //System.out.println(responseParser.parseRegisterData(response).getJwtToken());
                 Singleton.getInstance().setJwtToken(responseParser.parseRegisterData(response).getJwtToken());
                 Singleton.getInstance().setUser(new User(userType, email, firstName, lastName, photo));
-                System.out.println("Token:" + Singleton.getInstance().getJwtToken());
-                System.out.println("firstName:" + Singleton.getInstance().getUser().getFirstName());
                 ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Welcome.fxml");
+                
+                System.out.println("Photo:\n" + Singleton.getInstance().getUser().getPhoto());
+                
+                System.out.println("\nToken:" + Singleton.getInstance().getJwtToken());
+                System.out.println("firstName:" + Singleton.getInstance().getUser().getFirstName());
             }
 
         }
     }
 
 }
-
-/*
-            try {
-                User user = new User(userType, email, password, firstName, lastName, dateOfBirth, photoString);
-                Singleton.getInstance().setUser(user);
-                HttpRequests.sendPost();
-
-                System.out.println("SINGLETON jwtToken: " + Singleton.getInstance().getJwtToken());
-                System.out.println("SINGLETON user firstName: " + Singleton.getInstance().getUser().getFirstName());
-            } catch (Exception ex) {
-                System.out.println("\n\nNeuspesna registracia\n\n");
-                //Logger.getLogger(SignupController.class.getName()).log(Level.SEVERE, null, ex);
-            }
- */
- /*
-if (event.getSource().equals(btnNextAccountInformations)) {
-            if (UserRegistrationValidator.validateFieldsAreEmpty(Arrays.asList(tfEmail, tfPassword))) {
-                if (tfEmail.getText().matches("^[^\\s@]+@([^\\s@.,]+\\.)+[^\\s@.,]{2,}$")) {
-                    email = tfEmail.getText();
-                    if (tfPassword.getText().matches("[^\\s]{8,}")) {
-                        password = tfPassword.getText();
-
-                        stackPaneSignupRight.getChildren().clear();
-                        stackPaneSignupRight.getChildren().add(paneSignupPersonalInformations);
-
-                        paneSignupLeft.getChildren().remove(btnBackAccountInformations);
-                        paneSignupLeft.getChildren().add(btnBackPersonalInformations);
-
-                        hboxControlButtonsPersonalInformations.getChildren().add(btnMinimize);
-                        hboxControlButtonsPersonalInformations.getChildren().add(btnExit);
-                    } else {
-                        Alerts.fieldsValidation("Please, enter password without spaces, tabs or linebreaks and at least 8 characters long");
-                    }
-                } else {
-                    Alerts.fieldsValidation("Please, enter email with valid format\n" + "(e.g. joseph123@gmail.com)");
-                }
-            } else {
-                Alerts.fieldsValidation("Please, fill in all fields");
-            }
-        }
-
-        if (event.getSource().equals(btnBackPersonalInformations)) {
-            stackPaneSignupRight.getChildren().clear();
-            stackPaneSignupRight.getChildren().add(paneSignupAccountInformations);
-
-            paneSignupLeft.getChildren().remove(btnBackPersonalInformations);
-            paneSignupLeft.getChildren().add(btnBackAccountInformations);
-
-            hboxControlButtonsAccountInformations.getChildren().add(btnMinimize);
-            hboxControlButtonsAccountInformations.getChildren().add(btnExit);
-        }
-
-        if (event.getSource().equals(btnNextPersonalInformations)) {
-            if (UserRegistrationValidator.validateFieldsAreEmpty(Arrays.asList(tfFirstname, tfLastname))) {
-                if (datePickerDateOfBirth.getValue() != null) {
-                    if (UserRegistrationValidator.validateDateRange(datePickerDateOfBirth.getValue().toString())) {
-                        firstName = tfFirstname.getText();
-                        lastName = tfLastname.getText();
-                        dateOfBirth = datePickerDateOfBirth.getValue().toString();
-
-                        stackPaneSignupRight.getChildren().clear();
-                        stackPaneSignupRight.getChildren().add(paneSignupPhoto);
-                        paneSignupPhoto.getChildren().remove(btnChangePhoto);
-
-                        paneSignupLeft.getChildren().remove(btnBackPersonalInformations);
-                        paneSignupLeft.getChildren().add(btnBackPhoto);
-
-                        hboxControlButtonsPhoto.getChildren().add(btnMinimize);
-                        hboxControlButtonsPhoto.getChildren().add(btnExit);
-                        if (photoSet) {
-                            paneSignupPhoto.getChildren().add(btnChangePhoto);
-                        }
-                    } else {
-                        Alerts.fieldsValidation("Incorrect date range");
-                    }
-                } else {
-                    Alerts.fieldsValidation("Please, fill in date of birth");
-                }
-
-            } else {
-                Alerts.fieldsValidation("Please, fill in all fields");
-            }
-        }
- */

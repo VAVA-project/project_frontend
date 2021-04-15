@@ -32,7 +32,7 @@ public class ProfileCustomerController implements Initializable {
     @FXML
     private Label lblName;
     @FXML
-    private Button btnEditInformationes;
+    private Button btnEditInformations;
     @FXML
     private Button btnBack;
     @FXML
@@ -45,8 +45,10 @@ public class ProfileCustomerController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        byte[] byteArray = Base64.getDecoder().decode(Singleton.getInstance().getUser().getPhoto());
+        String photo = Singleton.getInstance().getUser().getPhoto();
+        //photo.replaceAll("\n", "");
+        //byte[] byteArray = photo.getBytes();
+        byte[] byteArray = Base64.getDecoder().decode(photo.replaceAll("\n", ""));
         InputStream inputStream = new ByteArrayInputStream(byteArray);
         Image image = new Image(inputStream);
         imageViewPhoto.setImage(image);
@@ -74,6 +76,9 @@ public class ProfileCustomerController implements Initializable {
         }
         if (event.getSource().equals(btnBack)) {
             ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Search.fxml");
+        }
+        if (event.getSource().equals(btnEditInformations)) {
+            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "EditAccount.fxml");
         }
     }
 

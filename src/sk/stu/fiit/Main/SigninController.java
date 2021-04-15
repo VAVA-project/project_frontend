@@ -1,23 +1,33 @@
 package sk.stu.fiit.Main;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import sk.stu.fiit.parsers.Requests.IRequestVisitor;
+import sk.stu.fiit.parsers.Requests.XMLRequestParser;
+import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
+import sk.stu.fiit.parsers.Responses.IResponseParser;
+import sk.stu.fiit.parsers.Responses.LoginResponse;
+import sk.stu.fiit.parsers.Responses.XMLResponseParser;
 
 /**
  *
  * @author adamf
  */
 public class SigninController {
-    
+
     @FXML
     private Button btnSignin;
     @FXML
@@ -26,27 +36,56 @@ public class SigninController {
     private Circle btnMinimize;
     @FXML
     private Circle btnExit;
-    
     @FXML
-    private void handleMouseEvent(MouseEvent event) throws IOException{
-        if(event.getSource().equals(btnExit)){
+    private TextField tfEmail;
+    @FXML
+    private PasswordField pfPassword;
+
+    @FXML
+    private void handleMouseEvent(MouseEvent event) throws IOException {
+        if (event.getSource().equals(btnExit)) {
             System.exit(0);
         }
-        if(event.getSource().equals(btnMinimize)){
-            Stage actual_stage = (Stage) ((Circle)event.getSource()).getScene().getWindow();
+        if (event.getSource().equals(btnMinimize)) {
+            Stage actual_stage = (Stage) ((Circle) event.getSource()).getScene().getWindow();
             actual_stage.setIconified(true);
         }
-        if(event.getSource().equals(btnSignin)){
+        if (event.getSource().equals(btnSignin)) {
             // Parent where_node = FXMLLoader.load(getClass().getResource("Signup.fxml"));
-            System.out.println("Ahoj SIGNIN");
+            signIn(event);
         }
-        if(event.getSource().equals(btnSignup)){
-            Stage signUp_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Parent signUp_node = FXMLLoader.load(getClass().getResource("Signup.fxml"));
-            Scene signUp_scene = new Scene(signUp_node);
-            signUp_scene.setFill(Color.TRANSPARENT);
-            signUp_stage.setScene(signUp_scene);
-            signUp_stage.show();
+        if (event.getSource().equals(btnSignup)) {
+            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Signup.fxml");
         }
     }
+
+    private void signIn(MouseEvent event) {
+        IRequestVisitor parser = new XMLRequestParser();
+
+        HttpPost httpPost = new HttpPost("http://localhost:8080/api/v1/login/");
+        httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        //httpPost.setHeader("Authorization", "Bearer jwttoken");
+
+        HttpEntity loginEntity = parser.constructLoginRequest(new LoginRequest(tfEmail.getText(), pfPassword.getText()));
+
+        httpPost.setEntity(loginEntity);
+
+        IResponseParser responseParser = new XMLResponseParser();
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(httpPost)) {
+            
+            LoginResponse loginResponse = responseParser.parseLoginData(response);
+            Singleton.getInstance().setJwtToken(loginResponse.getJwtToken());
+            Singleton.getInstance().setUser(loginResponse.getUser());
+            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Search.fxml");
+            
+            System.out.println("userType: " + Singleton.getInstance().getUser().getUserType().name());
+            System.out.println("Photo:\n" + Singleton.getInstance().getUser().getPhoto());
+            System.out.println("\n");
+        } catch (IOException ex) {
+            Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 }

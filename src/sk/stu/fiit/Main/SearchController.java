@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import sk.stu.fiit.User.UserType;
 
 /**
  * FXML Controller class
@@ -45,8 +46,13 @@ public class SearchController implements Initializable {
             actual_stage.setIconified(true);
         }
         if (event.getSource().equals(btnProfile)) {
-            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "ProfileCustomer.fxml");
+            if (Singleton.getInstance().getUser().getUserType() == UserType.NORMAL_USER) {
+                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "ProfileCustomer.fxml");
+            } else {
+                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "ProfileGuide.fxml");
+            }
         }
+        
     }
     
 }

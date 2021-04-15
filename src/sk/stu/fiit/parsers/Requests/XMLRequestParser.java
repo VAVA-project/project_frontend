@@ -25,6 +25,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import sk.stu.fiit.parsers.Requests.dto.EditRequest;
 
 /**
  *
@@ -105,6 +106,24 @@ public class XMLRequestParser implements IRequestVisitor {
 
         try {
             return new StringEntity(this.translateToXML("loginRequest", data));
+        } catch (ParserConfigurationException
+                | TransformerConfigurationException
+                | UnsupportedEncodingException ex) {
+        }
+
+        return null;
+    }
+
+    @Override
+    public HttpEntity constructEditRequest(EditRequest request) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("firstName", request.getFirstName());
+        data.put("lastName", request.getLastName());
+        data.put("dateOfBirth", request.getDateOfBirth().format(
+                DateTimeFormatter.ofPattern("YYYY-MM-dd")));
+
+        try {
+            return new StringEntity(this.translateToXML("updateRequest", data));
         } catch (ParserConfigurationException
                 | TransformerConfigurationException
                 | UnsupportedEncodingException ex) {

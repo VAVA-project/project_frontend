@@ -67,5 +67,5 @@ public class RegisterRequest implements IRequest {
     public String getPhoto() {
         return photo;
     }
-    
+
 }

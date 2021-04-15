@@ -2,7 +2,7 @@
  *  VAVA Project
  * 
  */
-package sk.stu.fiit.Main;
+package sk.stu.fiit.Validators;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -16,19 +16,21 @@ import javafx.scene.control.TextField;
  */
 public class UserRegistrationValidator {
 
-    static BiPredicate<TextField, TextField> areEmpty = (tf1, tf2) -> {
+    
+    
+    public static BiPredicate<TextField, TextField> areEmpty = (tf1, tf2) -> {
         return !(tf1.getText().isEmpty() || tf2.getText().isEmpty());
     };
 
-    static Predicate<String> isEmailValid = email -> {
+    public static Predicate<String> isEmailValid = email -> {
         return email.matches("^[^\\s@]+@([^\\s@.,]+\\.)+[^\\s@.,]{2,}$");
     };
 
-    static Predicate<String> isPasswordValid = password -> {
+    public static Predicate<String> isPasswordValid = password -> {
         return password.matches("[^\\s]{8,}");
     };
 
-    static Predicate<LocalDate> isDateValid = date -> {
+    public static Predicate<LocalDate> isDateValid = date -> {
         return Period.between(date, LocalDate.now()).getYears() >= 15;
     };
 

@@ -62,7 +62,6 @@ public class XMLResponseParser implements IResponseParser {
 
             String token = (String) xPath.compile("//jwtToken/text()").evaluate(
                     document, XPathConstants.STRING);
-            
             String type = (String) xPath.compile("//user/type/text()").evaluate(
                     document, XPathConstants.STRING);
             String email = (String) xPath.compile("//user/email/text()").
@@ -76,6 +75,43 @@ public class XMLResponseParser implements IResponseParser {
             
             return new LoginResponse(token, new User(UserType.valueOf(
                     type), email, firstName, lastName, photo));
+        } catch (IOException ex) {
+            Logger.getLogger(XMLResponseParser.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (UnsupportedOperationException ex) {
+            Logger.getLogger(XMLResponseParser.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(XMLResponseParser.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(XMLResponseParser.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (XPathExpressionException ex) {
+            Logger.getLogger(XMLResponseParser.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    @Override
+    public EditResponse parseEditData(CloseableHttpResponse response) {
+        try {
+            Document document = DocumentBuilderFactory.newInstance().
+                    newDocumentBuilder().
+                    parse(response.getEntity().getContent());
+
+            XPath xPath = XPathFactory.newInstance().newXPath();
+
+            String firstName = (String) xPath.compile("//firstName/text()").
+                    evaluate(document, XPathConstants.STRING);
+            String lastName = (String) xPath.compile("//lastName/text()").
+                    evaluate(document, XPathConstants.STRING);
+            String dateOfBirth = (String) xPath.compile("//dateOfBirth/text()").
+                    evaluate(document, XPathConstants.STRING);
+            
+            return new EditResponse(firstName, lastName, dateOfBirth);
+            
         } catch (IOException ex) {
             Logger.getLogger(XMLResponseParser.class.getName()).
                     log(Level.SEVERE, null, ex);
