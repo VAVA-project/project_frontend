@@ -55,7 +55,7 @@ public class SigninController {
             signIn(event);
         }
         if (event.getSource().equals(btnSignup)) {
-            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Signup.fxml");
+            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Signup.fxml");
         }
     }
 
@@ -78,11 +78,8 @@ public class SigninController {
             LoginResponse loginResponse = responseParser.parseLoginData(response);
             Singleton.getInstance().setJwtToken(loginResponse.getJwtToken());
             Singleton.getInstance().setUser(loginResponse.getUser());
-            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Search.fxml");
+            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Search.fxml");
             
-            System.out.println("userType: " + Singleton.getInstance().getUser().getUserType().name());
-            System.out.println("Photo:\n" + Singleton.getInstance().getUser().getPhoto());
-            System.out.println("\n");
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
         }

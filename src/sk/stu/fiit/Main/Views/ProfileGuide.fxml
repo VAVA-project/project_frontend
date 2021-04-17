@@ -10,13 +10,10 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="border-pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.ProfileCustomerController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="border-pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.ProfileGuideController">
    <left>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="left-pane" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="imageViewPhoto" fitHeight="190.0" fitWidth="190.0" layoutX="14.0" layoutY="80.0" pickOnBounds="true" smooth="false" />
-            <Label fx:id="lblName" layoutX="14.0" layoutY="282.0" styleClass="lbl-name" />
-            <Button fx:id="btnEditInformations" layoutX="14.0" layoutY="538.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-edit-informations" text="Edit informations" />
             <Button fx:id="btnBack" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-back">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
@@ -26,23 +23,27 @@
                   </ImageView>
                </graphic>
             </Button>
+            <ImageView fx:id="imageViewPhoto" fitHeight="190.0" fitWidth="190.0" layoutX="14.0" layoutY="80.0" pickOnBounds="true" smooth="false" />
+            <Button fx:id="btnEditInformations" layoutX="14.0" layoutY="538.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-edit-informations" text="Edit informations" />
+            <Label fx:id="lblName" layoutX="14.0" layoutY="282.0" styleClass="lbl-name" />
          </children>
       </Pane>
    </left>
    <center>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="center-pane" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="88.0" layoutY="60.0" styleClass="lbl-profile" text="Profile" />
             <HBox layoutX="540.0" layoutY="7.0" styleClass="hbox-control-buttons">
                <children>
                   <Circle fx:id="btnMinimize" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize" />
                   <Circle fx:id="btnExit" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-exit" />
                </children>
             </HBox>
-         </children></Pane>
+            <Label layoutX="88.0" layoutY="60.0" styleClass="lbl-profile" text="Profile" />
+         </children>
+      </Pane>
    </center>
    <stylesheets>
-      <URL value="@../../../../../css/buttons_control.css" />
       <URL value="@../../../../../css/screen5_Profiles.css" />
+      <URL value="@../../../../../css/buttons_control.css" />
    </stylesheets>
 </BorderPane>

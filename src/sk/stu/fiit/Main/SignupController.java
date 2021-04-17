@@ -142,7 +142,7 @@ public class SignupController {
             actual_stage.setIconified(true);
         }
         if (event.getSource().equals(btnBackCustomerAccount)) {
-            Parent signIn_node = FXMLLoader.load(getClass().getResource("Signin.fxml"));
+            Parent signIn_node = FXMLLoader.load(getClass().getResource("Views/Signin.fxml"));
             Scene signIn_scene = new Scene(signIn_node);
             signIn_scene.setFill(Color.TRANSPARENT);
             Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -377,12 +377,10 @@ public class SignupController {
                     CloseableHttpResponse response = httpClient.execute(httpPost)) {
                 Singleton.getInstance().setJwtToken(responseParser.parseRegisterData(response).getJwtToken());
                 Singleton.getInstance().setUser(new User(userType, email, firstName, lastName, photo));
-                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Welcome.fxml");
+                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Welcome.fxml");
                 
-                System.out.println("Photo:\n" + Singleton.getInstance().getUser().getPhoto());
-                
-                System.out.println("\nToken:" + Singleton.getInstance().getJwtToken());
-                System.out.println("firstName:" + Singleton.getInstance().getUser().getFirstName());
+                System.out.println("\ntoken:" + Singleton.getInstance().getJwtToken());
+                System.out.println("\nfirstName:" + Singleton.getInstance().getUser().getFirstName());
             }
 
         }

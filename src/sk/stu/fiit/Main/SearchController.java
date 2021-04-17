@@ -4,14 +4,24 @@
  */
 package sk.stu.fiit.Main;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import sk.stu.fiit.User.UserType;
 
 /**
@@ -27,6 +37,10 @@ public class SearchController implements Initializable {
     private Circle btnMinimize;
     @FXML
     private Circle btnExit;
+    @FXML
+    private Button btnSearch;
+    @FXML
+    private TextField tfDestination;
 
     /**
      * Initializes the controller class.
@@ -34,7 +48,7 @@ public class SearchController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @FXML
     private void handleMouseEvent(MouseEvent event) {
@@ -47,12 +61,35 @@ public class SearchController implements Initializable {
         }
         if (event.getSource().equals(btnProfile)) {
             if (Singleton.getInstance().getUser().getUserType() == UserType.NORMAL_USER) {
-                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "ProfileCustomer.fxml");
+                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileCustomer.fxml");
             } else {
-                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "ProfileGuide.fxml");
+                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileGuide.fxml");
             }
         }
-        
+        if (event.getSource().equals(btnSearch)) {
+            searchDestination(event);
+        }
+
     }
-    
+
+    private void searchDestination(MouseEvent event) {
+        HttpGet request = new HttpGet("http://localhost:8080/api/v1/search/?q=" + tfDestination.getText());
+
+        request.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
+
+            HttpEntity entity = response.getEntity();
+            String result = EntityUtils.toString(entity);
+            
+            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Tours.fxml");
+            
+            
+            System.out.println(result);
+        } catch (IOException ex) {
+            Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

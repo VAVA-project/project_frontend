@@ -25,16 +25,16 @@ import javafx.stage.Stage;
  *
  * @author adamf
  */
-public class ProfileCustomerController implements Initializable {
+public class ProfileGuideController implements Initializable {
 
+    @FXML
+    private Button btnBack;
     @FXML
     private ImageView imageViewPhoto;
     @FXML
-    private Label lblName;
-    @FXML
     private Button btnEditInformations;
     @FXML
-    private Button btnBack;
+    private Label lblName;
     @FXML
     private Circle btnMinimize;
     @FXML
@@ -46,7 +46,7 @@ public class ProfileCustomerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setProfileInformations();
-    }
+    }    
 
     @FXML
     private void handleMouseEvent(MouseEvent event) {
@@ -82,5 +82,5 @@ public class ProfileCustomerController implements Initializable {
         // Setting profile name
         lblName.setText(Singleton.getInstance().getUser().getFirstName() + " " + Singleton.getInstance().getUser().getLastName());
     }
-
+    
 }

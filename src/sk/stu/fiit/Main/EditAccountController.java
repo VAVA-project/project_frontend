@@ -6,7 +6,6 @@ package sk.stu.fiit.Main;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -72,9 +71,9 @@ public class EditAccountController implements Initializable {
         }
         if (event.getSource().equals(btnBack)) {
             if (Singleton.getInstance().getUser().getUserType() == UserType.NORMAL_USER) {
-                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "ProfileCustomer.fxml");
+                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileCustomer.fxml");
             } else {
-                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "ProfileGuide.fxml");
+                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileGuide.fxml");
             }
         }
         if (event.getSource().equals(btnEdit)) {
@@ -102,7 +101,13 @@ public class EditAccountController implements Initializable {
             
             Singleton.getInstance().getUser().setFirstName(editResponse.getFirstName());
             Singleton.getInstance().getUser().setLastName(editResponse.getLastName());
-            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Search.fxml");
+            
+            if (Singleton.getInstance().getUser().getUserType() == UserType.NORMAL_USER) {
+                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileCustomer.fxml");
+            } else {
+                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileGuide.fxml");
+            }
+            
             
             System.out.println("firstName: " + Singleton.getInstance().getUser().getFirstName());
             System.out.println("lastName: " + Singleton.getInstance().getUser().getLastName());
