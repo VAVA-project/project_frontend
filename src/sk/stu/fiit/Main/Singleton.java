@@ -2,7 +2,11 @@
  *  VAVA Project
  * 
  */
-package sk.stu.fiit;
+package sk.stu.fiit.Main;
+
+import java.util.ArrayList;
+import java.util.List;
+import sk.stu.fiit.User.User;
 
 /**
  *
@@ -14,8 +18,12 @@ public class Singleton {
 
     private String jwtToken;
     private User user;
+    private List<Tour> tours;
+    private List<TourGuide> tourGuides;
 
-    private Singleton() {}
+    private Singleton() {
+        tourGuides = new ArrayList<>();
+    }
 
     public static Singleton getInstance() {
         if (instance == null) {
@@ -38,6 +46,22 @@ public class Singleton {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Tour> getTours() {
+        return tours;
+    }
+
+    public void setTours(List<Tour> tours) {
+        this.tours = tours;
+    }
+
+    public List<TourGuide> getTourGuides() {
+        return tourGuides;
+    }
+
+    public void addTourGuide(TourGuide tourGuide){
+        this.tourGuides.add(tourGuide);
     }
     
 }

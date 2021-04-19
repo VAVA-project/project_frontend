@@ -1,0 +1,55 @@
+/*
+ VAVA Project
+
+*/
+/* 
+    Created on : 14. 4. 2021, 22:17:04
+    Author     : adamf
+*/
+
+.pane {
+    -fx-background-color: #5F2EEA;
+    -fx-background-radius: 32px;
+    -fx-pref-width: 900px;
+    -fx-pref-height: 600px;
+}
+
+.text-field {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 20px;
+    -fx-background-color: #EFF0F6; 
+    -fx-background-radius: 16px;
+    -fx-pref-height: 70px;
+    -fx-pref-width: 580px;
+    -fx-background-image: url('icons/menu.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-image-position: left;
+
+}
+
+.label {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.btn-profile {
+    -fx-border-radius: 30px;
+    -fx-border-color: #FFFFFF;
+    -fx-background-color: transparent;
+    -fx-pref-width: 45px;
+    -fx-pref-height: 45px;
+    -fx-text-fill: #FFFFFF;
+}
+
+.btn-search {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #5F2EEA;
+    -fx-background-color: white;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 45px;
+    -fx-pref-width: 170px;
+}

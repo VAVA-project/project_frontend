@@ -2,7 +2,7 @@
  *  VAVA Project
  * 
  */
-package sk.stu.fiit;
+package sk.stu.fiit.Main;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,7 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.Arrays;
+import java.time.LocalDate;
 import java.util.Base64;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,7 +34,19 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import sk.stu.fiit.User.User;
+import sk.stu.fiit.User.UserType;
+import sk.stu.fiit.parsers.Requests.IRequestVisitor;
+import sk.stu.fiit.parsers.Requests.XMLRequestParser;
+import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
+import sk.stu.fiit.parsers.Responses.IResponseParser;
+import sk.stu.fiit.parsers.Responses.XMLResponseParser;
+import sk.stu.fiit.Validators.UserRegistrationValidator;
 
 /**
  * FXML Controller class
@@ -43,13 +55,13 @@ import javafx.stage.Stage;
  */
 public class SignupController {
 
-    private String userType;
+    private UserType userType;
     private String email;
     private String password;
     private String firstName;
     private String lastName;
-    private String dateOfBirth;
-    private String photoString = null;
+    private LocalDate dateOfBirth;
+    private String photo = null;
 
     private boolean photoSet = false;
 
@@ -125,21 +137,18 @@ public class SignupController {
         if (event.getSource().equals(btnExit)) {
             System.exit(0);
         }
-        
         if (event.getSource().equals(btnMinimize)) {
             Stage actual_stage = (Stage) ((Circle) event.getSource()).getScene().getWindow();
             actual_stage.setIconified(true);
         }
-        
         if (event.getSource().equals(btnBackCustomerAccount)) {
-            Parent signIn_node = FXMLLoader.load(getClass().getResource("Signin.fxml"));
+            Parent signIn_node = FXMLLoader.load(getClass().getResource("Views/Signin.fxml"));
             Scene signIn_scene = new Scene(signIn_node);
             signIn_scene.setFill(Color.TRANSPARENT);
             Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             appStage.setScene(signIn_scene);
             appStage.show();
         }
-        
         if (event.getSource().equals(btnCreateCustomer)) {
             stackPaneSignupLeft.getChildren().clear();
             stackPaneSignupLeft.getChildren().add(paneSignupLeft);
@@ -154,9 +163,8 @@ public class SignupController {
             hboxControlButtonsAccountInformations.getChildren().add(btnExit);
 
             lblUserType.setText("Customer");
-            userType = "NORMAL_USER";
+            userType = UserType.NORMAL_USER;
         }
-        
         if (event.getSource().equals(btnCreateGuide)) {
             stackPaneSignupLeft.getChildren().clear();
             stackPaneSignupLeft.getChildren().add(paneSignupLeft);
@@ -171,9 +179,9 @@ public class SignupController {
             hboxControlButtonsAccountInformations.getChildren().add(btnExit);
 
             lblUserType.setText("Guide");
-            userType = "GUIDE";
+            userType = UserType.GUIDE;
+            //userType = "GUIDE";
         }
-
         if (event.getSource().equals(btnBackAccountInformations)) {
             stackPaneSignupLeft.getChildren().clear();
             stackPaneSignupLeft.getChildren().add(paneSignupCustomerAccount);
@@ -193,16 +201,16 @@ public class SignupController {
             if (photoSet) {
                 imageViewPhoto.setImage(null);
                 paneSignupPhoto.getChildren().remove(btnChangePhoto);
+                paneSignupPhoto.getChildren().remove(btnChangePhoto);
                 paneSignupPhoto.getChildren().add(lblSelectPhoto);
                 photoSet = false;
             }
         }
-        
         if (event.getSource().equals(btnNextAccountInformations)) {
-            if (Validator.validateFieldsAreEmpty(Arrays.asList(tfEmail, tfPassword))) {
-                if (tfEmail.getText().matches("^[^\\s@]+@([^\\s@.,]+\\.)+[^\\s@.,]{2,}$")) {
-                    email = tfEmail.getText();
-                    if (tfPassword.getText().matches("[^\\s]{8,}")) {
+            if (UserRegistrationValidator.areEmpty.test(tfEmail, tfPassword)) {
+                if (UserRegistrationValidator.isEmailValid.test(tfEmail.getText())) {
+                    if (UserRegistrationValidator.isPasswordValid.test(tfPassword.getText())) {
+                        email = tfEmail.getText();
                         password = tfPassword.getText();
 
                         stackPaneSignupRight.getChildren().clear();
@@ -223,7 +231,6 @@ public class SignupController {
                 Alerts.fieldsValidation("Please, fill in all fields");
             }
         }
-
         if (event.getSource().equals(btnBackPersonalInformations)) {
             stackPaneSignupRight.getChildren().clear();
             stackPaneSignupRight.getChildren().add(paneSignupAccountInformations);
@@ -234,17 +241,17 @@ public class SignupController {
             hboxControlButtonsAccountInformations.getChildren().add(btnMinimize);
             hboxControlButtonsAccountInformations.getChildren().add(btnExit);
         }
-
         if (event.getSource().equals(btnNextPersonalInformations)) {
-            if (Validator.validateFieldsAreEmpty(Arrays.asList(tfFirstname, tfLastname))) {
+            if (UserRegistrationValidator.areEmpty.test(tfFirstname, tfLastname)) {
                 if (datePickerDateOfBirth.getValue() != null) {
-                    if (Validator.validateDateRange(datePickerDateOfBirth.getValue().toString())) {
+                    if (UserRegistrationValidator.isDateValid.test(datePickerDateOfBirth.getValue())) {
                         firstName = tfFirstname.getText();
                         lastName = tfLastname.getText();
-                        dateOfBirth = datePickerDateOfBirth.getValue().toString();
+                        dateOfBirth = datePickerDateOfBirth.getValue();
 
                         stackPaneSignupRight.getChildren().clear();
                         stackPaneSignupRight.getChildren().add(paneSignupPhoto);
+                        paneSignupPhoto.getChildren().remove(btnRegister);
                         paneSignupPhoto.getChildren().remove(btnChangePhoto);
 
                         paneSignupLeft.getChildren().remove(btnBackPersonalInformations);
@@ -253,6 +260,7 @@ public class SignupController {
                         hboxControlButtonsPhoto.getChildren().add(btnMinimize);
                         hboxControlButtonsPhoto.getChildren().add(btnExit);
                         if (photoSet) {
+                            paneSignupPhoto.getChildren().add(btnRegister);
                             paneSignupPhoto.getChildren().add(btnChangePhoto);
                         }
                     } else {
@@ -266,7 +274,6 @@ public class SignupController {
                 Alerts.fieldsValidation("Please, fill in all fields");
             }
         }
-        
         if (event.getSource().equals(btnBackPhoto)) {
             stackPaneSignupRight.getChildren().clear();
             stackPaneSignupRight.getChildren().add(paneSignupPersonalInformations);
@@ -277,7 +284,6 @@ public class SignupController {
             hboxControlButtonsPersonalInformations.getChildren().add(btnMinimize);
             hboxControlButtonsPersonalInformations.getChildren().add(btnExit);
         }
-        
         if (event.getSource().equals(lblSelectPhoto)) {
             try {
                 FileChooser fileChooser = new FileChooser();
@@ -293,23 +299,22 @@ public class SignupController {
 
                 // Encode
                 byte[] fileContent = Files.readAllBytes(file.toPath());
-                photoString = Base64.getEncoder().encodeToString(fileContent);
+                photo = Base64.getEncoder().encodeToString(fileContent);
+                //photo = new String(fileContent);
 
-                // Decode
-                //byte[] decode = Base64.getDecoder().decode(photoString);
-                //Files.write(Paths.get("C:/Users/adamf/Desktop/greta2.jpg"), decode);
                 try {
                     InputStream inputStream = new FileInputStream(fileNamePath);
-                    Image photo = new Image(inputStream);
-                    imageViewPhoto.setImage(photo);
-                    
+                    Image image = new Image(inputStream);
+                    imageViewPhoto.setImage(image);
+
                     Rectangle clip = new Rectangle();
                     clip.setWidth(190.0f);
                     clip.setHeight(190.0f);
                     clip.setArcWidth(30);
                     clip.setArcHeight(30);
-                    
+
                     imageViewPhoto.setClip(clip);
+                    paneSignupPhoto.getChildren().add(btnRegister);
                     paneSignupPhoto.getChildren().add(btnChangePhoto);
                     paneSignupPhoto.getChildren().remove(lblSelectPhoto);
                     photoSet = true;
@@ -317,7 +322,7 @@ public class SignupController {
                     Alerts.photoChoosing();
                 }
             } catch (NullPointerException e) {
-                // User had opened fileChooser.showOpenDialog, but he doesn't choose his photo
+                // User had opened fileChooser.showOpenDialog, but he doesn't choose his image
             }
         }
         if (event.getSource().equals(btnChangePhoto)) {
@@ -333,41 +338,51 @@ public class SignupController {
 
                 // Encode
                 byte[] fileContent = Files.readAllBytes(file.toPath());
-                photoString = Base64.getEncoder().encodeToString(fileContent);
+                photo = Base64.getEncoder().encodeToString(fileContent);
+                //photo = new String(fileContent);
 
                 try {
                     InputStream inputStream = new FileInputStream(fileNamePath);
-                    Image photo = new Image(inputStream);
-                    imageViewPhoto.setImage(photo);
-                    
+                    Image image = new Image(inputStream);
+                    imageViewPhoto.setImage(image);
+
                     Rectangle clip = new Rectangle();
                     clip.setWidth(190.0f);
                     clip.setHeight(190.0f);
                     clip.setArcWidth(30);
                     clip.setArcHeight(30);
-                    
+
                     imageViewPhoto.setClip(clip);
                 } catch (FileNotFoundException ex) {
                     Alerts.photoChoosing();
                 }
             } catch (NullPointerException e) {
-                // User had opened fileChooser.showOpenDialog, but he doesn't choose his photo
+                // User had opened fileChooser.showOpenDialog, but he doesn't choose a photo
             }
         }
-        
         if (event.getSource().equals(btnRegister)) {
             //imageViewPhoto.setImage(null);
-            try {
-                User user = new User(userType, email, password, firstName, lastName, dateOfBirth, photoString);
-                Singleton.getInstance().setUser(user);
-                HttpRequests.sendPost();
+
+            IRequestVisitor parser = new XMLRequestParser();
+            HttpPost httpPost = new HttpPost("http://localhost:8080/api/v1/register");
+            httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
+
+            HttpEntity registerEntity = parser.constructRegisterRequest(new RegisterRequest(email, password, userType.name(), firstName, lastName, dateOfBirth, photo));
+
+            httpPost.setEntity(registerEntity);
+
+            IResponseParser responseParser = new XMLResponseParser();
+
+            try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                    CloseableHttpResponse response = httpClient.execute(httpPost)) {
+                Singleton.getInstance().setJwtToken(responseParser.parseRegisterData(response).getJwtToken());
+                Singleton.getInstance().setUser(new User(userType, email, firstName, lastName, photo));
+                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Welcome.fxml");
                 
-                System.out.println("SINGLETON jwtToken: " + Singleton.getInstance().getJwtToken());
-                System.out.println("SINGLETON user firstName: " + Singleton.getInstance().getUser().getFirstName());
-            } catch (Exception ex) {
-                System.out.println("\n\nNeuspesna registracia\n\n");
-                //Logger.getLogger(SignupController.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("\ntoken:" + Singleton.getInstance().getJwtToken());
+                System.out.println("\nfirstName:" + Singleton.getInstance().getUser().getFirstName());
             }
+
         }
     }
 

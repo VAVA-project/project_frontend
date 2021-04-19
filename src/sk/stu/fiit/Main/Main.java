@@ -2,7 +2,7 @@
  *  VAVA Project
  * 
  */
-package sk.stu.fiit;
+package sk.stu.fiit.Main;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -19,12 +19,31 @@ import javafx.stage.StageStyle;
  */
 public class Main extends Application {
     
+    /*
+    IRequestVisitor parser = new XMLRequestParser();
+
+    HttpPost httpPost = new HttpPost(
+            "http://localhost:8080/api/v1/login/");
+    httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
+
+    HttpEntity loginEntity = parser.constructLoginRequest(new LoginRequest("email@gmail.com", "password"));
+
+    httpPost.setEntity(loginEntity);
+
+    IResponseParser responseParser = new XMLResponseParser();
+
+    try ( CloseableHttpClient httpClient = HttpClients.createDefault();
+             CloseableHttpResponse response = httpClient.execute(httpPost)) {
+        System.out.println(responseParser.parseLoginData(response).getUser().getType());
+    }
+    */
+    
     private double xOffset = 0;
     private double yOffset = 0;
     
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Signin.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Views/Signin.fxml"));
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
         primaryStage.initStyle(StageStyle.TRANSPARENT);

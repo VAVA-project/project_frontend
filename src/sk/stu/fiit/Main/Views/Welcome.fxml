@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.WelcomeController">
+   <children>
+      <Label layoutX="325.0" layoutY="186.0" styleClass="label-welcome" text="Welcome" />
+      <Label layoutX="280.0" layoutY="288.0" styleClass="label-success" text="You have been successfully registered" />
+      <Button fx:id="btnSearch" layoutX="360.0" layoutY="346.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" prefHeight="73.0" prefWidth="229.0" styleClass="btn-search" text="Search destination" />
+      <HBox layoutX="840.0" layoutY="7.0" styleClass="hbox-control-buttons">
+         <children>
+            <Circle fx:id="btnMinimize" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize" />
+            <Circle fx:id="btnExit" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-exit" />
+         </children>
+      </HBox>
+   </children>
+   <stylesheets>
+      <URL value="@../../../../../css/buttons_control.css" />
+      <URL value="@../../../../../css/screen3_Welcome.css" />
+   </stylesheets>
+</Pane>

@@ -1,0 +1,71 @@
+/*
+ VAVA Project
+
+*/
+/* 
+    Created on : 15. 4. 2021, 16:00:38
+    Author     : adamf
+*/
+
+.border-pane {
+    -fx-background-radius: 32px;
+    -fx-pref-width: 900px;
+    -fx-pref-height: 600px;
+}
+
+.left-pane {
+    -fx-background-color: #5F2EEA;
+    -fx-background-radius: 32px;
+    -fx-pref-width: 300px;
+    -fx-pref-height: 600px;
+}
+
+.center-pane {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 32px;
+    -fx-pref-width: 600px;
+    -fx-pref-height: 600px;
+}
+
+.lbl-edit-account {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.lbl-personal-informations {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
+
+.text-field {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 16px;
+    -fx-background-color: #EFF0F6; 
+    -fx-background-radius: 16px;
+    -fx-pref-height: 60px;
+    -fx-pref-width: 340px;
+}
+
+.btn-edit {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: #5F2EEA;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 45px;
+    -fx-pref-width: 170px;
+}
+
+.btn-back {
+    -fx-border-radius: 30px;
+    -fx-border-color: #FFFFFF;
+    -fx-background-color: transparent;
+    -fx-pref-width: 45px;
+    -fx-pref-height: 45px;
+    -fx-text-fill: #FFFFFF;
+}
