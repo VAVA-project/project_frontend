@@ -10,6 +10,8 @@ package sk.stu.fiit.Main;
  */
 public class Tour {
     
+    private String guidePhoto;
+    private String guideName;
     private String id;
     private String creatorId;
     private String startPlace;
@@ -28,11 +30,48 @@ public class Tour {
         this.createdAt = createdAt;
     }
 
-    @Override
-    public String toString() {
-        return "Tour{" + "id=" + id + ", creatorId=" + creatorId + ", startPlace=" + startPlace + ", destinationPlace=" + destinationPlace + ", description=" + description + ", pricePerPerson=" + pricePerPerson + ", createdAt=" + createdAt + '}';
+    public void setGuidePhoto(String guidePhoto) {
+        this.guidePhoto = guidePhoto;
     }
     
+    public String getGuidePhoto() {
+        return guidePhoto;
+    }
+
+    public void setGuideName(String guideName) {
+        this.guideName = guideName;
+    }
     
-    
+    public String getGuideName() {
+        return guideName;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public String getStartPlace() {
+        return startPlace;
+    }
+
+    public String getDestinationPlace() {
+        return destinationPlace;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getPricePerPerson() {
+        return pricePerPerson;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
 }

@@ -17,5 +17,6 @@ public interface IResponseParser {
     public LoginResponse parseLoginData(CloseableHttpResponse response);
     public EditResponse parseEditData(CloseableHttpResponse response);
     public SearchResponse parseSearchData(CloseableHttpResponse response);
+    public UserResponse parseUserData(CloseableHttpResponse response);
     
 }

@@ -4,21 +4,36 @@
  */
 package sk.stu.fiit.Main;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import sk.stu.fiit.parsers.Responses.IResponseParser;
+import sk.stu.fiit.parsers.Responses.XMLResponseParser;
+import sk.stu.fiit.Main.Tour;
 
 /**
  * FXML Controller class
@@ -29,6 +44,7 @@ public class ToursController implements Initializable {
 
     private final int numOfToursPerPage = 5;
     private List<HBox> toursOnScreen;
+    private List<GUITourElements> guiTourElements;
 
     @FXML
     private Button btnBack;
@@ -159,12 +175,14 @@ public class ToursController implements Initializable {
     }
 
     private void initializeTours() {
-        getHboxesForScreen();
+        setTourGuidesForTours();
+        getHboxesForScreen();   // V toursOnScreen mam len tie Hboxi, ktore maju by naplnene udajmi tur
+        getGUITourElements();
+
         vbTours.getChildren().addAll(toursOnScreen);
-        
+
         // Pokracovat s vykreslovanim tur na obrazovku, asi bude dobre
         // spravit pre to samostatny objekt
-        
     }
 
     private void getHboxesForScreen() {
@@ -176,14 +194,92 @@ public class ToursController implements Initializable {
         toursAll.add(tour3);
         toursAll.add(tour4);
         toursAll.add(tour5);
-        
+
         toursOnScreen = new ArrayList<>();
 
         int numberOfTours = Singleton.getInstance().getTours().size();  // 3
-       
-        
+
         for (int i = 0; i < numberOfTours; i++) {
             toursOnScreen.add(toursAll.get(i));
+        }
+        toursAll.clear();
+    }
+
+    private void getGUITourElements() {
+        guiTourElements = new ArrayList<>();
+        guiTourElements.add(new GUITourElements(photo1, lblName1, lblDestination1, lblRating1, lblPrice1));
+        guiTourElements.add(new GUITourElements(photo2, lblName2, lblDestination2, lblRating2, lblPrice2));
+        guiTourElements.add(new GUITourElements(photo3, lblName3, lblDestination3, lblRating3, lblPrice3));
+        guiTourElements.add(new GUITourElements(photo4, lblName4, lblDestination4, lblRating4, lblPrice4));
+        guiTourElements.add(new GUITourElements(photo5, lblName5, lblDestination5, lblRating5, lblPrice5));
+
+        int numberOfTours = Singleton.getInstance().getTours().size();
+
+        for (int i = 0; i < numberOfTours; i++) {
+            Tour tour = Singleton.getInstance().getTours().get(i);
+            GUITourElements guiTourElement = guiTourElements.get(i);
+
+            String photo =  tour.getGuidePhoto();
+            byte[] byteArray = Base64.getDecoder().decode(photo.replaceAll("\n", ""));
+            InputStream inputStream = new ByteArrayInputStream(byteArray);
+            Image image = new Image(inputStream);
+            guiTourElement.photo.setImage(image);
+            Rectangle clip = new Rectangle();
+            clip.setWidth(130.0f);
+            clip.setHeight(130.0f);
+            clip.setArcWidth(30);
+            clip.setArcHeight(30);
+            guiTourElement.photo.setClip(clip);
+            
+            guiTourElement.lblName.setText(tour.getGuideName());
+            guiTourElement.lblDestination.setText(tour.getDestinationPlace());
+            guiTourElement.lblRating.setText("5");
+            guiTourElement.lblPrice.setText(tour.getPricePerPerson());
+        }
+
+    }
+
+    // Metoda pre nastavenie fotiek a mien sprievodcov pre nacitane tury z DB
+    private void setTourGuidesForTours() {
+
+        for (Tour tour : Singleton.getInstance().getTours()) {
+            boolean setGuide = true;
+            if (Singleton.getInstance().getTourGuides().size() > 0) {
+                for (TourGuide tourGuide : Singleton.getInstance().getTourGuides()) {
+                    // Nasiel sa Guide, ktory uz ma niektoru zo zobrazovanych tur
+                    // tak sa vyuzije jeho meno a fotka, aby sa nemusela znova nacitavat z DB
+                    if (tourGuide.getId().equals(tour.getCreatorId())) {
+                        tour.setGuideName(tourGuide.getFirstName() + " " + tourGuide.getLastName());
+                        tour.setGuidePhoto(tourGuide.getPhoto());
+                        setGuide = false;
+                        break;
+                    }
+                }
+            }
+            if (setGuide) {
+                getUserRequest(tour.getCreatorId(), tour);
+            }
+        }
+    }
+
+    private void getUserRequest(String creatorId, Tour tour) {
+
+        HttpGet request = new HttpGet("http://localhost:8080/api/v1/users/" + creatorId + "/");
+        request.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
+        request.setHeader("Content-Type", "application/xml;charset=UTF-8");
+
+        IResponseParser responseParser = new XMLResponseParser();
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
+
+            TourGuide tourGuide = responseParser.parseUserData(response).getTourGuide();
+            Singleton.getInstance().addTourGuide(tourGuide);
+            tour.setGuideName(tourGuide.getFirstName() + " " + tourGuide.getLastName());
+            tour.setGuidePhoto(tourGuide.getPhoto());
+
+        } catch (IOException ex) {
+            Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

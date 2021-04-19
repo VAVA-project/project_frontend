@@ -16,8 +16,12 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import sk.stu.fiit.Main.Tour;
+import sk.stu.fiit.Main.TourGuide;
 import sk.stu.fiit.User.User;
 import sk.stu.fiit.User.UserType;
 
@@ -143,34 +147,72 @@ public class XMLResponseParser implements IResponseParser {
                     parse(response.getEntity().getContent());
 
             XPath xPath = XPathFactory.newInstance().newXPath();
+            
+            NodeList contentList = (NodeList) xPath.compile("//PageImpl/content/content").evaluate(document, XPathConstants.NODESET);
+            System.out.println("contentList = " + contentList.getLength());
+            
+//            String numberOfEle = (String) xPath.compile("//PageImpl/numberOfElements/text()").
+//                    evaluate(document, XPathConstants.STRING);
 
-            String numberOfEle = (String) xPath.compile("//PageImpl/numberOfElements/text()").
-                    evaluate(document, XPathConstants.STRING);
+            
 
-            int numberOfElements = Integer.parseInt(numberOfEle);
-
-            for (int i = 0; i < numberOfElements; i++) {
-
-                String id = (String) xPath.compile("//PageImpl/content/content/id/text()").
-                        evaluate(document, XPathConstants.STRING);
-                String creatorId = (String) xPath.compile("//PageImpl/content/content/creatorId/text()").
-                        evaluate(document, XPathConstants.STRING);
-                String startPlace = (String) xPath.compile("//PageImpl/content/content/startPlace/text()").
-                        evaluate(document, XPathConstants.STRING);
-                String destinationPlace = (String) xPath.compile("//PageImpl/content/content/destinationPlace/text()").
-                        evaluate(document, XPathConstants.STRING);
-                String description = (String) xPath.compile("//PageImpl/content/content/description/text()").
-                        evaluate(document, XPathConstants.STRING);
-                String pricePerPerson = (String) xPath.compile("//PageImpl/content/content/pricePerPerson/text()").
-                        evaluate(document, XPathConstants.STRING);
-                String createdAt = (String) xPath.compile("//PageImpl/content/content/createdAt/text()").
-                        evaluate(document, XPathConstants.STRING);
+            for (int i = 0; i < contentList.getLength(); i++) {
+                
+                Node node = contentList.item(i);
+                Element element = (Element) node;
+                
+                String id = element.getElementsByTagName("id").item(0).getTextContent();
+                String creatorId = element.getElementsByTagName("creatorId").item(0).getTextContent();
+                String startPlace = element.getElementsByTagName("startPlace").item(0).getTextContent();
+                String destinationPlace = element.getElementsByTagName("destinationPlace").item(0).getTextContent();
+                String description = element.getElementsByTagName("description").item(0).getTextContent();
+                String pricePerPerson = element.getElementsByTagName("pricePerPerson").item(0).getTextContent();
+                String createdAt = element.getElementsByTagName("createdAt").item(0).getTextContent();
                 
                 searchResponse.addTour(new Tour(id, creatorId, startPlace, destinationPlace, description, pricePerPerson, createdAt));
                 
             }
 
             return searchResponse;
+
+        } catch (IOException ex) {
+            Logger.getLogger(XMLResponseParser.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (UnsupportedOperationException ex) {
+            Logger.getLogger(XMLResponseParser.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(XMLResponseParser.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(XMLResponseParser.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (XPathExpressionException ex) {
+            Logger.getLogger(XMLResponseParser.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    @Override
+    public UserResponse parseUserData(CloseableHttpResponse response) {
+        try {
+            Document document = DocumentBuilderFactory.newInstance().
+                    newDocumentBuilder().
+                    parse(response.getEntity().getContent());
+
+            XPath xPath = XPathFactory.newInstance().newXPath();
+
+            String firstName = (String) xPath.compile("//firstName/text()").
+                    evaluate(document, XPathConstants.STRING);
+            String id = (String) xPath.compile("//id/text()").
+                    evaluate(document, XPathConstants.STRING);
+            String lastName = (String) xPath.compile("//lastName/text()").
+                    evaluate(document, XPathConstants.STRING);
+            String photo = (String) xPath.compile("//photo/text()").
+                    evaluate(document, XPathConstants.STRING);
+
+            return new UserResponse(new TourGuide(firstName, id, lastName, photo));
 
         } catch (IOException ex) {
             Logger.getLogger(XMLResponseParser.class.getName()).

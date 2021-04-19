@@ -78,6 +78,9 @@ public class SigninController {
             LoginResponse loginResponse = responseParser.parseLoginData(response);
             Singleton.getInstance().setJwtToken(loginResponse.getJwtToken());
             Singleton.getInstance().setUser(loginResponse.getUser());
+            
+            System.out.println("token = " + Singleton.getInstance().getJwtToken());
+            
             ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Search.fxml");
             
         } catch (IOException ex) {

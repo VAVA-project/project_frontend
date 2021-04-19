@@ -38,17 +38,20 @@
                <children>
                   <HBox fx:id="tour1" alignment="CENTER_LEFT" spacing="10.0" styleClass="hbox-tour">
                      <children>
-                        <ImageView fx:id="photo1" fitHeight="150.0" fitWidth="157.0" pickOnBounds="true" preserveRatio="true" styleClass="photo-tour" />
+                        <ImageView fx:id="photo1" fitHeight="150.0" fitWidth="157.0" pickOnBounds="true" smooth="false" styleClass="photo-tour">
+                           <HBox.margin>
+                              <Insets left="15.0" top="20.0" />
+                           </HBox.margin></ImageView>
                         <Pane prefHeight="150.0" prefWidth="305.0">
                            <children>
-                              <Label layoutX="14.0" layoutY="23.0" styleClass="lbl-tour" text="Name:" />
-                              <Label layoutX="14.0" layoutY="51.0" styleClass="lbl-tour" text="Destination:" />
-                              <Label layoutX="14.0" layoutY="79.0" styleClass="lbl-tour" text="Rating:" />
-                              <Label layoutX="14.0" layoutY="107.0" styleClass="lbl-tour" text="Price:" />
-                              <Label fx:id="lblName1" layoutX="67.0" layoutY="23.0" text="Label" />
-                              <Label fx:id="lblDestination1" layoutX="103.0" layoutY="51.0" text="Label" />
-                              <Label fx:id="lblPrice1" layoutX="60.0" layoutY="107.0" text="Label" />
-                              <Label fx:id="lblRating1" layoutX="70.0" layoutY="79.0" text="Label" />
+                              <Label layoutX="14.0" layoutY="33.0" styleClass="lbl-tour" text="Name:" />
+                              <Label layoutX="14.0" layoutY="61.0" styleClass="lbl-tour" text="Destination:" />
+                              <Label layoutX="14.0" layoutY="89.0" styleClass="lbl-tour" text="Rating:" />
+                              <Label layoutX="14.0" layoutY="117.0" styleClass="lbl-tour" text="Price:" />
+                              <Label fx:id="lblName1" layoutX="67.0" layoutY="33.0" text="Label" />
+                              <Label fx:id="lblDestination1" layoutX="103.0" layoutY="61.0" text="Label" />
+                              <Label fx:id="lblPrice1" layoutX="60.0" layoutY="117.0" text="Label" />
+                              <Label fx:id="lblRating1" layoutX="70.0" layoutY="89.0" text="Label" />
                            </children>
                            <HBox.margin>
                               <Insets />
@@ -56,7 +59,7 @@
                         </Pane>
                         <Button fx:id="btnInterested1" mnemonicParsing="false" onMouseReleased="#handleBtnInterested1" styleClass="btn-interested" text="Interested">
                            <HBox.margin>
-                              <Insets left="100.0" top="95.0" />
+                              <Insets left="75.0" top="105.0" />
                            </HBox.margin>
                         </Button>
                      </children>
@@ -66,22 +69,25 @@
                   </HBox>
                   <HBox fx:id="tour2" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="hbox-tour">
                      <children>
-                        <ImageView fx:id="photo2" fitHeight="150.0" fitWidth="157.0" pickOnBounds="true" preserveRatio="true" styleClass="photo-tour" />
+                        <ImageView fx:id="photo2" fitHeight="150.0" fitWidth="157.0" pickOnBounds="true" smooth="false" styleClass="photo-tour">
+                           <HBox.margin>
+                              <Insets left="15.0" top="20.0" />
+                           </HBox.margin></ImageView>
                         <Pane prefHeight="200.0" prefWidth="200.0" styleClass="pane-tour">
                            <children>
-                              <Label layoutX="14.0" layoutY="23.0" styleClass="lbl-tour" text="Name:" />
-                              <Label layoutX="14.0" layoutY="51.0" styleClass="lbl-tour" text="Destination:" />
-                              <Label layoutX="14.0" layoutY="79.0" styleClass="lbl-tour" text="Rating:" />
-                              <Label layoutX="14.0" layoutY="107.0" styleClass="lbl-tour" text="Price:" />
-                              <Label fx:id="lblRating2" layoutX="70.0" layoutY="79.0" text="Label" />
-                              <Label fx:id="lblPrice2" layoutX="60.0" layoutY="107.0" text="Label" />
-                              <Label fx:id="lblName2" layoutX="67.0" layoutY="23.0" text="Label" />
-                              <Label fx:id="lblDestination2" layoutX="103.0" layoutY="51.0" text="Label" />
+                              <Label layoutX="14.0" layoutY="33.0" styleClass="lbl-tour" text="Name:" />
+                              <Label layoutX="14.0" layoutY="61.0" styleClass="lbl-tour" text="Destination:" />
+                              <Label layoutX="14.0" layoutY="89.0" styleClass="lbl-tour" text="Rating:" />
+                              <Label layoutX="14.0" layoutY="117.0" styleClass="lbl-tour" text="Price:" />
+                              <Label fx:id="lblRating2" layoutX="70.0" layoutY="89.0" text="Label" />
+                              <Label fx:id="lblPrice2" layoutX="60.0" layoutY="117.0" text="Label" />
+                              <Label fx:id="lblName2" layoutX="67.0" layoutY="33.0" text="Label" />
+                              <Label fx:id="lblDestination2" layoutX="103.0" layoutY="61.0" text="Label" />
                            </children>
                         </Pane>
                         <Button fx:id="btnInterested2" mnemonicParsing="false" onMouseReleased="#handleBtnInterested2" styleClass="btn-interested" text="Interested">
                            <HBox.margin>
-                              <Insets left="100.0" top="95.0" />
+                              <Insets left="75.0" top="105.0" />
                            </HBox.margin>
                         </Button>
                      </children>
@@ -91,22 +97,25 @@
                   </HBox>
                   <HBox fx:id="tour3" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="hbox-tour">
                      <children>
-                        <ImageView fx:id="photo3" fitHeight="150.0" fitWidth="157.0" pickOnBounds="true" preserveRatio="true" styleClass="photo-tour" />
+                        <ImageView fx:id="photo3" fitHeight="150.0" fitWidth="157.0" pickOnBounds="true" smooth="false" styleClass="photo-tour">
+                           <HBox.margin>
+                              <Insets left="15.0" top="20.0" />
+                           </HBox.margin></ImageView>
                         <Pane prefHeight="200.0" prefWidth="200.0" styleClass="pane-tour">
                            <children>
-                              <Label layoutX="14.0" layoutY="23.0" styleClass="lbl-tour" text="Name:" />
-                              <Label layoutX="14.0" layoutY="51.0" styleClass="lbl-tour" text="Destination:" />
-                              <Label layoutX="14.0" layoutY="79.0" styleClass="lbl-tour" text="Rating:" />
-                              <Label layoutX="14.0" layoutY="107.0" styleClass="lbl-tour" text="Price:" />
-                              <Label fx:id="lblRating3" layoutX="70.0" layoutY="79.0" text="Label" />
-                              <Label fx:id="lblPrice3" layoutX="60.0" layoutY="107.0" text="Label" />
-                              <Label fx:id="lblName3" layoutX="67.0" layoutY="23.0" text="Label" />
-                              <Label fx:id="lblDestination3" layoutX="103.0" layoutY="51.0" text="Label" />
+                              <Label layoutX="14.0" layoutY="33.0" styleClass="lbl-tour" text="Name:" />
+                              <Label layoutX="14.0" layoutY="61.0" styleClass="lbl-tour" text="Destination:" />
+                              <Label layoutX="14.0" layoutY="89.0" styleClass="lbl-tour" text="Rating:" />
+                              <Label layoutX="14.0" layoutY="117.0" styleClass="lbl-tour" text="Price:" />
+                              <Label fx:id="lblRating3" layoutX="70.0" layoutY="89.0" text="Label" />
+                              <Label fx:id="lblPrice3" layoutX="60.0" layoutY="117.0" text="Label" />
+                              <Label fx:id="lblName3" layoutX="67.0" layoutY="33.0" text="Label" />
+                              <Label fx:id="lblDestination3" layoutX="103.0" layoutY="61.0" text="Label" />
                            </children>
                         </Pane>
                         <Button fx:id="btnInterested3" mnemonicParsing="false" onMouseReleased="#handleBtnInterested3" styleClass="btn-interested" text="Interested">
                            <HBox.margin>
-                              <Insets left="100.0" top="95.0" />
+                              <Insets left="75.0" top="105.0" />
                            </HBox.margin>
                         </Button>
                      </children>
@@ -116,22 +125,25 @@
                   </HBox>
                   <HBox fx:id="tour4" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="hbox-tour">
                      <children>
-                        <ImageView fx:id="photo4" fitHeight="150.0" fitWidth="157.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="photo4" fitHeight="150.0" fitWidth="157.0" pickOnBounds="true" smooth="false">
+                           <HBox.margin>
+                              <Insets left="15.0" top="20.0" />
+                           </HBox.margin></ImageView>
                         <Pane prefHeight="200.0" prefWidth="200.0" styleClass="pane-tour">
                            <children>
-                              <Label layoutX="14.0" layoutY="23.0" styleClass="lbl-tour" text="Name:" />
-                              <Label layoutX="14.0" layoutY="51.0" styleClass="lbl-tour" text="Destination:" />
-                              <Label layoutX="14.0" layoutY="79.0" styleClass="lbl-tour" text="Rating:" />
-                              <Label layoutX="14.0" layoutY="107.0" styleClass="lbl-tour" text="Price:" />
-                              <Label fx:id="lblRating4" layoutX="70.0" layoutY="79.0" text="Label" />
-                              <Label fx:id="lblPrice4" layoutX="60.0" layoutY="107.0" text="Label" />
-                              <Label fx:id="lblName4" layoutX="67.0" layoutY="23.0" text="Label" />
-                              <Label fx:id="lblDestination4" layoutX="103.0" layoutY="51.0" text="Label" />
+                              <Label layoutX="14.0" layoutY="33.0" styleClass="lbl-tour" text="Name:" />
+                              <Label layoutX="14.0" layoutY="61.0" styleClass="lbl-tour" text="Destination:" />
+                              <Label layoutX="14.0" layoutY="89.0" styleClass="lbl-tour" text="Rating:" />
+                              <Label layoutX="14.0" layoutY="117.0" styleClass="lbl-tour" text="Price:" />
+                              <Label fx:id="lblRating4" layoutX="70.0" layoutY="89.0" text="Label" />
+                              <Label fx:id="lblPrice4" layoutX="60.0" layoutY="117.0" text="Label" />
+                              <Label fx:id="lblName4" layoutX="67.0" layoutY="33.0" text="Label" />
+                              <Label fx:id="lblDestination4" layoutX="103.0" layoutY="61.0" text="Label" />
                            </children>
                         </Pane>
                         <Button fx:id="btnInterested4" mnemonicParsing="false" onMouseReleased="#handleBtnInterested4" styleClass="btn-interested" text="Interested">
                            <HBox.margin>
-                              <Insets left="100.0" top="95.0" />
+                              <Insets left="75.0" top="105.0" />
                            </HBox.margin>
                         </Button>
                      </children>
@@ -141,22 +153,25 @@
                   </HBox>
                   <HBox fx:id="tour5" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" styleClass="hbox-tour">
                      <children>
-                        <ImageView fx:id="photo5" fitHeight="150.0" fitWidth="157.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="photo5" fitHeight="150.0" fitWidth="157.0" pickOnBounds="true" smooth="false">
+                           <HBox.margin>
+                              <Insets left="15.0" top="20.0" />
+                           </HBox.margin></ImageView>
                         <Pane prefHeight="200.0" prefWidth="200.0" styleClass="pane-tour">
                            <children>
-                              <Label layoutX="14.0" layoutY="23.0" styleClass="lbl-tour" text="Name:" />
-                              <Label layoutX="14.0" layoutY="51.0" styleClass="lbl-tour" text="Destination:" />
-                              <Label layoutX="14.0" layoutY="79.0" styleClass="lbl-tour" text="Rating:" />
-                              <Label layoutX="14.0" layoutY="107.0" styleClass="lbl-tour" text="Price:" />
-                              <Label fx:id="lblRating5" layoutX="70.0" layoutY="79.0" text="Label" />
-                              <Label fx:id="lblPrice5" layoutX="60.0" layoutY="107.0" text="Label" />
-                              <Label fx:id="lblName5" layoutX="67.0" layoutY="23.0" text="Label" />
-                              <Label fx:id="lblDestination5" layoutX="103.0" layoutY="51.0" text="Label" />
+                              <Label layoutX="14.0" layoutY="33.0" styleClass="lbl-tour" text="Name:" />
+                              <Label layoutX="14.0" layoutY="61.0" styleClass="lbl-tour" text="Destination:" />
+                              <Label layoutX="14.0" layoutY="89.0" styleClass="lbl-tour" text="Rating:" />
+                              <Label layoutX="14.0" layoutY="117.0" styleClass="lbl-tour" text="Price:" />
+                              <Label fx:id="lblRating5" layoutX="70.0" layoutY="89.0" text="Label" />
+                              <Label fx:id="lblPrice5" layoutX="60.0" layoutY="117.0" text="Label" />
+                              <Label fx:id="lblName5" layoutX="67.0" layoutY="33.0" text="Label" />
+                              <Label fx:id="lblDestination5" layoutX="103.0" layoutY="61.0" text="Label" />
                            </children>
                         </Pane>
                         <Button fx:id="btnInterested5" mnemonicParsing="false" onMouseReleased="#handleBtnInterested5" styleClass="btn-interested" text="Interested">
                            <HBox.margin>
-                              <Insets left="100.0" top="95.0" />
+                              <Insets left="75.0" top="105.0" />
                            </HBox.margin>
                         </Button>
                      </children>
