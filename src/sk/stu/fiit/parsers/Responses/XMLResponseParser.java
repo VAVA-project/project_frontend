@@ -17,6 +17,7 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+import sk.stu.fiit.Main.Tour;
 import sk.stu.fiit.User.User;
 import sk.stu.fiit.User.UserType;
 
@@ -72,7 +73,7 @@ public class XMLResponseParser implements IResponseParser {
                     evaluate(document, XPathConstants.STRING);
             String photo = (String) xPath.compile("//user/photo/text()").
                     evaluate(document, XPathConstants.STRING);
-            
+
             return new LoginResponse(token, new User(UserType.valueOf(
                     type), email, firstName, lastName, photo));
         } catch (IOException ex) {
@@ -109,9 +110,68 @@ public class XMLResponseParser implements IResponseParser {
                     evaluate(document, XPathConstants.STRING);
             String dateOfBirth = (String) xPath.compile("//dateOfBirth/text()").
                     evaluate(document, XPathConstants.STRING);
-            
+
             return new EditResponse(firstName, lastName, dateOfBirth);
-            
+
+        } catch (IOException ex) {
+            Logger.getLogger(XMLResponseParser.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (UnsupportedOperationException ex) {
+            Logger.getLogger(XMLResponseParser.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(XMLResponseParser.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(XMLResponseParser.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (XPathExpressionException ex) {
+            Logger.getLogger(XMLResponseParser.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    @Override
+    public SearchResponse parseSearchData(CloseableHttpResponse response) {
+        try {
+
+            SearchResponse searchResponse = new SearchResponse();
+
+            Document document = DocumentBuilderFactory.newInstance().
+                    newDocumentBuilder().
+                    parse(response.getEntity().getContent());
+
+            XPath xPath = XPathFactory.newInstance().newXPath();
+
+            String numberOfEle = (String) xPath.compile("//PageImpl/numberOfElements/text()").
+                    evaluate(document, XPathConstants.STRING);
+
+            int numberOfElements = Integer.parseInt(numberOfEle);
+
+            for (int i = 0; i < numberOfElements; i++) {
+
+                String id = (String) xPath.compile("//PageImpl/content/content/id/text()").
+                        evaluate(document, XPathConstants.STRING);
+                String creatorId = (String) xPath.compile("//PageImpl/content/content/creatorId/text()").
+                        evaluate(document, XPathConstants.STRING);
+                String startPlace = (String) xPath.compile("//PageImpl/content/content/startPlace/text()").
+                        evaluate(document, XPathConstants.STRING);
+                String destinationPlace = (String) xPath.compile("//PageImpl/content/content/destinationPlace/text()").
+                        evaluate(document, XPathConstants.STRING);
+                String description = (String) xPath.compile("//PageImpl/content/content/description/text()").
+                        evaluate(document, XPathConstants.STRING);
+                String pricePerPerson = (String) xPath.compile("//PageImpl/content/content/pricePerPerson/text()").
+                        evaluate(document, XPathConstants.STRING);
+                String createdAt = (String) xPath.compile("//PageImpl/content/content/createdAt/text()").
+                        evaluate(document, XPathConstants.STRING);
+                
+                searchResponse.addTour(new Tour(id, creatorId, startPlace, destinationPlace, description, pricePerPerson, createdAt));
+                
+            }
+
+            return searchResponse;
+
         } catch (IOException ex) {
             Logger.getLogger(XMLResponseParser.class.getName()).
                     log(Level.SEVERE, null, ex);

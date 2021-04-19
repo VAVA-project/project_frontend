@@ -4,6 +4,7 @@
  */
 package sk.stu.fiit.Main;
 
+import java.util.List;
 import sk.stu.fiit.User.User;
 
 /**
@@ -16,6 +17,7 @@ public class Singleton {
 
     private String jwtToken;
     private User user;
+    private List<Tour> tours;
 
     private Singleton() {}
 
@@ -41,6 +43,16 @@ public class Singleton {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public List<Tour> getTours() {
+        return tours;
+    }
+
+    public void setTours(List<Tour> tours) {
+        this.tours = tours;
+    }
+
+    
     
 }
 

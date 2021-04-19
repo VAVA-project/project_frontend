@@ -28,10 +28,77 @@
     -fx-font-size: 14px;
     -fx-border-color: #5F2EEA;
     -fx-border-radius: 16px;
-    -fx-text-fill: #BCA4FF;
+    -fx-text-fill: #5F2EEA;
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 16px;
     -fx-pref-height: 45px;
     -fx-pref-width: 170px;
     -fx-background-insets: 0;
+}
+
+.tours-wrappers {
+    -fx-background-insets: 0;
+    -fx-background-color: white;
+}
+
+.hbox-tour {
+    -fx-background-color: #EFF0F6;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+    -fx-pref-width: 700px;
+    -fx-pref-height: 150px;
+    -fx-spacing: 10;
+}
+
+.photo-tour {
+    -fx-pref-width: 157px;
+    -fx-pref-height: 150px;
+}
+
+.pane-tour {
+    -fx-pref-width: 305px;
+    -fx-pref-height: 150px;
+}
+
+.btn-interested {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 12px;
+    -fx-border-color: #5F2EEA;
+    -fx-border-radius: 16px;
+    -fx-text-fill: #5F2EEA;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 35px;
+    -fx-pref-width: 100px;
+    -fx-background-insets: 0;
+    margin-left: 110px;
+    margin-top: 100px;
+}
+
+.lbl-tour {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
+
+.lbl-destination {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
+
+.lbl-rating {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
+
+.lbl-price {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
 }

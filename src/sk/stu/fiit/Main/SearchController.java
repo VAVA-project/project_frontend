@@ -23,6 +23,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import sk.stu.fiit.User.UserType;
+import sk.stu.fiit.parsers.Responses.IResponseParser;
+import sk.stu.fiit.parsers.Responses.XMLResponseParser;
 
 /**
  * FXML Controller class
@@ -73,20 +75,25 @@ public class SearchController implements Initializable {
     }
 
     private void searchDestination(MouseEvent event) {
-        HttpGet request = new HttpGet("http://localhost:8080/api/v1/search/?q=" + tfDestination.getText());
-
+        
+        // Pre HttpGet nie je potrebne konstruovat Entity (XML telo request-u)
+        HttpGet request = new HttpGet("http://localhost:8080/api/v1/search/?q=" + tfDestination.getText() + "&pageNumber=0" + "&pageSize=5");
         request.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
-
+        
+        IResponseParser responseParser = new XMLResponseParser();
+        
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(request)) {
-
-            HttpEntity entity = response.getEntity();
-            String result = EntityUtils.toString(entity);
+            
+            Singleton.getInstance().setTours(responseParser.parseSearchData(response).getTours());
+            
+            //HttpEntity entity = response.getEntity();
+            //String result = EntityUtils.toString(entity);
             
             ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Tours.fxml");
             
             
-            System.out.println(result);
+            //System.out.println(result);
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
         }
