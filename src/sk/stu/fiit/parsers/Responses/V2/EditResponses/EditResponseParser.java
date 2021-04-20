@@ -8,7 +8,6 @@ import org.apache.http.Header;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
-import sk.stu.fiit.parsers.Responses.V2.LoginResponses.LoginResponseProcessor;
 import sk.stu.fiit.parsers.Responses.V2.Response;
 
 /**
@@ -28,7 +27,7 @@ public class EditResponseParser {
         Header header = response.getFirstHeader("Content-Type");
         
         if(header.getValue().equals("application/xml;charset=UTF-8")) {
-            return new LoginResponseProcessor().processResponse(response);
+            return new EditResponseProcessor().processResponse(response);
         }
         
         return null;
