@@ -20,9 +20,11 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import sk.stu.fiit.Exceptions.APIValidationException;
+import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.User.UserType;
-import sk.stu.fiit.parsers.Responses.IResponseParser;
-import sk.stu.fiit.parsers.Responses.XMLResponseParser;
+import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
+import sk.stu.fiit.parsers.Responses.V2.SearchResponses.SearchResponse;
 
 /**
  * FXML Controller class
@@ -77,16 +79,24 @@ public class SearchController implements Initializable {
         HttpGet request = new HttpGet("http://localhost:8080/api/v1/search/?q=" + tfDestination.getText() + "&pageNumber=0" + "&pageSize=5");
         request.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
 
-        IResponseParser responseParser = new XMLResponseParser();
-
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(request)) {
 
-            Singleton.getInstance().setTours(responseParser.parseSearchData(response).getTours());
+            SearchResponse searchResponse = (SearchResponse) ResponseFactory.getFactory(
+                    ResponseFactory.ResponseFactoryType.SEACH_RESPONSE).parse(
+                            response);
+            
+            Singleton.getInstance().setTours(searchResponse.getTours());
 
             ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Tours.fxml");
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (AuthTokenExpiredException ex) {
+            Logger.getLogger(SearchController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (APIValidationException ex) {
+            Logger.getLogger(SearchController.class.getName()).
+                    log(Level.SEVERE, null, ex);
         }
     }
 

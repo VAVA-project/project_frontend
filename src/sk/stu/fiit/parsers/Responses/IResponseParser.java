@@ -6,8 +6,6 @@
 package sk.stu.fiit.parsers.Responses;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
-import sk.stu.fiit.parsers.Responses.V2.EditResponses.EditResponse;
-import sk.stu.fiit.parsers.Responses.V2.SearchResponses.SearchResponse;
 import sk.stu.fiit.parsers.Responses.V2.UserResponses.UserResponse;
 import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponse;
 
@@ -17,8 +15,6 @@ import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponse;
  */
 public interface IResponseParser {
 
-    public EditResponse parseEditData(CloseableHttpResponse response);
-    public SearchResponse parseSearchData(CloseableHttpResponse response);
     public UserResponse parseUserData(CloseableHttpResponse response);
     public UserToursResponse parseUserTours(CloseableHttpResponse response);
     

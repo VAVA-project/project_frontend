@@ -24,8 +24,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import sk.stu.fiit.Main.Tour;
 import sk.stu.fiit.Main.TourGuide;
-import sk.stu.fiit.parsers.Responses.V2.EditResponses.EditResponse;
-import sk.stu.fiit.parsers.Responses.V2.SearchResponses.SearchResponse;
 import sk.stu.fiit.parsers.Responses.V2.UserResponses.UserResponse;
 import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponse;
 
@@ -34,90 +32,6 @@ import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponse;
  * @author Adam Bublavý
  */
 public class XMLResponseParser implements IResponseParser {
-
-    @Override
-    public EditResponse parseEditData(CloseableHttpResponse response) {
-        try {
-            Document document = DocumentBuilderFactory.newInstance().
-                    newDocumentBuilder().
-                    parse(response.getEntity().getContent());
-
-            XPath xPath = XPathFactory.newInstance().newXPath();
-
-            String firstName = (String) xPath.compile("//firstName/text()").
-                    evaluate(document, XPathConstants.STRING);
-            String lastName = (String) xPath.compile("//lastName/text()").
-                    evaluate(document, XPathConstants.STRING);
-            String dateOfBirth = (String) xPath.compile("//dateOfBirth/text()").
-                    evaluate(document, XPathConstants.STRING);
-
-            return new EditResponse(firstName, lastName, dateOfBirth);
-
-        } catch (IOException | UnsupportedOperationException | SAXException |
-                ParserConfigurationException | XPathExpressionException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    @Override
-    public SearchResponse parseSearchData(CloseableHttpResponse response) {
-        try {
-
-            SearchResponse searchResponse = new SearchResponse();
-
-            Document document = DocumentBuilderFactory.newInstance().
-                    newDocumentBuilder().
-                    parse(response.getEntity().getContent());
-
-            XPath xPath = XPathFactory.newInstance().newXPath();
-
-            NodeList contentList = (NodeList) xPath.compile(
-                    "//PageImpl/content/content").evaluate(document,
-                            XPathConstants.NODESET);
-            System.out.println("contentList = " + contentList.getLength());
-
-//            String numberOfEle = (String) xPath.compile("//PageImpl/numberOfElements/text()").
-//                    evaluate(document, XPathConstants.STRING);
-            for (int i = 0; i < contentList.getLength(); i++) {
-
-                Node node = contentList.item(i);
-                Element element = (Element) node;
-
-                String id = element.getElementsByTagName("id").item(0).
-                        getTextContent();
-                String creatorId = element.getElementsByTagName("creatorId").
-                        item(0).getTextContent();
-                String startPlace = element.getElementsByTagName("startPlace").
-                        item(0).getTextContent();
-                String destinationPlace = element.getElementsByTagName(
-                        "destinationPlace").item(0).getTextContent();
-                String description = element.getElementsByTagName("description").
-                        item(0).getTextContent();
-                String pricePerPerson = element.getElementsByTagName(
-                        "pricePerPerson").item(0).getTextContent();
-                String createdAt = element.getElementsByTagName("createdAt").
-                        item(0).getTextContent();
-                double averageRating = Double.parseDouble(element.
-                        getElementsByTagName(
-                                "averageRating").item(0).getTextContent());
-
-                searchResponse.addTour(new Tour(id, creatorId, startPlace,
-                        destinationPlace, description, pricePerPerson, createdAt,
-                        averageRating));
-
-            }
-
-            return searchResponse;
-
-        } catch (IOException | UnsupportedOperationException | SAXException |
-                ParserConfigurationException | XPathExpressionException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
 
     @Override
     public UserResponse parseUserData(CloseableHttpResponse response) {
