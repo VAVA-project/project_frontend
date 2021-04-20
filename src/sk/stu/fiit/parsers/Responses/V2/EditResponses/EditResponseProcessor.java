@@ -2,7 +2,7 @@
  *  VAVA Project
  * 
  */
-package sk.stu.fiit.parsers.Responses.V2.LoginResponses;
+package sk.stu.fiit.parsers.Responses.V2.EditResponses;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -21,8 +21,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
-import sk.stu.fiit.User.User;
-import sk.stu.fiit.User.UserType;
+import sk.stu.fiit.parsers.Responses.V2.LoginResponses.LoginResponseProcessor;
 import sk.stu.fiit.parsers.Responses.V2.RegisterResponses.RegisterResponseProcessor;
 import sk.stu.fiit.parsers.Responses.V2.Response;
 import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
@@ -31,17 +30,18 @@ import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
  *
  * @author Adam Bublavý
  */
-public class LoginResponseProcessor extends XMLProcessor {
-    
-    private static final List<String> possibleValidationErrors = Arrays.asList(
-            "errors", "email", "password");
-    
+public class EditResponseProcessor extends XMLProcessor {
+
+    private static final List<String> possibleValidationErrors
+            = Arrays.asList("errors", "password", "firstName", "lastName",
+                    "dateOfBirth", "photo");
+
     @Override
     public Response processResponse(CloseableHttpResponse response) throws
             AuthTokenExpiredException, APIValidationException {
-        
+
         Document document = null;
-        
+
         try {
             document = DocumentBuilderFactory.newInstance().
                     newDocumentBuilder().
@@ -51,9 +51,9 @@ public class LoginResponseProcessor extends XMLProcessor {
             Logger.getLogger(RegisterResponseProcessor.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
-        
+
         int statusCode = response.getStatusLine().getStatusCode();
-        
+
         switch (statusCode) {
             case HttpStatus.SC_OK: {
                 return this.parseOK(document);
@@ -67,35 +67,27 @@ public class LoginResponseProcessor extends XMLProcessor {
                 throw new AuthTokenExpiredException();
             }
         }
-        
+
         return null;
     }
-    
-    private LoginResponse parseOK(Document document) {
+
+    private EditResponse parseOK(Document document) {
         try {
             XPath xPath = XPathFactory.newInstance().newXPath();
-            
-            String token = (String) xPath.compile("//jwtToken/text()").evaluate(
-                    document,
-                    XPathConstants.STRING);
-            String type = (String) xPath.compile("//user/type/text()").evaluate(
-                    document, XPathConstants.STRING);
-            String email = (String) xPath.compile("//user/email/text()").
+
+            String firstName = (String) xPath.compile("//firstName/text()").
                     evaluate(document, XPathConstants.STRING);
-            String firstName = (String) xPath.compile("//user/firstName/text()").
+            String lastName = (String) xPath.compile("//lastName/text()").
                     evaluate(document, XPathConstants.STRING);
-            String lastName = (String) xPath.compile("//user/lastName/text()").
+            String dateOfBirth = (String) xPath.compile("//dateOfBirth/text()").
                     evaluate(document, XPathConstants.STRING);
-            String photo = (String) xPath.compile("//user/photo/text()").
-                    evaluate(document, XPathConstants.STRING);
-            
-            return new LoginResponse(token, new User(UserType.valueOf(
-                    type), email, firstName, lastName, photo));
+
+            return new EditResponse(firstName, lastName, dateOfBirth);
         } catch (UnsupportedOperationException | XPathExpressionException ex) {
             Logger.getLogger(LoginResponseProcessor.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
         return null;
     }
-    
+
 }

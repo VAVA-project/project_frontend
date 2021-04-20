@@ -2,13 +2,15 @@
  *  VAVA Project
  * 
  */
-package sk.stu.fiit.parsers.Responses;
+package sk.stu.fiit.parsers.Responses.V2.EditResponses;
+
+import sk.stu.fiit.parsers.Responses.V2.Response;
 
 /**
  *
  * @author adamf
  */
-public class EditResponse {
+public class EditResponse extends Response {
     
     private String firstName;
     private String lastName;

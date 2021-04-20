@@ -31,12 +31,9 @@ import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
  */
 public class RegisterResponseProcessor extends XMLProcessor {
 
-    private static List<String> possibleValidationErrors;
-
-    public RegisterResponseProcessor() {
-        possibleValidationErrors = Arrays.asList("email", "password", "type",
-                "firstName", "lastName", "dateOfBirth", "errors");
-    }
+    private static final List<String> possibleValidationErrors = Arrays.
+            asList("email", "password", "type","firstName", "lastName", 
+                    "dateOfBirth", "errors");
 
     @Override
     public Response processResponse(CloseableHttpResponse response) throws

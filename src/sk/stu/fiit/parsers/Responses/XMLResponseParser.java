@@ -5,6 +5,7 @@
  */
 package sk.stu.fiit.parsers.Responses;
 
+import sk.stu.fiit.parsers.Responses.V2.EditResponses.EditResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

@@ -24,7 +24,7 @@ import org.apache.http.impl.client.HttpClients;
 import sk.stu.fiit.User.UserType;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.EditRequest;
-import sk.stu.fiit.parsers.Responses.EditResponse;
+import sk.stu.fiit.parsers.Responses.V2.EditResponses.EditResponse;
 import sk.stu.fiit.parsers.Responses.IResponseParser;
 import sk.stu.fiit.parsers.Responses.XMLResponseParser;
 
