@@ -21,12 +21,13 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import sk.stu.fiit.Exceptions.APIValidationException;
+import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.User.UserType;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.EditRequest;
 import sk.stu.fiit.parsers.Responses.V2.EditResponses.EditResponse;
-import sk.stu.fiit.parsers.Responses.IResponseParser;
-import sk.stu.fiit.parsers.Responses.XMLResponseParser;
+import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
 
 /**
  * FXML Controller class
@@ -85,12 +86,12 @@ public class EditAccountController implements Initializable {
         
         HttpPut httpPut = (HttpPut) editRequest.getRequest();
         
-        IResponseParser responseParser = new XMLResponseParser();
-        
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(httpPut)) {
             
-            EditResponse editResponse = responseParser.parseEditData(response);
+            EditResponse editResponse = (EditResponse) ResponseFactory.getFactory(
+                    ResponseFactory.ResponseFactoryType.EDIT_RESPONSE).parse(
+                            response);
             
             Singleton.getInstance().getUser().setFirstName(editResponse.getFirstName());
             Singleton.getInstance().getUser().setLastName(editResponse.getLastName());
@@ -107,6 +108,12 @@ public class EditAccountController implements Initializable {
           
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (AuthTokenExpiredException ex) {
+            Logger.getLogger(EditAccountController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (APIValidationException ex) {
+            Logger.getLogger(EditAccountController.class.getName()).
+                    log(Level.SEVERE, null, ex);
         }
     }
     

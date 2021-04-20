@@ -18,10 +18,8 @@ import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
-import sk.stu.fiit.parsers.Responses.IResponseParser;
 import sk.stu.fiit.parsers.Responses.V2.LoginResponses.LoginResponse;
 import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
-import sk.stu.fiit.parsers.Responses.XMLResponseParser;
 
 /**
  *
@@ -65,8 +63,6 @@ public class SigninController {
         loginRequest.accept(new XMLRequestParser());
         
         HttpPost httpPost = (HttpPost) loginRequest.getRequest();
-
-        IResponseParser responseParser = new XMLResponseParser();
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(httpPost)) {
