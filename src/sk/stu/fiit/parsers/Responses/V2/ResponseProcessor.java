@@ -15,6 +15,6 @@ import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
  */
 public interface ResponseProcessor {
     
-    public Response processXMLResponse(CloseableHttpResponse response) throws AuthTokenExpiredException, APIValidationException;
+    public Response processResponse(CloseableHttpResponse response) throws AuthTokenExpiredException, APIValidationException;
     
 }
