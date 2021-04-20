@@ -6,6 +6,8 @@
 package sk.stu.fiit.parsers.Responses;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -147,30 +149,37 @@ public class XMLResponseParser implements IResponseParser {
                     parse(response.getEntity().getContent());
 
             XPath xPath = XPathFactory.newInstance().newXPath();
-            
-            NodeList contentList = (NodeList) xPath.compile("//PageImpl/content/content").evaluate(document, XPathConstants.NODESET);
+
+            NodeList contentList = (NodeList) xPath.compile(
+                    "//PageImpl/content/content").evaluate(document,
+                            XPathConstants.NODESET);
             System.out.println("contentList = " + contentList.getLength());
-            
+
 //            String numberOfEle = (String) xPath.compile("//PageImpl/numberOfElements/text()").
 //                    evaluate(document, XPathConstants.STRING);
-
-            
-
             for (int i = 0; i < contentList.getLength(); i++) {
-                
+
                 Node node = contentList.item(i);
                 Element element = (Element) node;
-                
-                String id = element.getElementsByTagName("id").item(0).getTextContent();
-                String creatorId = element.getElementsByTagName("creatorId").item(0).getTextContent();
-                String startPlace = element.getElementsByTagName("startPlace").item(0).getTextContent();
-                String destinationPlace = element.getElementsByTagName("destinationPlace").item(0).getTextContent();
-                String description = element.getElementsByTagName("description").item(0).getTextContent();
-                String pricePerPerson = element.getElementsByTagName("pricePerPerson").item(0).getTextContent();
-                String createdAt = element.getElementsByTagName("createdAt").item(0).getTextContent();
-                
-                searchResponse.addTour(new Tour(id, creatorId, startPlace, destinationPlace, description, pricePerPerson, createdAt));
-                
+
+                String id = element.getElementsByTagName("id").item(0).
+                        getTextContent();
+                String creatorId = element.getElementsByTagName("creatorId").
+                        item(0).getTextContent();
+                String startPlace = element.getElementsByTagName("startPlace").
+                        item(0).getTextContent();
+                String destinationPlace = element.getElementsByTagName(
+                        "destinationPlace").item(0).getTextContent();
+                String description = element.getElementsByTagName("description").
+                        item(0).getTextContent();
+                String pricePerPerson = element.getElementsByTagName(
+                        "pricePerPerson").item(0).getTextContent();
+                String createdAt = element.getElementsByTagName("createdAt").
+                        item(0).getTextContent();
+
+                searchResponse.addTour(new Tour(id, creatorId, startPlace,
+                        destinationPlace, description, pricePerPerson, createdAt));
+
             }
 
             return searchResponse;
@@ -212,7 +221,8 @@ public class XMLResponseParser implements IResponseParser {
             String photo = (String) xPath.compile("//photo/text()").
                     evaluate(document, XPathConstants.STRING);
 
-            return new UserResponse(new TourGuide(firstName, id, lastName, photo));
+            return new UserResponse(
+                    new TourGuide(firstName, id, lastName, photo));
 
         } catch (IOException ex) {
             Logger.getLogger(XMLResponseParser.class.getName()).
@@ -233,4 +243,54 @@ public class XMLResponseParser implements IResponseParser {
         return null;
     }
 
+    @Override
+    public UserToursResponse parseUserTours(CloseableHttpResponse response) {
+        try {
+            Document document = DocumentBuilderFactory.newInstance().
+                    newDocumentBuilder().
+                    parse(response.getEntity().getContent());
+
+            XPath xPath = XPathFactory.newInstance().newXPath();
+
+            NodeList contentList = (NodeList) xPath.compile(
+                    "//PageImpl/content/content").evaluate(document,
+                            XPathConstants.NODESET);
+
+            List<Tour> parsedTours = new ArrayList<>();
+            
+            for (int index = 0; index < contentList.getLength(); index++) {
+                Node contentNode = contentList.item(index);
+                Element contentElement = (Element) contentNode;
+
+                String id = contentElement.getElementsByTagName("id").item(0).
+                        getTextContent();
+                String creatorId = contentElement.getElementsByTagName(
+                        "creatorId").item(0).getTextContent();
+                String startPlace = contentElement.getElementsByTagName(
+                        "startPlace").item(0).getTextContent();
+                String destinationPlace = contentElement.getElementsByTagName(
+                        "destinationPlace").item(0).getTextContent();
+                String description = contentElement.getElementsByTagName(
+                        "description").item(0).getTextContent();
+                String pricePerPerson = contentElement.getElementsByTagName(
+                        "pricePerPerson").item(0).getTextContent();
+                String createdAt = contentElement.getElementsByTagName(
+                        "createdAt").item(0).getTextContent();
+
+                parsedTours.add(new Tour(id, creatorId, startPlace,
+                        destinationPlace, description, pricePerPerson, createdAt));
+            }
+            
+            String lastText = (String) xPath.compile("//PageImpl/last/text()").evaluate(
+                    document, XPathConstants.STRING);
+            
+            return new UserToursResponse(parsedTours, Boolean.valueOf(lastText));
+        } catch (IOException | UnsupportedOperationException | SAXException |
+                ParserConfigurationException | XPathExpressionException ex) {
+            Logger.getLogger(XMLResponseParser.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
 }

@@ -5,8 +5,6 @@
  */
 package sk.stu.fiit.parsers.Requests;
 
-import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
-import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.time.format.DateTimeFormatter;
@@ -26,6 +24,8 @@ import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import sk.stu.fiit.parsers.Requests.dto.EditRequest;
+import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
+import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
 
 /**
  *

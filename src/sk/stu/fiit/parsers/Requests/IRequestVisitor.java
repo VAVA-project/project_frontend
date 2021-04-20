@@ -5,10 +5,10 @@
  */
 package sk.stu.fiit.parsers.Requests;
 
-import sk.stu.fiit.parsers.Requests.dto.EditRequest;
-import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
-import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
 import org.apache.http.HttpEntity;
+import sk.stu.fiit.parsers.Requests.dto.EditRequest;
+import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
+import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
 
 /**
  *
