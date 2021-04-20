@@ -47,10 +47,8 @@ import sk.stu.fiit.User.UserType;
 import sk.stu.fiit.Validators.UserRegistrationValidator;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
-import sk.stu.fiit.parsers.Responses.IResponseParser;
 import sk.stu.fiit.parsers.Responses.V2.RegisterResponses.RegisterResponse;
 import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
-import sk.stu.fiit.parsers.Responses.XMLResponseParser;
 
 /**
  * FXML Controller class
@@ -365,13 +363,10 @@ public class SignupController {
             }
         }
         if (event.getSource().equals(btnRegister)) {
-            //imageViewPhoto.setImage(null);
             RegisterRequest registerRequest = new RegisterRequest(email, password, userType.name(), firstName, lastName, dateOfBirth, photo);
             registerRequest.accept(new XMLRequestParser());
             
             HttpPost httpPost = (HttpPost) registerRequest.getRequest();
-
-            IResponseParser responseParser = new XMLResponseParser();
 
             try (CloseableHttpClient httpClient = HttpClients.createDefault();
                     CloseableHttpResponse response = httpClient.execute(httpPost)) {

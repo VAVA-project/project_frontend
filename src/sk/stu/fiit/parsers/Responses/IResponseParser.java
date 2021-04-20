@@ -17,7 +17,6 @@ import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponse;
  */
 public interface IResponseParser {
 
-    public LoginResponse parseLoginData(CloseableHttpResponse response);
     public EditResponse parseEditData(CloseableHttpResponse response);
     public SearchResponse parseSearchData(CloseableHttpResponse response);
     public UserResponse parseUserData(CloseableHttpResponse response);

@@ -24,8 +24,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import sk.stu.fiit.Main.Tour;
 import sk.stu.fiit.Main.TourGuide;
-import sk.stu.fiit.User.User;
-import sk.stu.fiit.User.UserType;
 import sk.stu.fiit.parsers.Responses.V2.EditResponses.EditResponse;
 import sk.stu.fiit.parsers.Responses.V2.SearchResponses.SearchResponse;
 import sk.stu.fiit.parsers.Responses.V2.UserResponses.UserResponse;
@@ -36,38 +34,6 @@ import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponse;
  * @author Adam Bublavý
  */
 public class XMLResponseParser implements IResponseParser {
-
-    @Override
-    public LoginResponse parseLoginData(CloseableHttpResponse response) {
-        try {
-            Document document = DocumentBuilderFactory.newInstance().
-                    newDocumentBuilder().
-                    parse(response.getEntity().getContent());
-
-            XPath xPath = XPathFactory.newInstance().newXPath();
-
-            String token = (String) xPath.compile("//jwtToken/text()").evaluate(
-                    document, XPathConstants.STRING);
-            String type = (String) xPath.compile("//user/type/text()").evaluate(
-                    document, XPathConstants.STRING);
-            String email = (String) xPath.compile("//user/email/text()").
-                    evaluate(document, XPathConstants.STRING);
-            String firstName = (String) xPath.compile("//user/firstName/text()").
-                    evaluate(document, XPathConstants.STRING);
-            String lastName = (String) xPath.compile("//user/lastName/text()").
-                    evaluate(document, XPathConstants.STRING);
-            String photo = (String) xPath.compile("//user/photo/text()").
-                    evaluate(document, XPathConstants.STRING);
-
-            return new LoginResponse(token, new User(UserType.valueOf(
-                    type), email, firstName, lastName, photo));
-        } catch (IOException | UnsupportedOperationException | SAXException |
-                ParserConfigurationException | XPathExpressionException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
 
     @Override
     public EditResponse parseEditData(CloseableHttpResponse response) {
