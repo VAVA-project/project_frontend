@@ -30,9 +30,10 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import sk.stu.fiit.parsers.Responses.IResponseParser;
+import sk.stu.fiit.Exceptions.APIValidationException;
+import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
+import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponse;
-import sk.stu.fiit.parsers.Responses.XMLResponseParser;
 
 /**
  * FXML Controller class
@@ -131,15 +132,20 @@ public class ProfileGuideController implements Initializable {
     private UserToursResponse fetchUserTours(int pageNumber, int pageSize) {
         HttpGet getRequest = this.constructPostMessage(pageNumber, pageSize);
 
-        IResponseParser parser = new XMLResponseParser();
-
         try ( CloseableHttpClient httpClient = HttpClients.createDefault();
                  CloseableHttpResponse response = httpClient.execute(getRequest)) {
 
-            return parser.parseUserTours(response);
+            return (UserToursResponse) ResponseFactory.getFactory(
+                    ResponseFactory.ResponseFactoryType.USER_TOURS_RESPONSE).parse(response);
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE,
                     null, ex);
+        } catch (AuthTokenExpiredException ex) {
+            Logger.getLogger(ProfileGuideController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (APIValidationException ex) {
+            Logger.getLogger(ProfileGuideController.class.getName()).
+                    log(Level.SEVERE, null, ex);
         }
         return null;
     }

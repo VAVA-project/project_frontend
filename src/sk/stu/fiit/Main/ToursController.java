@@ -263,7 +263,7 @@ public class ToursController implements Initializable {
     }
 
     private void getUserRequest(String creatorId, Tour tour) {
-
+        
         HttpGet request = new HttpGet("http://localhost:8080/api/v1/users/" + creatorId + "/");
         request.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
         request.setHeader("Content-Type", "application/xml;charset=UTF-8");
