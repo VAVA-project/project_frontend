@@ -16,22 +16,23 @@ import sk.stu.fiit.parsers.Responses.V2.Response;
  * @author Adam Bublavý
  */
 public class RegisterResponseParser {
-    
+
     private RegisterResponseParser() {
     }
-    
+
     public static RegisterResponseParser getInstance() {
         return new RegisterResponseParser();
     }
-    
-    public Response parse(CloseableHttpResponse response) throws AuthTokenExpiredException, APIValidationException {
+
+    public Response parse(CloseableHttpResponse response) throws
+            AuthTokenExpiredException, APIValidationException {
         Header header = response.getFirstHeader("Content-Type");
-        
-        if(header.getValue().equals("application/xml;charset=UTF-8")) {
+
+        if (header.getValue().equals("application/xml;charset=UTF-8")) {
             return new RegisterResponseProcessor().processResponse(response);
         }
-        
+
         return null;
     }
-    
+
 }
