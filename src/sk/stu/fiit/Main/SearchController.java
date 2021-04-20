@@ -13,6 +13,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
@@ -30,7 +33,8 @@ import sk.stu.fiit.parsers.Responses.XMLResponseParser;
  * @author adamf
  */
 public class SearchController implements Initializable {
-
+    
+    
     @FXML
     private Button btnProfile;
     @FXML
@@ -61,18 +65,18 @@ public class SearchController implements Initializable {
         }
         if (event.getSource().equals(btnProfile)) {
             if (Singleton.getInstance().getUser().getUserType() == UserType.NORMAL_USER) {
-                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileCustomer.fxml");
+                ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/ProfileCustomer.fxml");
             } else {
-                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileGuide.fxml");
+                ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/ProfileGuide.fxml");
             }
         }
         if (event.getSource().equals(btnSearch)) {
-            searchToursForDestination(event);
+            searchToursForDestination(event, InputEventType.MOUSEEVENT);
         }
 
     }
 
-    private void searchToursForDestination(MouseEvent event) {
+    private void searchToursForDestination(InputEvent event, InputEventType type) {
         // Pre HttpGet nie je potrebne konstruovat Entity (XML telo request-u)
         HttpGet request = new HttpGet("http://localhost:8080/api/v1/search/?q=" + tfDestination.getText() + "&pageNumber=0" + "&pageSize=5");
         request.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
@@ -81,12 +85,29 @@ public class SearchController implements Initializable {
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(request)) {
-
+            
+            // Ulozenie si prave nacitanych tur, pre ich zobrazenie
             Singleton.getInstance().setTours(responseParser.parseSearchData(response).getTours());
-
-            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Tours.fxml");
+            Singleton.getInstance().setActualDestination(tfDestination.getText()); 
+            
+            Singleton.getInstance().getAllPages().entrySet().forEach(entry -> {
+                System.out.println(entry.getKey() + " " + entry.getValue().get(0).getDestinationPlace());
+            });
+            
+            if (type.equals(InputEventType.MOUSEEVENT)) {
+                ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/Tours.fxml");
+            } else {
+                ScreenSwitcher.getScreenSwitcher().switchToScreen((KeyEvent) event, "Views/Tours.fxml");
+            }
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void handleEnterKey(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            searchToursForDestination(event, InputEventType.KEYEVENT);
         }
     }
 

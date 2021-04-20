@@ -55,7 +55,7 @@ public class SigninController {
             signIn(event);
         }
         if (event.getSource().equals(btnSignup)) {
-            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Signup.fxml");
+            ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/Signup.fxml");
         }
     }
 
@@ -81,7 +81,7 @@ public class SigninController {
             
             System.out.println("token = " + Singleton.getInstance().getJwtToken());
             
-            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Search.fxml");
+            ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/Search.fxml");
             
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);

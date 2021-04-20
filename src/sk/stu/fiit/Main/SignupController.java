@@ -377,7 +377,7 @@ public class SignupController {
                     CloseableHttpResponse response = httpClient.execute(httpPost)) {
                 Singleton.getInstance().setJwtToken(responseParser.parseRegisterData(response).getJwtToken());
                 Singleton.getInstance().setUser(new User(userType, email, firstName, lastName, photo));
-                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Welcome.fxml");
+                ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/Welcome.fxml");
                 
                 System.out.println("\ntoken:" + Singleton.getInstance().getJwtToken());
                 System.out.println("\nfirstName:" + Singleton.getInstance().getUser().getFirstName());

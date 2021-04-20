@@ -34,7 +34,7 @@ public class WelcomeController {
             actual_stage.setIconified(true);
         }
         if (event.getSource().equals(btnSearch)) {
-            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Search.fxml");
+            ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/Search.fxml");
         }
     }
 

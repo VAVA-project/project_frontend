@@ -58,10 +58,10 @@ public class ProfileGuideController implements Initializable {
             actual_stage.setIconified(true);
         }
         if (event.getSource().equals(btnBack)) {
-            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Search.fxml");
+            ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/Search.fxml");
         }
         if (event.getSource().equals(btnEditInformations)) {
-            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/EditAccount.fxml");
+            ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/EditAccount.fxml");
         }
     }
 

@@ -4,28 +4,27 @@
  */
 package sk.stu.fiit.Main;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -33,7 +32,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import sk.stu.fiit.parsers.Responses.IResponseParser;
 import sk.stu.fiit.parsers.Responses.XMLResponseParser;
-import sk.stu.fiit.Main.Tour;
 
 /**
  * FXML Controller class
@@ -57,84 +55,22 @@ public class ToursController implements Initializable {
     @FXML
     private Circle btnExit;
     @FXML
-    private HBox tour1;
-    @FXML
-    private Label lblName1;
-    @FXML
-    private Label lblDestination1;
-    @FXML
-    private Label lblPrice1;
-    @FXML
-    private Label lblRating1;
-    @FXML
-    private Button btnInterested1;
-    @FXML
-    private ImageView photo1;
-    @FXML
-    private ImageView photo2;
-    @FXML
-    private Label lblRating2;
-    @FXML
-    private Label lblPrice2;
-    @FXML
-    private Label lblName2;
-    @FXML
-    private Label lblDestination2;
-    @FXML
-    private Button btnInterested2;
-    @FXML
-    private ImageView photo3;
-    @FXML
-    private Label lblRating3;
-    @FXML
-    private Label lblPrice3;
-    @FXML
-    private Label lblName3;
-    @FXML
-    private Label lblDestination3;
-    @FXML
-    private Button btnInterested3;
-    @FXML
-    private ImageView photo4;
-    @FXML
-    private Label lblRating4;
-    @FXML
-    private Label lblPrice4;
-    @FXML
-    private Label lblName4;
-    @FXML
-    private Label lblDestination4;
-    @FXML
-    private Button btnInterested4;
-    @FXML
-    private ImageView photo5;
-    @FXML
-    private Label lblRating5;
-    @FXML
-    private Label lblPrice5;
-    @FXML
-    private Label lblName5;
-    @FXML
-    private Label lblDestination5;
-    @FXML
-    private Button btnInterested5;
-    @FXML
     private VBox vbTours;
     @FXML
-    private HBox tour2;
+    private Label lblPageNumber;
     @FXML
-    private HBox tour3;
+    private Pane paneMain;
     @FXML
-    private HBox tour4;
+    private Button btnSearch;
     @FXML
-    private HBox tour5;
+    private TextField tfDestination;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initializeTours();
+        initializeTours(true);
     }
 
     @FXML
@@ -147,101 +83,65 @@ public class ToursController implements Initializable {
             actual_stage.setIconified(true);
         }
         if (event.getSource().equals(btnBack)) {
-            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Search.fxml");
+            Singleton.getInstance().setLastPageNumber(-1);
+            Singleton.getInstance().getTours().clear();
+            Singleton.getInstance().getTourGuides().clear();
+            Singleton.getInstance().getAllPages().clear();
+            ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/Search.fxml");
         }
         if (event.getSource().equals(btnNext)) {
             //tours.getChildren().remove(tour5);
         }
     }
 
-    @FXML
-    private void handleBtnInterested1(MouseEvent event) {
-    }
-
-    @FXML
-    private void handleBtnInterested2(MouseEvent event) {
-    }
-
-    @FXML
-    private void handleBtnInterested3(MouseEvent event) {
-    }
-
-    @FXML
-    private void handleBtnInterested4(MouseEvent event) {
-    }
-
-    @FXML
-    private void handleBtnInterested5(MouseEvent event) {
-    }
-
-    private void initializeTours() {
-        setTourGuidesForTours();
-        getHboxesForScreen();   // V toursOnScreen mam len tie Hboxi, ktore maju by naplnene udajmi tur
-        getGUITourElements();
-
-        vbTours.getChildren().addAll(toursOnScreen);
-
-        // Pokracovat s vykreslovanim tur na obrazovku, asi bude dobre
-        // spravit pre to samostatny objekt
-    }
-
-    private void getHboxesForScreen() {
+    private void initializeTours(boolean setTourGuides) {
+//        if (Singleton.getInstance().getTours().isEmpty()) {
+//            return;
+//        }
         vbTours.getChildren().clear();
+        initializeButtons();
 
-        List<HBox> toursAll = new ArrayList<>();
-        toursAll.add(tour1);
-        toursAll.add(tour2);
-        toursAll.add(tour3);
-        toursAll.add(tour4);
-        toursAll.add(tour5);
+        // Nastavenie cisla stranky
+        lblPageNumber.setText(String.valueOf(Singleton.getInstance().getActualPageNumber()));
 
-        toursOnScreen = new ArrayList<>();
-
-        int numberOfTours = Singleton.getInstance().getTours().size();  // 3
-
-        for (int i = 0; i < numberOfTours; i++) {
-            toursOnScreen.add(toursAll.get(i));
+        // Nastavenie fotiek a mien sprievodcov tur pre tury, ak este neboli nastavene
+        if (setTourGuides) {
+            setTourGuidesForTours();
         }
-        toursAll.clear();
+
+        // Ak takato prave nacitana stranka tur uz bola nacitana, tak sa nevlozi do
+        // HashMapy vsetkych stranok
+        if (!Singleton.getInstance().getAllPages().containsKey(Singleton.getInstance().getActualPageNumber())) {
+            Singleton.getInstance().insertPageIntoAllPages();
+        }
+
+        // Vyber z HashMapy vsetkych stranok stranku, ktora ma byt prave teraz zobrazena
+        // a vykresli ju na obrazovku. Respektive zober vsetky tury jednej stranky
+        // a vsetky ich vykresli na obrazovku
+        Singleton.getInstance().getAllPages().get(Singleton.getInstance().getActualPageNumber()).forEach(tour -> {
+            try {
+                Node tourOfferNode = this.loadTourOffer(tour);
+                this.vbTours.getChildren().add(tourOfferNode);
+            } catch (Exception e) {
+                Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, e);
+            }
+        });
     }
 
-    private void getGUITourElements() {
-        guiTourElements = new ArrayList<>();
-        guiTourElements.add(new GUITourElements(photo1, lblName1, lblDestination1, lblRating1, lblPrice1));
-        guiTourElements.add(new GUITourElements(photo2, lblName2, lblDestination2, lblRating2, lblPrice2));
-        guiTourElements.add(new GUITourElements(photo3, lblName3, lblDestination3, lblRating3, lblPrice3));
-        guiTourElements.add(new GUITourElements(photo4, lblName4, lblDestination4, lblRating4, lblPrice4));
-        guiTourElements.add(new GUITourElements(photo5, lblName5, lblDestination5, lblRating5, lblPrice5));
-
-        int numberOfTours = Singleton.getInstance().getTours().size();
-
-        for (int i = 0; i < numberOfTours; i++) {
-            Tour tour = Singleton.getInstance().getTours().get(i);
-            GUITourElements guiTourElement = guiTourElements.get(i);
-
-            String photo =  tour.getGuidePhoto();
-            byte[] byteArray = Base64.getDecoder().decode(photo.replaceAll("\n", ""));
-            InputStream inputStream = new ByteArrayInputStream(byteArray);
-            Image image = new Image(inputStream);
-            guiTourElement.photo.setImage(image);
-            Rectangle clip = new Rectangle();
-            clip.setWidth(130.0f);
-            clip.setHeight(130.0f);
-            clip.setArcWidth(30);
-            clip.setArcHeight(30);
-            guiTourElement.photo.setClip(clip);
-            
-            guiTourElement.lblName.setText(tour.getGuideName());
-            guiTourElement.lblDestination.setText(tour.getDestinationPlace());
-            guiTourElement.lblRating.setText("5");
-            guiTourElement.lblPrice.setText(tour.getPricePerPerson());
+    // Vytvorenie a inicializovanie fxml elementu jednej tury
+    private Node loadTourOffer(Tour tour) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/TourOffer.fxml"));
+        loader.setControllerFactory(c -> new TourOfferController(tour));
+        try {
+            return loader.load();
+        } catch (IOException ex) {
+            Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        return null;
     }
 
     // Metoda pre nastavenie fotiek a mien sprievodcov pre nacitane tury z DB
     private void setTourGuidesForTours() {
-
         for (Tour tour : Singleton.getInstance().getTours()) {
             boolean setGuide = true;
             if (Singleton.getInstance().getTourGuides().size() > 0) {
@@ -278,6 +178,120 @@ public class ToursController implements Initializable {
             tour.setGuideName(tourGuide.getFirstName() + " " + tourGuide.getLastName());
             tour.setGuidePhoto(tourGuide.getPhoto());
 
+        } catch (IOException ex) {
+            Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void handleNextPageButton(MouseEvent event) {
+
+        // Ak uz dana stranka je nacitana, tak ju znova nenacitavaj, ale zober ju z
+        // HashMapy uz nacitanych stranok
+        if (Singleton.getInstance().getAllPages().containsKey(Singleton.getInstance().getActualPageNumber() + 1)) {
+
+            // Nastavenie aktualnej stranky v Singletone zabezpeci nacitanie tej spravnej
+            // stranky tur z HashMapy stranok
+            Singleton.getInstance().setActualPageNumber(Singleton.getInstance().getActualPageNumber() + 1);
+
+            // Kedze dana stranka sa uz nachadza medzi nacitanimi strankami, tak
+            // nie je potrebne pre jej tury nastavovat fotky a mena sprievodcov
+            // jednotlivych tur, preto je argument setTourGuides nastaveny na false
+            initializeTours(false);
+        } else {
+            // pageNumber nemoze byt +1, pretoze uz sa zvysil pri nastavovani
+            // actualPageNumber pri parsovani response. Teda pageNumber
+            // uz ma pozadovanu hodnotu (o 1 vacsiu)
+            HttpGet request = new HttpGet("http://localhost:8080/api/v1/search/?q="
+                    + Singleton.getInstance().getActualDestination()
+                    + "&pageNumber=" + Singleton.getInstance().getActualPageNumber()
+                    + "&pageSize=5");
+            request.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
+
+            IResponseParser responseParser = new XMLResponseParser();
+
+            try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                    CloseableHttpResponse response = httpClient.execute(request)) {
+
+                // Ulozenie si prave nacitanych tur, pre ich zobrazenie
+                Singleton.getInstance().setTours(responseParser.parseSearchData(response).getTours());
+
+                // Vlozenie prave nacitanych tur (stranky tur) do HashMapy 
+                // vsetkych stranok tur
+                //Singleton.getInstance().insertPageIntoAllPages();
+                initializeTours(true);
+
+                Singleton.getInstance().getAllPages().entrySet().forEach(entry -> {
+                    System.out.println(entry.getKey() + " " + entry.getValue());
+                });
+            } catch (IOException ex) {
+                Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }
+
+    @FXML
+    private void handlePreviousPageButton(MouseEvent event) {
+        Singleton.getInstance().setActualPageNumber(Singleton.getInstance().getActualPageNumber() - 1);
+        ArrayList<Tour> pageFromAllPages = Singleton.getInstance().getAllPages().get(Singleton.getInstance().getActualPageNumber());
+        initializeTours(false);
+    }
+
+    private void initializeButtons() {
+        paneMain.getChildren().remove(btnPrevious);
+        paneMain.getChildren().remove(btnNext);
+
+        if (Singleton.getInstance().getActualPageNumber()
+                != Singleton.getInstance().getLastPageNumber()) {
+            paneMain.getChildren().add(btnNext);
+        }
+        if (Singleton.getInstance().getActualPageNumber() != 1) {
+            paneMain.getChildren().add(btnPrevious);
+        }
+    }
+
+    @FXML
+    private void handleSearchButton(MouseEvent event) {
+        searchToursForDestination();
+    }
+
+    @FXML
+    private void handleEnterKey(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            searchToursForDestination();
+        }
+    }
+
+    private void searchToursForDestination() {
+        Singleton.getInstance().setLastPageNumber(-1);
+        Singleton.getInstance().getTours().clear();
+        Singleton.getInstance().getTourGuides().clear();
+        Singleton.getInstance().getAllPages().clear();
+
+        HttpGet request = new HttpGet("http://localhost:8080/api/v1/search/?q=" + tfDestination.getText() + "&pageNumber=0" + "&pageSize=5");
+        request.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
+
+        IResponseParser responseParser = new XMLResponseParser();
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
+
+            // Ulozenie si prave nacitanych tur, pre ich zobrazenie
+            Singleton.getInstance().setTours(responseParser.parseSearchData(response).getTours());
+            Singleton.getInstance().setActualDestination(tfDestination.getText());
+
+            Singleton.getInstance().getAllPages().entrySet().forEach(entry -> {
+                System.out.println(entry.getKey() + " " + entry.getValue().get(0).getDestinationPlace());
+            });
+
+            initializeTours(true);
+            
+//            if (type.equals(InputEventType.MOUSEEVENT)) {
+//                ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/Tours.fxml");
+//            } else {
+//                ScreenSwitcher.getScreenSwitcher().switchToScreen((KeyEvent) event, "Views/Tours.fxml");
+//            }
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
         }
