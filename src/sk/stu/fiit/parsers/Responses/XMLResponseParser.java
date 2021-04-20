@@ -23,8 +23,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import sk.stu.fiit.Main.Tour;
-import sk.stu.fiit.Main.TourGuide;
-import sk.stu.fiit.parsers.Responses.V2.UserResponses.UserResponse;
 import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponse;
 
 /**
@@ -32,35 +30,6 @@ import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponse;
  * @author Adam Bublavý
  */
 public class XMLResponseParser implements IResponseParser {
-
-    @Override
-    public UserResponse parseUserData(CloseableHttpResponse response) {
-        try {
-            Document document = DocumentBuilderFactory.newInstance().
-                    newDocumentBuilder().
-                    parse(response.getEntity().getContent());
-
-            XPath xPath = XPathFactory.newInstance().newXPath();
-
-            String firstName = (String) xPath.compile("//firstName/text()").
-                    evaluate(document, XPathConstants.STRING);
-            String id = (String) xPath.compile("//id/text()").
-                    evaluate(document, XPathConstants.STRING);
-            String lastName = (String) xPath.compile("//lastName/text()").
-                    evaluate(document, XPathConstants.STRING);
-            String photo = (String) xPath.compile("//photo/text()").
-                    evaluate(document, XPathConstants.STRING);
-
-            return new UserResponse(
-                    new TourGuide(firstName, id, lastName, photo));
-
-        } catch (IOException | UnsupportedOperationException | SAXException |
-                ParserConfigurationException | XPathExpressionException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
 
     @Override
     public UserToursResponse parseUserTours(CloseableHttpResponse response) {
