@@ -31,7 +31,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import sk.stu.fiit.parsers.Responses.IResponseParser;
-import sk.stu.fiit.parsers.Responses.V2.UserToursResponse.UserToursResponse;
+import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponse;
 import sk.stu.fiit.parsers.Responses.XMLResponseParser;
 
 /**

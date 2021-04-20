@@ -5,10 +5,6 @@
  */
 package sk.stu.fiit.parsers.Responses;
 
-import sk.stu.fiit.parsers.Responses.V2.UserResponse.UserResponse;
-import sk.stu.fiit.parsers.Responses.V2.UserToursResponse.UserToursResponse;
-import sk.stu.fiit.parsers.Responses.V2.SearchResponses.SearchResponse;
-import sk.stu.fiit.parsers.Responses.V2.EditResponses.EditResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,37 +26,16 @@ import sk.stu.fiit.Main.Tour;
 import sk.stu.fiit.Main.TourGuide;
 import sk.stu.fiit.User.User;
 import sk.stu.fiit.User.UserType;
+import sk.stu.fiit.parsers.Responses.V2.EditResponses.EditResponse;
+import sk.stu.fiit.parsers.Responses.V2.SearchResponses.SearchResponse;
+import sk.stu.fiit.parsers.Responses.V2.UserResponses.UserResponse;
+import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponse;
 
 /**
  *
  * @author Adam Bublavý
  */
 public class XMLResponseParser implements IResponseParser {
-
-    @Override
-    public RegisterResponse parseRegisterData(CloseableHttpResponse response) {
-        try {
-            Document document = DocumentBuilderFactory.newInstance().
-                    newDocumentBuilder().
-                    parse(response.getEntity().getContent());
-
-            XPath xPath = XPathFactory.newInstance().newXPath();
-
-            String expression = "//jwtToken/text()";
-
-            String token = (String) xPath.compile(expression).evaluate(document,
-                    XPathConstants.STRING);
-
-            return new RegisterResponse(token);
-        } catch (ParserConfigurationException | IOException
-                | UnsupportedOperationException | SAXException ex) {
-        } catch (XPathExpressionException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        }
-
-        return null;
-    }
 
     @Override
     public LoginResponse parseLoginData(CloseableHttpResponse response) {

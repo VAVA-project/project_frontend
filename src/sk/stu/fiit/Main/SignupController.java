@@ -12,6 +12,8 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -38,12 +40,16 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import sk.stu.fiit.Exceptions.APIValidationException;
+import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.User.User;
 import sk.stu.fiit.User.UserType;
 import sk.stu.fiit.Validators.UserRegistrationValidator;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
 import sk.stu.fiit.parsers.Responses.IResponseParser;
+import sk.stu.fiit.parsers.Responses.V2.RegisterResponses.RegisterResponse;
+import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
 import sk.stu.fiit.parsers.Responses.XMLResponseParser;
 
 /**
@@ -369,8 +375,22 @@ public class SignupController {
 
             try (CloseableHttpClient httpClient = HttpClients.createDefault();
                     CloseableHttpResponse response = httpClient.execute(httpPost)) {
-                Singleton.getInstance().setJwtToken(responseParser.parseRegisterData(response).getJwtToken());
-                Singleton.getInstance().setUser(new User(userType, email, firstName, lastName, photo));
+                
+                try {
+                    RegisterResponse registerResponse = (RegisterResponse) ResponseFactory.getFactory(
+                            ResponseFactory.ResponseFactoryType.REGISTER_RESPONSE).parse(response);
+                    
+                    Singleton.getInstance().setJwtToken(registerResponse.getJwtToken());
+                    Singleton.getInstance().setUser(new User(userType, email, firstName, lastName, photo));
+                    
+                } catch (AuthTokenExpiredException ex) {
+                    Logger.getLogger(SignupController.class.getName()).
+                            log(Level.SEVERE, null, ex);
+                } catch (APIValidationException ex) {
+                    Logger.getLogger(SignupController.class.getName()).
+                            log(Level.SEVERE, null, ex);
+                }
+                
                 ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Welcome.fxml");
                 
                 System.out.println("\ntoken:" + Singleton.getInstance().getJwtToken());

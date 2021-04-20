@@ -2,7 +2,7 @@
  *  VAVA Project
  * 
  */
-package sk.stu.fiit.parsers.Responses.V2.UserToursResponse;
+package sk.stu.fiit.parsers.Responses.V2.UserToursResponses;
 
 import java.util.ArrayList;
 import java.util.Arrays;

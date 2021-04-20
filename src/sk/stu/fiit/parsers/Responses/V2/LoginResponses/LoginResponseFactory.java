@@ -8,21 +8,23 @@ import org.apache.http.Header;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
+import sk.stu.fiit.parsers.Responses.V2.AbstractResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.Response;
 
 /**
  *
  * @author Adam Bublavý
  */
-public class LoginResponseParser {
+public class LoginResponseFactory implements AbstractResponseFactory<Response> {
     
-    private LoginResponseParser() {
+    private LoginResponseFactory() {
     }
     
-    public static LoginResponseParser getInstance() {
-        return new LoginResponseParser();
+    public static LoginResponseFactory getInstance() {
+        return new LoginResponseFactory();
     }
     
+    @Override
     public Response parse(CloseableHttpResponse response) throws AuthTokenExpiredException, APIValidationException {
         Header header = response.getFirstHeader("Content-Type");
         

@@ -2,7 +2,7 @@
  *  VAVA Project
  * 
  */
-package sk.stu.fiit.parsers.Responses.V2.UserResponse;
+package sk.stu.fiit.parsers.Responses.V2.UserResponses;
 
 import java.util.Arrays;
 import java.util.List;

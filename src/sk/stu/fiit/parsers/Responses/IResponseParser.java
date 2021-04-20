@@ -5,11 +5,11 @@
  */
 package sk.stu.fiit.parsers.Responses;
 
-import sk.stu.fiit.parsers.Responses.V2.UserResponse.UserResponse;
-import sk.stu.fiit.parsers.Responses.V2.UserToursResponse.UserToursResponse;
-import sk.stu.fiit.parsers.Responses.V2.SearchResponses.SearchResponse;
-import sk.stu.fiit.parsers.Responses.V2.EditResponses.EditResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import sk.stu.fiit.parsers.Responses.V2.EditResponses.EditResponse;
+import sk.stu.fiit.parsers.Responses.V2.SearchResponses.SearchResponse;
+import sk.stu.fiit.parsers.Responses.V2.UserResponses.UserResponse;
+import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponse;
 
 /**
  *
@@ -17,7 +17,6 @@ import org.apache.http.client.methods.CloseableHttpResponse;
  */
 public interface IResponseParser {
 
-    public RegisterResponse parseRegisterData(CloseableHttpResponse response);
     public LoginResponse parseLoginData(CloseableHttpResponse response);
     public EditResponse parseEditData(CloseableHttpResponse response);
     public SearchResponse parseSearchData(CloseableHttpResponse response);
