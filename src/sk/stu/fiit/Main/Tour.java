@@ -19,8 +19,9 @@ public class Tour {
     private String description;
     private String pricePerPerson;
     private String createdAt;
+    private double averageRating;
 
-    public Tour(String id, String creatorId, String startPlace, String destinationPlace, String description, String pricePerPerson, String createdAt) {
+    public Tour(String id, String creatorId, String startPlace, String destinationPlace, String description, String pricePerPerson, String createdAt, double averageRating) {
         this.id = id;
         this.creatorId = creatorId;
         this.startPlace = startPlace;
@@ -28,6 +29,7 @@ public class Tour {
         this.description = description;
         this.pricePerPerson = pricePerPerson;
         this.createdAt = createdAt;
+        this.averageRating = averageRating;
     }
 
     public void setGuidePhoto(String guidePhoto) {
@@ -72,6 +74,10 @@ public class Tour {
 
     public String getCreatedAt() {
         return createdAt;
+    }
+
+    public double getAverageRating() {
+        return averageRating;
     }
 
 }

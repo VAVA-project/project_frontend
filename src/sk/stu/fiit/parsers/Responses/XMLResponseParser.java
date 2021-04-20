@@ -82,19 +82,8 @@ public class XMLResponseParser implements IResponseParser {
 
             return new LoginResponse(token, new User(UserType.valueOf(
                     type), email, firstName, lastName, photo));
-        } catch (IOException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (UnsupportedOperationException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (SAXException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (ParserConfigurationException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (XPathExpressionException ex) {
+        } catch (IOException | UnsupportedOperationException | SAXException |
+                ParserConfigurationException | XPathExpressionException ex) {
             Logger.getLogger(XMLResponseParser.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
@@ -119,19 +108,8 @@ public class XMLResponseParser implements IResponseParser {
 
             return new EditResponse(firstName, lastName, dateOfBirth);
 
-        } catch (IOException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (UnsupportedOperationException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (SAXException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (ParserConfigurationException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (XPathExpressionException ex) {
+        } catch (IOException | UnsupportedOperationException | SAXException |
+                ParserConfigurationException | XPathExpressionException ex) {
             Logger.getLogger(XMLResponseParser.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
@@ -176,27 +154,20 @@ public class XMLResponseParser implements IResponseParser {
                         "pricePerPerson").item(0).getTextContent();
                 String createdAt = element.getElementsByTagName("createdAt").
                         item(0).getTextContent();
+                double averageRating = Double.parseDouble(element.
+                        getElementsByTagName(
+                                "averageRating").item(0).getTextContent());
 
                 searchResponse.addTour(new Tour(id, creatorId, startPlace,
-                        destinationPlace, description, pricePerPerson, createdAt));
+                        destinationPlace, description, pricePerPerson, createdAt,
+                        averageRating));
 
             }
 
             return searchResponse;
 
-        } catch (IOException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (UnsupportedOperationException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (SAXException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (ParserConfigurationException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (XPathExpressionException ex) {
+        } catch (IOException | UnsupportedOperationException | SAXException |
+                ParserConfigurationException | XPathExpressionException ex) {
             Logger.getLogger(XMLResponseParser.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
@@ -224,19 +195,8 @@ public class XMLResponseParser implements IResponseParser {
             return new UserResponse(
                     new TourGuide(firstName, id, lastName, photo));
 
-        } catch (IOException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (UnsupportedOperationException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (SAXException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (ParserConfigurationException ex) {
-            Logger.getLogger(XMLResponseParser.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (XPathExpressionException ex) {
+        } catch (IOException | UnsupportedOperationException | SAXException |
+                ParserConfigurationException | XPathExpressionException ex) {
             Logger.getLogger(XMLResponseParser.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
@@ -257,7 +217,7 @@ public class XMLResponseParser implements IResponseParser {
                             XPathConstants.NODESET);
 
             List<Tour> parsedTours = new ArrayList<>();
-            
+
             for (int index = 0; index < contentList.getLength(); index++) {
                 Node contentNode = contentList.item(index);
                 Element contentElement = (Element) contentNode;
@@ -276,17 +236,21 @@ public class XMLResponseParser implements IResponseParser {
                         "pricePerPerson").item(0).getTextContent();
                 String createdAt = contentElement.getElementsByTagName(
                         "createdAt").item(0).getTextContent();
+                double averageRating = Double.parseDouble(contentElement.
+                        getElementsByTagName(
+                                "averageRating").item(0).getTextContent());
 
                 parsedTours.add(new Tour(id, creatorId, startPlace,
-                        destinationPlace, description, pricePerPerson, createdAt));
+                        destinationPlace, description, pricePerPerson, createdAt, averageRating));
             }
-            
-            String lastText = (String) xPath.compile("//PageImpl/last/text()").evaluate(
-                    document, XPathConstants.STRING);
-            
+
+            String lastText = (String) xPath.compile("//PageImpl/last/text()").
+                    evaluate(
+                            document, XPathConstants.STRING);
+
             return new UserToursResponse(parsedTours, Boolean.valueOf(lastText));
-        } catch (IOException | UnsupportedOperationException | SAXException |
-                ParserConfigurationException | XPathExpressionException ex) {
+        } catch (IOException | UnsupportedOperationException | SAXException
+                | ParserConfigurationException | XPathExpressionException ex) {
             Logger.getLogger(XMLResponseParser.class.getName()).
                     log(Level.SEVERE, null, ex);
         }

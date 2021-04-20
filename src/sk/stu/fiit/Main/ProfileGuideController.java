@@ -12,7 +12,9 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -56,7 +58,7 @@ public class ProfileGuideController implements Initializable {
     @FXML
     private Button btnEditInformations1;
     @FXML
-    private ListView<Tour> offersList;
+    private ListView<Node> offersList;
     
     private int pageNumber = 0;
     private int pageSize = 1;
@@ -172,13 +174,32 @@ public class ProfileGuideController implements Initializable {
             return;
         }
         
-        this.offersList.getItems().addAll(response.getTours());
+        // todo add offer
+        
+        response.getTours().forEach(tour -> {
+            try {
+                Node tourNode = this.loadGuideTourOfferItem(tour);
+                this.offersList.getItems().add(tourNode);
+            } catch (IOException ex) {
+                Logger.getLogger(ProfileGuideController.class.getName()).
+                        log(Level.SEVERE, null, ex);
+            }
+            
+        });
         
         this.pageNumber ++;
         
         if(response.isLast()) {
             loadMoreButton.setDisable(true);
         }
+    }
+    
+    private Node loadGuideTourOfferItem(Tour tour) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                "Views/GuideTourOfferItem.fxml"));
+        loader.setControllerFactory(c -> new GuideTourOfferItemController(tour));
+
+        return loader.load();
     }
 
 }
