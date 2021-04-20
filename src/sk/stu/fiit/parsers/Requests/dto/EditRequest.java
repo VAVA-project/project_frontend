@@ -5,14 +5,13 @@
 package sk.stu.fiit.parsers.Requests.dto;
 
 import java.time.LocalDate;
-import sk.stu.fiit.parsers.Requests.IRequest;
 import sk.stu.fiit.parsers.Requests.IRequestVisitor;
 
 /**
  *
  * @author adamf
  */
-public class EditRequest implements IRequest {
+public class EditRequest extends Request {
 
     private String firstName;
     private String lastName;

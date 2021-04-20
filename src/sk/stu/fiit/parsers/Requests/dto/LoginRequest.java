@@ -5,14 +5,13 @@
  */
 package sk.stu.fiit.parsers.Requests.dto;
 
-import sk.stu.fiit.parsers.Requests.IRequest;
 import sk.stu.fiit.parsers.Requests.IRequestVisitor;
 
 /**
  *
  * @author Adam Bublavý
  */
-public class LoginRequest implements IRequest {
+public class LoginRequest extends Request {
     
     private String email;
     private String password;

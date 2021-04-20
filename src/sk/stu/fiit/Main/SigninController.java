@@ -10,12 +10,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import sk.stu.fiit.parsers.Requests.IRequestVisitor;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
 import sk.stu.fiit.parsers.Responses.IResponseParser;
@@ -59,16 +57,11 @@ public class SigninController {
         }
     }
 
-    private void signIn(MouseEvent event) {
-        IRequestVisitor parser = new XMLRequestParser();
-
-        HttpPost httpPost = new HttpPost("http://localhost:8080/api/v1/login/");
-        httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
-        //httpPost.setHeader("Authorization", "Bearer jwttoken");
-
-        HttpEntity loginEntity = parser.constructLoginRequest(new LoginRequest(tfEmail.getText(), pfPassword.getText()));
-
-        httpPost.setEntity(loginEntity);
+    private void signIn(MouseEvent event) {       
+        LoginRequest loginRequest = new LoginRequest(tfEmail.getText(), pfPassword.getText());
+        loginRequest.accept(new XMLRequestParser());
+        
+        HttpPost httpPost = (HttpPost) loginRequest.getRequest();
 
         IResponseParser responseParser = new XMLResponseParser();
 

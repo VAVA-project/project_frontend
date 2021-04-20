@@ -5,7 +5,6 @@
  */
 package sk.stu.fiit.parsers.Requests;
 
-import org.apache.http.HttpEntity;
 import sk.stu.fiit.parsers.Requests.dto.EditRequest;
 import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
 import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
@@ -16,8 +15,8 @@ import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
  */
 public interface IRequestVisitor {
     
-    public HttpEntity constructRegisterRequest(RegisterRequest request);
-    public HttpEntity constructLoginRequest(LoginRequest request);
-    public HttpEntity constructEditRequest(EditRequest request);
+    public void constructRegisterRequest(RegisterRequest request);
+    public void constructLoginRequest(LoginRequest request);
+    public void constructEditRequest(EditRequest request);
     
 }

@@ -34,19 +34,17 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import sk.stu.fiit.User.User;
 import sk.stu.fiit.User.UserType;
-import sk.stu.fiit.parsers.Requests.IRequestVisitor;
+import sk.stu.fiit.Validators.UserRegistrationValidator;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
 import sk.stu.fiit.parsers.Responses.IResponseParser;
 import sk.stu.fiit.parsers.Responses.XMLResponseParser;
-import sk.stu.fiit.Validators.UserRegistrationValidator;
 
 /**
  * FXML Controller class
@@ -362,14 +360,10 @@ public class SignupController {
         }
         if (event.getSource().equals(btnRegister)) {
             //imageViewPhoto.setImage(null);
-
-            IRequestVisitor parser = new XMLRequestParser();
-            HttpPost httpPost = new HttpPost("http://localhost:8080/api/v1/register");
-            httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
-
-            HttpEntity registerEntity = parser.constructRegisterRequest(new RegisterRequest(email, password, userType.name(), firstName, lastName, dateOfBirth, photo));
-
-            httpPost.setEntity(registerEntity);
+            RegisterRequest registerRequest = new RegisterRequest(email, password, userType.name(), firstName, lastName, dateOfBirth, photo);
+            registerRequest.accept(new XMLRequestParser());
+            
+            HttpPost httpPost = (HttpPost) registerRequest.getRequest();
 
             IResponseParser responseParser = new XMLResponseParser();
 
