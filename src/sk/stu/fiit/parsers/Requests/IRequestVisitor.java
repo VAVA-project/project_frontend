@@ -5,6 +5,7 @@
  */
 package sk.stu.fiit.parsers.Requests;
 
+import sk.stu.fiit.parsers.Requests.dto.CreateTourDateRequest;
 import sk.stu.fiit.parsers.Requests.dto.CreateTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.DeleteTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditRequest;
@@ -30,5 +31,6 @@ public interface IRequestVisitor {
     public void constructCreateTourOfferRequest(CreateTourOfferRequest request);
     public void constructEditTourOfferRequest(EditTourOfferRequest request);
     public void constructDeleteTourOfferRequest(DeleteTourOfferRequest request);
+    public void constructCreateTourDateRequest(CreateTourDateRequest request);
     
 }

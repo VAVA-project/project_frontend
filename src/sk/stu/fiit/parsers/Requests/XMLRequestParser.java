@@ -34,6 +34,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import sk.stu.fiit.Main.ProfileGuideController;
 import sk.stu.fiit.Main.Singleton;
+import sk.stu.fiit.parsers.Requests.dto.CreateTourDateRequest;
 import sk.stu.fiit.parsers.Requests.dto.CreateTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.DeleteTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditRequest;
@@ -301,6 +302,29 @@ public class XMLRequestParser implements IRequestVisitor {
                 getInstance().getJwtToken());
 
         request.setRequest(deleteRequest);
+    }
+
+    @Override
+    public void constructCreateTourDateRequest(CreateTourDateRequest request) {
+        HttpPost httpPost = new HttpPost("http://localhost:8080/api/v1/tours/" + request.getTourOfferId() + "/dates/");
+        httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        httpPost.setHeader("Authorization", "Bearer " + Singleton.getInstance().
+                getJwtToken());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("startDate", request.getStartDate());
+        data.put("endDate", request.getEndDate());
+        data.put("numberOfTickets", request.getNumberOfTickets());
+
+        try {
+            httpPost.setEntity(new StringEntity(this.translateToXML(
+                    "request", data)));
+        } catch (ParserConfigurationException
+                | TransformerConfigurationException
+                | UnsupportedEncodingException ex) {
+        }
+
+        request.setRequest(httpPost);
     }
 
 }
