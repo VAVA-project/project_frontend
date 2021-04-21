@@ -36,6 +36,7 @@ import sk.stu.fiit.Main.ProfileGuideController;
 import sk.stu.fiit.Main.Singleton;
 import sk.stu.fiit.parsers.Requests.dto.CreateTourDateRequest;
 import sk.stu.fiit.parsers.Requests.dto.CreateTourOfferRequest;
+import sk.stu.fiit.parsers.Requests.dto.DeleteTourDateRequest;
 import sk.stu.fiit.parsers.Requests.dto.DeleteTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditTourOfferRequest;
@@ -325,6 +326,19 @@ public class XMLRequestParser implements IRequestVisitor {
         }
 
         request.setRequest(httpPost);
+    }
+
+    @Override
+    public void constructDeleteTourDateRequest(DeleteTourDateRequest request) {
+        HttpDelete deleteRequest = new HttpDelete(
+                "http://localhost:8080/api/v1/tours/" 
+                        + request.getTourOfferId() + "/dates/"
+                        + request.getTourDateId() + "/");
+        deleteRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        deleteRequest.setHeader("Authorization", "Bearer " + Singleton.
+                getInstance().getJwtToken());
+
+        request.setRequest(deleteRequest);
     }
 
 }
