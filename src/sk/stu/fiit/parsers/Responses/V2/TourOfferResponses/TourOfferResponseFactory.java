@@ -2,7 +2,7 @@
  *  VAVA Project
  * 
  */
-package sk.stu.fiit.parsers.Responses.V2.CreateTourOfferResponse;
+package sk.stu.fiit.parsers.Responses.V2.TourOfferResponses;
 
 import org.apache.http.Header;
 import org.apache.http.HttpStatus;
@@ -10,14 +10,13 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.parsers.Responses.V2.AbstractResponseFactory;
-import sk.stu.fiit.parsers.Responses.V2.EditResponses.EditResponseProcessor;
 import sk.stu.fiit.parsers.Responses.V2.Response;
 
 /**
  *
  * @author Adam Bublavý
  */
-public class CreateTourOfferResponseFactory implements AbstractResponseFactory<Response>{
+public class TourOfferResponseFactory implements AbstractResponseFactory<Response>{
 
     @Override
     public Response parse(CloseableHttpResponse response) throws
@@ -29,7 +28,7 @@ public class CreateTourOfferResponseFactory implements AbstractResponseFactory<R
         Header header = response.getFirstHeader("Content-Type");
         
         if (header.getValue().equals("application/xml;charset=UTF-8")) {
-            return new EditResponseProcessor().processResponse(response);
+            return new TourOfferResponseProcessor().processResponse(response);
         }
         
         return null;

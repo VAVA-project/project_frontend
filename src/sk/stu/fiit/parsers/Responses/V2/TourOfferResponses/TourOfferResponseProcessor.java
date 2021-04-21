@@ -2,7 +2,7 @@
  *  VAVA Project
  * 
  */
-package sk.stu.fiit.parsers.Responses.V2.CreateTourOfferResponse;
+package sk.stu.fiit.parsers.Responses.V2.TourOfferResponses;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -21,7 +21,7 @@ import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
  *
  * @author Adam Bublavý
  */
-public class CreateTourOfferResponseProcessor extends XMLProcessor {
+public class TourOfferResponseProcessor extends XMLProcessor {
 
     private static final List<String> possibleValidationErrors
             = Arrays.asList("errors", "startPlace", "destinationPlace",
@@ -59,11 +59,11 @@ public class CreateTourOfferResponseProcessor extends XMLProcessor {
                     compile("//createdAt/text()").
                     evaluate(document, XPathConstants.STRING));
 
-            return new CreateTourOfferResponse(id, creatorId, startPlace,
+            return new TourOfferResponse(id, creatorId, startPlace,
                     destinationPlace, description, pricePerPerson, rating,
                     createdAt);
         } catch (XPathExpressionException ex) {
-            Logger.getLogger(CreateTourOfferResponseProcessor.class.getName()).
+            Logger.getLogger(TourOfferResponseProcessor.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
 

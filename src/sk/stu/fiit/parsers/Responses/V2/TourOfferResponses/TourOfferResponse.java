@@ -2,7 +2,7 @@
  *  VAVA Project
  * 
  */
-package sk.stu.fiit.parsers.Responses.V2.CreateTourOfferResponse;
+package sk.stu.fiit.parsers.Responses.V2.TourOfferResponses;
 
 import java.time.LocalDateTime;
 import sk.stu.fiit.parsers.Responses.V2.Response;
@@ -11,7 +11,7 @@ import sk.stu.fiit.parsers.Responses.V2.Response;
  *
  * @author Adam Bublavý
  */
-public class CreateTourOfferResponse extends Response {
+public class TourOfferResponse extends Response {
     
     private String id;
     private String creatorId;
@@ -23,7 +23,7 @@ public class CreateTourOfferResponse extends Response {
     
     private LocalDateTime createdAt;
 
-    public CreateTourOfferResponse(String id, String creatorId,
+    public TourOfferResponse(String id, String creatorId,
             String startPlace, String destinationPlace, String description,
             Double pricePerPerson, Double rating, LocalDateTime createdAt) {
         this.id = id;
