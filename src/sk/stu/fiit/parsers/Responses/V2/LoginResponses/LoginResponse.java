@@ -1,17 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  VAVA Project
+ * 
  */
-package sk.stu.fiit.parsers.Responses;
+package sk.stu.fiit.parsers.Responses.V2.LoginResponses;
 
 import sk.stu.fiit.User.User;
+import sk.stu.fiit.parsers.Responses.V2.Response;
 
 /**
  *
  * @author Adam Bublavý
  */
-public class LoginResponse {
+public class LoginResponse extends Response {
     
     private String jwtToken;
     private User user;

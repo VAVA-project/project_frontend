@@ -60,3 +60,19 @@
     -fx-font-size: 36px;
     -fx-font-weight: bold;
 }
+
+.offers-pane-background {
+    -fx-background-radius: 16px;
+    -fx-background-color: #EFF0F7;
+}
+
+.btn-page {
+    -fx-background-color: transparent;
+    -fx-border-color: #5F2EEA;
+    -fx-border-width: 2px;
+    -fx-border-radius: 40px;
+    -fx-label-padding: 0.75px;
+    -fx-font-family: "Poppins";
+    -fx-text-fill: #5F2EEA;
+    -fx-font-weight: bold;
+}

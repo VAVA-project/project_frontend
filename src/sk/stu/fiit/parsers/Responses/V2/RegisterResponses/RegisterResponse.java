@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sk.stu.fiit.parsers.Responses;
+package sk.stu.fiit.parsers.Responses.V2.RegisterResponses;
+
+import sk.stu.fiit.parsers.Responses.V2.Response;
 
 /**
  *
  * @author Adam Bublavý
  */
-public class RegisterResponse {
+public class RegisterResponse extends Response {
     
     private String jwtToken;
 

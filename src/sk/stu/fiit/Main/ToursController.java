@@ -18,7 +18,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -31,9 +30,10 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import sk.stu.fiit.parsers.Responses.IResponseParser;
-import sk.stu.fiit.parsers.Responses.XMLResponseParser;
-import sk.stu.fiit.Main.Tour;
+import sk.stu.fiit.Exceptions.APIValidationException;
+import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
+import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
+import sk.stu.fiit.parsers.Responses.V2.UserResponses.UserResponse;
 
 /**
  * FXML Controller class
@@ -263,23 +263,31 @@ public class ToursController implements Initializable {
     }
 
     private void getUserRequest(String creatorId, Tour tour) {
-
+        
         HttpGet request = new HttpGet("http://localhost:8080/api/v1/users/" + creatorId + "/");
         request.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
         request.setHeader("Content-Type", "application/xml;charset=UTF-8");
 
-        IResponseParser responseParser = new XMLResponseParser();
-
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(request)) {
 
-            TourGuide tourGuide = responseParser.parseUserData(response).getTourGuide();
+            UserResponse userResponse = (UserResponse) ResponseFactory.getFactory(
+                    ResponseFactory.ResponseFactoryType.USER_RESPONSE).parse(
+                            response);
+            
+            TourGuide tourGuide = userResponse.getTourGuide();
             Singleton.getInstance().addTourGuide(tourGuide);
             tour.setGuideName(tourGuide.getFirstName() + " " + tourGuide.getLastName());
             tour.setGuidePhoto(tourGuide.getPhoto());
 
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (AuthTokenExpiredException ex) {
+            Logger.getLogger(ToursController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (APIValidationException ex) {
+            Logger.getLogger(ToursController.class.getName()).
+                    log(Level.SEVERE, null, ex);
         }
     }
 

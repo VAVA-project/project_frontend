@@ -5,12 +5,17 @@
  */
 package sk.stu.fiit.User;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.Base64;
+import javafx.scene.image.Image;
+
 /**
  *
  * @author Adam Bublavý
  */
 public class User {
-    
+
     private UserType userType;
     private String email;
     private String firstName;
@@ -25,7 +30,18 @@ public class User {
         this.lastName = lastName;
         this.photo = photo;
     }
-    
+
+    public Image getProfilePhoto() {
+        if (photo == null) {
+            return null;
+        }
+
+        byte[] byteArray = Base64.getDecoder().
+                decode(photo.replaceAll("\n", ""));
+        InputStream inputStream = new ByteArrayInputStream(byteArray);
+        return new Image(inputStream);
+    }
+
     public UserType getUserType() {
         return userType;
     }
@@ -33,7 +49,7 @@ public class User {
     public void setUserType(UserType userType) {
         this.userType = userType;
     }
-    
+
     public String getEmail() {
         return email;
     }

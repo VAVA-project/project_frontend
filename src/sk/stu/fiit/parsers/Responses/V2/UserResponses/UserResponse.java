@@ -2,16 +2,17 @@
  *  VAVA Project
  * 
  */
-package sk.stu.fiit.parsers.Responses;
+package sk.stu.fiit.parsers.Responses.V2.UserResponses;
 
 import sk.stu.fiit.Main.TourGuide;
+import sk.stu.fiit.parsers.Responses.V2.Response;
 
 
 /**
  *
  * @author adamf
  */
-public class UserResponse {
+public class UserResponse extends Response {
     
     private TourGuide tourGuide;
 

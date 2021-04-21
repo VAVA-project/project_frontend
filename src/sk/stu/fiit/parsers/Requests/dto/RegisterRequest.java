@@ -6,14 +6,13 @@
 package sk.stu.fiit.parsers.Requests.dto;
 
 import java.time.LocalDate;
-import sk.stu.fiit.parsers.Requests.IRequest;
 import sk.stu.fiit.parsers.Requests.IRequestVisitor;
 
 /**
  *
  * @author Adam Bublavý
  */
-public class RegisterRequest implements IRequest {
+public class RegisterRequest extends Request {
     
     private String email;
     private String password;
