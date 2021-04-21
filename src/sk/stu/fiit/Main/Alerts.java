@@ -4,6 +4,7 @@
  */
 package sk.stu.fiit.Main;
 
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
 /**
@@ -12,7 +13,7 @@ import javafx.scene.control.Alert;
  */
 public class Alerts {
 
-    static void fieldsValidation(String contentText) {
+    public static void fieldsValidation(String contentText) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Fields validation");
         alert.setHeaderText(null);
@@ -20,11 +21,30 @@ public class Alerts {
         alert.showAndWait();
     }
 
-    static void photoChoosing() {
+    public static void photoChoosing() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Photo choosing");
         alert.setHeaderText(null);
         alert.setContentText("File not found");
         alert.showAndWait();
+    }
+
+    public static void incorrectUsernameOrPassword() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Login");
+        alert.setHeaderText(null);
+        alert.setContentText("Incorrect username or password");
+        alert.showAndWait();
+    }
+
+    public static void showGenericAlertError(String title, String headline,
+            String text) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(title);
+            alert.setHeaderText(headline);
+            alert.setContentText(text);
+            alert.showAndWait();
+        });
     }
 }
