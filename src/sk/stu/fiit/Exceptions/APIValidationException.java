@@ -24,4 +24,14 @@ public class APIValidationException extends APIException {
         return validationErrors;
     }
     
+    public String extractAllErrors() {
+        StringBuilder builder = new StringBuilder();
+        
+        this.validationErrors.forEach(e -> {
+            builder.append(e.getErrorMessage()).append("\n");
+        });
+        
+        return builder.toString();
+    }
+    
 }
