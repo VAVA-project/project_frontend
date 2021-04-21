@@ -13,6 +13,7 @@ import sk.stu.fiit.parsers.Responses.V2.EditResponses.EditResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.LoginResponses.LoginResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.RegisterResponses.RegisterResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.SearchResponses.SearchResponseFactory;
+import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.TourDatesResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.UserResponses.UserResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponseFactory;
 
@@ -28,7 +29,8 @@ public class ResponseFactory {
         REGISTER_RESPONSE,
         SEACH_RESPONSE,
         USER_RESPONSE,
-        USER_TOURS_RESPONSE
+        USER_TOURS_RESPONSE,
+        TOUR_DATES_RESPONSE
     }
 
     private static final Map<ResponseFactoryType, Class<? extends AbstractResponseFactory>> registeredFactoryTypes = new HashMap<>();
@@ -46,6 +48,8 @@ public class ResponseFactory {
                 UserResponseFactory.class);
         registeredFactoryTypes.put(ResponseFactoryType.USER_TOURS_RESPONSE,
                 UserToursResponseFactory.class);
+        registeredFactoryTypes.put(ResponseFactoryType.TOUR_DATES_RESPONSE, 
+                TourDatesResponseFactory.class);
     }
 
     public static AbstractResponseFactory getFactory(ResponseFactoryType type) {

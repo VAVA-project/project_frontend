@@ -25,8 +25,13 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import sk.stu.fiit.parsers.Responses.IResponseParser;
-import sk.stu.fiit.parsers.Responses.XMLResponseParser;
+import sk.stu.fiit.Exceptions.APIValidationException;
+import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
+import sk.stu.fiit.parsers.Requests.XMLRequestParser;
+import sk.stu.fiit.parsers.Requests.dto.TourDatesRequest;
+import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
+import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.TourDatesResponse;
+
 
 /**
  * FXML Controller class
@@ -99,6 +104,34 @@ public class TourOfferController implements Initializable {
 
     private void getTourDates() {
         
+        TourDatesRequest tourDatesRequest = new TourDatesRequest(this.tour.getId());
+        tourDatesRequest.accept(new XMLRequestParser());
+        
+        HttpGet request = (HttpGet) tourDatesRequest.getRequest();
+        
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
+
+            // Ulozenie si prave nacitanych tur, pre ich zobrazenie
+            //Singleton.getInstance().setTours(responseParser.parseSearchData(response).getTours());
+            //Singleton.getInstance().setActualDestination(tfDestination.getText());
+            TourDatesResponse tourDatesResponse = (TourDatesResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.TOUR_DATES_RESPONSE).parse(response);
+            Singleton.getInstance().setTourDates(tourDatesResponse.getTourDates());
+            
+        } catch (IOException ex) {
+            Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (AuthTokenExpiredException ex) {
+            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (APIValidationException ex) {
+            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+}
+
+/*
+    private void getTourDates() {
+        
         HttpGet request = new HttpGet("http://localhost:8080/api/v1/tours/" 
                 + Singleton.getInstance().getTourBuy().getId()
                 + "/dates/?pageNumber=0&pageSize=5&sortBy=createdAt&sortDirection=ASC");
@@ -119,5 +152,4 @@ public class TourOfferController implements Initializable {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-}
+*/
