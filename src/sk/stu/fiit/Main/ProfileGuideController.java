@@ -5,8 +5,6 @@
 package sk.stu.fiit.Main;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -26,12 +24,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
+import sk.stu.fiit.parsers.Requests.XMLRequestParser;
+import sk.stu.fiit.parsers.Requests.dto.GuideToursRequest;
 import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponse;
 
@@ -110,27 +108,11 @@ public class ProfileGuideController implements Initializable {
         imageViewPhoto.setClip(clip);
     }
 
-    private HttpGet constructPostMessage(int pageNumber, int pageSize) {
-        HttpGet getRequest = new HttpGet(
-                "http://localhost:8080/api/v1/users/tours/");
-        getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
-        getRequest.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
-
-        try {
-            URI uri = new URIBuilder(getRequest.getURI()).addParameter("pageNumber",
-                    String.valueOf(pageNumber)).addParameter("pageSize", String.
-                            valueOf(pageSize)).build();
-            ((HttpRequestBase) getRequest).setURI(uri);
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(ProfileGuideController.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        }
-
-        return getRequest;
-    }
-
     private UserToursResponse fetchUserTours(int pageNumber, int pageSize) {
-        HttpGet getRequest = this.constructPostMessage(pageNumber, pageSize);
+        GuideToursRequest request = new GuideToursRequest(pageNumber, pageSize);
+        request.accept(new XMLRequestParser());
+        
+        HttpGet getRequest = (HttpGet) request.getRequest();
 
         try ( CloseableHttpClient httpClient = HttpClients.createDefault();
                  CloseableHttpResponse response = httpClient.execute(getRequest)) {

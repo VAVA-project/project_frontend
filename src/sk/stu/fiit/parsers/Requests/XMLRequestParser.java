@@ -7,9 +7,13 @@ package sk.stu.fiit.parsers.Requests;
 
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,13 +23,18 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import sk.stu.fiit.Main.ProfileGuideController;
 import sk.stu.fiit.Main.Singleton;
 import sk.stu.fiit.parsers.Requests.dto.EditRequest;
+import sk.stu.fiit.parsers.Requests.dto.GuideToursRequest;
 import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
 import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
 
@@ -153,6 +162,29 @@ public class XMLRequestParser implements IRequestVisitor {
         }
 
         request.setRequest(httpPut);
+    }
+
+    @Override
+    public void constructGuideToursRequest(GuideToursRequest request) {
+        HttpGet getRequest = new HttpGet(
+                "http://localhost:8080/api/v1/users/tours/");
+        getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        getRequest.setHeader("Authorization", "Bearer " + Singleton.
+                getInstance().getJwtToken());
+
+        try {
+            URI uri = new URIBuilder(getRequest.getURI()).addParameter(
+                    "pageNumber",
+                    String.valueOf(request.getPageNumber())).addParameter(
+                    "pageSize", String.
+                            valueOf(request.getPageSize())).build();
+            ((HttpRequestBase) getRequest).setURI(uri);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(ProfileGuideController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+        
+        request.setRequest(getRequest);
     }
 
 }
