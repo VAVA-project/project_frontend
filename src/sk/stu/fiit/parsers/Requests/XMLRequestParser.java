@@ -23,6 +23,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -33,7 +34,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import sk.stu.fiit.Main.ProfileGuideController;
 import sk.stu.fiit.Main.Singleton;
+import sk.stu.fiit.parsers.Requests.dto.CreateTourDateRequest;
+import sk.stu.fiit.parsers.Requests.dto.CreateTourOfferRequest;
+import sk.stu.fiit.parsers.Requests.dto.DeleteTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditRequest;
+import sk.stu.fiit.parsers.Requests.dto.EditTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.GuideToursRequest;
 import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
 import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
@@ -238,6 +243,88 @@ public class XMLRequestParser implements IRequestVisitor {
                     log(Level.SEVERE, null, ex);
         }
         request.setRequest(getRequest);
+    }
+
+    @Override
+    public void constructCreateTourOfferRequest(CreateTourOfferRequest request) {
+        HttpPost httpPost = new HttpPost("http://localhost:8080/api/v1/tours/");
+        httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        httpPost.setHeader("Authorization", "Bearer " + Singleton.getInstance().
+                getJwtToken());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("startPlace", request.getStartPlace());
+        data.put("destinationPlace", request.getDestinationPlace());
+        data.put("description", request.getDescription());
+        data.put("pricePerPerson", request.getPricePerPerson());
+
+        try {
+            httpPost.setEntity(new StringEntity(this.translateToXML(
+                    "request", data)));
+        } catch (ParserConfigurationException
+                | TransformerConfigurationException
+                | UnsupportedEncodingException ex) {
+        }
+
+        request.setRequest(httpPost);
+    }
+
+    @Override
+    public void constructEditTourOfferRequest(EditTourOfferRequest request) {
+        HttpPut httpPut = new HttpPut("http://localhost:8080/api/v1/tours/" + request.getId() + "/");
+        httpPut.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        httpPut.setHeader("Authorization", "Bearer " + Singleton.getInstance().
+                getJwtToken());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("startPlace", request.getStartPlace());
+        data.put("destinationPlace", request.getDestinationPlace());
+        data.put("description", request.getDescription());
+        data.put("pricePerPerson", request.getPricePerPerson());
+
+        try {
+            httpPut.setEntity(new StringEntity(this.translateToXML(
+                    "request", data)));
+        } catch (ParserConfigurationException
+                | TransformerConfigurationException
+                | UnsupportedEncodingException ex) {
+        }
+
+        request.setRequest(httpPut);
+    }
+
+    @Override
+    public void constructDeleteTourOfferRequest(DeleteTourOfferRequest request) {
+        HttpDelete deleteRequest = new HttpDelete(
+                "http://localhost:8080/api/v1/tours/" + request.getId() + "/");
+        deleteRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        deleteRequest.setHeader("Authorization", "Bearer " + Singleton.
+                getInstance().getJwtToken());
+
+        request.setRequest(deleteRequest);
+    }
+
+    @Override
+    public void constructCreateTourDateRequest(CreateTourDateRequest request) {
+        HttpPost httpPost = new HttpPost("http://localhost:8080/api/v1/tours/" + request.getTourOfferId() + "/dates/");
+        httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        httpPost.setHeader("Authorization", "Bearer " + Singleton.getInstance().
+                getJwtToken());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("startDate", request.getStartDate());
+        data.put("endDate", request.getEndDate());
+        data.put("numberOfTickets", request.getNumberOfTickets());
+
+        try {
+            httpPost.setEntity(new StringEntity(this.translateToXML(
+                    "request", data)));
+        } catch (ParserConfigurationException
+                | TransformerConfigurationException
+                | UnsupportedEncodingException ex) {
+        }
+
+        request.setRequest(httpPost);
     }
 
 }

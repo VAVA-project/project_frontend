@@ -18,9 +18,9 @@
    <left>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="left-pane" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnBack" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-back">
+            <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseReleased="#handleGoToSearchScreen" styleClass="btn-back">
                <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="30.0" onMouseReleased="#handleGoToSearchScreen" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../../icons/back.png" />
                      </image>
@@ -31,9 +31,9 @@
             <Label fx:id="lblName" layoutX="14.0" layoutY="282.0" styleClass="lbl-name" />
             <VBox layoutX="14.0" layoutY="450.0" prefHeight="136.0" prefWidth="140.0" spacing="15.0">
                <children>
-                  <Button fx:id="btnEditInformations11" mnemonicParsing="false" onMouseReleased="#handleGoToCreateOfferScreen" styleClass="btn-edit-informations" text="Create offer" />
-                  <Button fx:id="btnEditInformations1" mnemonicParsing="false" onMouseReleased="#handleGoToPersonalProfileScreen" styleClass="btn-edit-informations" text="Personal profile" />
-                  <Button fx:id="btnEditInformations" mnemonicParsing="false" onMouseReleased="#handleGoToEditInformationsScreen" styleClass="btn-edit-informations" text="Edit informations" />
+                  <Button mnemonicParsing="false" onMouseReleased="#handleGoToCreateOfferScreen" styleClass="btn-edit-informations" text="Create offer" />
+                  <Button mnemonicParsing="false" onMouseReleased="#handleGoToPersonalProfileScreen" styleClass="btn-edit-informations" text="Personal profile" />
+                  <Button mnemonicParsing="false" onMouseReleased="#handleGoToEditInformationsScreen" styleClass="btn-edit-informations" text="Edit informations" />
                </children>
             </VBox>
          </children>
@@ -49,6 +49,15 @@
                </content>
             </ScrollPane>
             <Button fx:id="loadMoreButton" layoutX="271.0" layoutY="546.0" mnemonicParsing="false" onMouseReleased="#handleGetNextPage" styleClass="btn-page" text="Load more" />
+            <HBox layoutX="549.0" prefHeight="600.0" prefWidth="51.0" styleClass="hbox-control-buttons">
+               <children>
+                  <Circle fx:id="btnMinimize" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize" />
+                  <Circle fx:id="btnExit" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-exit" />
+               </children>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </HBox>
          </children>
       </Pane>
    </center>
@@ -56,15 +65,4 @@
       <URL value="@../../../../../css/screen5_Profiles.css" />
       <URL value="@../../../../../css/buttons_control.css" />
    </stylesheets>
-   <right>
-      <HBox prefHeight="600.0" prefWidth="51.0" styleClass="hbox-control-buttons" BorderPane.alignment="CENTER">
-         <children>
-            <Circle fx:id="btnMinimize" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize" />
-            <Circle fx:id="btnExit" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-exit" />
-         </children>
-         <padding>
-            <Insets top="10.0" />
-         </padding>
-      </HBox>
-   </right>
 </BorderPane>

@@ -14,6 +14,8 @@ import sk.stu.fiit.parsers.Responses.V2.LoginResponses.LoginResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.RegisterResponses.RegisterResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.SearchResponses.SearchResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.TourDatesResponseFactory;
+import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.DeleteTourOfferResponseFactory;
+import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.TourOfferResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.UserResponses.UserResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponseFactory;
 
@@ -30,7 +32,10 @@ public class ResponseFactory {
         SEACH_RESPONSE,
         USER_RESPONSE,
         USER_TOURS_RESPONSE,
-        TOUR_DATES_RESPONSE
+        TOUR_DATES_RESPONSE,
+        CREATE_TOUR_OFFER_RESPONSE,
+        EDIT_TOUR_OFFER_RESPONSE,
+        DELETE_TOUR_OFFER_RESPONSE
     }
 
     private static final Map<ResponseFactoryType, Class<? extends AbstractResponseFactory>> registeredFactoryTypes = new HashMap<>();
@@ -48,8 +53,16 @@ public class ResponseFactory {
                 UserResponseFactory.class);
         registeredFactoryTypes.put(ResponseFactoryType.USER_TOURS_RESPONSE,
                 UserToursResponseFactory.class);
-        registeredFactoryTypes.put(ResponseFactoryType.TOUR_DATES_RESPONSE, 
+        registeredFactoryTypes.put(ResponseFactoryType.TOUR_DATES_RESPONSE,
                 TourDatesResponseFactory.class);
+        registeredFactoryTypes.put(
+                ResponseFactoryType.CREATE_TOUR_OFFER_RESPONSE,
+                TourOfferResponseFactory.class);
+        registeredFactoryTypes.put(ResponseFactoryType.EDIT_TOUR_OFFER_RESPONSE,
+                TourOfferResponseFactory.class);
+        registeredFactoryTypes.put(
+                ResponseFactoryType.DELETE_TOUR_OFFER_RESPONSE,
+                DeleteTourOfferResponseFactory.class);
     }
 
     public static AbstractResponseFactory getFactory(ResponseFactoryType type) {

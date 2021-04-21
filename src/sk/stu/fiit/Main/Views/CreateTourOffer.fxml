@@ -1,11 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.CreateTourOfferController">
-    
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="border-pane" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.CreateTourOfferController">
+   <left>
+      <Pane prefHeight="200.0" prefWidth="200.0" styleClass="left-pane" BorderPane.alignment="CENTER">
+         <children>
+            <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseReleased="#handleGoToSearchScreen" styleClass="btn-back">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" onMouseReleased="#handleGoToGuideProfile" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../icons/back.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <ImageView fx:id="imageViewPhoto" fitHeight="190.0" fitWidth="190.0" layoutX="14.0" layoutY="80.0" pickOnBounds="true" smooth="false" />
+            <Label fx:id="lblName" layoutX="14.0" layoutY="282.0" styleClass="lbl-name" />
+            <VBox layoutX="14.0" layoutY="550.0" prefHeight="36.0" prefWidth="140.0" spacing="15.0">
+               <children>
+                  <Button mnemonicParsing="false" onMouseReleased="#handleGoToGuideProfile" styleClass="btn-edit-informations" text="Guide profile" />
+               </children>
+            </VBox>
+         </children>
+      </Pane>
+   </left>
+   <center>
+      <Pane prefHeight="200.0" prefWidth="200.0" styleClass="center-pane" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="88.0" layoutY="60.0" styleClass="lbl-profile" text="Create a offer" />
+            <HBox layoutX="549.0" prefHeight="600.0" prefWidth="51.0" styleClass="hbox-control-buttons">
+               <children>
+                  <Circle fx:id="btnMinimize" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize" />
+                  <Circle fx:id="btnExit" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-exit" />
+               </children>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </HBox>
+            <TextField layoutX="130.0" layoutY="160.0" promptText="Destination" styleClass="text-field" stylesheets="@../../../../../css/screen9_CreateOffer.css" />
+            <TextField layoutX="130.0" layoutY="357.0" promptText="Price / person" styleClass="text-field" stylesheets="@../../../../../css/screen9_CreateOffer.css" />
+            <TextArea layoutX="130.0" layoutY="240.0" prefHeight="200.0" prefWidth="200.0" promptText="Tour description" styleClass="text-field" stylesheets="@../../../../../css/screen9_CreateOffer.css" />
+         </children>
+      </Pane>
+   </center>
+   <stylesheets>
+      <URL value="@../../../../../css/screen5_Profiles.css" />
+      <URL value="@../../../../../css/buttons_control.css" />
+   </stylesheets>
+</BorderPane>

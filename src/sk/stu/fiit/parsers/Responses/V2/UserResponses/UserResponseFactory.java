@@ -5,6 +5,7 @@
 package sk.stu.fiit.parsers.Responses.V2.UserResponses;
 
 import org.apache.http.Header;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
@@ -26,6 +27,10 @@ public class UserResponseFactory implements AbstractResponseFactory<Response> {
     
     @Override
     public Response parse(CloseableHttpResponse response) throws AuthTokenExpiredException, APIValidationException {
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_FORBIDDEN) {
+            throw new AuthTokenExpiredException();
+        }
+        
         Header header = response.getFirstHeader("Content-Type");
         
         if(header.getValue().equals("application/xml;charset=UTF-8")) {

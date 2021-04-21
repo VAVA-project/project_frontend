@@ -101,6 +101,8 @@ public class SigninController {
 
             Singleton.getInstance().setJwtToken(loginResponse.getJwtToken());
             Singleton.getInstance().setUser(loginResponse.getUser());
+            
+            System.out.println("Token: " + loginResponse.getJwtToken());
 
             this.gotToSearch(event);
         } catch (AuthTokenExpiredException ex) {

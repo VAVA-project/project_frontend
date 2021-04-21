@@ -1,0 +1,12 @@
+/* 
+    Created on : 18. 3. 2021, 22:46:58
+    Author     : adamf
+*/
+.text-field {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 16px;
+    -fx-background-color: #EFF0F6; 
+    -fx-background-radius: 16px;
+    -fx-pref-height: 60px;
+    -fx-pref-width: 340px;
+}
