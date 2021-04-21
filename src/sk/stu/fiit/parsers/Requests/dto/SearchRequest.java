@@ -10,17 +10,30 @@ import sk.stu.fiit.parsers.Requests.IRequestVisitor;
  *
  * @author Adam Bublavý
  */
-public class GuideToursRequest extends Request {
-    
+public class SearchRequest extends Request {
+
     private int pageNumber = 0;
     private int pageSize = 10;
     
-    public GuideToursRequest() {
+    private String query;
+    
+    public SearchRequest(String query) {
+        this.query = query;
     }
 
-    public GuideToursRequest(int pageNumber, int pageSize) {
+    public SearchRequest(String query, int pageNumber, int pageSize) {
+        this(query);
         this.pageNumber = pageNumber;
         this.pageSize = pageSize;
+    }
+    
+    @Override
+    public void accept(IRequestVisitor visitor) {
+        visitor.constructSearchRequest(this);
+    }
+
+    public String getQuery() {
+        return query;
     }
 
     public int getPageNumber() {
@@ -29,11 +42,6 @@ public class GuideToursRequest extends Request {
 
     public int getPageSize() {
         return pageSize;
-    }
-
-    @Override
-    public void accept(IRequestVisitor visitor) {
-        visitor.constructGuideToursRequest(this);
     }
     
 }

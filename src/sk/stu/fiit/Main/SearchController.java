@@ -23,6 +23,8 @@ import org.apache.http.impl.client.HttpClients;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.User.UserType;
+import sk.stu.fiit.parsers.Requests.XMLRequestParser;
+import sk.stu.fiit.parsers.Requests.dto.SearchRequest;
 import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.SearchResponses.SearchResponse;
 
@@ -43,6 +45,9 @@ public class SearchController implements Initializable {
     private Button btnSearch;
     @FXML
     private TextField tfDestination;
+    
+    private int pageNumber = 0;
+    private int pageSize = 5;
 
     /**
      * Initializes the controller class.
@@ -75,12 +80,13 @@ public class SearchController implements Initializable {
     }
 
     private void searchToursForDestination(MouseEvent event) {
-        // Pre HttpGet nie je potrebne konstruovat Entity (XML telo request-u)
-        HttpGet request = new HttpGet("http://localhost:8080/api/v1/search/?q=" + tfDestination.getText() + "&pageNumber=0" + "&pageSize=5");
-        request.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
+        SearchRequest request = new SearchRequest(tfDestination.getText(), pageNumber, pageSize);
+        request.accept(new XMLRequestParser());
+        
+        HttpGet getRequest = (HttpGet) request.getRequest();
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                CloseableHttpResponse response = httpClient.execute(request)) {
+                CloseableHttpResponse response = httpClient.execute(getRequest)) {
 
             SearchResponse searchResponse = (SearchResponse) ResponseFactory.getFactory(
                     ResponseFactory.ResponseFactoryType.SEACH_RESPONSE).parse(

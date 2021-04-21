@@ -37,6 +37,7 @@ import sk.stu.fiit.parsers.Requests.dto.EditRequest;
 import sk.stu.fiit.parsers.Requests.dto.GuideToursRequest;
 import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
 import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
+import sk.stu.fiit.parsers.Requests.dto.SearchRequest;
 
 /**
  *
@@ -178,6 +179,32 @@ public class XMLRequestParser implements IRequestVisitor {
                     String.valueOf(request.getPageNumber())).addParameter(
                     "pageSize", String.
                             valueOf(request.getPageSize())).build();
+            ((HttpRequestBase) getRequest).setURI(uri);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(ProfileGuideController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+        
+        request.setRequest(getRequest);
+    }
+
+    @Override
+    public void constructSearchRequest(SearchRequest request) {
+        HttpGet getRequest = new HttpGet(
+                "http://localhost:8080/api/v1/search/");
+        getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        getRequest.setHeader("Authorization", "Bearer " + Singleton.
+                getInstance().getJwtToken());
+
+        try {
+            URI uri = new URIBuilder(getRequest.getURI())
+                    .addParameter("pageNumber",
+                        String.valueOf(request.getPageNumber()))
+                    .addParameter(
+                    "pageSize", 
+                            String.valueOf(request.getPageSize()))
+                    .addParameter("q", request.getQuery())
+                    .build();
             ((HttpRequestBase) getRequest).setURI(uri);
         } catch (URISyntaxException ex) {
             Logger.getLogger(ProfileGuideController.class.getName()).
