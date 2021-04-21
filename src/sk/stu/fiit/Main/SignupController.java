@@ -370,7 +370,6 @@ public class SignupController {
 
             try (CloseableHttpClient httpClient = HttpClients.createDefault();
                     CloseableHttpResponse response = httpClient.execute(httpPost)) {
-                
                 try {
                     RegisterResponse registerResponse = (RegisterResponse) ResponseFactory.getFactory(
                             ResponseFactory.ResponseFactoryType.REGISTER_RESPONSE).parse(response);

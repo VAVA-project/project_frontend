@@ -64,13 +64,13 @@ public class UserToursProcessor extends XMLProcessor {
                         "pricePerPerson").item(0).getTextContent();
                 String createdAt = contentElement.getElementsByTagName(
                         "createdAt").item(0).getTextContent();
-                double averageRating = Double.parseDouble(contentElement.
+                String rating = contentElement.
                         getElementsByTagName(
-                                "averageRating").item(0).getTextContent());
+                                "averageRating").item(0).getTextContent();
 
                 parsedTours.add(new Tour(id, creatorId, startPlace,
                         destinationPlace, description, pricePerPerson, createdAt,
-                        averageRating));
+                        rating));
             }
 
             String lastText = (String) xPath.compile("//PageImpl/last/text()").

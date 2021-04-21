@@ -83,6 +83,7 @@ public class ProfileGuideController implements Initializable {
                     getWindow();
             actual_stage.setIconified(true);
         }
+
     }
 
     private void setProfileInformations() {
@@ -157,7 +158,9 @@ public class ProfileGuideController implements Initializable {
     @FXML
     private void handleGetNextPage(MouseEvent event) {
         UserToursResponse response = this.fetchUserTours(pageNumber, pageSize);
-
+        
+        System.out.println("response = " + response);
+        
         if (response == null) {
             return;
         }

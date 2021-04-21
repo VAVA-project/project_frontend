@@ -169,7 +169,7 @@ public class XMLRequestParser implements IRequestVisitor {
     public void constructGuideToursRequest(GuideToursRequest request) {
         HttpGet getRequest = new HttpGet(
                 "http://localhost:8080/api/v1/users/tours/");
-        getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        getRequest.setHeader("Content-Type", "application/xml");
         getRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
 

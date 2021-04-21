@@ -9,10 +9,14 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
@@ -34,7 +38,8 @@ import sk.stu.fiit.parsers.Responses.V2.SearchResponses.SearchResponse;
  * @author adamf
  */
 public class SearchController implements Initializable {
-
+    
+    
     @FXML
     private Button btnProfile;
     @FXML
@@ -68,9 +73,9 @@ public class SearchController implements Initializable {
         }
         if (event.getSource().equals(btnProfile)) {
             if (Singleton.getInstance().getUser().getUserType() == UserType.NORMAL_USER) {
-                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileCustomer.fxml");
+                ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/ProfileCustomer.fxml");
             } else {
-                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileGuide.fxml");
+                ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/ProfileGuide.fxml");
             }
         }
         if (event.getSource().equals(btnSearch)) {
@@ -79,7 +84,7 @@ public class SearchController implements Initializable {
 
     }
 
-    private void searchToursForDestination(MouseEvent event) {
+    private void searchToursForDestination(Event event) {
         SearchRequest request = new SearchRequest(tfDestination.getText(), pageNumber, pageSize);
         request.accept(new XMLRequestParser());
         
@@ -93,8 +98,8 @@ public class SearchController implements Initializable {
                             response);
             
             Singleton.getInstance().setTours(searchResponse.getTours());
-
             ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Tours.fxml");
+
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (AuthTokenExpiredException ex) {
@@ -103,6 +108,13 @@ public class SearchController implements Initializable {
         } catch (APIValidationException ex) {
             Logger.getLogger(SearchController.class.getName()).
                     log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void handleEnterKey(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            searchToursForDestination(event);
         }
     }
 

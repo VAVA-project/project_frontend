@@ -7,11 +7,11 @@ package sk.stu.fiit.Main;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -33,7 +33,7 @@ public class ScreenSwitcher {
         return screenSwitcher;
     }
 
-    public void switchToScreen(MouseEvent event, String screen) {
+    public void switchToScreen(Event event, String screen) {
         try {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Parent parent = FXMLLoader.load(getClass().getResource(screen));

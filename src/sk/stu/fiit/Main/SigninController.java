@@ -54,7 +54,7 @@ public class SigninController {
             signIn(event);
         }
         if (event.getSource().equals(btnSignup)) {
-            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Signup.fxml");
+            ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/Signup.fxml");
         }
     }
 

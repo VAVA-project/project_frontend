@@ -70,9 +70,9 @@ public class EditAccountController implements Initializable {
         }
         if (event.getSource().equals(btnBack)) {
             if (Singleton.getInstance().getUser().getUserType() == UserType.NORMAL_USER) {
-                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileCustomer.fxml");
+                ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/ProfileCustomer.fxml");
             } else {
-                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileGuide.fxml");
+                ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/ProfileGuide.fxml");
             }
         }
         if (event.getSource().equals(btnEdit)) {
@@ -97,9 +97,9 @@ public class EditAccountController implements Initializable {
             Singleton.getInstance().getUser().setLastName(editResponse.getLastName());
             
             if (Singleton.getInstance().getUser().getUserType() == UserType.NORMAL_USER) {
-                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileCustomer.fxml");
+                ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/ProfileCustomer.fxml");
             } else {
-                ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileGuide.fxml");
+                ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/ProfileGuide.fxml");
             }
             
             

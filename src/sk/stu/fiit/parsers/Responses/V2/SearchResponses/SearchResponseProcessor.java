@@ -65,13 +65,13 @@ public class SearchResponseProcessor extends XMLProcessor {
                         "pricePerPerson").item(0).getTextContent();
                 String createdAt = element.getElementsByTagName("createdAt").
                         item(0).getTextContent();
-                double averageRating = Double.parseDouble(element.
+                String rating = (element.
                         getElementsByTagName(
                                 "averageRating").item(0).getTextContent());
 
                 searchResponse.addTour(new Tour(id, creatorId, startPlace,
                         destinationPlace, description, pricePerPerson, createdAt,
-                        averageRating));
+                        rating));
 
             }
 
