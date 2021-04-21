@@ -33,6 +33,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import sk.stu.fiit.Main.ProfileGuideController;
 import sk.stu.fiit.Main.Singleton;
+import sk.stu.fiit.parsers.Requests.dto.CreateTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditRequest;
 import sk.stu.fiit.parsers.Requests.dto.GuideToursRequest;
 import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
@@ -238,6 +239,30 @@ public class XMLRequestParser implements IRequestVisitor {
                     log(Level.SEVERE, null, ex);
         }
         request.setRequest(getRequest);
+    }
+
+    @Override
+    public void constructCreateTourOfferRequest(CreateTourOfferRequest request) {
+        HttpPut httpPut = new HttpPut("http://localhost:8080/api/v1/tours/");
+        httpPut.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        httpPut.setHeader("Authorization", "Bearer " + Singleton.getInstance().
+                getJwtToken());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("startPlace", request.getStartPlace());
+        data.put("destinationPlace", request.getDestinationPlace());
+        data.put("description", request.getDescription());
+        data.put("pricePerPerson", request.getPricePerPerson());
+
+        try {
+            httpPut.setEntity(new StringEntity(this.translateToXML(
+                    "request", data)));
+        } catch (ParserConfigurationException
+                | TransformerConfigurationException
+                | UnsupportedEncodingException ex) {
+        }
+
+        request.setRequest(httpPut);
     }
 
 }
