@@ -7,6 +7,7 @@ package sk.stu.fiit.Main;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
@@ -40,12 +41,11 @@ import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponse;
  */
 public class ProfileGuideController implements Initializable {
 
-    @FXML
-    private Button btnBack;
+    private int pageNumber = 0;
+    private int pageSize = 5;
+
     @FXML
     private ImageView imageViewPhoto;
-    @FXML
-    private Button btnEditInformations;
     @FXML
     private Label lblName;
     @FXML
@@ -53,14 +53,7 @@ public class ProfileGuideController implements Initializable {
     @FXML
     private Circle btnExit;
     @FXML
-    private Button btnEditInformations11;
-    @FXML
-    private Button btnEditInformations1;
-    @FXML
     private ListView<Node> offersList;
-    
-    private int pageNumber = 0;
-    private int pageSize = 1;
     @FXML
     private Button loadMoreButton;
 
@@ -83,12 +76,9 @@ public class ProfileGuideController implements Initializable {
                     getWindow();
             actual_stage.setIconified(true);
         }
-
     }
 
     private void setProfileInformations() {
-        // Setting profile photo
-
         lblName.setText(
                 Singleton.getInstance().getUser().getFirstName() + " " + Singleton.
                 getInstance().getUser().getLastName());
@@ -112,17 +102,20 @@ public class ProfileGuideController implements Initializable {
     private UserToursResponse fetchUserTours(int pageNumber, int pageSize) {
         GuideToursRequest request = new GuideToursRequest(pageNumber, pageSize);
         request.accept(new XMLRequestParser());
-        
+
         HttpGet getRequest = (HttpGet) request.getRequest();
 
         try ( CloseableHttpClient httpClient = HttpClients.createDefault();
                  CloseableHttpResponse response = httpClient.execute(getRequest)) {
 
             return (UserToursResponse) ResponseFactory.getFactory(
-                    ResponseFactory.ResponseFactoryType.USER_TOURS_RESPONSE).parse(response);
+                    ResponseFactory.ResponseFactoryType.USER_TOURS_RESPONSE).
+                    parse(response);
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE,
                     null, ex);
+            Alerts.showGenericAlertError("Server error", null,
+                    "Server is not responding");
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(ProfileGuideController.class.getName()).
                     log(Level.SEVERE, null, ex);
@@ -130,6 +123,7 @@ public class ProfileGuideController implements Initializable {
             Logger.getLogger(ProfileGuideController.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
+
         return null;
     }
 
@@ -141,7 +135,8 @@ public class ProfileGuideController implements Initializable {
 
     @FXML
     private void handleGoToCreateOfferScreen(MouseEvent event) {
-
+        ScreenSwitcher.getScreenSwitcher().switchToScreen(event,
+                "Views/CreateTourOffer.fxml");
     }
 
     @FXML
@@ -154,19 +149,18 @@ public class ProfileGuideController implements Initializable {
         ScreenSwitcher.getScreenSwitcher().switchToScreen(event,
                 "Views/EditAccount.fxml");
     }
-    
+
     @FXML
     private void handleGetNextPage(MouseEvent event) {
-        UserToursResponse response = this.fetchUserTours(pageNumber, pageSize);
-        
-        System.out.println("response = " + response);
-        
+        CompletableFuture.supplyAsync(() -> this.fetchUserTours(pageNumber,
+                pageSize)).thenAccept(this::processUsersTours);
+    }
+
+    private void processUsersTours(UserToursResponse response) {
         if (response == null) {
             return;
         }
-        
-        // todo add offer
-        
+
         response.getTours().forEach(tour -> {
             try {
                 Node tourNode = this.loadGuideTourOfferItem(tour);
@@ -175,16 +169,16 @@ public class ProfileGuideController implements Initializable {
                 Logger.getLogger(ProfileGuideController.class.getName()).
                         log(Level.SEVERE, null, ex);
             }
-            
+
         });
-        
-        this.pageNumber ++;
-        
-        if(response.isLast()) {
+
+        this.pageNumber++;
+
+        if (response.isLast()) {
             loadMoreButton.setDisable(true);
         }
     }
-    
+
     private Node loadGuideTourOfferItem(Tour tour) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(
                 "Views/GuideTourOfferItem.fxml"));

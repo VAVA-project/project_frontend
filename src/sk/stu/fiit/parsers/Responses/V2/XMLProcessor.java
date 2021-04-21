@@ -38,8 +38,10 @@ public abstract class XMLProcessor implements ResponseProcessor {
     public Response processResponse(CloseableHttpResponse response) throws
             AuthTokenExpiredException, APIValidationException {
 
-        Document document = null;
+        int statusCode = response.getStatusLine().getStatusCode();
 
+        Document document = null;
+        
         try {
             document = DocumentBuilderFactory.newInstance().
                     newDocumentBuilder().
@@ -50,14 +52,11 @@ public abstract class XMLProcessor implements ResponseProcessor {
                     log(Level.SEVERE, null, ex);
         }
 
-        int statusCode = response.getStatusLine().getStatusCode();
-
         switch (statusCode) {
             case HttpStatus.SC_OK: {
                 return this.parseOK(document);
             }
             case HttpStatus.SC_BAD_REQUEST: {
-                System.out.println("BAD REQUEST");
                 throw new APIValidationException(this.parseValidationErrors(
                         document, getPossibleValidationErrors()));
             }
