@@ -73,7 +73,7 @@ public class EditTourOfferRequest extends Request {
     
     @Override
     public void accept(IRequestVisitor visitor) {
-        
+        visitor.constructEditTourOfferRequest(this);
     }
 
     public String getId() {

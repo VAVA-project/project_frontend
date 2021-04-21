@@ -23,6 +23,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -34,6 +35,7 @@ import org.w3c.dom.Element;
 import sk.stu.fiit.Main.ProfileGuideController;
 import sk.stu.fiit.Main.Singleton;
 import sk.stu.fiit.parsers.Requests.dto.CreateTourOfferRequest;
+import sk.stu.fiit.parsers.Requests.dto.DeleteTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.GuideToursRequest;
@@ -288,6 +290,17 @@ public class XMLRequestParser implements IRequestVisitor {
         }
 
         request.setRequest(httpPut);
+    }
+
+    @Override
+    public void constructDeleteTourOfferRequest(DeleteTourOfferRequest request) {
+        HttpDelete deleteRequest = new HttpDelete(
+                "http://localhost:8080/api/v1/tours/" + request.getId() + "/");
+        deleteRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        deleteRequest.setHeader("Authorization", "Bearer " + Singleton.
+                getInstance().getJwtToken());
+
+        request.setRequest(deleteRequest);
     }
 
 }
