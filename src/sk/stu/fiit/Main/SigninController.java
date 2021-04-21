@@ -65,7 +65,10 @@ public class SigninController {
         HttpPost httpPost = new HttpPost("http://localhost:8080/api/v1/login/");
         httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
         //httpPost.setHeader("Authorization", "Bearer jwttoken");
-
+        
+        tfEmail.setText("janko@gmail.com");
+        pfPassword.setText("bbbbbbbb");
+        
         HttpEntity loginEntity = parser.constructLoginRequest(new LoginRequest(tfEmail.getText(), pfPassword.getText()));
 
         httpPost.setEntity(loginEntity);

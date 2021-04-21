@@ -78,6 +78,9 @@ public class SearchController implements Initializable {
 
     private void searchToursForDestination(InputEvent event, InputEventType type) {
         // Pre HttpGet nie je potrebne konstruovat Entity (XML telo request-u)
+        
+        tfDestination.setText("Holic");
+        
         HttpGet request = new HttpGet("http://localhost:8080/api/v1/search/?q=" + tfDestination.getText() + "&pageNumber=0" + "&pageSize=5");
         request.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
 

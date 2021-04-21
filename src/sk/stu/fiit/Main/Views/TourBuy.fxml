@@ -40,9 +40,9 @@
       <Label fx:id="lblPrice" layoutX="349.0" layoutY="188.0" styleClass="lbl-informations" text="Label" />
       <Label fx:id="lblRating" layoutX="359.0" layoutY="155.0" styleClass="lbl-informations" text="Label" />
       <Label layoutX="126.0" layoutY="250.0" styleClass="lbl-tour" text="Description:" />
-      <TextArea fx:id="taDescription" layoutX="218.0" layoutY="244.0" prefHeight="112.0" prefWidth="547.0" wrapText="true" />
-      <Button fx:id="btnLoad" layoutX="355.0" layoutY="525.0" mnemonicParsing="false" onMouseReleased="#handleLoadButton" styleClass="btn-load" text="Load more" />
-      <ScrollPane layoutX="104.0" layoutY="376.0" prefHeight="140.0" prefWidth="670.0" styleClass="tour-dates-wrappers">
+      <TextArea fx:id="taDescription" layoutX="218.0" layoutY="244.0" prefHeight="100.0" prefWidth="547.0" wrapText="true" />
+      <Button fx:id="btnLoad" layoutX="351.0" layoutY="535.0" mnemonicParsing="false" onMouseReleased="#handleLoadButton" styleClass="btn-load" text="Load more" />
+      <ScrollPane layoutX="99.0" layoutY="344.0" prefHeight="180.0" prefWidth="670.0" styleClass="tour-dates-wrappers">
          <content>
             <VBox fx:id="vbTourDates" prefHeight="140.0" prefWidth="650.0">
                <styleClass>

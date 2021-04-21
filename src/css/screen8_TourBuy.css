@@ -33,14 +33,14 @@
 .lbl-informations {
     -fx-font-family: "Roboto";
     -fx-font-size: 17px;
-    -fx-font-weight: regular;
+    font-weight: normal;
     -fx-text-fill: black;
 }
 
 .text-area {
     -fx-font-family: "Roboto";
     -fx-font-size: 17px;
-    -fx-font-weight: regular;
+    font-weight: normal;
     -fx-text-fill: black;
     -fx-background-insets: 0;
     -fx-background-color: white;
@@ -56,7 +56,7 @@
 
 .vbox-tourDates {
     -fx-pref-width: 650px;
-    -fx-pref-height: 140px;
+    -fx-pref-height: 180px;
     -fx-spacing: 10;
 }
 
@@ -68,8 +68,8 @@
     -fx-text-fill: #5F2EEA;
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 16px;
-    -fx-pref-height: 45px;
-    -fx-pref-width: 170px;
+    -fx-pref-height: 40px;
+    -fx-pref-width: 130px;
     -fx-background-insets: 0;
 }
 
@@ -113,7 +113,7 @@
 .lbl-informations {
     -fx-font-family: "Roboto";
     -fx-font-size: 15px;
-    -fx-font-weight: regular;
+    font-weight: normal;
     -fx-text-fill: black;
 }
 
