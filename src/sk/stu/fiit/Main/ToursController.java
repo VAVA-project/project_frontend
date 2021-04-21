@@ -32,10 +32,11 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
-import sk.stu.fiit.parsers.Responses.IResponseParser;
+import sk.stu.fiit.parsers.Requests.XMLRequestParser;
+import sk.stu.fiit.parsers.Requests.dto.SearchRequest;
 import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
+import sk.stu.fiit.parsers.Responses.V2.SearchResponses.SearchResponse;
 import sk.stu.fiit.parsers.Responses.V2.UserResponses.UserResponse;
-import sk.stu.fiit.parsers.Responses.XMLResponseParser;
 
 
 
@@ -216,19 +217,19 @@ public class ToursController implements Initializable {
             // pageNumber nemoze byt +1, pretoze uz sa zvysil pri nastavovani
             // actualPageNumber pri parsovani response. Teda pageNumber
             // uz ma pozadovanu hodnotu (o 1 vacsiu)
-            HttpGet request = new HttpGet("http://localhost:8080/api/v1/search/?q="
-                    + Singleton.getInstance().getActualDestination()
-                    + "&pageNumber=" + Singleton.getInstance().getActualPageNumber()
-                    + "&pageSize=5");
-            request.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
-
-            IResponseParser responseParser = new XMLResponseParser();
-
+            
+            SearchRequest searchRequest = new SearchRequest(Singleton.getInstance().getActualDestination(), 
+                    Singleton.getInstance().getActualPageNumber(), 5);
+            searchRequest.accept(new XMLRequestParser());
+            HttpGet request = (HttpGet) searchRequest.getRequest();
+            
             try (CloseableHttpClient httpClient = HttpClients.createDefault();
                     CloseableHttpResponse response = httpClient.execute(request)) {
 
+                SearchResponse searchResponse = (SearchResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.SEACH_RESPONSE).parse(response);
+                
                 // Ulozenie si prave nacitanych tur, pre ich zobrazenie
-                Singleton.getInstance().setTours(responseParser.parseSearchData(response).getTours());
+                Singleton.getInstance().setTours(searchResponse.getTours());
 
                 // Vlozenie prave nacitanych tur (stranky tur) do HashMapy 
                 // vsetkych stranok tur
@@ -240,6 +241,10 @@ public class ToursController implements Initializable {
                 });
             } catch (IOException ex) {
                 Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (AuthTokenExpiredException ex) {
+                Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (APIValidationException ex) {
+                Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -282,17 +287,19 @@ public class ToursController implements Initializable {
         Singleton.getInstance().getTours().clear();
         Singleton.getInstance().getTourGuides().clear();
         Singleton.getInstance().getAllPages().clear();
-
-        HttpGet request = new HttpGet("http://localhost:8080/api/v1/search/?q=" + tfDestination.getText() + "&pageNumber=0" + "&pageSize=5");
-        request.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
-
-        IResponseParser responseParser = new XMLResponseParser();
-
+        
+        SearchRequest searchRequest = new SearchRequest(tfDestination.getText(), 
+                    0, 5);
+            searchRequest.accept(new XMLRequestParser());
+            HttpGet request = (HttpGet) searchRequest.getRequest();
+        
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(request)) {
-
+            
+            SearchResponse searchResponse = (SearchResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.SEACH_RESPONSE).parse(response);
+            
             // Ulozenie si prave nacitanych tur, pre ich zobrazenie
-            Singleton.getInstance().setTours(responseParser.parseSearchData(response).getTours());
+            Singleton.getInstance().setTours(searchResponse.getTours());
             Singleton.getInstance().setActualDestination(tfDestination.getText());
 
             Singleton.getInstance().getAllPages().entrySet().forEach(entry -> {
@@ -308,6 +315,10 @@ public class ToursController implements Initializable {
 //            }
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (AuthTokenExpiredException ex) {
+            Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (APIValidationException ex) {
+            Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
