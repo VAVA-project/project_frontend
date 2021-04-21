@@ -2,7 +2,7 @@
  *  VAVA Project
  * 
  */
-package sk.stu.fiit.parsers.Responses.V2.TourDatesResponses;
+package sk.stu.fiit.parsers.Responses.V2.TourTicketsResponses;
 
 import org.apache.http.Header;
 import org.apache.http.HttpStatus;
@@ -16,24 +16,29 @@ import sk.stu.fiit.parsers.Responses.V2.Response;
  *
  * @author adamf
  */
-public class TourDatesResponseFactory implements AbstractResponseFactory<Response> {
-    
-    private TourDatesResponseFactory() {
+public class TourTicketsResponseFactory implements AbstractResponseFactory<Response> {
+
+    private TourTicketsResponseFactory() {
+
     }
-    
-    public static TourDatesResponseFactory getInstance() {
-        return new TourDatesResponseFactory();
+
+    public static TourTicketsResponseFactory getInstance() {
+        return new TourTicketsResponseFactory();
     }
-    
+
     @Override
     public Response parse(CloseableHttpResponse response) throws AuthTokenExpiredException, APIValidationException {
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_FORBIDDEN) {
+            throw new AuthTokenExpiredException();
+        }
+        
         Header header = response.getFirstHeader("Content-Type");
 
         if (header.getValue().equals("application/xml;charset=UTF-8")) {
-            return new TourDatesResponseProcessor().processResponse(response);
+            return new TourTicketsResponseProcessor().processResponse(response);
         }
 
         return null;
     }
-    
+
 }

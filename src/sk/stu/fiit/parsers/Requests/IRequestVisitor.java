@@ -10,6 +10,7 @@ import sk.stu.fiit.parsers.Requests.dto.GuideToursRequest;
 import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
 import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
 import sk.stu.fiit.parsers.Requests.dto.SearchRequest;
+import sk.stu.fiit.parsers.Requests.dto.TicketsRequest;
 import sk.stu.fiit.parsers.Requests.dto.TourDatesRequest;
 
 /**
@@ -24,5 +25,6 @@ public interface IRequestVisitor {
     public void constructGuideToursRequest(GuideToursRequest request);
     public void constructSearchRequest(SearchRequest request);
     public void constructTourDatesRequest(TourDatesRequest request);
+    public void constructTourTicketsRequest(TicketsRequest request);
     
 }

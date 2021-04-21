@@ -74,15 +74,12 @@ public class TourOfferController implements Initializable {
 
     @FXML
     private void handleBtnInterested(MouseEvent event) {
-        Singleton.getInstance().setTourBuy(tour);
-
+        Singleton.getInstance().setTourBuy(this.tour);
         getTourDates();
-
         ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/TourBuy.fxml");
     }
 
     private void setElements() {
-
         String photo = tour.getGuidePhoto();
         byte[] byteArray = Base64.getDecoder().decode(photo.replaceAll("\n", ""));
         InputStream inputStream = new ByteArrayInputStream(byteArray);
@@ -94,12 +91,10 @@ public class TourOfferController implements Initializable {
         clip.setArcWidth(30);
         clip.setArcHeight(30);
         this.photo.setClip(clip);
-
         this.lblName.setText(tour.getGuideName());
         this.lblDestination.setText(tour.getDestinationPlace());
         this.lblRating.setText(tour.getRating());
         this.lblPrice.setText(tour.getPricePerPerson());
-
     }
 
     private void getTourDates() {
@@ -113,8 +108,6 @@ public class TourOfferController implements Initializable {
                 CloseableHttpResponse response = httpClient.execute(request)) {
 
             // Ulozenie si prave nacitanych tur, pre ich zobrazenie
-            //Singleton.getInstance().setTours(responseParser.parseSearchData(response).getTours());
-            //Singleton.getInstance().setActualDestination(tfDestination.getText());
             TourDatesResponse tourDatesResponse = (TourDatesResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.TOUR_DATES_RESPONSE).parse(response);
             Singleton.getInstance().setTourDates(tourDatesResponse.getTourDates());
             
