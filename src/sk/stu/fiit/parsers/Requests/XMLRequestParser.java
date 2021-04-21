@@ -35,6 +35,7 @@ import sk.stu.fiit.Main.ProfileGuideController;
 import sk.stu.fiit.Main.Singleton;
 import sk.stu.fiit.parsers.Requests.dto.CreateTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditRequest;
+import sk.stu.fiit.parsers.Requests.dto.EditTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.GuideToursRequest;
 import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
 import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
@@ -243,7 +244,31 @@ public class XMLRequestParser implements IRequestVisitor {
 
     @Override
     public void constructCreateTourOfferRequest(CreateTourOfferRequest request) {
-        HttpPut httpPut = new HttpPut("http://localhost:8080/api/v1/tours/");
+        HttpPost httpPost = new HttpPost("http://localhost:8080/api/v1/tours/");
+        httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        httpPost.setHeader("Authorization", "Bearer " + Singleton.getInstance().
+                getJwtToken());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("startPlace", request.getStartPlace());
+        data.put("destinationPlace", request.getDestinationPlace());
+        data.put("description", request.getDescription());
+        data.put("pricePerPerson", request.getPricePerPerson());
+
+        try {
+            httpPost.setEntity(new StringEntity(this.translateToXML(
+                    "request", data)));
+        } catch (ParserConfigurationException
+                | TransformerConfigurationException
+                | UnsupportedEncodingException ex) {
+        }
+
+        request.setRequest(httpPost);
+    }
+
+    @Override
+    public void constructEditTourOfferRequest(EditTourOfferRequest request) {
+        HttpPut httpPut = new HttpPut("http://localhost:8080/api/v1/tours/" + request.getId() + "/");
         httpPut.setHeader("Content-Type", "application/xml;charset=UTF-8");
         httpPut.setHeader("Authorization", "Bearer " + Singleton.getInstance().
                 getJwtToken());
