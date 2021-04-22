@@ -22,10 +22,21 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import sk.stu.fiit.Exceptions.APIValidationException;
+import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
+import sk.stu.fiit.parsers.Requests.XMLRequestParser;
+import sk.stu.fiit.parsers.Requests.dto.TourDatesRequest;
+import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
+import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.TourDatesResponse;
 
 /**
  * FXML Controller class
@@ -56,6 +67,8 @@ public class TourBuyController implements Initializable {
     private Button btnLoad;
     @FXML
     private VBox vbTourDates;
+    @FXML
+    private Pane paneTourBuy;
 
     /**
      * Initializes the controller class.
@@ -81,7 +94,6 @@ public class TourBuyController implements Initializable {
     }
 
     private void initializeScreenWithTour() {
-
         String photo = Singleton.getInstance().getTourBuy().getGuidePhoto();
         byte[] byteArray = Base64.getDecoder().decode(photo.replaceAll("\n", ""));
         InputStream inputStream = new ByteArrayInputStream(byteArray);
@@ -93,20 +105,24 @@ public class TourBuyController implements Initializable {
         clip.setArcWidth(30);
         clip.setArcHeight(30);
         this.photo.setClip(clip);
-
         this.lblName.setText(Singleton.getInstance().getTourBuy().getGuideName());
         this.lblDestination.setText(Singleton.getInstance().getTourBuy().getDestinationPlace());
         this.lblRating.setText(Singleton.getInstance().getTourBuy().getRating());
         this.lblPrice.setText(Singleton.getInstance().getTourBuy().getPricePerPerson());
-
         this.taDescription.setText(Singleton.getInstance().getTourBuy().getDescription());
     }
 
     @FXML
     private void handleLoadButton(MouseEvent event) {
+        Singleton.getInstance().getTourDates().clear();
+        getTourDates();
+        initializeTourDates();
     }
 
     private void initializeTourDates() {
+        if (Singleton.getInstance().isAreAllTourDatesLoaded()) {
+            paneTourBuy.getChildren().remove(btnLoad);
+        }
         Singleton.getInstance().getTourDates().forEach(tourDate -> {
             try {
                 Node tourDateNode = this.loadTourDate(tourDate);
@@ -127,5 +143,30 @@ public class TourBuyController implements Initializable {
         }
         return null;
     }
+    
+    private void getTourDates() {
+        
+        TourDatesRequest tourDatesRequest = new TourDatesRequest(Singleton.getInstance().getTourBuy().getId(), Singleton.getInstance().getPageNumberToLoad());
+        tourDatesRequest.accept(new XMLRequestParser());
+        
+        HttpGet request = (HttpGet) tourDatesRequest.getRequest();
+        
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
 
+            // Ulozenie si prave nacitanych tur, pre ich zobrazenie
+            //Singleton.getInstance().setTours(responseParser.parseSearchData(response).getTours());
+            //Singleton.getInstance().setActualDestination(tfDestination.getText());
+            TourDatesResponse tourDatesResponse = (TourDatesResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.TOUR_DATES_RESPONSE).parse(response);
+            Singleton.getInstance().setTourDates(tourDatesResponse.getTourDates());
+            
+        } catch (IOException ex) {
+            Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (AuthTokenExpiredException ex) {
+            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (APIValidationException ex) {
+            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 }

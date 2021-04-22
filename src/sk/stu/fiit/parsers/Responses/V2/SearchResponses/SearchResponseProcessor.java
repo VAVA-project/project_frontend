@@ -16,6 +16,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import sk.stu.fiit.Main.Singleton;
 import sk.stu.fiit.Main.Tour;
 import sk.stu.fiit.parsers.Responses.V2.Response;
 import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
@@ -37,7 +38,7 @@ public class SearchResponseProcessor extends XMLProcessor {
     @Override
     public Response parseOK(Document document) {
         SearchResponse searchResponse = new SearchResponse();
-        
+
         try {
             XPath xPath = XPathFactory.newInstance().newXPath();
 
@@ -45,6 +46,16 @@ public class SearchResponseProcessor extends XMLProcessor {
                     "//PageImpl/content/content").evaluate(document,
                             XPathConstants.NODESET);
             System.out.println("contentList = " + contentList.getLength());
+
+            String pageNumber = (String) xPath.compile("//PageImpl/number/text()").
+                    evaluate(document, XPathConstants.STRING);
+            Singleton.getInstance().setActualPageNumber(Integer.parseInt(pageNumber) + 1);
+
+            String isPageLast = (String) xPath.compile("//PageImpl/last/text()").
+                    evaluate(document, XPathConstants.STRING);
+            if (Boolean.parseBoolean(isPageLast)) {
+                Singleton.getInstance().setLastPageNumber(Singleton.getInstance().getActualPageNumber());
+            }
 
             for (int i = 0; i < contentList.getLength(); i++) {
 
@@ -80,7 +91,7 @@ public class SearchResponseProcessor extends XMLProcessor {
             Logger.getLogger(SearchResponseProcessor.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
-        
+
         return null;
     }
 

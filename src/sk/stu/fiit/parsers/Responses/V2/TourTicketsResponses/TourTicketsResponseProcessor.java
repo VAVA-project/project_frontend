@@ -2,12 +2,9 @@
  *  VAVA Project
  * 
  */
-package sk.stu.fiit.parsers.Responses.V2.TourDatesResponses;
+package sk.stu.fiit.parsers.Responses.V2.TourTicketsResponses;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,15 +17,16 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import sk.stu.fiit.Main.Singleton;
-import sk.stu.fiit.Main.TourDate;
+import sk.stu.fiit.Main.TourTicket;
 import sk.stu.fiit.parsers.Responses.V2.Response;
+import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.TourDatesResponseProcessor;
 import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
 
 /**
  *
  * @author adamf
  */
-public class TourDatesResponseProcessor extends XMLProcessor {
+public class TourTicketsResponseProcessor extends XMLProcessor {
 
     private static final List<String> possibleValidationErrors
             = Arrays.asList("errors", "sortBy", "sortDirection", "pageNumber", "pageSize");
@@ -40,22 +38,16 @@ public class TourDatesResponseProcessor extends XMLProcessor {
 
     @Override
     public Response parseOK(Document document) {
-
-        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat format2 = new SimpleDateFormat("dd.MM.yyyy");
-
         try {
             XPath xPath = XPathFactory.newInstance().newXPath();
-            TourDatesResponse tourDatesResponse = new TourDatesResponse();
+            
+            TourTicketsResponse tourTicketsResponse = new TourTicketsResponse();
+            
             NodeList contentList = (NodeList) xPath.compile("//PageImpl/content/content").evaluate(document, XPathConstants.NODESET);
 
-            String pageNumberToLoad = (String) xPath.compile("//PageImpl/number/text()").
+            String areAllTicketsLoaded = (String) xPath.compile("//PageImpl/last/text()").
                     evaluate(document, XPathConstants.STRING);
-            Singleton.getInstance().setPageNumberToLoad(Integer.parseInt(pageNumberToLoad) + 1);
-
-            String areAllTourDatesLoaded = (String) xPath.compile("//PageImpl/last/text()").
-                    evaluate(document, XPathConstants.STRING);
-            Singleton.getInstance().setAreAllTourDatesLoaded(Boolean.parseBoolean(areAllTourDatesLoaded));
+            Singleton.getInstance().setAreAllTicketsLoaded(Boolean.parseBoolean(areAllTicketsLoaded));
 
             for (int i = 0; i < contentList.getLength(); i++) {
 
@@ -63,17 +55,14 @@ public class TourDatesResponseProcessor extends XMLProcessor {
                 Element element = (Element) node;
 
                 String id = element.getElementsByTagName("id").item(0).getTextContent();
-                Date date = format1.parse(element.getElementsByTagName("startDate").item(0).getTextContent());
-                String endDate = element.getElementsByTagName("endDate").item(0).getTextContent();
                 String createdAt = element.getElementsByTagName("createdAt").item(0).getTextContent();
-
-                tourDatesResponse.addTourDate(new TourDate(id, format2.format(date), endDate, createdAt));
-
+                String updatedAt = element.getElementsByTagName("updatedAt").item(0).getTextContent();
+                
+                tourTicketsResponse.addTourTicket(new TourTicket(id, createdAt, updatedAt));
+                
             }
-            return tourDatesResponse;
+            return tourTicketsResponse;
         } catch (XPathExpressionException ex) {
-            Logger.getLogger(TourDatesResponseProcessor.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
             Logger.getLogger(TourDatesResponseProcessor.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;

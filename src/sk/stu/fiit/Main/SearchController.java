@@ -14,7 +14,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -85,6 +84,9 @@ public class SearchController implements Initializable {
     }
 
     private void searchToursForDestination(Event event) {
+        
+        tfDestination.setText("Holic");
+        
         SearchRequest request = new SearchRequest(tfDestination.getText(), pageNumber, pageSize);
         request.accept(new XMLRequestParser());
         
@@ -94,8 +96,7 @@ public class SearchController implements Initializable {
                 CloseableHttpResponse response = httpClient.execute(getRequest)) {
 
             SearchResponse searchResponse = (SearchResponse) ResponseFactory.getFactory(
-                    ResponseFactory.ResponseFactoryType.SEACH_RESPONSE).parse(
-                            response);
+                    ResponseFactory.ResponseFactoryType.SEACH_RESPONSE).parse(response);
             
             Singleton.getInstance().setTours(searchResponse.getTours());
             ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Tours.fxml");

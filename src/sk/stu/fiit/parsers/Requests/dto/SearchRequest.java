@@ -13,12 +13,12 @@ import sk.stu.fiit.parsers.Requests.IRequestVisitor;
 public class SearchRequest extends Request {
 
     private int pageNumber = 0;
-    private int pageSize = 10;
+    private int pageSize = 5;
     
-    private String query;
+    private String destination;
     
-    public SearchRequest(String query) {
-        this.query = query;
+    public SearchRequest(String destination) {
+        this.destination = destination;
     }
 
     public SearchRequest(String query, int pageNumber, int pageSize) {
@@ -32,8 +32,8 @@ public class SearchRequest extends Request {
         visitor.constructSearchRequest(this);
     }
 
-    public String getQuery() {
-        return query;
+    public String getDestination() {
+        return destination;
     }
 
     public int getPageNumber() {

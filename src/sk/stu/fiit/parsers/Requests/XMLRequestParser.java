@@ -38,12 +38,16 @@ import sk.stu.fiit.parsers.Requests.dto.CreateTourDateRequest;
 import sk.stu.fiit.parsers.Requests.dto.CreateTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.DeleteTourDateRequest;
 import sk.stu.fiit.parsers.Requests.dto.DeleteTourOfferRequest;
+import sk.stu.fiit.parsers.Requests.dto.AddTicketToCartRequest;
+import sk.stu.fiit.parsers.Requests.dto.CheckoutTicketsInCartRequest;
+import sk.stu.fiit.parsers.Requests.dto.DeleteTicketFromCartRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.GuideToursRequest;
 import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
 import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
 import sk.stu.fiit.parsers.Requests.dto.SearchRequest;
+import sk.stu.fiit.parsers.Requests.dto.TicketsRequest;
 import sk.stu.fiit.parsers.Requests.dto.TourDatesRequest;
 
 /**
@@ -196,20 +200,16 @@ public class XMLRequestParser implements IRequestVisitor {
 
     @Override
     public void constructSearchRequest(SearchRequest request) {
-        HttpGet getRequest = new HttpGet(
-                "http://localhost:8080/api/v1/search/");
+        HttpGet getRequest = new HttpGet("http://localhost:8080/api/v1/search/");
         getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         getRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
 
         try {
             URI uri = new URIBuilder(getRequest.getURI())
-                    .addParameter("pageNumber",
-                            String.valueOf(request.getPageNumber()))
-                    .addParameter(
-                            "pageSize",
-                            String.valueOf(request.getPageSize()))
-                    .addParameter("q", request.getQuery())
+                    .addParameter("q", request.getDestination())
+                    .addParameter("pageNumber", String.valueOf(request.getPageNumber()))
+                    .addParameter("pageSize", String.valueOf(request.getPageSize()))
                     .build();
             ((HttpRequestBase) getRequest).setURI(uri);
         } catch (URISyntaxException ex) {
@@ -230,11 +230,8 @@ public class XMLRequestParser implements IRequestVisitor {
 
         try {
             URI uri = new URIBuilder(getRequest.getURI())
-                    .addParameter("pageNumber",
-                            String.valueOf(request.getPageNumber()))
-                    .addParameter(
-                            "pageSize",
-                            String.valueOf(request.getPageSize()))
+                    .addParameter("pageNumber", String.valueOf(request.getPageNumber()))
+                    .addParameter("pageSize", String.valueOf(request.getPageSize()))
                     .addParameter("sortBy", request.getSortBy())
                     .addParameter("sortDirection", request.getSortDirection())
                     .build();
@@ -301,7 +298,6 @@ public class XMLRequestParser implements IRequestVisitor {
         deleteRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         deleteRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
-
         request.setRequest(deleteRequest);
     }
 
@@ -327,7 +323,27 @@ public class XMLRequestParser implements IRequestVisitor {
 
         request.setRequest(httpPost);
     }
+	
+	@Override
+    public void constructCheckoutTicketsInCartRequest(CheckoutTicketsInCartRequest request) {
+        HttpPost postRequest = new HttpPost("http://localhost:8080/api/v1/cart/checkout/");
+        postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        postRequest.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
+        
+        Map<String, Object> data = new HashMap<>();
+        data.put("comments", request.getComment());
 
+        try {
+            postRequest.setEntity(new StringEntity(this.translateToXML(
+                    "CheckoutRequest", data)));
+        } catch (ParserConfigurationException
+                | TransformerConfigurationException
+                | UnsupportedEncodingException ex) {
+        }
+        
+        request.setRequest(postRequest);
+    }
+	
     @Override
     public void constructDeleteTourDateRequest(DeleteTourDateRequest request) {
         HttpDelete deleteRequest = new HttpDelete(
@@ -339,6 +355,43 @@ public class XMLRequestParser implements IRequestVisitor {
                 getInstance().getJwtToken());
 
         request.setRequest(deleteRequest);
+
+    }
+    
+     public void constructTourTicketsRequest(TicketsRequest request) {
+        HttpGet getRequest = new HttpGet(
+                "http://localhost:8080/api/v1/tickets/" + request.getTourDateId() + "/");
+        getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        getRequest.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
+
+        try {
+            URI uri = new URIBuilder(getRequest.getURI())
+                    .addParameter("pageNumber", String.valueOf(request.getPageNumber()))
+                    .addParameter("pageSize", String.valueOf(request.getPageSize()))
+                    .build();
+            ((HttpRequestBase) getRequest).setURI(uri);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(ProfileGuideController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+        request.setRequest(getRequest);
     }
 
+    @Override
+    public void constructAddTicketToCartRequest(AddTicketToCartRequest request) {
+        HttpPost postRequest = new HttpPost("http://localhost:8080/api/v1/cart/ticket/" + request.getId() + "/");
+        postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        postRequest.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
+
+        request.setRequest(postRequest);
+    }
+
+    @Override
+    public void constructDeleteTicketFromCartRequest(DeleteTicketFromCartRequest request) {
+        HttpDelete deleteRequest = new HttpDelete("http://localhost:8080/api/v1/cart/ticket/" + request.getId() + "/");
+        deleteRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        deleteRequest.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
+        
+        request.setRequest(deleteRequest);
+    }
 }

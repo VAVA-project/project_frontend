@@ -5,16 +5,21 @@
  */
 package sk.stu.fiit.parsers.Requests;
 
+
 import sk.stu.fiit.parsers.Requests.dto.CreateTourDateRequest;
 import sk.stu.fiit.parsers.Requests.dto.CreateTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.DeleteTourDateRequest;
 import sk.stu.fiit.parsers.Requests.dto.DeleteTourOfferRequest;
+import sk.stu.fiit.parsers.Requests.dto.AddTicketToCartRequest;
+import sk.stu.fiit.parsers.Requests.dto.CheckoutTicketsInCartRequest;
+import sk.stu.fiit.parsers.Requests.dto.DeleteTicketFromCartRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.GuideToursRequest;
 import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
 import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
 import sk.stu.fiit.parsers.Requests.dto.SearchRequest;
+import sk.stu.fiit.parsers.Requests.dto.TicketsRequest;
 import sk.stu.fiit.parsers.Requests.dto.TourDatesRequest;
 
 /**
@@ -34,5 +39,10 @@ public interface IRequestVisitor {
     public void constructDeleteTourOfferRequest(DeleteTourOfferRequest request);
     public void constructCreateTourDateRequest(CreateTourDateRequest request);
     public void constructDeleteTourDateRequest(DeleteTourDateRequest request);
+    public void constructTourTicketsRequest(TicketsRequest request);
+    public void constructAddTicketToCartRequest(AddTicketToCartRequest request);
+    public void constructDeleteTicketFromCartRequest(DeleteTicketFromCartRequest request);
+    public void constructCheckoutTicketsInCartRequest(CheckoutTicketsInCartRequest request);
+
     
 }
