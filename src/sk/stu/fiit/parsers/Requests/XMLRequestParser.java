@@ -23,6 +23,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -33,6 +34,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import sk.stu.fiit.Main.ProfileGuideController;
 import sk.stu.fiit.Main.Singleton;
+import sk.stu.fiit.parsers.Requests.dto.AddTicketToCartRequest;
+import sk.stu.fiit.parsers.Requests.dto.CheckoutTicketsInCartRequest;
+import sk.stu.fiit.parsers.Requests.dto.DeleteTicketFromCartRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditRequest;
 import sk.stu.fiit.parsers.Requests.dto.GuideToursRequest;
 import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
@@ -233,7 +237,7 @@ public class XMLRequestParser implements IRequestVisitor {
         }
         request.setRequest(getRequest);
     }
-    
+
     @Override
     public void constructTourTicketsRequest(TicketsRequest request) {
         HttpGet getRequest = new HttpGet(
@@ -252,6 +256,44 @@ public class XMLRequestParser implements IRequestVisitor {
                     log(Level.SEVERE, null, ex);
         }
         request.setRequest(getRequest);
+    }
+
+    @Override
+    public void constructAddTicketToCartRequest(AddTicketToCartRequest request) {
+        HttpPost postRequest = new HttpPost("http://localhost:8080/api/v1/cart/ticket/" + request.getId() + "/");
+        postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        postRequest.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
+
+        request.setRequest(postRequest);
+    }
+
+    @Override
+    public void constructDeleteTicketFromCartRequest(DeleteTicketFromCartRequest request) {
+        HttpDelete deleteRequest = new HttpDelete("http://localhost:8080/api/v1/cart/ticket/" + request.getId() + "/");
+        deleteRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        deleteRequest.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
+
+        request.setRequest(deleteRequest);
+    }
+
+    @Override
+    public void constructCheckoutTicketsInCartRequest(CheckoutTicketsInCartRequest request) {
+        HttpPost postRequest = new HttpPost("http://localhost:8080/api/v1/cart/checkout/");
+        postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        postRequest.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
+        
+        Map<String, Object> data = new HashMap<>();
+        data.put("comments", request.getComment());
+
+        try {
+            postRequest.setEntity(new StringEntity(this.translateToXML(
+                    "CheckoutRequest", data)));
+        } catch (ParserConfigurationException
+                | TransformerConfigurationException
+                | UnsupportedEncodingException ex) {
+        }
+        
+        request.setRequest(postRequest);
     }
 
 }

@@ -20,6 +20,12 @@ public class TourTicket {
         this.updatedAt = updatedAt;
     }
 
+    public TourTicket(TourTicket tourTicket) {
+        this.id = tourTicket.getId();
+        this.createdAt = tourTicket.getCreatedAt();
+        this.updatedAt = tourTicket.getUpdatedAt();
+    }
+    
     public String getId() {
         return id;
     }

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sk.stu.fiit.parsers.Responses.V2.AddTicketToCartResponses.AddTicketToCartResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.EditResponses.EditResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.LoginResponses.LoginResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.RegisterResponses.RegisterResponseFactory;
@@ -32,7 +33,9 @@ public class ResponseFactory {
         USER_RESPONSE,
         USER_TOURS_RESPONSE,
         TOUR_DATES_RESPONSE,
-        TOUR_TICKETS_RESPONSE
+        TOUR_TICKETS_RESPONSE,
+        ADD_TICKET_TO_CART_RESPONSE,
+        DELETE_TICKET_TO_CART_RESPONSE
     }
 
     private static final Map<ResponseFactoryType, Class<? extends AbstractResponseFactory>> registeredFactoryTypes = new HashMap<>();
@@ -54,6 +57,10 @@ public class ResponseFactory {
                 TourDatesResponseFactory.class);
         registeredFactoryTypes.put(ResponseFactoryType.TOUR_TICKETS_RESPONSE, 
                 TourTicketsResponseFactory.class);
+        registeredFactoryTypes.put(ResponseFactoryType.ADD_TICKET_TO_CART_RESPONSE, 
+                AddTicketToCartResponseFactory.class);
+        registeredFactoryTypes.put(ResponseFactoryType.DELETE_TICKET_TO_CART_RESPONSE, 
+                AddTicketToCartResponseFactory.class);
     }
 
     public static AbstractResponseFactory getFactory(ResponseFactoryType type) {

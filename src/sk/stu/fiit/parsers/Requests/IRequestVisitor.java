@@ -5,6 +5,9 @@
  */
 package sk.stu.fiit.parsers.Requests;
 
+import sk.stu.fiit.parsers.Requests.dto.AddTicketToCartRequest;
+import sk.stu.fiit.parsers.Requests.dto.CheckoutTicketsInCartRequest;
+import sk.stu.fiit.parsers.Requests.dto.DeleteTicketFromCartRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditRequest;
 import sk.stu.fiit.parsers.Requests.dto.GuideToursRequest;
 import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
@@ -26,5 +29,8 @@ public interface IRequestVisitor {
     public void constructSearchRequest(SearchRequest request);
     public void constructTourDatesRequest(TourDatesRequest request);
     public void constructTourTicketsRequest(TicketsRequest request);
+    public void constructAddTicketToCartRequest(AddTicketToCartRequest request);
+    public void constructDeleteTicketFromCartRequest(DeleteTicketFromCartRequest request);
+    public void constructCheckoutTicketsInCartRequest(CheckoutTicketsInCartRequest request);
     
 }

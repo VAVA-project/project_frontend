@@ -60,7 +60,7 @@ public class SigninController {
 
     private void signIn(MouseEvent event) {       
         
-        tfEmail.setText("janko@gmail.com");
+        tfEmail.setText("peter@gmail.com");
         pfPassword.setText("bbbbbbbb");
         
         LoginRequest loginRequest = new LoginRequest(tfEmail.getText(), pfPassword.getText());

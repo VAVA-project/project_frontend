@@ -17,10 +17,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import sk.stu.fiit.Main.Singleton;
-import sk.stu.fiit.Main.TourDate;
 import sk.stu.fiit.Main.TourTicket;
 import sk.stu.fiit.parsers.Responses.V2.Response;
-import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.TourDatesResponse;
 import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.TourDatesResponseProcessor;
 import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
 

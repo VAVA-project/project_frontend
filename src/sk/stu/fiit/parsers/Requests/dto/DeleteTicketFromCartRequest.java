@@ -10,17 +10,17 @@ import sk.stu.fiit.parsers.Requests.IRequestVisitor;
  *
  * @author adamf
  */
-public class AddTicketToCartRequest extends Request {
+public class DeleteTicketFromCartRequest extends Request {
     
     private String id;
 
-    public AddTicketToCartRequest(String id) {
+    public DeleteTicketFromCartRequest(String id) {
         this.id = id;
     }
 
     @Override
     public void accept(IRequestVisitor visitor) {
-        visitor.constructAddTicketToCartRequest(this);
+        visitor.constructDeleteTicketFromCartRequest(this);
     }
 
     public String getId() {
