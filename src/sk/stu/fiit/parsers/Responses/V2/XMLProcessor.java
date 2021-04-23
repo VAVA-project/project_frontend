@@ -82,8 +82,6 @@ public abstract class XMLProcessor implements ResponseProcessor {
             NodeList errorsList = (NodeList) xPath.compile("//APIError/errors").
                     evaluate(document, XPathConstants.NODESET);
 
-            System.out.println("Possible: " + errorsList.getLength());
-
             for (int index = 0; index < errorsList.getLength(); index++) {
                 Node errorNode = errorsList.item(index);
                 Element errorElement = (Element) errorNode;
@@ -102,10 +100,6 @@ public abstract class XMLProcessor implements ResponseProcessor {
                             errorElement.getTextContent()));
                 }
             }
-
-            System.out.println(
-                    "Found: " + validationErrors.size() + " validation errors");
-
         } catch (XPathExpressionException ex) {
             System.out.println("TODO");
             System.out.println("XPathExpressionException: " + ex.getMessage());
