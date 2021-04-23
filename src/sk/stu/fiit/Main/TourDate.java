@@ -13,10 +13,14 @@ public class TourDate {
     private String id;
     private String startDate;
     private String endDate;
+    private int numberOfSoldTickets;
+    private int numberOfTickets;
     private String createdAt;
 
-    public TourDate(String id, String startDate, String endDate, String createdAt) {
+    public TourDate(String id, int numberOfSoldTickets, int numberOfTickets, String startDate, String endDate, String createdAt) {
         this.id = id;
+        this.numberOfSoldTickets = numberOfSoldTickets;
+        this.numberOfTickets = numberOfTickets;
         this.startDate = startDate;
         this.endDate = endDate;
         this.createdAt = createdAt;
@@ -28,6 +32,14 @@ public class TourDate {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public int getNumberOfSoldTickets() {
+        return numberOfSoldTickets;
+    }
+
+    public int getNumberOfTickets() {
+        return numberOfTickets;
     }
 
     public String getStartDate() {

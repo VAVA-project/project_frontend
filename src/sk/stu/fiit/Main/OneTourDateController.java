@@ -71,7 +71,11 @@ public class OneTourDateController implements Initializable {
     }
 
     private void setElements() {
-        this.lblCapacity.setText("0/0");
+        if(this.tourDate == null) {
+            return;
+        }
+        
+        this.lblCapacity.setText(this.tourDate.getNumberOfSoldTickets() + "/" + this.tourDate.getNumberOfTickets());
         this.lblDate.setText(tourDate.getStartDate());
     }
     
