@@ -33,9 +33,11 @@ import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.AddTicketToCartRequest;
+import sk.stu.fiit.parsers.Requests.dto.DeleteCartRequest;
 import sk.stu.fiit.parsers.Requests.dto.DeleteTicketFromCartRequest;
 import sk.stu.fiit.parsers.Requests.dto.TicketsRequest;
 import sk.stu.fiit.parsers.Responses.V2.AddTicketToCartResponses.AddTicketToCartResponse;
+import sk.stu.fiit.parsers.Responses.V2.DeleteCartResponses.DeleteCartResponse;
 import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.TourTicketsResponses.TourTicketsResponse;
 
@@ -98,7 +100,8 @@ public class TourTicketsController implements Initializable {
         }
 
         this.fillLabelsWithData();
-        this.getFreeTickets((res) -> {});
+        this.getFreeTickets((res) -> {
+        });
     }
 
     @FXML
@@ -112,9 +115,9 @@ public class TourTicketsController implements Initializable {
             actual_stage.setIconified(true);
         }
         if (event.getSource().equals(btnBack)) {
+            clearCart();
             ScreenSwitcher.getScreenSwitcher().
                     switchToScreen((MouseEvent) event, "Views/TourBuy.fxml");
-            // TODO clearCart
         }
     }
 
@@ -190,13 +193,13 @@ public class TourTicketsController implements Initializable {
             this.getFreeTickets((response) -> {
                 addTicketToCart(event);
             });
-            
+
             return;
         }
 
         addTicketToCart(event);
     }
-    
+
     private void addTicketToCart(MouseEvent event) {
         CompletableFuture.supplyAsync(() -> this.sendAddTicketToCartRequest(
                 this.availableTickets.get(0))).thenAccept((result) -> {
@@ -214,7 +217,7 @@ public class TourTicketsController implements Initializable {
             updateTicketCountLabel();
         });
     }
-    
+
     @FXML
     private void handleMinusButton(MouseEvent event) {
         if (this.ticketsInCart.isEmpty()) {
@@ -314,6 +317,46 @@ public class TourTicketsController implements Initializable {
         }
         return false;
     }
+
+    private void clearCart() {
+        CompletableFuture.supplyAsync(this::sendDeleteCartRequest)
+                .thenAccept((response) -> {
+                    if (!response.isSuccess()) {
+                        Alerts.
+                                showGenericAlertError("Clear cart",
+                                        "Fatal error",
+                                        "Your cart was not successfully cleared");
+                    }
+                });
+    }
+
+    private DeleteCartResponse sendDeleteCartRequest() {
+        DeleteCartRequest request = new DeleteCartRequest();
+        request.accept(new XMLRequestParser());
+
+        HttpDelete deleteRequest = (HttpDelete) request.getRequest();
+
+        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
+                 CloseableHttpResponse response = httpClient.execute(
+                        deleteRequest)) {
+
+            return (DeleteCartResponse) ResponseFactory.getFactory(
+                    ResponseFactory.ResponseFactoryType.DELETE_CART_RESPONSE).
+                    parse(response);
+        } catch (IOException e) {
+            Logger.getLogger(TourTicketsController.class.getName()).log(
+                    Level.SEVERE, null, e);
+        } catch (AuthTokenExpiredException ex) {
+            Logger.getLogger(TourTicketsController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (APIValidationException ex) {
+            Logger.getLogger(TourTicketsController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
+
 //
 //    private void checkoutTicketsInCart() {
 //        CheckoutTicketsInCartRequest checkoutTicketsInCartRequest = new CheckoutTicketsInCartRequest(taComment.getText());
