@@ -84,9 +84,6 @@ public class SearchController implements Initializable {
     }
 
     private void searchToursForDestination(Event event) {
-        
-        tfDestination.setText("Holic");
-        
         SearchRequest request = new SearchRequest(tfDestination.getText(), pageNumber, pageSize);
         request.accept(new XMLRequestParser());
         
