@@ -10,16 +10,17 @@ import java.util.ResourceBundle;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -53,9 +54,9 @@ public class ProfileGuideController implements Initializable {
     @FXML
     private Circle btnExit;
     @FXML
-    private ListView<Node> offersList;
-    @FXML
     private Button loadMoreButton;
+    @FXML
+    private VBox vbTours;
 
     /**
      * Initializes the controller class.
@@ -160,17 +161,26 @@ public class ProfileGuideController implements Initializable {
         if (response == null) {
             return;
         }
-
-        response.getTours().forEach(tour -> {
+        
+        System.out.println("tours = " + response.getTours());
+        
+        response.getTours().stream().forEach(tour -> {
             try {
                 Node tourNode = this.loadGuideTourOfferItem(tour);
-                this.offersList.getItems().add(tourNode);
+                
+                System.out.println("ONE tour = " + tour);
+                
+                Platform.runLater(()-> this.vbTours.getChildren().add(tourNode));
+                
+                //this.vbTours.getChildren().add(tourNode);
             } catch (IOException ex) {
                 Logger.getLogger(ProfileGuideController.class.getName()).
                         log(Level.SEVERE, null, ex);
             }
 
         });
+        
+        System.out.println("VB tours children = " + vbTours.getChildren().size());
 
         this.pageNumber++;
 

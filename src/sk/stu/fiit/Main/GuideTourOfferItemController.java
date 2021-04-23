@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
@@ -28,6 +29,8 @@ public class GuideTourOfferItemController implements Initializable {
     private Label ratingLabel;
     @FXML
     private Label startPlaceLabel;
+    @FXML
+    private Button btnEdit;
     
     public GuideTourOfferItemController() {
     }
@@ -48,7 +51,6 @@ public class GuideTourOfferItemController implements Initializable {
         if(tour == null) {
             return;
         }
-        
         this.startPlaceLabel.setText(this.tour.getStartPlace());
         this.destinationLabel.setText(this.tour.getDestinationPlace());
         this.pricePerPersonLabel.setText(this.tour.getPricePerPerson());
@@ -56,7 +58,7 @@ public class GuideTourOfferItemController implements Initializable {
     }
 
     @FXML
-    private void handleEditTourOffer(MouseEvent event) {
+    private void handleEditButton(MouseEvent event) {
         System.out.println("Clicked");
     }
     

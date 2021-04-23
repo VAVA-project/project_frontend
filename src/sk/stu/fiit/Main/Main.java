@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import sk.stu.fiit.parsers.Requests.dto.EditTourOfferRequest;
 
 /**
  *
@@ -49,6 +50,12 @@ public class Main extends Application {
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setScene(scene);
         primaryStage.show();
+        
+        
+        
+        //EditTourOfferRequest request = new EditTourOfferRequest.Builder("id123").updateStartPlace("asd").build();
+        
+        
         
         root.setOnMousePressed((MouseEvent event) -> {
             xOffset = event.getSceneX();
