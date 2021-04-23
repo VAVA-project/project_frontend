@@ -90,8 +90,8 @@ public abstract class XMLProcessor implements ResponseProcessor {
                         getTagName())) {
                     continue;
                 }
-
-                if (errorElement.getChildNodes().getLength() > 0) {
+                
+                if (errorElement.getChildNodes().getLength() > 1) {
                     validationErrors.addAll(this.parseNodeList(errorElement.
                             getChildNodes(),
                             possibleValidationErrors));

@@ -237,8 +237,13 @@ public class TourTicketsController implements Initializable {
     
     @FXML
     private void handleRagisterButton(MouseEvent event) {
+        if(this.ticketsInCart.isEmpty()) {
+            Alerts.showGenericAlertError("User order", null, "Your cart is empty");
+            return;
+        }
+        
         if (checkoutTicketsInCart().isSuccess()) {
-            // TODO new screen
+            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/PostCheckout.fxml");
         } else {
             Alerts.showGenericAlertError("User oder", "Fatal error",
                     "Checkout was not successfull");
