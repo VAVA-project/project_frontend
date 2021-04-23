@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import sk.stu.fiit.parsers.Responses.V2.AddTicketToCartResponses.AddTicketToCartResponseFactory;
+import sk.stu.fiit.parsers.Responses.V2.AddTicketToCartResponses.TicketToCartResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.CheckoutTicketsInCartResponses.CheckoutTicketsInCartResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.DeleteCartResponses.DeleteCartResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.EditResponses.EditResponseFactory;
@@ -79,12 +79,10 @@ public class ResponseFactory {
                         DeleteTourDateResponseFactory.class);
         registeredFactoryTypes.put(ResponseFactoryType.TOUR_TICKETS_RESPONSE,
                 TourTicketsResponseFactory.class);
-        registeredFactoryTypes.put(
-                ResponseFactoryType.ADD_TICKET_TO_CART_RESPONSE,
-                AddTicketToCartResponseFactory.class);
-        registeredFactoryTypes.put(
-                ResponseFactoryType.DELETE_TICKET_TO_CART_RESPONSE,
-                AddTicketToCartResponseFactory.class);
+        registeredFactoryTypes.put(ResponseFactoryType.ADD_TICKET_TO_CART_RESPONSE,
+                TicketToCartResponseFactory.class);
+        registeredFactoryTypes.put(ResponseFactoryType.DELETE_TICKET_TO_CART_RESPONSE,
+                TicketToCartResponseFactory.class);
         registeredFactoryTypes.put(ResponseFactoryType.DELETE_CART_RESPONSE,
                 DeleteCartResponseFactory.class);
         registeredFactoryTypes.put(ResponseFactoryType.CHECKOUT_CART_RESPONSE,

@@ -15,13 +15,13 @@ import sk.stu.fiit.parsers.Responses.V2.Response;
  *
  * @author adamf
  */
-public class AddTicketToCartResponseFactory implements AbstractResponseFactory<Response> {
+public class TicketToCartResponseFactory implements AbstractResponseFactory<Response> {
     
-    private AddTicketToCartResponseFactory() {
+    private TicketToCartResponseFactory() {
     }
     
-    public static AddTicketToCartResponseFactory getInstance() {
-        return new AddTicketToCartResponseFactory();
+    public static TicketToCartResponseFactory getInstance() {
+        return new TicketToCartResponseFactory();
     }
     
     @Override
@@ -29,7 +29,7 @@ public class AddTicketToCartResponseFactory implements AbstractResponseFactory<R
         Header header = response.getFirstHeader("Content-Type");
         
         if(header.getValue().equals("application/xml;charset=UTF-8")) {
-            return new AddTicketToCartResponseProcessor().processResponse(response);
+            return new TicketToCartResponseProcessor().processResponse(response);
         }
         
         return null;

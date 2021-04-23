@@ -20,7 +20,7 @@ import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
  *
  * @author adamf
  */
-public class AddTicketToCartResponseProcessor extends XMLProcessor {
+public class TicketToCartResponseProcessor extends XMLProcessor {
 
     private static final List<String> possibleValidationErrors = Arrays.asList(
             "errors");
@@ -40,10 +40,10 @@ public class AddTicketToCartResponseProcessor extends XMLProcessor {
             
             System.out.println("****IN RESPONSE PROCESSOR* isTicketAddedToCart = " + isTicketAddedToCart);
             
-            return new AddTicketToCartResponse(Boolean.parseBoolean(isTicketAddedToCart));
+            return new TicketToCartResponse(Boolean.parseBoolean(isTicketAddedToCart));
             
         } catch (UnsupportedOperationException | XPathExpressionException ex) {
-            Logger.getLogger(AddTicketToCartResponseProcessor.class.getName()).
+            Logger.getLogger(TicketToCartResponseProcessor.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
 

@@ -10,11 +10,11 @@ import sk.stu.fiit.parsers.Responses.V2.Response;
  *
  * @author adamf
  */
-public class AddTicketToCartResponse extends Response {
+public class TicketToCartResponse extends Response {
     
     private boolean isTicketAddedToCart;
 
-    public AddTicketToCartResponse(boolean isTicketAddedToCart) {
+    public TicketToCartResponse(boolean isTicketAddedToCart) {
         this.isTicketAddedToCart = isTicketAddedToCart;
     }
 

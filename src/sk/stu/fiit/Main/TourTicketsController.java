@@ -38,7 +38,7 @@ import sk.stu.fiit.parsers.Requests.dto.CheckoutTicketsInCartRequest;
 import sk.stu.fiit.parsers.Requests.dto.DeleteCartRequest;
 import sk.stu.fiit.parsers.Requests.dto.DeleteTicketFromCartRequest;
 import sk.stu.fiit.parsers.Requests.dto.TicketsRequest;
-import sk.stu.fiit.parsers.Responses.V2.AddTicketToCartResponses.AddTicketToCartResponse;
+import sk.stu.fiit.parsers.Responses.V2.AddTicketToCartResponses.TicketToCartResponse;
 import sk.stu.fiit.parsers.Responses.V2.CheckoutTicketsInCartResponses.CheckoutTicketsInCartResponse;
 import sk.stu.fiit.parsers.Responses.V2.DeleteCartResponses.DeleteCartResponse;
 import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
@@ -264,7 +264,7 @@ public class TourTicketsController implements Initializable {
         try ( CloseableHttpClient httpClient = HttpClients.createDefault();
                  CloseableHttpResponse response = httpClient.execute(request)) {
             
-            AddTicketToCartResponse addTicketToCartResponse = (AddTicketToCartResponse) ResponseFactory.
+            TicketToCartResponse addTicketToCartResponse = (TicketToCartResponse) ResponseFactory.
                     getFactory(
                             ResponseFactory.ResponseFactoryType.ADD_TICKET_TO_CART_RESPONSE).
                     parse(response);
@@ -299,7 +299,7 @@ public class TourTicketsController implements Initializable {
         try ( CloseableHttpClient httpClient = HttpClients.createDefault();
                  CloseableHttpResponse response = httpClient.execute(request)) {
 
-            AddTicketToCartResponse deleteTicketFromCartResponse = (AddTicketToCartResponse) ResponseFactory.
+            TicketToCartResponse deleteTicketFromCartResponse = (TicketToCartResponse) ResponseFactory.
                     getFactory(
                             ResponseFactory.ResponseFactoryType.DELETE_TICKET_TO_CART_RESPONSE).
                     parse(response);
