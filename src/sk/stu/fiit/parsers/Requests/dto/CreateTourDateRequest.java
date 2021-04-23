@@ -17,17 +17,15 @@ public class CreateTourDateRequest extends Request {
     
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    
     private Integer numberOfTickets;
 
-    public CreateTourDateRequest(String tourOfferId, LocalDateTime startDate, LocalDateTime endDate,
-            Integer numberOfTickets) {
+    public CreateTourDateRequest(String tourOfferId, LocalDateTime startDate, LocalDateTime endDate, Integer numberOfTickets) {
         this.tourOfferId = tourOfferId;
         this.startDate = startDate;
         this.endDate = endDate;
         this.numberOfTickets = numberOfTickets;
     }
-    
+
     @Override
     public void accept(IRequestVisitor visitor) {
         visitor.constructCreateTourDateRequest(this);

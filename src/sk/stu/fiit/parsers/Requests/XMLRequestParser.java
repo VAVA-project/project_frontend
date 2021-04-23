@@ -258,12 +258,17 @@ public class XMLRequestParser implements IRequestVisitor {
 
         try {
             httpPost.setEntity(new StringEntity(this.translateToXML(
-                    "request", data)));
+                    "CreateTourOfferRequest", data)));
         } catch (ParserConfigurationException
                 | TransformerConfigurationException
                 | UnsupportedEncodingException ex) {
         }
-
+        
+        System.out.println("startPlace = " + request.getStartPlace());
+        System.out.println("destinationPlace = " + request.getDestinationPlace());
+        System.out.println("description = " + request.getDescription());
+        System.out.println("pricePerPerson = " + request.getPricePerPerson());
+        
         request.setRequest(httpPost);
     }
 
@@ -309,13 +314,18 @@ public class XMLRequestParser implements IRequestVisitor {
                 getJwtToken());
 
         Map<String, Object> data = new HashMap<>();
-        data.put("startDate", request.getStartDate());
-        data.put("endDate", request.getEndDate());
-        data.put("numberOfTickets", request.getNumberOfTickets());
-
+        data.put("endDate", request.getEndDate().toString());
+        data.put("numberOfTickets", String.valueOf(request.getNumberOfTickets()));
+        data.put("startDate", request.getStartDate().toString());
+        
+        System.out.println("TUR id = " + request.getTourOfferId());
+        System.out.println("TUR startDate = " + request.getStartDate().toString());
+        System.out.println("TUR endDate = " + request.getEndDate().toString());
+        System.out.println("TUR numberOfTickets = " + request.getNumberOfTickets());
+        
         try {
             httpPost.setEntity(new StringEntity(this.translateToXML(
-                    "request", data)));
+                    "CreateTourDateRequest", data)));
         } catch (ParserConfigurationException
                 | TransformerConfigurationException
                 | UnsupportedEncodingException ex) {

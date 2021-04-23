@@ -10,3 +10,42 @@
     -fx-pref-height: 60px;
     -fx-pref-width: 340px;
 }
+
+.text-area {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 16px;
+    font-weight: normal;
+    -fx-text-fill: black;
+    -fx-background-insets: 0;
+    -fx-background-color: transparent;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+    -fx-pref-height: 100px;
+    -fx-pref-width: 340px;
+}
+
+.text-area .content {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 16px;
+    font-weight: normal;
+    -fx-text-fill: black;
+    -fx-background-color: #EFF0F6;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+    -fx-background-insets: 0;
+    -fx-pref-height: 100px;
+    -fx-pref-width: 340px;
+}
+
+.btn-create-schedule {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14px;
+    -fx-border-color: #5F2EEA;
+    -fx-border-radius: 16px;
+    -fx-text-fill: #5F2EEA;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 35px;
+    -fx-pref-width: 150px;
+    -fx-background-insets: 0;
+}

@@ -57,6 +57,8 @@ public class ProfileGuideController implements Initializable {
     private Button loadMoreButton;
     @FXML
     private VBox vbTours;
+    @FXML
+    private Button btnCreateTour;
 
     /**
      * Initializes the controller class.
@@ -73,8 +75,7 @@ public class ProfileGuideController implements Initializable {
             System.exit(0);
         }
         if (event.getSource().equals(btnMinimize)) {
-            Stage actual_stage = (Stage) ((Circle) event.getSource()).getScene().
-                    getWindow();
+            Stage actual_stage = (Stage) ((Circle) event.getSource()).getScene().getWindow();
             actual_stage.setIconified(true);
         }
     }
@@ -100,6 +101,32 @@ public class ProfileGuideController implements Initializable {
         imageViewPhoto.setClip(clip);
     }
 
+    @FXML
+    private void handleGoToSearchScreen(MouseEvent event) {
+        ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Search.fxml");
+    }
+    
+    @FXML
+    private void handleCreateTourButton(MouseEvent event) {
+        ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/CreateTourOffer.fxml");
+    }
+    
+    @FXML
+    private void handleGoToPersonalProfileScreen(MouseEvent event) {
+        
+    }
+    
+    @FXML
+    private void handleGoToEditInformationsScreen(MouseEvent event) {
+        ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/EditAccount.fxml");
+    }
+
+    @FXML
+    private void handleGetNextPage(MouseEvent event) {
+        CompletableFuture.supplyAsync(() -> this.fetchUserTours(pageNumber,
+                pageSize)).thenAccept(this::processUsersTours);
+    }
+    
     private UserToursResponse fetchUserTours(int pageNumber, int pageSize) {
         GuideToursRequest request = new GuideToursRequest(pageNumber, pageSize);
         request.accept(new XMLRequestParser());
@@ -127,73 +154,29 @@ public class ProfileGuideController implements Initializable {
 
         return null;
     }
-
-    @FXML
-    private void handleGoToSearchScreen(MouseEvent event) {
-        ScreenSwitcher.getScreenSwitcher().switchToScreen(event,
-                "Views/Search.fxml");
-    }
-
-    @FXML
-    private void handleGoToCreateOfferScreen(MouseEvent event) {
-        ScreenSwitcher.getScreenSwitcher().switchToScreen(event,
-                "Views/CreateTourOffer.fxml");
-    }
-
-    @FXML
-    private void handleGoToPersonalProfileScreen(MouseEvent event) {
-
-    }
-
-    @FXML
-    private void handleGoToEditInformationsScreen(MouseEvent event) {
-        ScreenSwitcher.getScreenSwitcher().switchToScreen(event,
-                "Views/EditAccount.fxml");
-    }
-
-    @FXML
-    private void handleGetNextPage(MouseEvent event) {
-        CompletableFuture.supplyAsync(() -> this.fetchUserTours(pageNumber,
-                pageSize)).thenAccept(this::processUsersTours);
-    }
-
+    
     private void processUsersTours(UserToursResponse response) {
         if (response == null) {
             return;
         }
-        
-        System.out.println("tours = " + response.getTours());
-        
         response.getTours().stream().forEach(tour -> {
             try {
                 Node tourNode = this.loadGuideTourOfferItem(tour);
-                
-                System.out.println("ONE tour = " + tour);
-                
                 Platform.runLater(()-> this.vbTours.getChildren().add(tourNode));
-                
-                //this.vbTours.getChildren().add(tourNode);
             } catch (IOException ex) {
                 Logger.getLogger(ProfileGuideController.class.getName()).
                         log(Level.SEVERE, null, ex);
             }
-
         });
-        
-        System.out.println("VB tours children = " + vbTours.getChildren().size());
-
         this.pageNumber++;
-
         if (response.isLast()) {
             loadMoreButton.setDisable(true);
         }
     }
 
     private Node loadGuideTourOfferItem(Tour tour) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                "Views/GuideTourOfferItem.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/GuideTourOfferItem.fxml"));
         loader.setControllerFactory(c -> new GuideTourOfferItemController(tour));
-
         return loader.load();
     }
 

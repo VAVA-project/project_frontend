@@ -58,7 +58,7 @@ public class TourOfferResponseProcessor extends XMLProcessor {
             LocalDateTime createdAt = LocalDateTime.parse((String) xPath.
                     compile("//createdAt/text()").
                     evaluate(document, XPathConstants.STRING));
-
+            
             return new TourOfferResponse(id, creatorId, startPlace,
                     destinationPlace, description, pricePerPerson, rating,
                     createdAt);

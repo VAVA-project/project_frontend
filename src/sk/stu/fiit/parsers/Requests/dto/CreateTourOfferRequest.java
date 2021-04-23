@@ -15,7 +15,6 @@ public class CreateTourOfferRequest extends Request {
     private String startPlace;
     private String destinationPlace;
     private String description;
-    
     private double pricePerPerson;
 
     public CreateTourOfferRequest(String startPlace, String destinationPlace,
@@ -28,7 +27,7 @@ public class CreateTourOfferRequest extends Request {
 
     @Override
     public void accept(IRequestVisitor visitor) {
-        
+        visitor.constructCreateTourOfferRequest(this);
     }
 
     public String getStartPlace() {
