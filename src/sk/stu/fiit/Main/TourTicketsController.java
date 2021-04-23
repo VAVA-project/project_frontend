@@ -9,8 +9,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -29,7 +33,6 @@ import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.AddTicketToCartRequest;
-import sk.stu.fiit.parsers.Requests.dto.CheckoutTicketsInCartRequest;
 import sk.stu.fiit.parsers.Requests.dto.DeleteTicketFromCartRequest;
 import sk.stu.fiit.parsers.Requests.dto.TicketsRequest;
 import sk.stu.fiit.parsers.Responses.V2.AddTicketToCartResponses.AddTicketToCartResponse;
@@ -43,7 +46,10 @@ import sk.stu.fiit.parsers.Responses.V2.TourTicketsResponses.TourTicketsResponse
  */
 public class TourTicketsController implements Initializable {
 
+    private TourDate tourDate;
+
     private List<TourTicket> ticketsInCart;
+    private CopyOnWriteArrayList<TourTicket> availableTickets;
 
     @FXML
     private Button btnBack;
@@ -72,18 +78,27 @@ public class TourTicketsController implements Initializable {
     @FXML
     private Label lblDestination;
 
+    public TourTicketsController() {
+        this.ticketsInCart = new ArrayList<>();
+        this.availableTickets = new CopyOnWriteArrayList<>();
+    }
+
+    public TourTicketsController(TourDate tourDate) {
+        this();
+        this.tourDate = tourDate;
+    }
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initializeTicket();
-        this.ticketsInCart = new ArrayList<>();
+        if (this.tourDate == null) {
+            return;
+        }
 
-        Singleton.getInstance().getTourTickets().forEach(tourTicket -> {
-            System.out.println("tourTicket id = " + tourTicket.getId());
-        });
-
+        this.fillLabelsWithData();
+        this.getFreeTickets((res) -> {});
     }
 
     @FXML
@@ -92,189 +107,240 @@ public class TourTicketsController implements Initializable {
             System.exit(0);
         }
         if (event.getSource().equals(btnMinimize)) {
-            Stage actual_stage = (Stage) ((Circle) event.getSource()).getScene().getWindow();
+            Stage actual_stage = (Stage) ((Circle) event.getSource()).getScene().
+                    getWindow();
             actual_stage.setIconified(true);
         }
         if (event.getSource().equals(btnBack)) {
-            ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/TourBuy.fxml");
+            ScreenSwitcher.getScreenSwitcher().
+                    switchToScreen((MouseEvent) event, "Views/TourBuy.fxml");
+            // TODO clearCart
         }
     }
 
-    private void initializeTicket() {
-        lblDestination.setText(Singleton.getInstance().getTourBuy().getDestinationPlace());
-        lblStartDate.setText(Singleton.getInstance().getTourDate().getStartDate());
-        lblStartPlace.setText(Singleton.getInstance().getTourBuy().getStartPlace());
-        lblGuideName.setText(Singleton.getInstance().getTourBuy().getGuideName());
-        lblPrice.setText(Singleton.getInstance().getTourBuy().getPricePerPerson());
+    private void fillLabelsWithData() {
+        lblDestination.setText(Singleton.getInstance().getTourBuy().
+                getDestinationPlace());
+        lblStartDate.setText(this.tourDate.getStartDate());
+        lblStartPlace.setText(Singleton.getInstance().getTourBuy().
+                getStartPlace());
+        lblGuideName.
+                setText(Singleton.getInstance().getTourBuy().getGuideName());
+        lblPrice.setText(Singleton.getInstance().getTourBuy().
+                getPricePerPerson());
     }
 
-    @FXML
-    private void handlePlusButton(MouseEvent event) {
-        addTicketToCart();
+    private void getFreeTickets(Consumer<? super Void> callback) {
+        System.out.println("Fetching available tickets");
+        CompletableFuture.supplyAsync(this::fetchAvailableTickets).thenAccept(
+                this::processFetchedAvailableTickets).thenAccept(callback);
     }
 
-    @FXML
-    private void handleMinusButton(MouseEvent event) {
-        removeTicketFromCart();
-    }
-
-    @FXML
-    private void handleRagisterButton(MouseEvent event) {
-        checkoutTicketsInCart();
-    }
-
-    private void addTicketToCart() {
-
-        boolean areTicketsAvailable = true;
-
-        if (Singleton.getInstance().getTourTickets().isEmpty()
-                && Singleton.getInstance().isAreAllTicketsLoaded()) {
-            Alerts.fieldsValidation("All available tickets have been reserved");
-            areTicketsAvailable = false;
-        } else {
-            getTicketsForDate();
-        }
-
-        if (areTicketsAvailable) {
-            boolean isTicketAddedToCart = false;
-            int indexOfTicket = 0;
-
-            while (!isTicketAddedToCart && indexOfTicket < Singleton.getInstance().getTourTickets().size()) {
-                //System.out.println("ADDING THIS TICKET TO CART = " + Singleton.getInstance().getTourTickets().get(indexOfTicket));
-
-                isTicketAddedToCart = sendAddTicketToCartRequest(indexOfTicket);
-
-                //System.out.println("indexOfTicket = " + indexOfTicket);
-                //System.out.println("isTicketAddedToCart = " + isTicketAddedToCart);
-                if (isTicketAddedToCart) {
-                    this.ticketsInCart.add(new TourTicket(Singleton.getInstance().getTourTickets().get(indexOfTicket)));
-                    Singleton.getInstance().getTourTickets().remove(indexOfTicket);
-                    lblNumberOfTickets.setText(String.valueOf(Integer.parseInt(lblNumberOfTickets.getText()) + 1));
-                    //System.out.println("TICKETS IN CART:");
-                    //System.out.println("ticketsInCart = " + ticketsInCart);
-                }
-                indexOfTicket++;
-            }
-        }
-
-    }
-
-    private boolean sendAddTicketToCartRequest(int indexOfTicket) {
-        AddTicketToCartRequest addTicketToCartRequest = new AddTicketToCartRequest(Singleton.getInstance().getTourTickets().get(indexOfTicket).getId());
-        addTicketToCartRequest.accept(new XMLRequestParser());
-
-        HttpPost request = (HttpPost) addTicketToCartRequest.getRequest();
-
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                CloseableHttpResponse response = httpClient.execute(request)) {
-
-            AddTicketToCartResponse addTicketToCartResponse = (AddTicketToCartResponse) ResponseFactory.getFactory(
-                    ResponseFactory.ResponseFactoryType.ADD_TICKET_TO_CART_RESPONSE).parse(response);
-
-            return addTicketToCartResponse.isIsTicketAddedToCart();
-
-        } catch (IOException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (AuthTokenExpiredException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (APIValidationException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        }
-        return false;
-    }
-
-    private void removeTicketFromCart() {
-        if (this.ticketsInCart.isEmpty()) {
-            Alerts.fieldsValidation("Your cart is already empty");
-        } else {
-            if (sendDeleteTicketFromCartRequest()) {
-                Singleton.getInstance().getTourTickets().add(new TourTicket(this.ticketsInCart.get(0)));
-                this.ticketsInCart.remove(0);
-                lblNumberOfTickets.setText(String.valueOf(Integer.parseInt(lblNumberOfTickets.getText()) - 1));
-            }
-        }
-    }
-
-    private boolean sendDeleteTicketFromCartRequest() {
-        DeleteTicketFromCartRequest deleteTicketFromCartRequest = new DeleteTicketFromCartRequest(this.ticketsInCart.get(0).getId());
-        deleteTicketFromCartRequest.accept(new XMLRequestParser());
-
-        HttpDelete request = (HttpDelete) deleteTicketFromCartRequest.getRequest();
-
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                CloseableHttpResponse response = httpClient.execute(request)) {
-
-            // Pouzitie toho isteho Response parsera ako pri AddTicketToCart, pretoze odpoved je taka ista
-            // teda <Boolean> true/false </Boolean>
-            AddTicketToCartResponse deleteTicketFromCartResponse = (AddTicketToCartResponse) ResponseFactory.getFactory(
-                    ResponseFactory.ResponseFactoryType.DELETE_TICKET_TO_CART_RESPONSE).parse(response);
-
-            return deleteTicketFromCartResponse.isIsTicketAddedToCart();
-
-        } catch (IOException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (AuthTokenExpiredException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (APIValidationException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        }
-        return false;
-    }
-
-    private void checkoutTicketsInCart() {
-        CheckoutTicketsInCartRequest checkoutTicketsInCartRequest = new CheckoutTicketsInCartRequest(taComment.getText());
-        checkoutTicketsInCartRequest.accept(new XMLRequestParser());
-
-        HttpPost request = (HttpPost) checkoutTicketsInCartRequest.getRequest();
-
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                CloseableHttpResponse response = httpClient.execute(request)) {
-            
-            
-            
-            
-            // Pouzitie toho isteho Response parsera ako pri AddTicketToCart, pretoze odpoved je taka ista
-            // teda <Boolean> true/false </Boolean>
-            AddTicketToCartResponse deleteTicketFromCartResponse = (AddTicketToCartResponse) ResponseFactory.getFactory(
-                    ResponseFactory.ResponseFactoryType.ADD_TICKET_TO_CART_RESPONSE).parse(response);
-
-        } catch (IOException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (AuthTokenExpiredException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (APIValidationException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        }
-
-    }
-
-    private void getTicketsForDate() {
-        TicketsRequest ticketsRequest = new TicketsRequest(Singleton.getInstance().getTourDate().getId());
+    private TourTicketsResponse fetchAvailableTickets() {
+        TicketsRequest ticketsRequest = new TicketsRequest(this.tourDate.getId());
         ticketsRequest.accept(new XMLRequestParser());
 
         HttpGet request = (HttpGet) ticketsRequest.getRequest();
 
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                CloseableHttpResponse response = httpClient.execute(request)) {
+        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
+                 CloseableHttpResponse response = httpClient.execute(request)) {
 
-            // Ulozenie si prave nacitanych listkov, pre ich rezervovanie
-            TourTicketsResponse tourTicketsResponse = (TourTicketsResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.TOUR_TICKETS_RESPONSE).parse(response);
-            Singleton.getInstance().setTourTickets(tourTicketsResponse.getTourTickets());
+            System.out.println("Fetching of available tickets completed");
+
+            return (TourTicketsResponse) ResponseFactory.
+                    getFactory(
+                            ResponseFactory.ResponseFactoryType.TOUR_TICKETS_RESPONSE).
+                    parse(response);
 
         } catch (IOException ex) {
-            Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE,
+                    null, ex);
         } catch (AuthTokenExpiredException ex) {
-            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TourOfferController.class.getName()).log(
+                    Level.SEVERE, null, ex);
         } catch (APIValidationException ex) {
-            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TourOfferController.class.getName()).log(
+                    Level.SEVERE, null, ex);
         }
 
+        return null;
     }
 
+    private void processFetchedAvailableTickets(TourTicketsResponse response) {
+        if (response == null) {
+            return;
+        }
+
+        List<TourTicket> fetchedTickets = response.getTourTickets();
+
+        if (fetchedTickets.isEmpty()) {
+            Alerts.showGenericAlertError("Ticket reservation", null,
+                    "All available tickets have been reserved");
+            return;
+        }
+
+        this.availableTickets.addAll(fetchedTickets);
+        System.out.println(
+                "Fetched: " + this.availableTickets.size() + " tickets");
+    }
+
+    @FXML
+    private void handlePlusButton(MouseEvent event) {
+        if (this.availableTickets.isEmpty()) {
+            this.getFreeTickets((response) -> {
+                addTicketToCart(event);
+            });
+            
+            return;
+        }
+
+        addTicketToCart(event);
+    }
+    
+    private void addTicketToCart(MouseEvent event) {
+        CompletableFuture.supplyAsync(() -> this.sendAddTicketToCartRequest(
+                this.availableTickets.get(0))).thenAccept((result) -> {
+            if (!result) {
+                this.availableTickets.remove(0);
+                handlePlusButton(event);
+                return;
+            }
+
+            TourTicket lockedTicket = this.availableTickets.remove(0);
+            this.ticketsInCart.add(lockedTicket);
+
+            System.out.println("Locked ticket with id: " + lockedTicket.getId());
+
+            updateTicketCountLabel();
+        });
+    }
+    
+    @FXML
+    private void handleMinusButton(MouseEvent event) {
+        if (this.ticketsInCart.isEmpty()) {
+            Alerts.showGenericAlertError("Ticket reservation", null,
+                    "Your cart is already empty");
+            return;
+        }
+
+        CompletableFuture.supplyAsync(() -> this.
+                sendDeleteTicketFromCartRequest(this.ticketsInCart.get(0))).
+                thenAccept((response) -> {
+                    System.out.println("Unlock status: " + response);
+                    System.out.println(
+                            "Unlocked ticket with id: " + this.ticketsInCart.
+                                    remove(0).getId());
+                    updateTicketCountLabel();
+                });
+    }
+
+    private void updateTicketCountLabel() {
+        Platform.runLater(() -> this.lblNumberOfTickets.setText(
+                String.valueOf(this.ticketsInCart.size())));
+    }
+
+    @FXML
+    private void handleRagisterButton(MouseEvent event) {
+        //checkoutTicketsInCart();
+    }
+
+    private boolean sendAddTicketToCartRequest(TourTicket availableTicket) {
+        if (availableTicket == null) {
+            return false;
+        }
+
+        AddTicketToCartRequest addTicketToCartRequest = new AddTicketToCartRequest(
+                availableTicket.getId());
+        addTicketToCartRequest.accept(new XMLRequestParser());
+
+        HttpPost request = (HttpPost) addTicketToCartRequest.getRequest();
+
+        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
+                 CloseableHttpResponse response = httpClient.execute(request)) {
+
+            AddTicketToCartResponse addTicketToCartResponse = (AddTicketToCartResponse) ResponseFactory.
+                    getFactory(
+                            ResponseFactory.ResponseFactoryType.ADD_TICKET_TO_CART_RESPONSE).
+                    parse(response);
+
+            return addTicketToCartResponse.isIsTicketAddedToCart();
+        } catch (IOException ex) {
+            Logger.getLogger(TourTicketsController.class.getName()).log(
+                    Level.SEVERE, null, ex);
+        } catch (AuthTokenExpiredException ex) {
+            Logger.getLogger(TourTicketsController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (APIValidationException ex) {
+            Logger.getLogger(TourTicketsController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+
+        return false;
+    }
+
+    private boolean sendDeleteTicketFromCartRequest(TourTicket tourTicket) {
+        if (tourTicket == null) {
+            return false;
+        }
+
+        DeleteTicketFromCartRequest deleteTicketFromCartRequest = new DeleteTicketFromCartRequest(
+                tourTicket.getId());
+        deleteTicketFromCartRequest.accept(new XMLRequestParser());
+
+        HttpDelete request = (HttpDelete) deleteTicketFromCartRequest.
+                getRequest();
+
+        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
+                 CloseableHttpResponse response = httpClient.execute(request)) {
+
+            // Pouzitie toho isteho Response parsera ako pri AddTicketToCart, pretoze odpoved je taka ista
+            // teda <Boolean> true/false </Boolean>
+            AddTicketToCartResponse deleteTicketFromCartResponse = (AddTicketToCartResponse) ResponseFactory.
+                    getFactory(
+                            ResponseFactory.ResponseFactoryType.DELETE_TICKET_TO_CART_RESPONSE).
+                    parse(response);
+
+            return deleteTicketFromCartResponse.isIsTicketAddedToCart();
+
+        } catch (IOException ex) {
+            Logger.getLogger(TourTicketsController.class.getName()).log(
+                    Level.SEVERE, null, ex);
+        } catch (AuthTokenExpiredException ex) {
+            Logger.getLogger(TourTicketsController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (APIValidationException ex) {
+            Logger.getLogger(TourTicketsController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+//
+//    private void checkoutTicketsInCart() {
+//        CheckoutTicketsInCartRequest checkoutTicketsInCartRequest = new CheckoutTicketsInCartRequest(taComment.getText());
+//        checkoutTicketsInCartRequest.accept(new XMLRequestParser());
+//
+//        HttpPost request = (HttpPost) checkoutTicketsInCartRequest.getRequest();
+//
+//        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+//                CloseableHttpResponse response = httpClient.execute(request)) {
+//            
+//            
+//            
+//            
+//            // Pouzitie toho isteho Response parsera ako pri AddTicketToCart, pretoze odpoved je taka ista
+//            // teda <Boolean> true/false </Boolean>
+//            AddTicketToCartResponse deleteTicketFromCartResponse = (AddTicketToCartResponse) ResponseFactory.getFactory(
+//                    ResponseFactory.ResponseFactoryType.ADD_TICKET_TO_CART_RESPONSE).parse(response);
+//
+//        } catch (IOException ex) {
+//            Logger.getLogger(TourTicketsController.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (AuthTokenExpiredException ex) {
+//            Logger.getLogger(TourTicketsController.class.getName()).
+//                    log(Level.SEVERE, null, ex);
+//        } catch (APIValidationException ex) {
+//            Logger.getLogger(TourTicketsController.class.getName()).
+//                    log(Level.SEVERE, null, ex);
+//        }
+//
+//    }
 }

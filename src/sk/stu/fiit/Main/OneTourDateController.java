@@ -10,20 +10,16 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import sk.stu.fiit.Exceptions.APIValidationException;
-import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
-import sk.stu.fiit.parsers.Requests.XMLRequestParser;
-import sk.stu.fiit.parsers.Requests.dto.TicketsRequest;
-import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
-import sk.stu.fiit.parsers.Responses.V2.TourTicketsResponses.TourTicketsResponse;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -58,37 +54,25 @@ public class OneTourDateController implements Initializable {
 
     @FXML
     private void handleBuyButton(MouseEvent event) {
-        Singleton.getInstance().setTourDate(this.tourDate);
-        getTicketsForDate();
-        ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/TourTickets.fxml");
+        try {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/TourTickets.fxml"));
+            loader.setControllerFactory(c -> new TourTicketsController(this.tourDate));
+            
+            Scene scene = new Scene((Parent) loader.load());
+            scene.setFill(Color.TRANSPARENT);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(OneTourDateController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
     }
 
     private void setElements() {
         this.lblCapacity.setText("0/0");
         this.lblDate.setText(tourDate.getStartDate());
     }
-
-    private void getTicketsForDate() {
-        TicketsRequest ticketsRequest = new TicketsRequest(this.tourDate.getId());
-        ticketsRequest.accept(new XMLRequestParser());
-
-        HttpGet request = (HttpGet) ticketsRequest.getRequest();
-
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                CloseableHttpResponse response = httpClient.execute(request)) {
-
-            // Ulozenie si prave nacitanych listkov, pre ich rezervovanie
-            TourTicketsResponse tourTicketsResponse = (TourTicketsResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.TOUR_TICKETS_RESPONSE).parse(response);
-            Singleton.getInstance().setTourTickets(tourTicketsResponse.getTourTickets());
-            
-        } catch (IOException ex) {
-            Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (AuthTokenExpiredException ex) {
-            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (APIValidationException ex) {
-            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
+    
 }
