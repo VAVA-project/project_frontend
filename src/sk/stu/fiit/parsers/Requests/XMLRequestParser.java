@@ -34,13 +34,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import sk.stu.fiit.Main.ProfileGuideController;
 import sk.stu.fiit.Main.Singleton;
-import sk.stu.fiit.parsers.Requests.dto.CreateTourDateRequest;
-import sk.stu.fiit.parsers.Requests.dto.CreateTourOfferRequest;
-import sk.stu.fiit.parsers.Requests.dto.DeleteTourDateRequest;
-import sk.stu.fiit.parsers.Requests.dto.DeleteTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.AddTicketToCartRequest;
 import sk.stu.fiit.parsers.Requests.dto.CheckoutTicketsInCartRequest;
+import sk.stu.fiit.parsers.Requests.dto.CreateTourDateRequest;
+import sk.stu.fiit.parsers.Requests.dto.CreateTourOfferRequest;
+import sk.stu.fiit.parsers.Requests.dto.DeleteCartRequest;
 import sk.stu.fiit.parsers.Requests.dto.DeleteTicketFromCartRequest;
+import sk.stu.fiit.parsers.Requests.dto.DeleteTourDateRequest;
+import sk.stu.fiit.parsers.Requests.dto.DeleteTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.GuideToursRequest;
@@ -389,6 +390,15 @@ public class XMLRequestParser implements IRequestVisitor {
     @Override
     public void constructDeleteTicketFromCartRequest(DeleteTicketFromCartRequest request) {
         HttpDelete deleteRequest = new HttpDelete("http://localhost:8080/api/v1/cart/ticket/" + request.getId() + "/");
+        deleteRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        deleteRequest.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
+        
+        request.setRequest(deleteRequest);
+    }
+
+    @Override
+    public void constructDeleteCartRequest(DeleteCartRequest request) {
+        HttpDelete deleteRequest = new HttpDelete("http://localhost:8080/api/v1/cart/");
         deleteRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         deleteRequest.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
         
