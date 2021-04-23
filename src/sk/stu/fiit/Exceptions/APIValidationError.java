@@ -26,5 +26,11 @@ public class APIValidationError {
     public String getErrorMessage() {
         return errorMessage;
     }
+
+    @Override
+    public String toString() {
+        return "APIValidationError{" + "fieldName=" + fieldName + ", errorMessage=" + errorMessage + '}';
+    }
+    
     
 }

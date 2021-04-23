@@ -45,4 +45,18 @@ public class ScreenSwitcher {
             Logger.getLogger(ScreenSwitcher.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void switchToScreenConstructor(Event event, FXMLLoader loader) {
+        try {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Parent parent = loader.load();
+            Scene scene = new Scene(parent);
+            scene.setFill(Color.TRANSPARENT);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(ScreenSwitcher.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 }

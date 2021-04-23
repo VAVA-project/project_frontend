@@ -10,16 +10,17 @@ import java.util.ResourceBundle;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -53,9 +54,11 @@ public class ProfileGuideController implements Initializable {
     @FXML
     private Circle btnExit;
     @FXML
-    private ListView<Node> offersList;
-    @FXML
     private Button loadMoreButton;
+    @FXML
+    private VBox vbTours;
+    @FXML
+    private Button btnCreateTour;
 
     /**
      * Initializes the controller class.
@@ -72,8 +75,7 @@ public class ProfileGuideController implements Initializable {
             System.exit(0);
         }
         if (event.getSource().equals(btnMinimize)) {
-            Stage actual_stage = (Stage) ((Circle) event.getSource()).getScene().
-                    getWindow();
+            Stage actual_stage = (Stage) ((Circle) event.getSource()).getScene().getWindow();
             actual_stage.setIconified(true);
         }
     }
@@ -99,6 +101,32 @@ public class ProfileGuideController implements Initializable {
         imageViewPhoto.setClip(clip);
     }
 
+    @FXML
+    private void handleGoToSearchScreen(MouseEvent event) {
+        ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Search.fxml");
+    }
+    
+    @FXML
+    private void handleCreateTourButton(MouseEvent event) {
+        ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/CreateTourOffer.fxml");
+    }
+    
+    @FXML
+    private void handleGoToPersonalProfileScreen(MouseEvent event) {
+        
+    }
+    
+    @FXML
+    private void handleGoToEditInformationsScreen(MouseEvent event) {
+        ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/EditAccount.fxml");
+    }
+
+    @FXML
+    private void handleGetNextPage(MouseEvent event) {
+        CompletableFuture.supplyAsync(() -> this.fetchUserTours(pageNumber,
+                pageSize)).thenAccept(this::processUsersTours);
+    }
+    
     private UserToursResponse fetchUserTours(int pageNumber, int pageSize) {
         GuideToursRequest request = new GuideToursRequest(pageNumber, pageSize);
         request.accept(new XMLRequestParser());
@@ -126,64 +154,29 @@ public class ProfileGuideController implements Initializable {
 
         return null;
     }
-
-    @FXML
-    private void handleGoToSearchScreen(MouseEvent event) {
-        ScreenSwitcher.getScreenSwitcher().switchToScreen(event,
-                "Views/Search.fxml");
-    }
-
-    @FXML
-    private void handleGoToCreateOfferScreen(MouseEvent event) {
-        ScreenSwitcher.getScreenSwitcher().switchToScreen(event,
-                "Views/CreateTourOffer.fxml");
-    }
-
-    @FXML
-    private void handleGoToPersonalProfileScreen(MouseEvent event) {
-
-    }
-
-    @FXML
-    private void handleGoToEditInformationsScreen(MouseEvent event) {
-        ScreenSwitcher.getScreenSwitcher().switchToScreen(event,
-                "Views/EditAccount.fxml");
-    }
-
-    @FXML
-    private void handleGetNextPage(MouseEvent event) {
-        CompletableFuture.supplyAsync(() -> this.fetchUserTours(pageNumber,
-                pageSize)).thenAccept(this::processUsersTours);
-    }
-
+    
     private void processUsersTours(UserToursResponse response) {
         if (response == null) {
             return;
         }
-
-        response.getTours().forEach(tour -> {
+        response.getTours().stream().forEach(tour -> {
             try {
                 Node tourNode = this.loadGuideTourOfferItem(tour);
-                this.offersList.getItems().add(tourNode);
+                Platform.runLater(()-> this.vbTours.getChildren().add(tourNode));
             } catch (IOException ex) {
                 Logger.getLogger(ProfileGuideController.class.getName()).
                         log(Level.SEVERE, null, ex);
             }
-
         });
-
         this.pageNumber++;
-
         if (response.isLast()) {
             loadMoreButton.setDisable(true);
         }
     }
 
     private Node loadGuideTourOfferItem(Tour tour) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                "Views/GuideTourOfferItem.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/GuideTourOfferItem.fxml"));
         loader.setControllerFactory(c -> new GuideTourOfferItemController(tour));
-
         return loader.load();
     }
 

@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -14,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="border-pane" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.ProfileGuideController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="border-pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.ProfileGuideController">
    <left>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="left-pane" BorderPane.alignment="CENTER">
          <children>
@@ -31,7 +29,7 @@
             <Label fx:id="lblName" layoutX="14.0" layoutY="282.0" styleClass="lbl-name" />
             <VBox layoutX="14.0" layoutY="450.0" prefHeight="136.0" prefWidth="140.0" spacing="15.0">
                <children>
-                  <Button mnemonicParsing="false" onMouseReleased="#handleGoToCreateOfferScreen" styleClass="btn-edit-informations" text="Create offer" />
+                  <Button fx:id="btnCreateTour" mnemonicParsing="false" onMouseReleased="#handleCreateTourButton" styleClass="btn-edit-informations" text="Create tour" />
                   <Button mnemonicParsing="false" onMouseReleased="#handleGoToPersonalProfileScreen" styleClass="btn-edit-informations" text="Personal profile" />
                   <Button mnemonicParsing="false" onMouseReleased="#handleGoToEditInformationsScreen" styleClass="btn-edit-informations" text="Edit informations" />
                </children>
@@ -42,22 +40,24 @@
    <center>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="center-pane" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="88.0" layoutY="60.0" styleClass="lbl-profile" text="Profile" />
-            <ScrollPane hbarPolicy="NEVER" layoutX="88.0" layoutY="128.0" prefHeight="404.0" prefWidth="446.0" style="-fx-background-color: transparent;">
-               <content>
-                  <ListView fx:id="offersList" prefHeight="404.0" prefWidth="446.0" styleClass="offers-pane-background" />
-               </content>
-            </ScrollPane>
-            <Button fx:id="loadMoreButton" layoutX="271.0" layoutY="546.0" mnemonicParsing="false" onMouseReleased="#handleGetNextPage" styleClass="btn-page" text="Load more" />
-            <HBox layoutX="549.0" prefHeight="600.0" prefWidth="51.0" styleClass="hbox-control-buttons">
+            <Label layoutX="69.0" layoutY="41.0" styleClass="lbl-profile" text="Profile" />
+            <HBox layoutX="540.0" layoutY="7.0" styleClass="hbox-control-buttons">
                <children>
                   <Circle fx:id="btnMinimize" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize" />
                   <Circle fx:id="btnExit" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-exit" />
                </children>
-               <padding>
-                  <Insets top="10.0" />
-               </padding>
             </HBox>
+            <Pane layoutX="59.0" layoutY="113.0" prefHeight="500.0" prefWidth="450.0" styleClass="pane-wrap">
+               <children>
+                  <ScrollPane hbarPolicy="NEVER" layoutY="60.0" prefHeight="330.0" prefWidth="450.0" styleClass="scroll-vbox-tours">
+                     <content>
+                        <VBox fx:id="vbTours" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" styleClass="scroll-vbox-tours" />
+                     </content>
+                  </ScrollPane>
+                  <Label layoutX="14.0" layoutY="7.0" prefHeight="32.0" prefWidth="119.0" styleClass="lbl-my-tours" text="My tours" />
+                  <Button fx:id="loadMoreButton" layoutX="200.0" layoutY="401.0" mnemonicParsing="false" onMouseReleased="#handleGetNextPage" styleClass="btn-load-more" text="Load more" />
+               </children>
+            </Pane>
          </children>
       </Pane>
    </center>

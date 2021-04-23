@@ -16,6 +16,7 @@ import sk.stu.fiit.parsers.Responses.V2.EditResponses.EditResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.LoginResponses.LoginResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.RegisterResponses.RegisterResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.SearchResponses.SearchResponseFactory;
+import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.CreateTourDateResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.DeleteTourDateResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.TourDatesResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.DeleteTourOfferResponseFactory;
@@ -46,7 +47,8 @@ public class ResponseFactory {
         ADD_TICKET_TO_CART_RESPONSE,
         DELETE_TICKET_TO_CART_RESPONSE,
         DELETE_CART_RESPONSE,
-        CHECKOUT_CART_RESPONSE
+        CHECKOUT_CART_RESPONSE,
+        CREATE_TOUR_DATE_RESPONSE
     }
 
     private static final Map<ResponseFactoryType, Class<? extends AbstractResponseFactory>> registeredFactoryTypes = new HashMap<>();
@@ -87,6 +89,8 @@ public class ResponseFactory {
                 DeleteCartResponseFactory.class);
         registeredFactoryTypes.put(ResponseFactoryType.CHECKOUT_CART_RESPONSE,
                 CheckoutTicketsInCartResponseFactory.class);
+        registeredFactoryTypes.put(ResponseFactoryType.CREATE_TOUR_DATE_RESPONSE, 
+                CreateTourDateResponseFactory.class);
     }
 
     public static AbstractResponseFactory getFactory(ResponseFactoryType type) {

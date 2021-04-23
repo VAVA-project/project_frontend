@@ -48,7 +48,7 @@
 
 .btn-back {
     -fx-border-radius: 30px;
-    -fx-border-color: #FFFFFF;
+    -fx-border-color: white;
     -fx-background-color: transparent;
     -fx-pref-width: 45px;
     -fx-pref-height: 45px;
@@ -75,4 +75,113 @@
     -fx-font-family: "Poppins";
     -fx-text-fill: #5F2EEA;
     -fx-font-weight: bold;
+}
+
+.pane-wrap {
+    -fx-background-radius: 16px;
+    -fx-background-insets: 0;
+    -fx-background-color: #EFF0F6;
+    -fx-pref-width: 500px;
+    -fx-pref-height: 450px;
+}
+
+.scroll-vbox-tours {
+    -fx-background-radius: 16px;
+    -fx-background-insets: 0;
+    -fx-background-color: #EFF0F6;
+    -fx-pref-width: 500px;
+    -fx-pref-height: 330px;
+}
+
+.lbl-my-tours {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 20px;
+    font-weight: normal;
+    -fx-text-fill: #6E7191;
+}
+
+.pane-one-tour {
+    -fx-background-color: #D9DBE9;
+    -fx-background-radius: 32px;
+    -fx-pref-width: 400px;
+    -fx-pref-height: 110px;
+}
+
+.btn-edit {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14px;
+    -fx-border-color: #5F2EEA;
+    -fx-border-radius: 16px;
+    -fx-text-fill: #5F2EEA;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 35px;
+    -fx-pref-width: 70px;
+    -fx-background-insets: 0;
+}
+
+.lbl-informations {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
+
+.lbl-informations2 {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 15px;
+    -fx-font-weight: normal;
+    -fx-text-fill: black;
+}
+
+.btn-load-more {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14px;
+    -fx-border-color: #5F2EEA;
+    -fx-border-radius: 16px;
+    -fx-text-fill: #5F2EEA;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 35px;
+    -fx-pref-width: 100px;
+    -fx-background-insets: 0;
+}
+
+.scroll-bar:vertical .track{
+    -fx-background-color :transparent;
+    -fx-border-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-border-radius :2.0em;
+}
+
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 10.0 0.0 0.0;
+
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow{
+    -fx-shape : " ";    
+    -fx-padding :0.15em 0.0;
+}
+
+ .scroll-bar:vertical .increment-arrow,
+ .scroll-bar:vertical .decrement-arrow{
+    -fx-shape : " ";    
+    -fx-padding :0.0 0.15em;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color :derive(black,90.0%);
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color :derive(#4D4C4F,10.0%);
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
 }
