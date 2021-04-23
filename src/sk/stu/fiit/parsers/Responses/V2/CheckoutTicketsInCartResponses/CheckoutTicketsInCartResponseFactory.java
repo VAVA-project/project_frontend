@@ -36,8 +36,6 @@ public class CheckoutTicketsInCartResponseFactory implements AbstractResponseFac
         if (header.getValue().equals("application/xml;charset=UTF-8")) {
             return new CheckoutTicketsInCartResponseProcessor().processResponse(response);
         }
-        
-        
 
         return null;
     }

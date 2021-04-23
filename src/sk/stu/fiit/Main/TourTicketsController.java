@@ -29,14 +29,17 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import sk.stu.fiit.Exceptions.APIValidationError;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.AddTicketToCartRequest;
+import sk.stu.fiit.parsers.Requests.dto.CheckoutTicketsInCartRequest;
 import sk.stu.fiit.parsers.Requests.dto.DeleteCartRequest;
 import sk.stu.fiit.parsers.Requests.dto.DeleteTicketFromCartRequest;
 import sk.stu.fiit.parsers.Requests.dto.TicketsRequest;
 import sk.stu.fiit.parsers.Responses.V2.AddTicketToCartResponses.AddTicketToCartResponse;
+import sk.stu.fiit.parsers.Responses.V2.CheckoutTicketsInCartResponses.CheckoutTicketsInCartResponse;
 import sk.stu.fiit.parsers.Responses.V2.DeleteCartResponses.DeleteCartResponse;
 import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.TourTicketsResponses.TourTicketsResponse;
@@ -47,12 +50,12 @@ import sk.stu.fiit.parsers.Responses.V2.TourTicketsResponses.TourTicketsResponse
  * @author adamf
  */
 public class TourTicketsController implements Initializable {
-
+    
     private TourDate tourDate;
-
+    
     private List<TourTicket> ticketsInCart;
     private CopyOnWriteArrayList<TourTicket> availableTickets;
-
+    
     @FXML
     private Button btnBack;
     @FXML
@@ -79,12 +82,12 @@ public class TourTicketsController implements Initializable {
     private TextArea taComment;
     @FXML
     private Label lblDestination;
-
+    
     public TourTicketsController() {
         this.ticketsInCart = new ArrayList<>();
         this.availableTickets = new CopyOnWriteArrayList<>();
     }
-
+    
     public TourTicketsController(TourDate tourDate) {
         this();
         this.tourDate = tourDate;
@@ -98,12 +101,12 @@ public class TourTicketsController implements Initializable {
         if (this.tourDate == null) {
             return;
         }
-
+        
         this.fillLabelsWithData();
         this.getFreeTickets((res) -> {
         });
     }
-
+    
     @FXML
     private void handleMouseEvent(MouseEvent event) {
         if (event.getSource().equals(btnExit)) {
@@ -120,7 +123,7 @@ public class TourTicketsController implements Initializable {
                     switchToScreen((MouseEvent) event, "Views/TourBuy.fxml");
         }
     }
-
+    
     private void fillLabelsWithData() {
         lblDestination.setText(Singleton.getInstance().getTourBuy().
                 getDestinationPlace());
@@ -132,29 +135,26 @@ public class TourTicketsController implements Initializable {
         lblPrice.setText(Singleton.getInstance().getTourBuy().
                 getPricePerPerson());
     }
-
+    
     private void getFreeTickets(Consumer<? super Void> callback) {
-        System.out.println("Fetching available tickets");
         CompletableFuture.supplyAsync(this::fetchAvailableTickets).thenAccept(
                 this::processFetchedAvailableTickets).thenAccept(callback);
     }
-
+    
     private TourTicketsResponse fetchAvailableTickets() {
         TicketsRequest ticketsRequest = new TicketsRequest(this.tourDate.getId());
         ticketsRequest.accept(new XMLRequestParser());
-
+        
         HttpGet request = (HttpGet) ticketsRequest.getRequest();
-
+        
         try ( CloseableHttpClient httpClient = HttpClients.createDefault();
                  CloseableHttpResponse response = httpClient.execute(request)) {
-
-            System.out.println("Fetching of available tickets completed");
-
+            
             return (TourTicketsResponse) ResponseFactory.
                     getFactory(
                             ResponseFactory.ResponseFactoryType.TOUR_TICKETS_RESPONSE).
                     parse(response);
-
+            
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE,
                     null, ex);
@@ -165,41 +165,39 @@ public class TourTicketsController implements Initializable {
             Logger.getLogger(TourOfferController.class.getName()).log(
                     Level.SEVERE, null, ex);
         }
-
+        
         return null;
     }
-
+    
     private void processFetchedAvailableTickets(TourTicketsResponse response) {
         if (response == null) {
             return;
         }
-
+        
         List<TourTicket> fetchedTickets = response.getTourTickets();
-
+        
         if (fetchedTickets.isEmpty()) {
             Alerts.showGenericAlertError("Ticket reservation", null,
                     "All available tickets have been reserved");
             return;
         }
-
+        
         this.availableTickets.addAll(fetchedTickets);
-        System.out.println(
-                "Fetched: " + this.availableTickets.size() + " tickets");
     }
-
+    
     @FXML
     private void handlePlusButton(MouseEvent event) {
         if (this.availableTickets.isEmpty()) {
             this.getFreeTickets((response) -> {
                 addTicketToCart(event);
             });
-
+            
             return;
         }
-
+        
         addTicketToCart(event);
     }
-
+    
     private void addTicketToCart(MouseEvent event) {
         CompletableFuture.supplyAsync(() -> this.sendAddTicketToCartRequest(
                 this.availableTickets.get(0))).thenAccept((result) -> {
@@ -208,16 +206,14 @@ public class TourTicketsController implements Initializable {
                 handlePlusButton(event);
                 return;
             }
-
+            
             TourTicket lockedTicket = this.availableTickets.remove(0);
             this.ticketsInCart.add(lockedTicket);
-
-            System.out.println("Locked ticket with id: " + lockedTicket.getId());
-
+            
             updateTicketCountLabel();
         });
     }
-
+    
     @FXML
     private void handleMinusButton(MouseEvent event) {
         if (this.ticketsInCart.isEmpty()) {
@@ -225,47 +221,49 @@ public class TourTicketsController implements Initializable {
                     "Your cart is already empty");
             return;
         }
-
+        
         CompletableFuture.supplyAsync(() -> this.
                 sendDeleteTicketFromCartRequest(this.ticketsInCart.get(0))).
                 thenAccept((response) -> {
-                    System.out.println("Unlock status: " + response);
-                    System.out.println(
-                            "Unlocked ticket with id: " + this.ticketsInCart.
-                                    remove(0).getId());
+                    this.ticketsInCart.remove(0);
                     updateTicketCountLabel();
                 });
     }
-
+    
     private void updateTicketCountLabel() {
         Platform.runLater(() -> this.lblNumberOfTickets.setText(
                 String.valueOf(this.ticketsInCart.size())));
     }
-
+    
     @FXML
     private void handleRagisterButton(MouseEvent event) {
-        //checkoutTicketsInCart();
+        if (checkoutTicketsInCart().isSuccess()) {
+            // TODO new screen
+        } else {
+            Alerts.showGenericAlertError("User oder", "Fatal error",
+                    "Checkout was not successfull");
+        }
     }
-
+    
     private boolean sendAddTicketToCartRequest(TourTicket availableTicket) {
         if (availableTicket == null) {
             return false;
         }
-
+        
         AddTicketToCartRequest addTicketToCartRequest = new AddTicketToCartRequest(
                 availableTicket.getId());
         addTicketToCartRequest.accept(new XMLRequestParser());
-
+        
         HttpPost request = (HttpPost) addTicketToCartRequest.getRequest();
-
+        
         try ( CloseableHttpClient httpClient = HttpClients.createDefault();
                  CloseableHttpResponse response = httpClient.execute(request)) {
-
+            
             AddTicketToCartResponse addTicketToCartResponse = (AddTicketToCartResponse) ResponseFactory.
                     getFactory(
                             ResponseFactory.ResponseFactoryType.ADD_TICKET_TO_CART_RESPONSE).
                     parse(response);
-
+            
             return addTicketToCartResponse.isIsTicketAddedToCart();
         } catch (IOException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).log(
@@ -277,34 +275,32 @@ public class TourTicketsController implements Initializable {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
-
+        
         return false;
     }
-
+    
     private boolean sendDeleteTicketFromCartRequest(TourTicket tourTicket) {
         if (tourTicket == null) {
             return false;
         }
-
+        
         DeleteTicketFromCartRequest deleteTicketFromCartRequest = new DeleteTicketFromCartRequest(
                 tourTicket.getId());
         deleteTicketFromCartRequest.accept(new XMLRequestParser());
-
+        
         HttpDelete request = (HttpDelete) deleteTicketFromCartRequest.
                 getRequest();
-
+        
         try ( CloseableHttpClient httpClient = HttpClients.createDefault();
                  CloseableHttpResponse response = httpClient.execute(request)) {
 
-            // Pouzitie toho isteho Response parsera ako pri AddTicketToCart, pretoze odpoved je taka ista
-            // teda <Boolean> true/false </Boolean>
             AddTicketToCartResponse deleteTicketFromCartResponse = (AddTicketToCartResponse) ResponseFactory.
                     getFactory(
                             ResponseFactory.ResponseFactoryType.DELETE_TICKET_TO_CART_RESPONSE).
                     parse(response);
-
+            
             return deleteTicketFromCartResponse.isIsTicketAddedToCart();
-
+            
         } catch (IOException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).log(
                     Level.SEVERE, null, ex);
@@ -317,7 +313,7 @@ public class TourTicketsController implements Initializable {
         }
         return false;
     }
-
+    
     private void clearCart() {
         CompletableFuture.supplyAsync(this::sendDeleteCartRequest)
                 .thenAccept((response) -> {
@@ -329,17 +325,17 @@ public class TourTicketsController implements Initializable {
                     }
                 });
     }
-
+    
     private DeleteCartResponse sendDeleteCartRequest() {
         DeleteCartRequest request = new DeleteCartRequest();
         request.accept(new XMLRequestParser());
-
+        
         HttpDelete deleteRequest = (HttpDelete) request.getRequest();
-
+        
         try ( CloseableHttpClient httpClient = HttpClients.createDefault();
                  CloseableHttpResponse response = httpClient.execute(
                         deleteRequest)) {
-
+            
             return (DeleteCartResponse) ResponseFactory.getFactory(
                     ResponseFactory.ResponseFactoryType.DELETE_CART_RESPONSE).
                     parse(response);
@@ -353,37 +349,46 @@ public class TourTicketsController implements Initializable {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
-
+        
         return null;
     }
-
-//
-//    private void checkoutTicketsInCart() {
-//        CheckoutTicketsInCartRequest checkoutTicketsInCartRequest = new CheckoutTicketsInCartRequest(taComment.getText());
-//        checkoutTicketsInCartRequest.accept(new XMLRequestParser());
-//
-//        HttpPost request = (HttpPost) checkoutTicketsInCartRequest.getRequest();
-//
-//        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-//                CloseableHttpResponse response = httpClient.execute(request)) {
-//            
-//            
-//            
-//            
-//            // Pouzitie toho isteho Response parsera ako pri AddTicketToCart, pretoze odpoved je taka ista
-//            // teda <Boolean> true/false </Boolean>
-//            AddTicketToCartResponse deleteTicketFromCartResponse = (AddTicketToCartResponse) ResponseFactory.getFactory(
-//                    ResponseFactory.ResponseFactoryType.ADD_TICKET_TO_CART_RESPONSE).parse(response);
-//
-//        } catch (IOException ex) {
-//            Logger.getLogger(TourTicketsController.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (AuthTokenExpiredException ex) {
-//            Logger.getLogger(TourTicketsController.class.getName()).
-//                    log(Level.SEVERE, null, ex);
-//        } catch (APIValidationException ex) {
-//            Logger.getLogger(TourTicketsController.class.getName()).
-//                    log(Level.SEVERE, null, ex);
-//        }
-//
-//    }
+    
+    private CheckoutTicketsInCartResponse checkoutTicketsInCart() {
+        CheckoutTicketsInCartRequest checkoutTicketsInCartRequest = new CheckoutTicketsInCartRequest(
+                taComment.getText());
+        checkoutTicketsInCartRequest.accept(new XMLRequestParser());
+        
+        HttpPost request = (HttpPost) checkoutTicketsInCartRequest.getRequest();
+        
+        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
+                 CloseableHttpResponse response = httpClient.execute(request)) {
+            
+            return (CheckoutTicketsInCartResponse) ResponseFactory.getFactory(
+                    ResponseFactory.ResponseFactoryType.CHECKOUT_CART_RESPONSE).
+                    parse(response);
+        } catch (IOException ex) {
+            Logger.getLogger(TourTicketsController.class.getName()).log(
+                    Level.SEVERE, null, ex);
+        } catch (AuthTokenExpiredException ex) {
+            Logger.getLogger(TourTicketsController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (APIValidationException ex) {
+            Logger.getLogger(TourTicketsController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+            handleExpiredTicketsError(ex);
+        }
+        
+        return null;
+    }
+    
+    private void handleExpiredTicketsError(APIValidationException e) {
+        List<APIValidationError> errors = e.getValidationErrors();
+        
+        errors.stream().forEach(error -> {
+            this.ticketsInCart.removeIf(ticket -> ticket.getId().equals(
+                    error.getErrorMessage()));
+        });
+        
+        this.updateTicketCountLabel();
+    }
 }
