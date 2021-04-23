@@ -39,7 +39,9 @@ public class Singleton {
     private Singleton() {
         this.lastPageNumber = -1;
         this.tourGuides = new ArrayList<>();
+        this.tours = new ArrayList<>();
         this.allPages = new HashMap<>();
+        this.tourDates = new ArrayList<>();
     }
 
     public static Singleton getInstance() {
@@ -47,6 +49,22 @@ public class Singleton {
             instance = new Singleton();
         }
         return instance;
+    }
+    
+    public void clearTourBuy() {
+        this.tourBuy = null;
+        this.areAllTourDatesLoaded = false;
+        this.pageNumberToLoad = 0;
+        this.tourDates.clear();
+    }
+    
+    public void clearTours() {
+        this.actualDestination = null;
+        this.lastPageNumber = 0;
+        this.actualPageNumber = 0;
+        this.tours.clear();
+        this.tourGuides.clear();
+        this.allPages.clear();
     }
 
     public String getJwtToken() {
