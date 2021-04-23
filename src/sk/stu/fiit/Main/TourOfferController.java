@@ -110,7 +110,6 @@ public class TourOfferController implements Initializable {
             // Ulozenie si prave nacitanych tur, pre ich zobrazenie
             TourDatesResponse tourDatesResponse = (TourDatesResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.TOUR_DATES_RESPONSE).parse(response);
             Singleton.getInstance().setTourDates(tourDatesResponse.getTourDates());
-            
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (AuthTokenExpiredException ex) {
@@ -121,28 +120,3 @@ public class TourOfferController implements Initializable {
     }
 
 }
-
-/*
-    private void getTourDates() {
-        
-        HttpGet request = new HttpGet("http://localhost:8080/api/v1/tours/" 
-                + Singleton.getInstance().getTourBuy().getId()
-                + "/dates/?pageNumber=0&pageSize=5&sortBy=createdAt&sortDirection=ASC");
-        request.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
-
-        IResponseParser responseParser = new XMLResponseParser();
-
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                CloseableHttpResponse response = httpClient.execute(request)) {
-
-            // Ulozenie si prave nacitanych tur, pre ich zobrazenie
-            //Singleton.getInstance().setTours(responseParser.parseSearchData(response).getTours());
-            //Singleton.getInstance().setActualDestination(tfDestination.getText());
-            
-            Singleton.getInstance().setTourDates(responseParser.parseTourDates(response).getTourDates());
-            
-        } catch (IOException ex) {
-            Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-*/

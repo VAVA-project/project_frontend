@@ -14,13 +14,15 @@ import sk.stu.fiit.parsers.Responses.V2.Response;
  * @author adamf
  */
 public class TourTicketsResponse extends Response {
-    
-    private List<TourTicket> tourTickets;
 
-    public TourTicketsResponse() {
+    private List<TourTicket> tourTickets;
+    private boolean isLast;
+
+    public TourTicketsResponse(boolean isLast) {
         this.tourTickets = new ArrayList<>();
+        this.isLast = isLast;
     }
-    
+
     public void addTourTicket(TourTicket tourTicket) {
         this.tourTickets.add(tourTicket);
     }
@@ -28,5 +30,9 @@ public class TourTicketsResponse extends Response {
     public List<TourTicket> getTourTickets() {
         return tourTickets;
     }
-    
+
+    public boolean isLast() {
+        return isLast;
+    }
+
 }

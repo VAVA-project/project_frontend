@@ -33,7 +33,7 @@ import sk.stu.fiit.parsers.Responses.V2.RegisterResponses.RegisterResponseProces
  * @author Adam Bublavý
  */
 public abstract class XMLProcessor implements ResponseProcessor {
-    
+
     @Override
     public Response processResponse(CloseableHttpResponse response) throws
             AuthTokenExpiredException, APIValidationException {
@@ -41,7 +41,7 @@ public abstract class XMLProcessor implements ResponseProcessor {
         int statusCode = response.getStatusLine().getStatusCode();
 
         Document document = null;
-        
+
         try {
             document = DocumentBuilderFactory.newInstance().
                     newDocumentBuilder().
@@ -67,8 +67,9 @@ public abstract class XMLProcessor implements ResponseProcessor {
 
         return null;
     }
-    
+
     public abstract List<String> getPossibleValidationErrors();
+
     public abstract Response parseOK(Document document);
 
     public List<APIValidationError> parseValidationErrors(Document document,
@@ -89,15 +90,44 @@ public abstract class XMLProcessor implements ResponseProcessor {
                         getTagName())) {
                     continue;
                 }
-
-                validationErrors.add(new APIValidationError(errorElement.
-                        getTagName(),
-                        errorElement.getTextContent()));
+                
+                if (errorElement.getChildNodes().getLength() > 1) {
+                    validationErrors.addAll(this.parseNodeList(errorElement.
+                            getChildNodes(),
+                            possibleValidationErrors));
+                } else {
+                    validationErrors.add(new APIValidationError(errorElement.getTagName(),
+                            errorElement.getTextContent()));
+                }
             }
-
         } catch (XPathExpressionException ex) {
             System.out.println("TODO");
             System.out.println("XPathExpressionException: " + ex.getMessage());
+        }
+
+        return validationErrors;
+    }
+
+    private List<APIValidationError> parseNodeList(NodeList nodeList,
+            List<String> possibleValidationErrors) {
+        if (nodeList == null) {
+            return null;
+        }
+
+        List<APIValidationError> validationErrors = new ArrayList<>();
+
+        for (int index = 0; index < nodeList.getLength(); index++) {
+            Node errorNode = nodeList.item(index);
+            Element errorElement = (Element) errorNode;
+
+            if (!possibleValidationErrors.contains(errorElement.
+                    getTagName())) {
+                continue;
+            }
+
+            validationErrors.add(new APIValidationError(errorElement.
+                    getTagName(),
+                    errorElement.getTextContent()));
         }
 
         return validationErrors;

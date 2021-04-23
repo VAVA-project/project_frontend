@@ -36,17 +36,12 @@ public class Singleton {
     private int pageNumberToLoad;
     private List<TourDate> tourDates;
     
-    // Data pre obrazovku TourTickets
-    private TourDate tourDate;
-    private boolean AreAllTicketsLoaded;
-    private List<TourTicket> tourTickets;
-    
-    
-
     private Singleton() {
         this.lastPageNumber = -1;
         this.tourGuides = new ArrayList<>();
+        this.tours = new ArrayList<>();
         this.allPages = new HashMap<>();
+        this.tourDates = new ArrayList<>();
     }
 
     public static Singleton getInstance() {
@@ -54,6 +49,22 @@ public class Singleton {
             instance = new Singleton();
         }
         return instance;
+    }
+    
+    public void clearTourBuy() {
+        this.tourBuy = null;
+        this.areAllTourDatesLoaded = false;
+        this.pageNumberToLoad = 0;
+        this.tourDates.clear();
+    }
+    
+    public void clearTours() {
+        this.actualDestination = null;
+        this.lastPageNumber = 0;
+        this.actualPageNumber = 0;
+        this.tours.clear();
+        this.tourGuides.clear();
+        this.allPages.clear();
     }
 
     public String getJwtToken() {
@@ -150,30 +161,6 @@ public class Singleton {
 
     public void setTourDates(List<TourDate> tourDates) {
         this.tourDates = tourDates;
-    }
-
-    public TourDate getTourDate() {
-        return tourDate;
-    }
-
-    public void setTourDate(TourDate tourDate) {
-        this.tourDate = tourDate;
-    }
-
-    public boolean isAreAllTicketsLoaded() {
-        return AreAllTicketsLoaded;
-    }
-
-    public void setAreAllTicketsLoaded(boolean AreAllTicketsLoaded) {
-        this.AreAllTicketsLoaded = AreAllTicketsLoaded;
-    }
-
-    public List<TourTicket> getTourTickets() {
-        return tourTickets;
-    }
-
-    public void setTourTickets(List<TourTicket> tourTickets) {
-        this.tourTickets = tourTickets;
     }
     
     // Metoda ktora skopiruje aktualnu page (tury na stranke) a vlozi ju do 

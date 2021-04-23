@@ -2,19 +2,19 @@
  *  VAVA Project
  * 
  */
-package sk.stu.fiit.parsers.Responses.V2.CheckoutTicketsInCartResponses;
+package sk.stu.fiit.parsers.Responses.V2.DeleteCartResponses;
 
 import sk.stu.fiit.parsers.Responses.V2.Response;
 
 /**
  *
- * @author adamf
+ * @author Adam Bublavý
  */
-public class CheckoutTicketsInCartResponse extends Response {
+public class DeleteCartResponse extends Response {
     
     private boolean success;
 
-    public CheckoutTicketsInCartResponse(boolean success) {
+    public DeleteCartResponse(boolean success) {
         this.success = success;
     }
 

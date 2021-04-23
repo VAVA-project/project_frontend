@@ -16,7 +16,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import sk.stu.fiit.Main.Singleton;
 import sk.stu.fiit.Main.TourTicket;
 import sk.stu.fiit.parsers.Responses.V2.Response;
 import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.TourDatesResponseProcessor;
@@ -27,45 +26,57 @@ import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
  * @author adamf
  */
 public class TourTicketsResponseProcessor extends XMLProcessor {
-
+    
     private static final List<String> possibleValidationErrors
-            = Arrays.asList("errors", "sortBy", "sortDirection", "pageNumber", "pageSize");
-
+            = Arrays.asList("errors", "sortBy", "sortDirection", "pageNumber",
+                    "pageSize");
+    
     @Override
     public List<String> getPossibleValidationErrors() {
         return possibleValidationErrors;
     }
-
+    
     @Override
     public Response parseOK(Document document) {
         try {
             XPath xPath = XPathFactory.newInstance().newXPath();
             
-            TourTicketsResponse tourTicketsResponse = new TourTicketsResponse();
+            NodeList contentList = (NodeList) xPath.compile(
+                    "//PageImpl/content/content").evaluate(document,
+                            XPathConstants.NODESET);
             
-            NodeList contentList = (NodeList) xPath.compile("//PageImpl/content/content").evaluate(document, XPathConstants.NODESET);
-
-            String areAllTicketsLoaded = (String) xPath.compile("//PageImpl/last/text()").
+            String areAllTicketsLoaded = (String) xPath.compile(
+                    "//PageImpl/last/text()").
                     evaluate(document, XPathConstants.STRING);
-            Singleton.getInstance().setAreAllTicketsLoaded(Boolean.parseBoolean(areAllTicketsLoaded));
-
+            
+            TourTicketsResponse tourTicketsResponse = new TourTicketsResponse(
+                    Boolean.valueOf(areAllTicketsLoaded));
+            
             for (int i = 0; i < contentList.getLength(); i++) {
-
+                
                 Node node = contentList.item(i);
                 Element element = (Element) node;
-
-                String id = element.getElementsByTagName("id").item(0).getTextContent();
-                String createdAt = element.getElementsByTagName("createdAt").item(0).getTextContent();
-                String updatedAt = element.getElementsByTagName("updatedAt").item(0).getTextContent();
                 
-                tourTicketsResponse.addTourTicket(new TourTicket(id, createdAt, updatedAt));
+                String id = element.getElementsByTagName("id").item(0).
+                        getTextContent();
+                String createdAt = element.getElementsByTagName("createdAt").
+                        item(0).getTextContent();
+                String updatedAt = element.getElementsByTagName("updatedAt").
+                        item(0).getTextContent();
+                
+                tourTicketsResponse.addTourTicket(new TourTicket(id, createdAt,
+                        updatedAt));
                 
             }
+            
+            System.out.println("Parsed " + tourTicketsResponse.getTourTickets().size() + " tickets");
+            
             return tourTicketsResponse;
         } catch (XPathExpressionException ex) {
-            Logger.getLogger(TourDatesResponseProcessor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TourDatesResponseProcessor.class.getName()).log(
+                    Level.SEVERE, null, ex);
         }
         return null;
     }
-
+    
 }

@@ -17,7 +17,7 @@ import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
 public class CheckoutTicketsInCartResponseProcessor extends XMLProcessor {
 
     private static final List<String> possibleValidationErrors = Arrays.asList(
-            "errors");
+            "errors", "ticket");
 
     @Override
     public List<String> getPossibleValidationErrors() {
@@ -26,7 +26,7 @@ public class CheckoutTicketsInCartResponseProcessor extends XMLProcessor {
 
     @Override
     public Response parseOK(Document document) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new CheckoutTicketsInCartResponse(true);
     }
     
 }

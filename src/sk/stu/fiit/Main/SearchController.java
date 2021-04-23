@@ -58,7 +58,8 @@ public class SearchController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        Singleton.getInstance().clearTours();
+        Singleton.getInstance().clearTourBuy();
     }
 
     @FXML
@@ -84,9 +85,6 @@ public class SearchController implements Initializable {
     }
 
     private void searchToursForDestination(Event event) {
-        
-        tfDestination.setText("Holic");
-        
         SearchRequest request = new SearchRequest(tfDestination.getText(), pageNumber, pageSize);
         request.accept(new XMLRequestParser());
         
