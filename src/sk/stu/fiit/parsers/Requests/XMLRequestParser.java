@@ -6,7 +6,6 @@
 package sk.stu.fiit.parsers.Requests;
 
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.format.DateTimeFormatter;
@@ -56,6 +55,8 @@ import sk.stu.fiit.parsers.Requests.dto.TourDatesRequest;
  * @author Adam Bublavý
  */
 public class XMLRequestParser implements IRequestVisitor {
+
+    private static final String CHARSET = "UTF-8";
 
     private Document createNewDocument() throws ParserConfigurationException {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.
@@ -123,10 +124,9 @@ public class XMLRequestParser implements IRequestVisitor {
 
         try {
             postRequest.setEntity(new StringEntity(this.translateToXML(
-                    "registerRequest", data)));
+                    "registerRequest", data), CHARSET));
         } catch (ParserConfigurationException
-                | TransformerConfigurationException
-                | UnsupportedEncodingException ex) {
+                | TransformerConfigurationException ex) {
         }
 
         request.setRequest(postRequest);
@@ -144,10 +144,9 @@ public class XMLRequestParser implements IRequestVisitor {
 
         try {
             postRequest.setEntity(new StringEntity(this.translateToXML(
-                    "loginRequest", data)));
+                    "loginRequest", data), CHARSET));
         } catch (ParserConfigurationException
-                | TransformerConfigurationException
-                | UnsupportedEncodingException ex) {
+                | TransformerConfigurationException ex) {
         }
 
         request.setRequest(postRequest);
@@ -168,10 +167,9 @@ public class XMLRequestParser implements IRequestVisitor {
 
         try {
             httpPut.setEntity(new StringEntity(this.translateToXML(
-                    "updateRequest", data)));
+                    "updateRequest", data), CHARSET));
         } catch (ParserConfigurationException
-                | TransformerConfigurationException
-                | UnsupportedEncodingException ex) {
+                | TransformerConfigurationException ex) {
         }
 
         request.setRequest(httpPut);
@@ -209,8 +207,10 @@ public class XMLRequestParser implements IRequestVisitor {
         try {
             URI uri = new URIBuilder(getRequest.getURI())
                     .addParameter("q", request.getDestination())
-                    .addParameter("pageNumber", String.valueOf(request.getPageNumber()))
-                    .addParameter("pageSize", String.valueOf(request.getPageSize()))
+                    .addParameter("pageNumber", String.valueOf(request.
+                            getPageNumber()))
+                    .addParameter("pageSize", String.valueOf(request.
+                            getPageSize()))
                     .build();
             ((HttpRequestBase) getRequest).setURI(uri);
         } catch (URISyntaxException ex) {
@@ -231,8 +231,10 @@ public class XMLRequestParser implements IRequestVisitor {
 
         try {
             URI uri = new URIBuilder(getRequest.getURI())
-                    .addParameter("pageNumber", String.valueOf(request.getPageNumber()))
-                    .addParameter("pageSize", String.valueOf(request.getPageSize()))
+                    .addParameter("pageNumber", String.valueOf(request.
+                            getPageNumber()))
+                    .addParameter("pageSize", String.valueOf(request.
+                            getPageSize()))
                     .addParameter("sortBy", request.getSortBy())
                     .addParameter("sortDirection", request.getSortDirection())
                     .build();
@@ -259,23 +261,24 @@ public class XMLRequestParser implements IRequestVisitor {
 
         try {
             httpPost.setEntity(new StringEntity(this.translateToXML(
-                    "CreateTourOfferRequest", data)));
+                    "CreateTourOfferRequest", data), CHARSET));
         } catch (ParserConfigurationException
-                | TransformerConfigurationException
-                | UnsupportedEncodingException ex) {
+                | TransformerConfigurationException ex) {
         }
-        
+
         System.out.println("startPlace = " + request.getStartPlace());
-        System.out.println("destinationPlace = " + request.getDestinationPlace());
+        System.out.
+                println("destinationPlace = " + request.getDestinationPlace());
         System.out.println("description = " + request.getDescription());
         System.out.println("pricePerPerson = " + request.getPricePerPerson());
-        
+
         request.setRequest(httpPost);
     }
 
     @Override
     public void constructEditTourOfferRequest(EditTourOfferRequest request) {
-        HttpPut httpPut = new HttpPut("http://localhost:8080/api/v1/tours/" + request.getId() + "/");
+        HttpPut httpPut = new HttpPut(
+                "http://localhost:8080/api/v1/tours/" + request.getId() + "/");
         httpPut.setHeader("Content-Type", "application/xml;charset=UTF-8");
         httpPut.setHeader("Authorization", "Bearer " + Singleton.getInstance().
                 getJwtToken());
@@ -288,10 +291,9 @@ public class XMLRequestParser implements IRequestVisitor {
 
         try {
             httpPut.setEntity(new StringEntity(this.translateToXML(
-                    "request", data)));
+                    "request", data), CHARSET));
         } catch (ParserConfigurationException
-                | TransformerConfigurationException
-                | UnsupportedEncodingException ex) {
+                | TransformerConfigurationException ex) {
         }
 
         request.setRequest(httpPut);
@@ -309,58 +311,64 @@ public class XMLRequestParser implements IRequestVisitor {
 
     @Override
     public void constructCreateTourDateRequest(CreateTourDateRequest request) {
-        HttpPost httpPost = new HttpPost("http://localhost:8080/api/v1/tours/" + request.getTourOfferId() + "/dates/");
+        HttpPost httpPost = new HttpPost(
+                "http://localhost:8080/api/v1/tours/" + request.getTourOfferId() + "/dates/");
         httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
         httpPost.setHeader("Authorization", "Bearer " + Singleton.getInstance().
                 getJwtToken());
 
         Map<String, Object> data = new HashMap<>();
         data.put("endDate", request.getEndDate().toString());
-        data.put("numberOfTickets", String.valueOf(request.getNumberOfTickets()));
+        data.
+                put("numberOfTickets", String.valueOf(request.
+                        getNumberOfTickets()));
         data.put("startDate", request.getStartDate().toString());
-        
+
         System.out.println("TUR id = " + request.getTourOfferId());
-        System.out.println("TUR startDate = " + request.getStartDate().toString());
+        System.out.println("TUR startDate = " + request.getStartDate().
+                toString());
         System.out.println("TUR endDate = " + request.getEndDate().toString());
-        System.out.println("TUR numberOfTickets = " + request.getNumberOfTickets());
-        
+        System.out.println("TUR numberOfTickets = " + request.
+                getNumberOfTickets());
+
         try {
             httpPost.setEntity(new StringEntity(this.translateToXML(
-                    "CreateTourDateRequest", data)));
+                    "CreateTourDateRequest", data), CHARSET));
         } catch (ParserConfigurationException
-                | TransformerConfigurationException
-                | UnsupportedEncodingException ex) {
+                | TransformerConfigurationException ex) {
         }
 
         request.setRequest(httpPost);
     }
-	
-	@Override
-    public void constructCheckoutTicketsInCartRequest(CheckoutTicketsInCartRequest request) {
-        HttpPost postRequest = new HttpPost("http://localhost:8080/api/v1/cart/checkout/");
+
+    @Override
+    public void constructCheckoutTicketsInCartRequest(
+            CheckoutTicketsInCartRequest request) {
+        HttpPost postRequest = new HttpPost(
+                "http://localhost:8080/api/v1/cart/checkout/");
         postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
-        postRequest.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
-        
+        postRequest.setHeader("Authorization", "Bearer " + Singleton.
+                getInstance().getJwtToken());
+
         Map<String, Object> data = new HashMap<>();
         data.put("comments", request.getComment());
 
         try {
             postRequest.setEntity(new StringEntity(this.translateToXML(
-                    "CheckoutRequest", data)));
+                    "CheckoutRequest", data), CHARSET));
         } catch (ParserConfigurationException
-                | TransformerConfigurationException
-                | UnsupportedEncodingException ex) {
+                | TransformerConfigurationException ex) {
         }
-        
+
         request.setRequest(postRequest);
     }
-	
+
     @Override
     public void constructDeleteTourDateRequest(DeleteTourDateRequest request) {
         HttpDelete deleteRequest = new HttpDelete(
-                "http://localhost:8080/api/v1/tours/" 
-                        + request.getTourOfferId() + "/dates/"
-                        + request.getTourDateId() + "/");
+                "http://localhost:8080/api/v1/tours/"
+                + request.getTourOfferId() + "/dates/"
+                + request.getTourDateId() + "/");
         deleteRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         deleteRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
@@ -368,17 +376,22 @@ public class XMLRequestParser implements IRequestVisitor {
         request.setRequest(deleteRequest);
 
     }
-    
-     public void constructTourTicketsRequest(TicketsRequest request) {
+
+    @Override
+    public void constructTourTicketsRequest(TicketsRequest request) {
         HttpGet getRequest = new HttpGet(
-                "http://localhost:8080/api/v1/tickets/" + request.getTourDateId() + "/");
+                "http://localhost:8080/api/v1/tickets/" + request.
+                        getTourDateId() + "/");
         getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
-        getRequest.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
+        getRequest.setHeader("Authorization", "Bearer " + Singleton.
+                getInstance().getJwtToken());
 
         try {
             URI uri = new URIBuilder(getRequest.getURI())
-                    .addParameter("pageNumber", String.valueOf(request.getPageNumber()))
-                    .addParameter("pageSize", String.valueOf(request.getPageSize()))
+                    .addParameter("pageNumber", String.valueOf(request.
+                            getPageNumber()))
+                    .addParameter("pageSize", String.valueOf(request.
+                            getPageSize()))
                     .build();
             ((HttpRequestBase) getRequest).setURI(uri);
         } catch (URISyntaxException ex) {
@@ -390,28 +403,35 @@ public class XMLRequestParser implements IRequestVisitor {
 
     @Override
     public void constructAddTicketToCartRequest(AddTicketToCartRequest request) {
-        HttpPost postRequest = new HttpPost("http://localhost:8080/api/v1/cart/ticket/" + request.getId() + "/");
+        HttpPost postRequest = new HttpPost(
+                "http://localhost:8080/api/v1/cart/ticket/" + request.getId() + "/");
         postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
-        postRequest.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
+        postRequest.setHeader("Authorization", "Bearer " + Singleton.
+                getInstance().getJwtToken());
 
         request.setRequest(postRequest);
     }
 
     @Override
-    public void constructDeleteTicketFromCartRequest(DeleteTicketFromCartRequest request) {
-        HttpDelete deleteRequest = new HttpDelete("http://localhost:8080/api/v1/cart/ticket/" + request.getId() + "/");
+    public void constructDeleteTicketFromCartRequest(
+            DeleteTicketFromCartRequest request) {
+        HttpDelete deleteRequest = new HttpDelete(
+                "http://localhost:8080/api/v1/cart/ticket/" + request.getId() + "/");
         deleteRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
-        deleteRequest.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
-        
+        deleteRequest.setHeader("Authorization", "Bearer " + Singleton.
+                getInstance().getJwtToken());
+
         request.setRequest(deleteRequest);
     }
 
     @Override
     public void constructDeleteCartRequest(DeleteCartRequest request) {
-        HttpDelete deleteRequest = new HttpDelete("http://localhost:8080/api/v1/cart/");
+        HttpDelete deleteRequest = new HttpDelete(
+                "http://localhost:8080/api/v1/cart/");
         deleteRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
-        deleteRequest.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
-        
+        deleteRequest.setHeader("Authorization", "Bearer " + Singleton.
+                getInstance().getJwtToken());
+
         request.setRequest(deleteRequest);
     }
 }
