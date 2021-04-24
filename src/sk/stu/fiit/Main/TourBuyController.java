@@ -162,8 +162,10 @@ public class TourBuyController implements Initializable {
             
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+            Alerts.serverIsNotResponding();
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
+            Alerts.authTokenExpired();
         } catch (APIValidationException ex) {
             Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
         }
