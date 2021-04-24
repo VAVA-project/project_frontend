@@ -106,10 +106,14 @@ public class SearchController implements Initializable {
 
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+            Alerts.serverIsNotResponding();
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(SearchController.class.getName()).
                     log(Level.SEVERE, null, ex);
+            Alerts.authTokenExpired();
+            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Signin.fxml");
         } catch (APIValidationException ex) {
+            // possibly never happen
             Logger.getLogger(SearchController.class.getName()).
                     log(Level.SEVERE, null, ex);
         }

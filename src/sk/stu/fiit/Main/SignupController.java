@@ -441,8 +441,7 @@ public class SignupController implements Initializable {
             } catch (IOException e) {
                 Logger.getLogger(SignupController.class.getName()).
                         log(Level.SEVERE, null, e);
-                Alerts.showGenericAlertError("Register", "Register error",
-                        "Server is not responding");
+                Alerts.serverIsNotResponding();
             }
 
         }
