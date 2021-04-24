@@ -189,9 +189,11 @@ public class ToursController implements Initializable {
 
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+            Alerts.serverIsNotResponding();
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(ToursController.class.getName()).
                     log(Level.SEVERE, null, ex);
+            Alerts.authTokenExpired();
         } catch (APIValidationException ex) {
             Logger.getLogger(ToursController.class.getName()).
                     log(Level.SEVERE, null, ex);
@@ -241,8 +243,10 @@ public class ToursController implements Initializable {
                 });
             } catch (IOException ex) {
                 Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+                Alerts.serverIsNotResponding();
             } catch (AuthTokenExpiredException ex) {
                 Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
+                Alerts.authTokenExpired();
             } catch (APIValidationException ex) {
                 Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -272,6 +276,11 @@ public class ToursController implements Initializable {
 
     @FXML
     private void handleSearchButton(MouseEvent event) {
+        if(this.tfDestination.getText().isEmpty()) {
+            Alerts.showGenericAlertError("Search", null, "Please enter a destination.");
+            return;
+        }
+        
         searchToursForDestination();
     }
 
@@ -315,8 +324,10 @@ public class ToursController implements Initializable {
 //            }
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+            Alerts.serverIsNotResponding();
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
+            Alerts.authTokenExpired();
         } catch (APIValidationException ex) {
             Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
         }
