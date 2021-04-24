@@ -108,9 +108,11 @@ public class EditAccountController implements Initializable {
           
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+            Alerts.serverIsNotResponding();
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(EditAccountController.class.getName()).
                     log(Level.SEVERE, null, ex);
+            Alerts.authTokenExpired();
         } catch (APIValidationException ex) {
             Logger.getLogger(EditAccountController.class.getName()).
                     log(Level.SEVERE, null, ex);
