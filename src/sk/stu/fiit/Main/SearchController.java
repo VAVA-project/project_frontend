@@ -85,6 +85,11 @@ public class SearchController implements Initializable {
     }
 
     private void searchToursForDestination(Event event) {
+        if(!this.validateInputs()) {
+            Alerts.showGenericAlertError("Search", null, "Please enter destination");
+            return;
+        }
+        
         SearchRequest request = new SearchRequest(tfDestination.getText(), pageNumber, pageSize);
         request.accept(new XMLRequestParser());
         
@@ -108,6 +113,10 @@ public class SearchController implements Initializable {
             Logger.getLogger(SearchController.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private boolean validateInputs() {
+        return !tfDestination.getText().isEmpty();
     }
 
     @FXML
