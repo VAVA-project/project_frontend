@@ -122,8 +122,7 @@ public class SigninController {
     private void handleIOException(IOException ex) {
         Logger.getLogger(SigninController.class.getName())
                 .log(Level.SEVERE, null, ex);
-        Alerts.showGenericAlertError("Login", "Login error",
-                "Server is not responding");
+        Alerts.serverIsNotResponding();
     }
 
     private void handleAPIValidationException(APIValidationException ex) {

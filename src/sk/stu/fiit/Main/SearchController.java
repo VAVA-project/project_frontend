@@ -85,6 +85,11 @@ public class SearchController implements Initializable {
     }
 
     private void searchToursForDestination(Event event) {
+        if(!this.validateInputs()) {
+            Alerts.showGenericAlertError("Search", null, "Please enter destination");
+            return;
+        }
+        
         SearchRequest request = new SearchRequest(tfDestination.getText(), pageNumber, pageSize);
         request.accept(new XMLRequestParser());
         
@@ -101,13 +106,21 @@ public class SearchController implements Initializable {
 
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+            Alerts.serverIsNotResponding();
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(SearchController.class.getName()).
                     log(Level.SEVERE, null, ex);
+            Alerts.authTokenExpired();
+            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Signin.fxml");
         } catch (APIValidationException ex) {
+            // possibly never happen
             Logger.getLogger(SearchController.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private boolean validateInputs() {
+        return !tfDestination.getText().isEmpty();
     }
 
     @FXML

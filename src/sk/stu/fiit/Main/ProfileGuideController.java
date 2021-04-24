@@ -142,11 +142,11 @@ public class ProfileGuideController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE,
                     null, ex);
-            Alerts.showGenericAlertError("Server error", null,
-                    "Server is not responding");
+            Alerts.serverIsNotResponding();
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(ProfileGuideController.class.getName()).
                     log(Level.SEVERE, null, ex);
+            Alerts.authTokenExpired();
         } catch (APIValidationException ex) {
             Logger.getLogger(ProfileGuideController.class.getName()).
                     log(Level.SEVERE, null, ex);

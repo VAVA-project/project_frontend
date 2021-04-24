@@ -158,9 +158,11 @@ public class TourTicketsController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE,
                     null, ex);
+            Alerts.serverIsNotResponding();
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(TourOfferController.class.getName()).log(
                     Level.SEVERE, null, ex);
+            Alerts.authTokenExpired();
         } catch (APIValidationException ex) {
             Logger.getLogger(TourOfferController.class.getName()).log(
                     Level.SEVERE, null, ex);
@@ -273,9 +275,11 @@ public class TourTicketsController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).log(
                     Level.SEVERE, null, ex);
+            Alerts.serverIsNotResponding();
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
+            Alerts.authTokenExpired();
         } catch (APIValidationException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
@@ -309,9 +313,11 @@ public class TourTicketsController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).log(
                     Level.SEVERE, null, ex);
+            Alerts.serverIsNotResponding();
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
+            Alerts.authTokenExpired();
         } catch (APIValidationException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
@@ -347,9 +353,11 @@ public class TourTicketsController implements Initializable {
         } catch (IOException e) {
             Logger.getLogger(TourTicketsController.class.getName()).log(
                     Level.SEVERE, null, e);
+            Alerts.serverIsNotResponding();
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
+            Alerts.authTokenExpired();
         } catch (APIValidationException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
@@ -374,9 +382,11 @@ public class TourTicketsController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).log(
                     Level.SEVERE, null, ex);
+            Alerts.serverIsNotResponding();
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
+            Alerts.authTokenExpired();
         } catch (APIValidationException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);

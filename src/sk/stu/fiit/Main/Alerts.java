@@ -47,4 +47,13 @@ public class Alerts {
             alert.showAndWait();
         });
     }
+
+    public static void serverIsNotResponding() {
+        showGenericAlertError("Server error", null,
+                "Server is not responding");
+    }
+    
+    public static void authTokenExpired() {
+        showGenericAlertError("Authentication error", null, "Your validation token has expired. Please signin again.");
+    }
 }

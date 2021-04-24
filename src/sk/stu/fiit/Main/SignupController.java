@@ -9,17 +9,21 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.Base64;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -55,7 +59,7 @@ import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
  *
  * @author adamf
  */
-public class SignupController {
+public class SignupController implements Initializable {
 
     private UserType userType;
     private String email;
@@ -436,12 +440,30 @@ public class SignupController {
                         getUser().getFirstName());
             } catch (IOException e) {
                 Logger.getLogger(SignupController.class.getName()).
-                            log(Level.SEVERE, null, e);
-                Alerts.showGenericAlertError("Register", "Register error",
-                        "Server is not responding");
+                        log(Level.SEVERE, null, e);
+                Alerts.serverIsNotResponding();
             }
 
         }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.setupBirthDayDatePicker();
+    }
+
+    private void setupBirthDayDatePicker() {
+        this.datePickerDateOfBirth.setDayCellFactory(
+                (final DatePicker param) -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+
+                LocalDate today = LocalDate.now();
+                        
+                setDisable(empty || item.compareTo(today) > 0);
+            }
+        });
     }
 
 }
