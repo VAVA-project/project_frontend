@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="border-pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.CreateScheduleController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="border-pane" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.CreateScheduleController">
    <left>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="left-pane" BorderPane.alignment="CENTER">
          <children>
@@ -34,8 +34,8 @@
    <center>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="center-pane" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="50.0" layoutY="68.0" styleClass="lbl-create-schedule" text="Create a schedule" />
-            <TextField fx:id="tfCapacity" layoutX="50.0" layoutY="140.0" promptText="Capacity" />
+            <Label layoutX="50.0" layoutY="68.0" styleClass="lbl-create-schedule" text="%createSchedule.title" />
+            <TextField fx:id="tfCapacity" layoutX="50.0" layoutY="140.0" promptText="%createSchedule.capacityTextField.prompt" />
             <ScrollPane hbarPolicy="NEVER" layoutX="50.0" layoutY="360.0" prefHeight="200.0" prefWidth="484.0" styleClass="scroll-vbox-tours">
                <content>
                   <VBox fx:id="vbTourDates" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" styleClass="scroll-vbox-tours">
@@ -44,18 +44,18 @@
                      </padding></VBox>
                </content>
             </ScrollPane>
-            <Button fx:id="btnAdd" layoutX="50.0" layoutY="320.0" mnemonicParsing="false" onMouseReleased="#handleAddTourDateButton" styleClass="btn-add" text="Add" />
-            <Button fx:id="btnCreateTour" layoutX="50.0" layoutY="540.0" mnemonicParsing="false" onMouseReleased="#handleCreateTourButton" styleClass="btn-create-schedule" text="Create a tour" />
+            <Button fx:id="btnAdd" layoutX="50.0" layoutY="320.0" mnemonicParsing="false" onMouseReleased="#handleAddTourDateButton" styleClass="btn-add" text="%createSchedule.addButton.text" />
+            <Button fx:id="btnCreateTour" layoutX="50.0" layoutY="540.0" mnemonicParsing="false" onMouseReleased="#handleCreateTourButton" styleClass="btn-create-schedule" text="%createSchedule.createTourButton.text" />
             <HBox layoutX="540.0" layoutY="7.0" styleClass="hbox-control-buttons">
                <children>
                   <Circle fx:id="btnMinimize" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize" />
                   <Circle fx:id="btnExit" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-exit" />
                </children>
             </HBox>
-            <DatePicker fx:id="dpStartDate" layoutX="50.0" layoutY="200.0" prefHeight="50.0" prefWidth="180.0" promptText="Tour start date" />
-            <DatePicker fx:id="dpEndDate" layoutX="240.0" layoutY="200.0" prefHeight="50.0" prefWidth="180.0" promptText="Tour end date" />
-            <TextField fx:id="tfStartTime" layoutX="50.0" layoutY="260.0" promptText="Start time (e.g 14:00)" styleClass="text-field-time" />
-            <TextField fx:id="tfEndTime" layoutX="240.0" layoutY="260.0" promptText="End time (e.g 18:30)" styleClass="text-field-time" />
+            <DatePicker fx:id="dpStartDate" layoutX="50.0" layoutY="200.0" prefHeight="50.0" prefWidth="180.0" promptText="%createSchedule.tourStartDatePicker.prompt" />
+            <DatePicker fx:id="dpEndDate" layoutX="240.0" layoutY="200.0" prefHeight="50.0" prefWidth="180.0" promptText="%createSchedule.tourEndDatePicker.prompt" />
+            <TextField fx:id="tfStartTime" layoutX="50.0" layoutY="260.0" promptText="%createSchedule.startTimeTextField.prompt" styleClass="text-field-time" />
+            <TextField fx:id="tfEndTime" layoutX="240.0" layoutY="260.0" promptText="%createSchedule.endTimeTextField.prompt" styleClass="text-field-time" />
          </children>
       </Pane>
    </center>

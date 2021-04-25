@@ -14,7 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import sk.stu.fiit.Internationalisation.I18n;
 
 /**
  *
@@ -37,7 +37,7 @@ public class ScreenSwitcher {
     public void switchToScreen(Event event, String screen) {
         try {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Parent parent = FXMLLoader.load(getClass().getResource(screen));
+            Parent parent = FXMLLoader.load(getClass().getResource(screen), I18n.getBundle());
             Scene scene = new Scene(parent);
             scene.setFill(Color.TRANSPARENT);
             stage.setScene(scene);

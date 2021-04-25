@@ -23,7 +23,7 @@
    <center>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="center-pane" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="88.0" layoutY="60.0" styleClass="lbl-signin" text="Sign in">
+            <Label layoutX="88.0" layoutY="60.0" styleClass="lbl-signin" text="%signin.title">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                </effect></Label>
@@ -34,15 +34,15 @@
                <opaqueInsets>
                   <Insets />
                </opaqueInsets></TextField>
-            <PasswordField fx:id="pfPassword" focusTraversable="false" layoutX="88.0" layoutY="258.0" onKeyReleased="#handleSignInBtn" promptText="Password" styleClass="pf-password">
+            <PasswordField fx:id="pfPassword" focusTraversable="false" layoutX="88.0" layoutY="258.0" onKeyReleased="#handleSignInBtn" promptText="%signin.password.prompt" styleClass="pf-password">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.5" width="30.0" />
                </effect></PasswordField>
-            <Button layoutX="88.0" layoutY="349.0" mnemonicParsing="false" onMouseReleased="#handleSignIn" styleClass="btn-signin" text="Sign in">
+            <Button layoutX="88.0" layoutY="349.0" mnemonicParsing="false" onMouseReleased="#handleSignIn" styleClass="btn-signin" text="%signin.signinButton.text">
                <effect>
                   <DropShadow color="#000000a6" height="30.0" offsetY="2.0" radius="14.5" spread="0.09" width="30.0" />
                </effect></Button>
-            <Button layoutX="88.0" layoutY="488.0" mnemonicParsing="false" onMouseReleased="#handleSignUp" styleClass="btn-signup" text="Sign up">
+            <Button layoutX="88.0" layoutY="488.0" mnemonicParsing="false" onMouseReleased="#handleSignUp" styleClass="btn-signup" text="%signin.signupButton.text">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.5" width="30.0" />
                </effect></Button>

@@ -31,17 +31,17 @@
          </children>
       </HBox>
       <ImageView fx:id="photo" fitHeight="160.0" fitWidth="167.0" layoutX="126.0" layoutY="77.0" pickOnBounds="true" smooth="false" />
-      <Label layoutX="299.0" layoutY="89.0" styleClass="lbl-tour" text="Name:" />
-      <Label layoutX="299.0" layoutY="122.0" styleClass="lbl-tour" text="Destination:" />
-      <Label layoutX="299.0" layoutY="155.0" styleClass="lbl-tour" text="Rating:" />
-      <Label layoutX="299.0" layoutY="188.0" styleClass="lbl-tour" text="Price:" />
+      <Label layoutX="299.0" layoutY="89.0" styleClass="lbl-tour" text="%tourBuy.nameLabel.text" />
+      <Label layoutX="299.0" layoutY="122.0" styleClass="lbl-tour" text="%tourBuy.destinationLabel.text" />
+      <Label layoutX="299.0" layoutY="155.0" styleClass="lbl-tour" text="%tourBuy.ratingLabel.text" />
+      <Label layoutX="299.0" layoutY="188.0" styleClass="lbl-tour" text="%tourBuy.priceLabel.text" />
       <Label fx:id="lblName" layoutX="355.0" layoutY="92.0" styleClass="lbl-informations" text="Label" />
       <Label fx:id="lblDestination" layoutX="399.0" layoutY="125.0" styleClass="lbl-informations" text="Label" />
       <Label fx:id="lblPrice" layoutX="355.0" layoutY="191.0" styleClass="lbl-informations" text="Label" />
       <Label fx:id="lblRating" layoutX="363.0" layoutY="158.0" styleClass="lbl-informations" text="Label" />
-      <Label layoutX="126.0" layoutY="250.0" styleClass="lbl-tour" text="Description:" />
+      <Label layoutX="126.0" layoutY="250.0" styleClass="lbl-tour" text="%tourBuy.descriptionLabel.text" />
       <TextArea fx:id="taDescription" layoutX="218.0" layoutY="244.0" prefHeight="100.0" prefWidth="547.0" wrapText="true" />
-      <Button fx:id="btnLoad" layoutX="351.0" layoutY="535.0" mnemonicParsing="false" onMouseReleased="#handleLoadButton" styleClass="btn-load" text="Load more" />
+      <Button fx:id="btnLoad" layoutX="351.0" layoutY="535.0" mnemonicParsing="false" onMouseReleased="#handleLoadButton" styleClass="btn-load" text="%tourBuy.loadMoreButton.text" />
       <ScrollPane layoutX="99.0" layoutY="344.0" prefHeight="180.0" prefWidth="670.0" styleClass="tour-dates-wrappers">
          <content>
             <VBox fx:id="vbTourDates" prefHeight="140.0" prefWidth="650.0">

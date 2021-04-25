@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="border-pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.EditAccountController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="border-pane" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.EditAccountController">
    <left>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="left-pane" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="79.0" layoutY="37.0" lineSpacing="6.0" prefHeight="88.0" prefWidth="142.0" styleClass="lbl-edit-account" text="Edit account" wrapText="true" />
+            <Label layoutX="79.0" layoutY="37.0" lineSpacing="6.0" prefHeight="88.0" prefWidth="142.0" styleClass="lbl-edit-account" text="%editAccount.banner.title" wrapText="true" />
             <Button fx:id="btnBack" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-back">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
@@ -32,11 +32,11 @@
    <center>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="center-pane" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="115.0" layoutY="35.0" lineSpacing="6.0" prefHeight="88.0" prefWidth="223.0" styleClass="lbl-personal-informations" text="Personal informations" wrapText="true" />
-            <TextField fx:id="tfFirstname" layoutX="115.0" layoutY="175.0" promptText="Firstname" />
-            <TextField fx:id="tfLastname" layoutX="115.0" layoutY="258.0" promptText="Lastname" />
-            <DatePicker fx:id="dpDateOfBirth" layoutX="115.0" layoutY="341.0" prefHeight="60.0" prefWidth="340.0" promptText="Date of Birth (dd.mm.yyyy)" />
-            <Button fx:id="btnEdit" layoutX="115.0" layoutY="428.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-edit" text="Edit" />
+            <Label layoutX="115.0" layoutY="35.0" lineSpacing="6.0" prefHeight="88.0" prefWidth="223.0" styleClass="lbl-personal-informations" text="%editAccount.title" wrapText="true" />
+            <TextField fx:id="tfFirstname" layoutX="115.0" layoutY="175.0" promptText="%editAccount.firstNameTextField.prompt" />
+            <TextField fx:id="tfLastname" layoutX="115.0" layoutY="258.0" promptText="%editAccount.lastNameTextField.prompt" />
+            <DatePicker fx:id="dpDateOfBirth" layoutX="115.0" layoutY="341.0" prefHeight="60.0" prefWidth="340.0" promptText="%editAccount.dateOfBirthDatePicker.prompt" />
+            <Button fx:id="btnEdit" layoutX="115.0" layoutY="428.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-edit" text="%editAccount.editButton.text" />
             <HBox layoutX="540.0" layoutY="7.0" styleClass="hbox-control-buttons">
                <children>
                   <Circle fx:id="btnMinimize" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize" />

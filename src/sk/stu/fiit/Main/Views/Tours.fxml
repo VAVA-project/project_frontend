@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<Pane fx:id="paneMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.ToursController">
+<Pane fx:id="paneMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="pane" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.ToursController">
    <children>
       <Button fx:id="btnBack" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-back">
          <graphic>
@@ -24,8 +24,8 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="btnNext" layoutX="630.0" layoutY="505.0" mnemonicParsing="false" onMouseReleased="#handleNextPageButton" styleClass="btn-paging" text="Next page" />
-      <Button fx:id="btnPrevious" layoutX="100.0" layoutY="505.0" mnemonicParsing="false" onMouseReleased="#handlePreviousPageButton" styleClass="btn-paging" text="Previous page" />
+      <Button fx:id="btnNext" layoutX="630.0" layoutY="505.0" mnemonicParsing="false" onMouseReleased="#handleNextPageButton" styleClass="btn-paging" text="%tours.nextPageButton.text" />
+      <Button fx:id="btnPrevious" layoutX="100.0" layoutY="505.0" mnemonicParsing="false" onMouseReleased="#handlePreviousPageButton" styleClass="btn-paging" text="%tours.previousPageButton.text" />
       <HBox layoutX="840.0" layoutY="7.0" styleClass="hbox-control-buttons">
          <children>
             <Circle fx:id="btnMinimize" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize" />
@@ -42,8 +42,8 @@
             </VBox>
          </content>
       </ScrollPane>
-      <TextField fx:id="tfDestination" layoutX="100.0" layoutY="14.0" onKeyReleased="#handleEnterKey" promptText="Destination" />
-      <Button fx:id="btnSearch" layoutX="471.0" layoutY="17.0" mnemonicParsing="false" onMouseReleased="#handleSearchButton" styleClass="btn-paging" text="Search tours" />
+      <TextField fx:id="tfDestination" layoutX="100.0" layoutY="14.0" onKeyReleased="#handleEnterKey" promptText="%tours.searchTextField.prompt" />
+      <Button fx:id="btnSearch" layoutX="471.0" layoutY="17.0" mnemonicParsing="false" onMouseReleased="#handleSearchButton" styleClass="btn-paging" text="%tours.searchButton.text" />
    </children>
    <stylesheets>
       <URL value="@../../../../../css/screen7_Tours.css" />
