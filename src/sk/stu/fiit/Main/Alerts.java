@@ -21,7 +21,18 @@ import javafx.stage.StageStyle;
  * @author adamf
  */
 public class Alerts {
-
+    
+    public static final String TITLE_EMPTY = "";
+    public static final String CONTENT_EMPTY = "";
+    
+    public static final String TITLE_EMPTY_START_PLACE = "Start place field is empty";
+    public static final String TITLE_EMPTY_DESTINATION_PLACE = "Destination place field is empty";
+    public static final String TITLE_EMPTY_PRICE = "Price per person field is empty";
+    public static final String TITLE_EMPTY_DESCRIPTION = "Description field is empty";
+    public static final String TITLE_NOT_NUMBER = "Price per person field is not number";
+    
+    
+    
     public static void fieldsValidation(String contentText) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Fields validation");
@@ -66,9 +77,26 @@ public class Alerts {
         showGenericAlertError("Authentication error", null, "Your validation token has expired. Please signin again.");
     }
     
-    public static void showAlert(String alertText) {
+    public static void showAlert(String title) {
         try {
             FXMLLoader loader = new FXMLLoader(Alerts.class.getResource("Alerts/Alert.fxml"));
+            loader.setControllerFactory(c -> new AlertController(title));
+            Parent root = (Parent) loader.load();
+            Stage stage = new Stage();
+            stage.initStyle(StageStyle.TRANSPARENT);
+            Scene scene = new Scene(root);
+            scene.setFill(Color.TRANSPARENT);
+            stage.setScene(scene);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(ScreenSwitcher.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public static void showAlert(String title, String content) {
+        try {
+            FXMLLoader loader = new FXMLLoader(Alerts.class.getResource("Alerts/Alert.fxml"));
+            loader.setControllerFactory(c -> new AlertController(title, content));
             Parent root = (Parent) loader.load();
             Stage stage = new Stage();
             stage.initStyle(StageStyle.TRANSPARENT);

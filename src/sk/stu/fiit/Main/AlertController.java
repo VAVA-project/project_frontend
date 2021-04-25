@@ -20,6 +20,9 @@ import javafx.stage.Stage;
  */
 public class AlertController implements Initializable {
 
+    private String title;
+    private String content;
+    
     @FXML
     private Button btnOk;
     @FXML
@@ -27,18 +30,37 @@ public class AlertController implements Initializable {
     @FXML
     private Label lblAlertContent;
 
+    
+    public AlertController() {
+    }
+
+    public AlertController(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    public AlertController(String title) {
+        this.title = title;
+        this.content = "";
+    }
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        setAlertTexts();
     }    
 
     @FXML
     private void handleOkButton(MouseEvent event) {
         Stage stage = (Stage) btnOk.getScene().getWindow();
         stage.close();
+    }
+
+    private void setAlertTexts() {
+        this.lblAlertTitle.setText(this.title);
+        this.lblAlertContent.setText(this.content);
     }
     
 }
