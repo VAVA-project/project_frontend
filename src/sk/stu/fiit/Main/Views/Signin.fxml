@@ -11,18 +11,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Circle?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: transparent;" styleClass="border-pane" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.SigninController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="border-pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.SigninController">
    <left>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="left-pane" BorderPane.alignment="CENTER">
          <effect>
-            <InnerShadow choke="0.35" height="50.0" radius="24.5" width="50.0">
-               <color>
-                  <Color opacity="0.15000000596046448" />
-               </color>
-            </InnerShadow>
+            <InnerShadow choke="0.35" color="#0000001c" height="50.0" radius="24.5" width="50.0" />
          </effect></Pane>
    </left>
    <center>
@@ -30,66 +25,42 @@
          <children>
             <Label layoutX="88.0" layoutY="60.0" styleClass="lbl-signin" text="Sign in">
                <effect>
-                  <DropShadow height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0">
-                     <color>
-                        <Color opacity="0.17577853798866272" />
-                     </color>
-                  </DropShadow>
+                  <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                </effect></Label>
             <TextField fx:id="tfEmail" focusTraversable="false" layoutX="88.0" layoutY="175.0" promptText="E-mail" styleClass="tf-email">
                <effect>
-                  <DropShadow height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0">
-                     <color>
-                        <Color opacity="0.19692040979862213" />
-                     </color>
-                  </DropShadow>
+                  <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
                </effect>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets></TextField>
             <PasswordField fx:id="pfPassword" focusTraversable="false" layoutX="88.0" layoutY="258.0" onKeyReleased="#handleSignInBtn" promptText="Password" styleClass="pf-password">
                <effect>
-                  <DropShadow height="30.0" offsetY="2.0" radius="14.5" spread="0.44" width="30.0">
-                     <color>
-                        <Color opacity="0.20000000298023224" />
-                     </color>
-                  </DropShadow>
+                  <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.5" width="30.0" />
                </effect></PasswordField>
             <Button layoutX="88.0" layoutY="349.0" mnemonicParsing="false" onMouseReleased="#handleSignIn" styleClass="btn-signin" text="Sign in">
                <effect>
-                  <DropShadow height="30.0" offsetY="2.0" radius="14.5" spread="0.09" width="30.0">
-                     <color>
-                        <Color opacity="0.6920415163040161" />
-                     </color>
-                  </DropShadow>
+                  <DropShadow color="#000000a6" height="30.0" offsetY="2.0" radius="14.5" spread="0.09" width="30.0" />
                </effect></Button>
             <Button layoutX="88.0" layoutY="488.0" mnemonicParsing="false" onMouseReleased="#handleSignUp" styleClass="btn-signup" text="Sign up">
                <effect>
-                  <DropShadow height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0">
-                     <color>
-                        <Color opacity="0.39792388677597046" />
-                     </color>
-                  </DropShadow>
+                  <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.5" width="30.0" />
                </effect></Button>
             <HBox alignment="CENTER" layoutX="540.0" layoutY="7.0" spacing="5.0" styleClass="hbox-control-buttons">
                <children>
                   <Circle fx:id="btnMinimize" fill="#5f2eea" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE">
                      <effect>
-                        <DropShadow />
+                        <DropShadow color="#000000e5" />
                      </effect></Circle>
                   <Circle fx:id="btnExit" fill="#e80909" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-exit">
                      <effect>
-                        <DropShadow />
+                        <DropShadow color="#000000e5" />
                      </effect></Circle>
                </children>
             </HBox>
          </children>
          <effect>
-            <InnerShadow choke="0.35" height="50.0" radius="24.5" width="50.0">
-               <color>
-                  <Color opacity="0.15224915742874146" />
-               </color>
-            </InnerShadow>
+            <InnerShadow choke="0.35" color="#0000001c" height="50.0" radius="24.5" width="50.0" />
          </effect>
       </Pane>
    </center>

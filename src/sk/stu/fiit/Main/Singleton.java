@@ -36,12 +36,18 @@ public class Singleton {
     private int pageNumberToLoad;
     private List<TourDate> tourDates;
     
+    // Data pre obrazovku CreateTourOffer a CreateSchedule
+    private TourCreate tourCreate;
+    private List<TourDate> tourDatesOnScreen;
+    private boolean tourDateDeleted;
+    
     private Singleton() {
         this.lastPageNumber = -1;
         this.tourGuides = new ArrayList<>();
         this.tours = new ArrayList<>();
         this.allPages = new HashMap<>();
         this.tourDates = new ArrayList<>();
+        this.tourDatesOnScreen = new ArrayList<>();
     }
 
     public static Singleton getInstance() {
@@ -161,6 +167,26 @@ public class Singleton {
 
     public void setTourDates(List<TourDate> tourDates) {
         this.tourDates = tourDates;
+    }
+
+    public TourCreate getTourCreate() {
+        return tourCreate;
+    }
+
+    public void setTourCreate(TourCreate tourCreate) {
+        this.tourCreate = tourCreate;
+    }
+
+    public List<TourDate> getTourDatesOnScreen() {
+        return tourDatesOnScreen;
+    }
+
+    public boolean isTourDateDeleted() {
+        return tourDateDeleted;
+    }
+
+    public void setTourDateDeleted(boolean tourDateDeleted) {
+        this.tourDateDeleted = tourDateDeleted;
     }
     
     // Metoda ktora skopiruje aktualnu page (tury na stranke) a vlozi ju do 

@@ -7,6 +7,7 @@ package sk.stu.fiit.Main;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -59,7 +60,13 @@ public class GuideTourOfferItemController implements Initializable {
 
     @FXML
     private void handleEditButton(MouseEvent event) {
-        System.out.println("Clicked");
+        loadEditTourOfferScreen(event);
+    }
+
+    private void loadEditTourOfferScreen(MouseEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/EditTourOffer.fxml"));
+        loader.setControllerFactory(c -> new EditTourOfferController(this.tour));
+        ScreenSwitcher.getScreenSwitcher().switchToScreenConstructor(event, loader);
     }
     
 }

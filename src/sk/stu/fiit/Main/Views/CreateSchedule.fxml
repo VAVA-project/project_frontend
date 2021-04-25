@@ -53,9 +53,9 @@
                </children>
             </HBox>
             <DatePicker fx:id="dpStartDate" layoutX="50.0" layoutY="200.0" prefHeight="50.0" prefWidth="180.0" promptText="Tour start date" />
-            <DatePicker fx:id="dpEndDate" layoutX="242.0" layoutY="200.0" prefHeight="50.0" prefWidth="180.0" promptText="Tour end date" />
+            <DatePicker fx:id="dpEndDate" layoutX="240.0" layoutY="200.0" prefHeight="50.0" prefWidth="180.0" promptText="Tour end date" />
             <TextField fx:id="tfStartTime" layoutX="50.0" layoutY="260.0" promptText="Start time (e.g 14:00)" styleClass="text-field-time" />
-            <TextField fx:id="tfEndTime" layoutX="242.0" layoutY="260.0" promptText="End time (e.g 18:30)" styleClass="text-field-time" />
+            <TextField fx:id="tfEndTime" layoutX="240.0" layoutY="260.0" promptText="End time (e.g 18:30)" styleClass="text-field-time" />
          </children>
       </Pane>
    </center>

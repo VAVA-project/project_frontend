@@ -71,10 +71,10 @@ public class TourDatesResponseProcessor extends XMLProcessor {
 
                 String id = element.getElementsByTagName("id").item(0).
                         getTextContent();
-                Date date = format1.parse(element.getElementsByTagName(
+                Date StartDate = format1.parse(element.getElementsByTagName(
                         "startDate").item(0).getTextContent());
-                String endDate = element.getElementsByTagName("endDate").item(0).
-                        getTextContent();
+                Date endDate = format1.parse(element.getElementsByTagName(
+                        "endDate").item(0).getTextContent()); 
                 String createdAt = element.getElementsByTagName("createdAt").
                         item(0).getTextContent();
                 int numberOfSoldTickets = Integer.parseInt(element.
@@ -86,7 +86,7 @@ public class TourDatesResponseProcessor extends XMLProcessor {
 
                 tourDatesResponse.addTourDate(new TourDate(id,
                         numberOfSoldTickets, numberOfTickets, format2.format(
-                                date), endDate, createdAt));
+                                StartDate), format2.format(endDate), createdAt));
 
             }
             return tourDatesResponse;

@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
@@ -45,7 +46,7 @@ public class ScreenSwitcher {
             Logger.getLogger(ScreenSwitcher.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void switchToScreenConstructor(Event event, FXMLLoader loader) {
         try {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -58,5 +59,5 @@ public class ScreenSwitcher {
             Logger.getLogger(ScreenSwitcher.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
 }

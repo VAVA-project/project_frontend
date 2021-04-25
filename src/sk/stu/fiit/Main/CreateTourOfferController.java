@@ -4,22 +4,15 @@
  */
 package sk.stu.fiit.Main;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
@@ -77,13 +70,12 @@ public class CreateTourOfferController implements Initializable {
     }
 
     private void loadCreateScheduleScreen(MouseEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/CreateSchedule.fxml"));
-        loader.setControllerFactory(c -> new CreateScheduleController(
-                new TourCreate(tfStartPlace.getText(),
+        Singleton.getInstance().setTourCreate(new TourCreate(tfStartPlace.getText(),
                         tfDestinationPlace.getText(),
                         Double.parseDouble(tfPrice.getText()),
-                        taDescription.getText())));
-        ScreenSwitcher.getScreenSwitcher().switchToScreenConstructor(event, loader);
+                        taDescription.getText()));
+        
+        ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/CreateSchedule.fxml");
     }
 
 }

@@ -7,6 +7,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -37,17 +39,53 @@
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../icons/back.png" />
+                              <Image url="@../../../../../icons/back3.png" />
                            </image>
                         </ImageView>
                      </graphic>
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect>
                   </Button>
-                  <Label contentDisplay="CENTER" layoutX="70.0" layoutY="45.0" prefHeight="60.0" prefWidth="310.0" styleClass="lbl-customer" text="Customer account" />
-                  <Label layoutX="33.0" layoutY="171.0" prefHeight="40.0" prefWidth="385.0" styleClass="txt-customer" text="The future is in our hands to shape. " />
-                  <Label layoutX="32.0" layoutY="244.0" styleClass="txt-customer" text="The future is in our hands to shape. " />
-                  <Label layoutX="32.0" layoutY="319.0" styleClass="txt-customer" text="The future is in our hands to shape. " />
-                  <Button fx:id="btnCreateCustomer" layoutX="132.0" layoutY="423.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" prefHeight="55.0" prefWidth="183.0" styleClass="btn-customer" text="Create customer" />
+                  <Label contentDisplay="CENTER" layoutX="142.0" layoutY="59.0" prefHeight="96.0" prefWidth="167.0" styleClass="lbl-customer" text="Customer account" textAlignment="CENTER" wrapText="true">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect></Label>
+                  <Label layoutX="130.0" layoutY="170.0" prefHeight="90.0" prefWidth="180.0" styleClass="txt-customer" text="Search for tours around the world" wrapText="true">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect></Label>
+                  <Label layoutX="130.0" layoutY="255.0" prefHeight="90.0" prefWidth="200.0" styleClass="txt-customer" text="Register for any tour of your choice" wrapText="true">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect></Label>
+                  <Label layoutX="130.0" layoutY="340.0" prefHeight="90.0" prefWidth="200.0" styleClass="txt-customer" text="Keep track of your visited places" wrapText="true">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect></Label>
+                  <Button fx:id="btnCreateCustomer" layoutX="133.0" layoutY="470.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" prefHeight="86.0" prefWidth="183.0" styleClass="btn-customer" text="Create customer account" textAlignment="CENTER" wrapText="true">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect></Button>
+                  <Label layoutX="112.0" layoutY="179.0" prefHeight="28.0" prefWidth="13.0" styleClass="lbl-customer" text="•">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect>
+                  </Label>
+                  <Label layoutX="112.0" layoutY="264.0" styleClass="lbl-customer" text="•">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect>
+                  </Label>
+                  <Label layoutX="112.0" layoutY="349.0" styleClass="lbl-customer" text="•">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect>
+                  </Label>
                </children>
+               <effect>
+                  <InnerShadow choke="0.35" color="#0000001c" height="50.0" radius="24.5" width="50.0" />
+               </effect>
             </Pane>
          </children>
       </StackPane>
@@ -90,18 +128,57 @@
             </Pane>
             <Pane fx:id="paneSignupGuideAccount" prefHeight="200.0" prefWidth="200.0" styleClass="pane-signup-guide-account">
                <children>
-                  <Label contentDisplay="CENTER" layoutX="105.0" layoutY="45.0" prefHeight="60.0" prefWidth="252.0" styleClass="lbl-guide" text="Guide account" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" />
-                  <Label layoutX="40.0" layoutY="171.0" styleClass="txt-guide" text="The future is in our hands to shape. " />
-                  <Label layoutX="40.0" layoutY="245.0" styleClass="txt-guide" text="The future is in our hands to shape. " />
-                  <Label layoutX="40.0" layoutY="326.0" styleClass="txt-guide" text="The future is in our hands to shape. " />
-                  <Button fx:id="btnCreateGuide" layoutX="140.0" layoutY="424.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-guide" text="Create guide" />
+                  <Label contentDisplay="CENTER" layoutX="142.0" layoutY="59.0" prefHeight="96.0" prefWidth="167.0" styleClass="lbl-guide" text="Guide account" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" wrapText="true">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect></Label>
+                  <Label layoutX="130.0" layoutY="170.0" prefHeight="90.0" prefWidth="240.0" styleClass="txt-guide" text="Create your own tours in places you know" wrapText="true">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect></Label>
+                  <Label layoutX="130.0" layoutY="255.0" prefHeight="90.0" prefWidth="201.0" styleClass="txt-guide" text="Create a schedule for your tours" wrapText="true">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect></Label>
+                  <Label layoutX="130.0" layoutY="340.0" prefHeight="90.0" prefWidth="243.0" styleClass="txt-guide" text="Edit created tours according to your idea" wrapText="true">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect></Label>
+                  <Button fx:id="btnCreateGuide" layoutX="133.0" layoutY="470.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-guide" text="Create guide account" textAlignment="CENTER" wrapText="true">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect></Button>
                   <HBox fx:id="hboxControlButtonsGuideAccount" layoutX="390.0" layoutY="7.0" spacing="5.0" styleClass="hbox-control-buttons">
                      <children>
-                        <Circle fx:id="btnMinimize" fill="#5f2eea" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize" />
-                        <Circle fx:id="btnExit" fill="#e80909" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-exit" />
+                        <Circle fx:id="btnMinimize" fill="#5f2eea" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize">
+                           <effect>
+                              <DropShadow color="#000000e5" />
+                           </effect></Circle>
+                        <Circle fx:id="btnExit" fill="#e80909" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-exit">
+                           <effect>
+                              <DropShadow color="#000000e5" />
+                           </effect></Circle>
                      </children>
                   </HBox>
+                  <Label layoutX="112.0" layoutY="179.0" prefHeight="28.0" prefWidth="13.0" styleClass="lbl-guide" text="•">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect>
+                  </Label>
+                  <Label layoutX="112.0" layoutY="264.0" prefHeight="28.0" prefWidth="13.0" styleClass="lbl-guide" text="•">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect>
+                  </Label>
+                  <Label layoutX="112.0" layoutY="349.0" prefHeight="28.0" prefWidth="13.0" styleClass="lbl-guide" text="•">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect>
+                  </Label>
                </children>
+               <effect>
+                  <InnerShadow choke="0.35" color="#0000001c" height="50.0" radius="24.5" width="50.0" />
+               </effect>
             </Pane>
          </children>
       </StackPane>

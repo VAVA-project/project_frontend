@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="border-pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.CreateTourOfferController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="border-pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.EditTourOfferController">
    <left>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="left-pane" BorderPane.alignment="CENTER">
          <children>
@@ -31,7 +31,6 @@
    <center>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="center-pane" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="90.0" layoutY="60.0" styleClass="lbl-profile" text="Create a tour" />
             <HBox layoutX="540.0" layoutY="7.0" styleClass="hbox-control-buttons">
                <children>
                   <Circle fx:id="btnMinimize" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize" />
@@ -39,10 +38,13 @@
                </children>
             </HBox>
             <TextField fx:id="tfStartPlace" layoutX="90.0" layoutY="150.0" promptText="Start place" />
-            <TextField fx:id="tfDestinationPlace" layoutX="90.0" layoutY="220.0" promptText="Destination place" styleClass="text-field" stylesheets="@../../../../../css/screen9_CreateOffer.css" />
-            <TextField fx:id="tfPrice" layoutX="90.0" layoutY="290.0" promptText="Price / person" styleClass="text-field" stylesheets="@../../../../../css/screen9_CreateOffer.css" />
-            <TextArea fx:id="taDescription" layoutX="90.0" layoutY="360.0" prefHeight="100.0" prefWidth="200.0" promptText="Tour description" styleClass="text-area" wrapText="true" />
-            <Button fx:id="btnCreateSchedule" layoutX="280.0" layoutY="470.0" mnemonicParsing="false" onMouseReleased="#handleGoToCreateScheduleScreen" styleClass="btn-create-schedule" text="Create a schedule" />
+            <TextField fx:id="tfDestinationPlace" layoutX="90.0" layoutY="220.0" promptText="Destination place" />
+            <TextField fx:id="tfPrice" layoutX="90.0" layoutY="290.0" promptText="Price / person" />
+            <TextArea fx:id="taDescription" layoutX="90.0" layoutY="360.0" prefHeight="200.0" prefWidth="200.0" promptText="Tour description" />
+            <Label layoutX="90.0" layoutY="60.0" styleClass="lbl-profile" text="Edit tour" />
+            <Button fx:id="btnEditTour" layoutX="90.0" layoutY="470.0" mnemonicParsing="false" onMouseReleased="#handleEditTourButton" styleClass="btn-create-schedule" text="Edit tour" />
+            <Button fx:id="btnEditSchedule" layoutX="280.0" layoutY="470.0" mnemonicParsing="false" onMouseReleased="#handleGoToEditTourScheduleScreen" styleClass="btn-create-schedule" text="Edit schedule" />
+            <Button fx:id="btnDeleteTour" layoutX="90.0" layoutY="522.0" mnemonicParsing="false" onMouseReleased="#handleDeleteTourButton" styleClass="btn-create-schedule" text="Delete tour" />
          </children>
       </Pane>
    </center>
