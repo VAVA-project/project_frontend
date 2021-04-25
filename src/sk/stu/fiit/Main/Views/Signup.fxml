@@ -43,9 +43,9 @@
                      </graphic>
                   </Button>
                   <Label contentDisplay="CENTER" layoutX="70.0" layoutY="45.0" prefHeight="60.0" prefWidth="310.0" styleClass="lbl-customer" text="%signup.chooseAccount.customer.title" />
-                  <Label layoutX="33.0" layoutY="171.0" prefHeight="40.0" prefWidth="385.0" styleClass="txt-customer" text="%signup.chooseAccount.customer.description" />
-                  <Label layoutX="32.0" layoutY="244.0" styleClass="txt-customer" text="The future is in our hands to shape. " />
-                  <Label layoutX="32.0" layoutY="319.0" styleClass="txt-customer" text="The future is in our hands to shape. " />
+                  <Label layoutX="33.0" layoutY="171.0" prefHeight="40.0" prefWidth="385.0" styleClass="txt-customer" text="%signup.chooseAccount.customer.description_1" />
+                  <Label layoutX="32.0" layoutY="244.0" styleClass="txt-customer" text="%signup.chooseAccount.customer.description_2" />
+                  <Label layoutX="32.0" layoutY="319.0" styleClass="txt-customer" text="%signup.chooseAccount.customer.description_3" />
                   <Button fx:id="btnCreateCustomer" layoutX="132.0" layoutY="423.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" prefHeight="55.0" prefWidth="183.0" styleClass="btn-customer" text="%signup.chooseAccount.createCustomerButton.text" />
                </children>
             </Pane>
@@ -91,9 +91,9 @@
             <Pane fx:id="paneSignupGuideAccount" prefHeight="200.0" prefWidth="200.0" styleClass="pane-signup-guide-account">
                <children>
                   <Label contentDisplay="CENTER" layoutX="105.0" layoutY="45.0" prefHeight="60.0" prefWidth="252.0" styleClass="lbl-guide" text="%signup.chooseAccount.guide.title" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" />
-                  <Label layoutX="40.0" layoutY="171.0" styleClass="txt-guide" text="%signup.chooseAccount.guide.description" />
-                  <Label layoutX="40.0" layoutY="245.0" styleClass="txt-guide" text="The future is in our hands to shape. " />
-                  <Label layoutX="40.0" layoutY="326.0" styleClass="txt-guide" text="The future is in our hands to shape. " />
+                  <Label layoutX="40.0" layoutY="171.0" styleClass="txt-guide" text="%signup.chooseAccount.guide.description_1" />
+                  <Label layoutX="40.0" layoutY="245.0" styleClass="txt-guide" text="%signup.chooseAccount.guide.description_2" />
+                  <Label layoutX="40.0" layoutY="326.0" styleClass="txt-guide" text="%signup.chooseAccount.guide.description_3" />
                   <Button fx:id="btnCreateGuide" layoutX="140.0" layoutY="424.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-guide" text="%signup.chooseAccount.createGuideButton.text" />
                   <HBox fx:id="hboxControlButtonsGuideAccount" layoutX="390.0" layoutY="7.0" spacing="5.0" styleClass="hbox-control-buttons">
                      <children>

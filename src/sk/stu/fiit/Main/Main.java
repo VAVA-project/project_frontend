@@ -12,7 +12,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import sk.stu.fiit.parsers.Requests.dto.EditTourOfferRequest;
+import sk.stu.fiit.Internationalisation.I18n;
+import sk.stu.fiit.Internationalisation.Languages;
 
 /**
  *
@@ -44,7 +45,9 @@ public class Main extends Application {
     
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Views/Signin.fxml"));
+        I18n.setLocale(Languages.SK.getLocale());
+        
+        Parent root = FXMLLoader.load(getClass().getResource("Views/Signin.fxml"), I18n.getBundle());
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
         primaryStage.initStyle(StageStyle.TRANSPARENT);
