@@ -15,8 +15,6 @@ import javafx.scene.control.TextField;
  * @author adamf
  */
 public class UserRegistrationValidator {
-
-    
     
     public static BiPredicate<TextField, TextField> areEmpty = (tf1, tf2) -> {
         return !(tf1.getText().isEmpty() || tf2.getText().isEmpty());
