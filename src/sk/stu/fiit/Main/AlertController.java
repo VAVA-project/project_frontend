@@ -21,9 +21,11 @@ import javafx.stage.Stage;
 public class AlertController implements Initializable {
 
     @FXML
-    private Label lblAlertText;
-    @FXML
     private Button btnOk;
+    @FXML
+    private Label lblAlertTitle;
+    @FXML
+    private Label lblAlertContent;
 
     /**
      * Initializes the controller class.

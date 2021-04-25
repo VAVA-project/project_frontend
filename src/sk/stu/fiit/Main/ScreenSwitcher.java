@@ -42,7 +42,6 @@ public class ScreenSwitcher {
             scene.setFill(Color.TRANSPARENT);
             stage.setScene(scene);
             stage.show();
-
         } catch (IOException ex) {
             Logger.getLogger(ScreenSwitcher.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -59,22 +58,6 @@ public class ScreenSwitcher {
         } catch (IOException ex) {
             Logger.getLogger(ScreenSwitcher.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public void showAlert(String alertText) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Alerts/Alert.fxml"));
-            Parent root = (Parent) loader.load();
-            Stage stage = new Stage();
-            stage.initStyle(StageStyle.TRANSPARENT);
-            Scene scene = new Scene(root);
-            scene.setFill(Color.TRANSPARENT);
-            stage.setScene(scene);
-            stage.showAndWait();
-        } catch (IOException ex) {
-            Logger.getLogger(ScreenSwitcher.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
     }
 
 }
