@@ -26,6 +26,15 @@ public class TourDate {
         this.createdAt = createdAt;
     }
 
+    public TourDate(String id, String startDate, String endDate, int numberOfTickets) {
+        this.id = id;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.numberOfTickets = numberOfTickets;
+    }
+
+    
+
     public String getId() {
         return id;
     }

@@ -98,7 +98,6 @@ public class TourOfferController implements Initializable {
     }
 
     private void getTourDates() {
-        
         TourDatesRequest tourDatesRequest = new TourDatesRequest(this.tour.getId());
         tourDatesRequest.accept(new XMLRequestParser());
         

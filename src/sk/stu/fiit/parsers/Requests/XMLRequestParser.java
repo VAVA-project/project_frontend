@@ -288,7 +288,7 @@ public class XMLRequestParser implements IRequestVisitor {
 
         try {
             httpPut.setEntity(new StringEntity(this.translateToXML(
-                    "request", data)));
+                    "UpdateTourOfferRequest", data)));
         } catch (ParserConfigurationException
                 | TransformerConfigurationException
                 | UnsupportedEncodingException ex) {

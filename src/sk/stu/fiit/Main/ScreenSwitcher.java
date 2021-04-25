@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
@@ -41,11 +42,12 @@ public class ScreenSwitcher {
             scene.setFill(Color.TRANSPARENT);
             stage.setScene(scene);
             stage.show();
+
         } catch (IOException ex) {
             Logger.getLogger(ScreenSwitcher.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void switchToScreenConstructor(Event event, FXMLLoader loader) {
         try {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -58,5 +60,21 @@ public class ScreenSwitcher {
             Logger.getLogger(ScreenSwitcher.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
+    public void showAlert(String alertText) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Alerts/Alert.fxml"));
+            Parent root = (Parent) loader.load();
+            Stage stage = new Stage();
+            stage.initStyle(StageStyle.TRANSPARENT);
+            Scene scene = new Scene(root);
+            scene.setFill(Color.TRANSPARENT);
+            stage.setScene(scene);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            Logger.getLogger(ScreenSwitcher.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
 }

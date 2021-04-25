@@ -115,7 +115,6 @@
     -fx-background-radius: 16px;
     -fx-pref-height: 50px;
     -fx-pref-width: 340px;
-    -fx-background-image: url('icons/menu.png');
     -fx-background-repeat: no-repeat;
     -fx-background-image-position: left;
 }

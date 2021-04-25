@@ -12,5 +12,14 @@ import sk.stu.fiit.parsers.Responses.V2.Response;
  */
 public class CreateTourDateResponse extends Response {
     
+    private String id;
+
+    public CreateTourDateResponse(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
     
 }

@@ -37,10 +37,10 @@
                   <Circle fx:id="btnExit" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-exit" />
                </children>
             </HBox>
-            <TextField layoutX="90.0" layoutY="150.0" promptText="Start place" />
-            <TextField layoutX="90.0" layoutY="220.0" promptText="Destination place" />
-            <TextField layoutX="90.0" layoutY="290.0" promptText="Price / person" />
-            <TextArea layoutX="90.0" layoutY="360.0" prefHeight="200.0" prefWidth="200.0" promptText="Tour description" />
+            <TextField fx:id="tfStartPlace" layoutX="90.0" layoutY="150.0" promptText="Start place" />
+            <TextField fx:id="tfDestinationPlace" layoutX="90.0" layoutY="220.0" promptText="Destination place" />
+            <TextField fx:id="tfPrice" layoutX="90.0" layoutY="290.0" promptText="Price / person" />
+            <TextArea fx:id="taDescription" layoutX="90.0" layoutY="360.0" prefHeight="200.0" prefWidth="200.0" promptText="Tour description" />
             <Label layoutX="90.0" layoutY="60.0" styleClass="lbl-profile" text="Edit tour" />
             <Button fx:id="btnEditTour" layoutX="90.0" layoutY="470.0" mnemonicParsing="false" onMouseReleased="#handleEditTourButton" styleClass="btn-create-schedule" text="Edit tour" />
             <Button fx:id="btnEditSchedule" layoutX="280.0" layoutY="470.0" mnemonicParsing="false" onMouseReleased="#handleGoToEditTourScheduleScreen" styleClass="btn-create-schedule" text="Edit schedule" />

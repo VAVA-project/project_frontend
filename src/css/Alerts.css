@@ -1,0 +1,37 @@
+/*
+ VAVA Project
+
+*/
+/* 
+    Created on : 25. 4. 2021, 0:42:24
+    Author     : adamf
+*/
+
+.pane {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 32px;
+    -fx-pref-width: 350px;
+    -fx-pref-height: 200px;
+    -fx-border-color: #5F2EEA;
+    -fx-border-radius: 32px;
+}
+
+.lbl-alert-text {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 20px;
+    -fx-font-weight: bolder;
+    -fx-text-fill: black;
+}
+
+.btn-load-more {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14px;
+    -fx-border-color: #5F2EEA;
+    -fx-border-radius: 16px;
+    -fx-text-fill: #5F2EEA;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 35px;
+    -fx-pref-width: 100px;
+    -fx-background-insets: 0;
+}

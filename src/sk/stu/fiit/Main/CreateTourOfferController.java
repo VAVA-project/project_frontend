@@ -70,13 +70,12 @@ public class CreateTourOfferController implements Initializable {
     }
 
     private void loadCreateScheduleScreen(MouseEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/CreateSchedule.fxml"));
-        loader.setControllerFactory(c -> new CreateScheduleController(
-                new TourCreate(tfStartPlace.getText(),
+        Singleton.getInstance().setTourCreate(new TourCreate(tfStartPlace.getText(),
                         tfDestinationPlace.getText(),
                         Double.parseDouble(tfPrice.getText()),
-                        taDescription.getText())));
-        ScreenSwitcher.getScreenSwitcher().switchToScreenConstructor(event, loader);
+                        taDescription.getText()));
+        
+        ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/CreateSchedule.fxml");
     }
 
 }

@@ -32,7 +32,7 @@
       </Pane>
    </left>
    <center>
-      <Pane prefHeight="200.0" prefWidth="200.0" styleClass="center-pane" BorderPane.alignment="CENTER">
+      <Pane fx:id="paneEditSchedule" prefHeight="200.0" prefWidth="200.0" styleClass="center-pane" BorderPane.alignment="CENTER">
          <children>
             <HBox layoutX="540.0" layoutY="7.0" styleClass="hbox-control-buttons">
                <children>
@@ -56,6 +56,7 @@
                </content>
             </ScrollPane>
             <Button fx:id="btnAdd" layoutX="50.0" layoutY="324.0" mnemonicParsing="false" onMouseReleased="#handleAddTourDateButton" styleClass="btn-add" text="Add" />
+            <Button fx:id="btnLoadMore" layoutX="50.0" layoutY="548.0" mnemonicParsing="false" onMouseReleased="#handleLoadMoreButton" styleClass="btn-create-schedule" text="Load more" />
          </children>
       </Pane>
    </center>

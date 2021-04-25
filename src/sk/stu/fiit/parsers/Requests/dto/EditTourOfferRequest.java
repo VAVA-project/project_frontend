@@ -16,7 +16,6 @@ public class EditTourOfferRequest extends Request {
     private String startPlace;
     private String destinationPlace;
     private String description;
-    
     private Double pricePerPerson;
 
     public EditTourOfferRequest(String id, String startPlace,

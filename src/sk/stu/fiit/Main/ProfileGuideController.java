@@ -105,17 +105,17 @@ public class ProfileGuideController implements Initializable {
     private void handleGoToSearchScreen(MouseEvent event) {
         ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Search.fxml");
     }
-    
+
     @FXML
     private void handleCreateTourButton(MouseEvent event) {
         ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/CreateTourOffer.fxml");
     }
-    
+
     @FXML
     private void handleGoToPersonalProfileScreen(MouseEvent event) {
-        
+
     }
-    
+
     @FXML
     private void handleGoToEditInformationsScreen(MouseEvent event) {
         ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/EditAccount.fxml");
@@ -126,15 +126,15 @@ public class ProfileGuideController implements Initializable {
         CompletableFuture.supplyAsync(() -> this.fetchUserTours(pageNumber,
                 pageSize)).thenAccept(this::processUsersTours);
     }
-    
+
     private UserToursResponse fetchUserTours(int pageNumber, int pageSize) {
         GuideToursRequest request = new GuideToursRequest(pageNumber, pageSize);
         request.accept(new XMLRequestParser());
 
         HttpGet getRequest = (HttpGet) request.getRequest();
 
-        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
-                 CloseableHttpResponse response = httpClient.execute(getRequest)) {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(getRequest)) {
 
             return (UserToursResponse) ResponseFactory.getFactory(
                     ResponseFactory.ResponseFactoryType.USER_TOURS_RESPONSE).
@@ -154,7 +154,7 @@ public class ProfileGuideController implements Initializable {
 
         return null;
     }
-    
+
     private void processUsersTours(UserToursResponse response) {
         if (response == null) {
             return;
@@ -162,7 +162,7 @@ public class ProfileGuideController implements Initializable {
         response.getTours().stream().forEach(tour -> {
             try {
                 Node tourNode = this.loadGuideTourOfferItem(tour);
-                Platform.runLater(()-> this.vbTours.getChildren().add(tourNode));
+                Platform.runLater(() -> this.vbTours.getChildren().add(tourNode));
             } catch (IOException ex) {
                 Logger.getLogger(ProfileGuideController.class.getName()).
                         log(Level.SEVERE, null, ex);
@@ -179,5 +179,5 @@ public class ProfileGuideController implements Initializable {
         loader.setControllerFactory(c -> new GuideTourOfferItemController(tour));
         return loader.load();
     }
-
+    
 }
