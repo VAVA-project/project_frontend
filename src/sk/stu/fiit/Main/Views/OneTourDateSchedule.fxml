@@ -5,29 +5,29 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="hbox-tour-date" stylesheets="@../../../../../css/screen11_CreateSchedule.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.OneTourDateScheduleController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="hbox-tour-date" stylesheets="@../../../../../css/screen11_CreateSchedule.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.OneTourDateScheduleController">
    <children>
       <Pane prefWidth="200.0" styleClass="pane-cap">
          <children>
-            <Label layoutX="14.0" layoutY="16.0" styleClass="lbl-cap-date" text="Capacity:" />
+            <Label layoutX="14.0" layoutY="16.0" styleClass="lbl-cap-date" text="%oneTourDateSchedule.capacityLabel.text" />
             <Label fx:id="lblCapacity" layoutX="84.0" layoutY="16.0" styleClass="lbl-informations" text="100" />
          </children>
       </Pane>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="pane-date">
          <children>
-            <Label layoutX="14.0" layoutY="16.0" styleClass="lbl-cap-date" text="Start:" />
+            <Label layoutX="14.0" layoutY="16.0" styleClass="lbl-cap-date" text="%oneTourDateSchedule.startLabel.text" />
             <Label fx:id="lblStartDate" layoutX="60.0" layoutY="16.0" styleClass="lbl-informations" text="22.22.2021" />
          </children>
       </Pane>
       <Pane prefHeight="50.0" prefWidth="150.0" styleClass="pane-date">
          <children>
-            <Label layoutX="14.0" layoutY="16.0" styleClass="lbl-cap-date" text="End:" />
+            <Label layoutX="14.0" layoutY="16.0" styleClass="lbl-cap-date" text="%oneTourDateSchedule.endLabel.text" />
             <Label fx:id="lblEndDate" layoutX="53.0" layoutY="16.0" styleClass="lbl-informations" text="22.22.2021" />
          </children>
       </Pane>
       <Pane prefHeight="50.0" prefWidth="80.0" styleClass="pane-btn-buy">
          <children>
-            <Button fx:id="btnDelete" layoutX="5.0" layoutY="8.0" mnemonicParsing="false" onMouseReleased="#handleDeleteTourDateButton" styleClass="btn-delete" text="Delete" />
+            <Button fx:id="btnDelete" layoutX="5.0" layoutY="8.0" mnemonicParsing="false" onMouseReleased="#handleDeleteTourDateButton" styleClass="btn-delete" text="%oneTourDateSchedule.deleteButton.text" />
          </children>
       </Pane>
    </children>
