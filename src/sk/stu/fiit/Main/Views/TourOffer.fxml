@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 
-<HBox fx:id="tour1" alignment="CENTER_LEFT" spacing="10.0" styleClass="hbox-tour" stylesheets="@../../../../../css/screen7_Tours.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.TourOfferController">
+<HBox fx:id="tour1" alignment="CENTER_LEFT" spacing="10.0" styleClass="hbox-tour" stylesheets="@../../../../../css/screen7_Tours.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.TourOfferController">
    <children>
       <ImageView fx:id="photo" fitHeight="150.0" fitWidth="157.0" pickOnBounds="true" smooth="false" styleClass="photo-tour">
          <HBox.margin>
@@ -16,10 +16,10 @@
       </ImageView>
       <Pane prefHeight="150.0" prefWidth="305.0">
          <children>
-            <Label layoutX="14.0" layoutY="33.0" styleClass="lbl-tour" text="Name:" />
-            <Label layoutX="14.0" layoutY="61.0" styleClass="lbl-tour" text="Destination:" />
-            <Label layoutX="14.0" layoutY="89.0" styleClass="lbl-tour" text="Rating:" />
-            <Label layoutX="14.0" layoutY="117.0" styleClass="lbl-tour" text="Price:" />
+            <Label layoutX="14.0" layoutY="33.0" styleClass="lbl-tour" text="%tourOffer.nameLabel.text" />
+            <Label layoutX="14.0" layoutY="61.0" styleClass="lbl-tour" text="%tourOffer.destinationLabel.text" />
+            <Label layoutX="14.0" layoutY="89.0" styleClass="lbl-tour" text="%tourOffer.ratingLabel.text" />
+            <Label layoutX="14.0" layoutY="117.0" styleClass="lbl-tour" text="%tourOffer.priceLabel.text" />
             <Label fx:id="lblName" layoutX="67.0" layoutY="33.0" styleClass="lbl-informations" text="Label" />
             <Label fx:id="lblDestination" layoutX="103.0" layoutY="61.0" styleClass="lbl-informations" text="Label" />
             <Label fx:id="lblPrice" layoutX="60.0" layoutY="117.0" styleClass="lbl-informations" text="Label" />
@@ -29,7 +29,7 @@
             <Insets />
          </HBox.margin>
       </Pane>
-      <Button fx:id="btnInterested" mnemonicParsing="false" onMouseReleased="#handleBtnInterested" styleClass="btn-interested" text="Interested">
+      <Button fx:id="btnInterested" mnemonicParsing="false" onMouseReleased="#handleBtnInterested" styleClass="btn-interested" text="%tourOffer.interestedButton.text">
          <HBox.margin>
             <Insets left="75.0" top="105.0" />
          </HBox.margin>
