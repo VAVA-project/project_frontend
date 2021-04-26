@@ -45,6 +45,7 @@ import sk.stu.fiit.parsers.Requests.dto.EditRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.GuideToursRequest;
 import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
+import sk.stu.fiit.parsers.Requests.dto.RatingRequest;
 import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
 import sk.stu.fiit.parsers.Requests.dto.SearchRequest;
 import sk.stu.fiit.parsers.Requests.dto.TicketsRequest;
@@ -458,5 +459,16 @@ public class XMLRequestParser implements IRequestVisitor {
                 getInstance().getJwtToken());
         
         request.setRequest(getRequest);
+    }
+
+    @Override
+    public void constructRatingRequest(RatingRequest request) {
+        HttpPost postRequest = new HttpPost(
+                "http://localhost:8080/api/v1/rating/" + request.getTourOfferId() + "/");
+        postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        postRequest.setHeader("Authorization", "Bearer " + Singleton.
+                getInstance().getJwtToken());
+
+        request.setRequest(postRequest);
     }
 }

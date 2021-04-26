@@ -18,6 +18,7 @@ import sk.stu.fiit.parsers.Requests.dto.EditRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.GuideToursRequest;
 import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
+import sk.stu.fiit.parsers.Requests.dto.RatingRequest;
 import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
 import sk.stu.fiit.parsers.Requests.dto.SearchRequest;
 import sk.stu.fiit.parsers.Requests.dto.TicketsRequest;
@@ -49,5 +50,6 @@ public interface IRequestVisitor {
     public void constructDeleteCartRequest(DeleteCartRequest request);
     public void constructUserBookingsRequest(UserBookingsRequest request);
     public void constructUserCompletedBookingsRequest(UserCompletedBookingsRequest request);
+    public void constructRatingRequest(RatingRequest request);
     
 }
