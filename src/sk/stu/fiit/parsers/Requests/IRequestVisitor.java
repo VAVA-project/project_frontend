@@ -18,10 +18,13 @@ import sk.stu.fiit.parsers.Requests.dto.EditRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.GuideToursRequest;
 import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
+import sk.stu.fiit.parsers.Requests.dto.RatingRequest;
 import sk.stu.fiit.parsers.Requests.dto.RegisterRequest;
 import sk.stu.fiit.parsers.Requests.dto.SearchRequest;
 import sk.stu.fiit.parsers.Requests.dto.TicketsRequest;
 import sk.stu.fiit.parsers.Requests.dto.TourDatesRequest;
+import sk.stu.fiit.parsers.Requests.dto.UserBookingsRequest;
+import sk.stu.fiit.parsers.Requests.dto.UserCompletedBookingsRequest;
 
 /**
  *
@@ -45,6 +48,8 @@ public interface IRequestVisitor {
     public void constructDeleteTicketFromCartRequest(DeleteTicketFromCartRequest request);
     public void constructCheckoutTicketsInCartRequest(CheckoutTicketsInCartRequest request);
     public void constructDeleteCartRequest(DeleteCartRequest request);
-
+    public void constructUserBookingsRequest(UserBookingsRequest request);
+    public void constructUserCompletedBookingsRequest(UserCompletedBookingsRequest request);
+    public void constructRatingRequest(RatingRequest request);
     
 }
