@@ -22,6 +22,7 @@ import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.TourDatesResponseFact
 import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.DeleteTourOfferResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.TourOfferResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.TourTicketsResponses.TourTicketsResponseFactory;
+import sk.stu.fiit.parsers.Responses.V2.UserBookingsResponses.UserBookingsResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.UserResponses.UserResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponseFactory;
 
@@ -48,7 +49,9 @@ public class ResponseFactory {
         DELETE_TICKET_TO_CART_RESPONSE,
         DELETE_CART_RESPONSE,
         CHECKOUT_CART_RESPONSE,
-        CREATE_TOUR_DATE_RESPONSE
+        CREATE_TOUR_DATE_RESPONSE,
+        BOOKED_TOURS_RESPONSE,
+        COMPLETED_TOURS_RESPONSE
     }
 
     private static final Map<ResponseFactoryType, Class<? extends AbstractResponseFactory>> registeredFactoryTypes = new HashMap<>();
@@ -81,16 +84,23 @@ public class ResponseFactory {
                         DeleteTourDateResponseFactory.class);
         registeredFactoryTypes.put(ResponseFactoryType.TOUR_TICKETS_RESPONSE,
                 TourTicketsResponseFactory.class);
-        registeredFactoryTypes.put(ResponseFactoryType.ADD_TICKET_TO_CART_RESPONSE,
+        registeredFactoryTypes.put(
+                ResponseFactoryType.ADD_TICKET_TO_CART_RESPONSE,
                 TicketToCartResponseFactory.class);
-        registeredFactoryTypes.put(ResponseFactoryType.DELETE_TICKET_TO_CART_RESPONSE,
+        registeredFactoryTypes.put(
+                ResponseFactoryType.DELETE_TICKET_TO_CART_RESPONSE,
                 TicketToCartResponseFactory.class);
         registeredFactoryTypes.put(ResponseFactoryType.DELETE_CART_RESPONSE,
                 DeleteCartResponseFactory.class);
         registeredFactoryTypes.put(ResponseFactoryType.CHECKOUT_CART_RESPONSE,
                 CheckoutTicketsInCartResponseFactory.class);
-        registeredFactoryTypes.put(ResponseFactoryType.CREATE_TOUR_DATE_RESPONSE, 
-                CreateTourDateResponseFactory.class);
+        registeredFactoryTypes.
+                put(ResponseFactoryType.CREATE_TOUR_DATE_RESPONSE,
+                        CreateTourDateResponseFactory.class);
+        registeredFactoryTypes.put(ResponseFactoryType.BOOKED_TOURS_RESPONSE,
+                UserBookingsResponseFactory.class);
+        registeredFactoryTypes.put(ResponseFactoryType.COMPLETED_TOURS_RESPONSE,
+                UserBookingsResponseFactory.class);
     }
 
     public static AbstractResponseFactory getFactory(ResponseFactoryType type) {
