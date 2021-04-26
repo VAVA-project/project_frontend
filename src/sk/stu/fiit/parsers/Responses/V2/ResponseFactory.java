@@ -14,6 +14,7 @@ import sk.stu.fiit.parsers.Responses.V2.CheckoutTicketsInCartResponses.CheckoutT
 import sk.stu.fiit.parsers.Responses.V2.DeleteCartResponses.DeleteCartResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.EditResponses.EditResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.LoginResponses.LoginResponseFactory;
+import sk.stu.fiit.parsers.Responses.V2.RatingResponses.RatingResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.RegisterResponses.RegisterResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.SearchResponses.SearchResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.CreateTourDateResponseFactory;
@@ -51,7 +52,8 @@ public class ResponseFactory {
         CHECKOUT_CART_RESPONSE,
         CREATE_TOUR_DATE_RESPONSE,
         BOOKED_TOURS_RESPONSE,
-        COMPLETED_TOURS_RESPONSE
+        COMPLETED_TOURS_RESPONSE,
+        RATING_RESPONSE
     }
 
     private static final Map<ResponseFactoryType, Class<? extends AbstractResponseFactory>> registeredFactoryTypes = new HashMap<>();
@@ -101,6 +103,8 @@ public class ResponseFactory {
                 UserBookingsResponseFactory.class);
         registeredFactoryTypes.put(ResponseFactoryType.COMPLETED_TOURS_RESPONSE,
                 UserBookingsResponseFactory.class);
+        registeredFactoryTypes.put(ResponseFactoryType.RATING_RESPONSE,
+                RatingResponseFactory.class);
     }
 
     public static AbstractResponseFactory getFactory(ResponseFactoryType type) {
