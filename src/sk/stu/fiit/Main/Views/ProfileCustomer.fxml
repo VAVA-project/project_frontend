@@ -3,6 +3,7 @@
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
@@ -10,6 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="border-pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.ProfileCustomerController">
@@ -65,6 +67,24 @@
                      </effect></Circle>
                </children>
             </HBox>
+            <Pane layoutX="59.0" layoutY="147.0" prefHeight="200.0" prefWidth="200.0" styleClass="scroll-vbox-tours2">
+               <children>
+                  <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" styleClass="scroll-vbox-tours2">
+                     <content>
+                        <VBox fx:id="vbBookedTours" prefHeight="200.0" prefWidth="100.0" styleClass="scroll-vbox-tours2" />
+                     </content>
+                  </ScrollPane>
+               </children>
+            </Pane>
+            <Pane layoutX="59.0" layoutY="336.0" prefHeight="200.0" prefWidth="200.0" styleClass="scroll-vbox-tours2">
+               <children>
+                  <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" styleClass="scroll-vbox-tours2">
+                     <content>
+                        <VBox fx:id="vbCompletedTours" prefHeight="200.0" prefWidth="100.0" styleClass="scroll-vbox-tours2" />
+                     </content>
+                  </ScrollPane>
+               </children>
+            </Pane>
          </children>
          <effect>
             <InnerShadow choke="0.3" color="#0000001c" height="50.0" radius="24.5" width="50.0" />

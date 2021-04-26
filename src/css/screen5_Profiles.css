@@ -111,6 +111,14 @@
     -fx-pref-height: 330px;
 }
 
+.scroll-vbox-tours2 {
+    -fx-background-radius: 16px;
+    -fx-background-insets: 0;
+    -fx-background-color: #EFF0F6;
+    -fx-pref-width: 500px;
+    -fx-pref-height: 170px;
+}
+
 .lbl-my-tours {
     -fx-font-family: "Roboto";
     -fx-font-size: 20px;

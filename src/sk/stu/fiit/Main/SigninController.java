@@ -93,10 +93,8 @@ public class SigninController {
             Event event) {
         try {
             LoginResponse loginResponse = (LoginResponse) ResponseFactory.
-                    getFactory(
-                            ResponseFactory.ResponseFactoryType.LOGIN_RESPONSE).
-                    parse(
-                            response);
+                    getFactory(ResponseFactory.ResponseFactoryType.LOGIN_RESPONSE).
+                    parse(response);
 
             Singleton.getInstance().setJwtToken(loginResponse.getJwtToken());
             Singleton.getInstance().setUser(loginResponse.getUser());
