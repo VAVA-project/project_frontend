@@ -31,7 +31,6 @@ import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.DeleteTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditTourOfferRequest;
 import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
-import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.TourDatesResponse;
 import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.DeleteTourOfferResponse;
 import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.TourOfferResponse;
 
@@ -127,33 +126,34 @@ public class EditTourOfferController implements Initializable {
     }
 
     private void sendUpdateTourOfferRequest() {
-        EditTourOfferRequest editTourOfferRequest = new EditTourOfferRequest(
-                this.tour.getId(),
-                this.tfStartPlace.getText(),
-                this.tfDestinationPlace.getText(),
-                this.taDescription.getText(),
-                Double.parseDouble(this.tfPrice.getText()));
-        editTourOfferRequest.accept(new XMLRequestParser());
+        if (TourOfferValidator.validateTextInputs(tfStartPlace, tfDestinationPlace, tfPrice, taDescription)) {
+            EditTourOfferRequest editTourOfferRequest = new EditTourOfferRequest(
+                    this.tour.getId(),
+                    this.tfStartPlace.getText(),
+                    this.tfDestinationPlace.getText(),
+                    this.taDescription.getText(),
+                    Double.parseDouble(this.tfPrice.getText()));
+            editTourOfferRequest.accept(new XMLRequestParser());
 
-        HttpPut request = (HttpPut) editTourOfferRequest.getRequest();
+            HttpPut request = (HttpPut) editTourOfferRequest.getRequest();
 
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                CloseableHttpResponse response = httpClient.execute(request)) {
+            try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                    CloseableHttpResponse response = httpClient.execute(request)) {
 
-            TourOfferResponse tourOfferResponse = (TourOfferResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.EDIT_TOUR_OFFER_RESPONSE).parse(response);
-            this.tfStartPlace.setText(tourOfferResponse.getStartPlace());
-            this.tfDestinationPlace.setText(tourOfferResponse.getDestinationPlace());
-            this.tfPrice.setText(String.valueOf(tourOfferResponse.getPricePerPerson()));
-            this.taDescription.setText(tourOfferResponse.getDescription());
+                TourOfferResponse tourOfferResponse = (TourOfferResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.EDIT_TOUR_OFFER_RESPONSE).parse(response);
+                this.tfStartPlace.setText(tourOfferResponse.getStartPlace());
+                this.tfDestinationPlace.setText(tourOfferResponse.getDestinationPlace());
+                this.tfPrice.setText(String.valueOf(tourOfferResponse.getPricePerPerson()));
+                this.taDescription.setText(tourOfferResponse.getDescription());
 
-        } catch (IOException ex) {
-            Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (AuthTokenExpiredException ex) {
-            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (APIValidationException ex) {
-            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (AuthTokenExpiredException ex) {
+                Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (APIValidationException ex) {
+                Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-
     }
 
     private void sendDeleteTourOfferRequest() {

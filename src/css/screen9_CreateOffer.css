@@ -49,3 +49,9 @@
     -fx-pref-width: 150px;
     -fx-background-insets: 0;
 }
+
+.btn-create-schedule:pressed {
+    -fx-pref-height: 34px;
+    -fx-pref-width: 149px;
+    -fx-background-insets: 0;
+}

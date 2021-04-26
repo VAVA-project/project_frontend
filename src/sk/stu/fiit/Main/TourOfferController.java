@@ -56,6 +56,8 @@ public class TourOfferController implements Initializable {
     private Label lblRating;
     @FXML
     private Button btnInterested;
+    @FXML
+    private Label lblStartPlace;
 
     public TourOfferController() {
     }
@@ -92,9 +94,10 @@ public class TourOfferController implements Initializable {
         clip.setArcHeight(30);
         this.photo.setClip(clip);
         this.lblName.setText(tour.getGuideName());
+        this.lblStartPlace.setText(tour.getStartPlace());
         this.lblDestination.setText(tour.getDestinationPlace());
         this.lblRating.setText(tour.getRating());
-        this.lblPrice.setText(tour.getPricePerPerson());
+        this.lblPrice.setText(tour.getPricePerPerson() + " €");
     }
 
     private void getTourDates() {
@@ -111,10 +114,10 @@ public class TourOfferController implements Initializable {
             Singleton.getInstance().setTourDates(tourDatesResponse.getTourDates());
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
-            Alerts.serverIsNotResponding();
+            Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
-            Alerts.authTokenExpired();
+            Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
         } catch (APIValidationException ex) {
             Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
         }

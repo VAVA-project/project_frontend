@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import sk.stu.fiit.Internationalisation.I18n;
 
 /**
  * FXML Controller class
@@ -57,7 +58,7 @@ public class OneTourDateController implements Initializable {
         try {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/TourTickets.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/TourTickets.fxml"), I18n.getBundle());
             loader.setControllerFactory(c -> new TourTicketsController(this.tourDate));
             
             Scene scene = new Scene((Parent) loader.load());

@@ -66,13 +66,12 @@ public class SigninController {
 
     private boolean validateInputs() {
         if (!UserRegistrationValidator.isEmailValid.test(tfEmail.getText())) {
-            Alerts.showGenericAlertError("Login", null, "Invalid email");
+            Alerts.showAlert(Alerts.TITLE_INVALID_EMAIL);
             return false;
         }
         if (!UserRegistrationValidator.isPasswordValid.
                 test(pfPassword.getText())) {
-            Alerts.showGenericAlertError("Login", null,
-                    "Password must be at least 8 characters long");
+            Alerts.showAlert(Alerts.CONTENT_PASSWORD_NOT_VALID);
             return false;
         }
 
@@ -122,14 +121,13 @@ public class SigninController {
     private void handleIOException(IOException ex) {
         Logger.getLogger(SigninController.class.getName())
                 .log(Level.SEVERE, null, ex);
-        Alerts.serverIsNotResponding();
+        Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
     }
 
     private void handleAPIValidationException(APIValidationException ex) {
         Logger.getLogger(SigninController.class.getName()).
                 log(Level.SEVERE, null, ex);
-        Alerts.showGenericAlertError("Login", "Login error", ex.
-                extractAllErrors());
+        Alerts.showAlert(Alerts.TITLE_SIGN_IN_ERROR);
     }
 
     private void gotToSearch(Event event) {

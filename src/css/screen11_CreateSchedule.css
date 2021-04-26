@@ -47,7 +47,7 @@
     -fx-background-radius: 16px;
     -fx-background-insets: 0;
     -fx-background-color: #EFF0F6;
-    -fx-pref-width: 500px;
+    -fx-pref-width: 520px;
     -fx-pref-height: 170px;
 }
 
@@ -103,6 +103,12 @@
     -fx-background-insets: 0;
 }
 
+.btn-add:pressed {
+    -fx-pref-height: 29px;
+    -fx-pref-width: 79px;
+    -fx-background-insets: 0;
+}
+
 .btn-create-schedule {
     -fx-font-family: "Roboto";
     -fx-font-size: 14px;
@@ -116,6 +122,12 @@
     -fx-background-insets: 0;
 }
 
+.btn-create-schedule:pressed {
+    -fx-pref-height: 29px;
+    -fx-pref-width: 129px;
+    -fx-background-insets: 0;
+}
+
 .btn-back {
     -fx-border-radius: 30px;
     -fx-border-color: white;
@@ -123,6 +135,12 @@
     -fx-pref-width: 45px;
     -fx-pref-height: 45px;
     -fx-text-fill: #FFFFFF;
+}
+
+.btn-back:pressed {
+    -fx-pref-height: 44px;
+    -fx-pref-width: 44px;
+    -fx-background-insets: 0;
 }
 
 .hbox-tour-date {

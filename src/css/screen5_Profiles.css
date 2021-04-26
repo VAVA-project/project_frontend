@@ -42,8 +42,15 @@
     -fx-border-radius: 16px;
     -fx-text-fill: #FFFFFF;
     -fx-background-color: #5F2EEA;
+    -fx-background-radius: 16px;
     -fx-pref-height: 35px;
     -fx-pref-width: 140px;
+}
+
+.btn-edit-informations:pressed {
+    -fx-pref-height: 34px;
+    -fx-pref-width: 139px;
+    -fx-background-insets: 0;
 }
 
 .btn-back {
@@ -53,6 +60,12 @@
     -fx-pref-width: 45px;
     -fx-pref-height: 45px;
     -fx-text-fill: #FFFFFF;
+}
+
+.btn-back:pressed {
+    -fx-pref-height: 44px;
+    -fx-pref-width: 44px;
+    -fx-background-insets: 0;
 }
 
 .lbl-profile {
@@ -65,18 +78,23 @@
     -fx-background-radius: 16px;
     -fx-background-color: #EFF0F7;
 }
-
+/*
 .btn-page {
     -fx-background-color: transparent;
     -fx-border-color: #5F2EEA;
     -fx-border-width: 2px;
     -fx-border-radius: 40px;
     -fx-label-padding: 0.75px;
-    -fx-font-family: "Poppins";
     -fx-text-fill: #5F2EEA;
     -fx-font-weight: bold;
 }
 
+.btn-page:pressed {
+    -fx-pref-height: 34px;
+    -fx-pref-width: 149px;
+    -fx-background-insets: 0;
+}
+*/
 .pane-wrap {
     -fx-background-radius: 16px;
     -fx-background-insets: 0;
@@ -102,8 +120,8 @@
 
 .pane-one-tour {
     -fx-background-color: #D9DBE9;
-    -fx-background-radius: 32px;
-    -fx-pref-width: 400px;
+    -fx-background-radius: 16px;
+    -fx-pref-width: 450px;
     -fx-pref-height: 110px;
 }
 
@@ -117,6 +135,12 @@
     -fx-background-radius: 16px;
     -fx-pref-height: 35px;
     -fx-pref-width: 70px;
+    -fx-background-insets: 0;
+}
+
+.btn-edit:pressed {
+    -fx-pref-height: 34px;
+    -fx-pref-width: 69px;
     -fx-background-insets: 0;
 }
 
@@ -134,16 +158,22 @@
     -fx-text-fill: black;
 }
 
-.btn-load-more {
+.btn-load {
     -fx-font-family: "Roboto";
     -fx-font-size: 14px;
     -fx-border-color: #5F2EEA;
     -fx-border-radius: 16px;
     -fx-text-fill: #5F2EEA;
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: transparent;
     -fx-background-radius: 16px;
     -fx-pref-height: 35px;
     -fx-pref-width: 100px;
+    -fx-background-insets: 0;
+}
+
+.btn-load:pressed {
+    -fx-pref-height: 34px;
+    -fx-pref-width: 99px;
     -fx-background-insets: 0;
 }
 

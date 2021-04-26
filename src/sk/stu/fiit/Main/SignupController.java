@@ -339,7 +339,7 @@ public class SignupController implements Initializable {
                     paneSignupPhoto.getChildren().remove(lblSelectPhoto);
                     photoSet = true;
                 } catch (FileNotFoundException ex) {
-                    Alerts.photoChoosing();
+                    Alerts.showAlert(Alerts.TITLE_FILE_NOT_FOUND);
                 }
             } catch (NullPointerException e) {
                 // User had opened fileChooser.showOpenDialog, but he doesn't choose his image
@@ -380,7 +380,7 @@ public class SignupController implements Initializable {
 
                     imageViewPhoto.setClip(clip);
                 } catch (FileNotFoundException ex) {
-                    Alerts.photoChoosing();
+                    Alerts.showAlert(Alerts.TITLE_FILE_NOT_FOUND);
                 }
             } catch (NullPointerException e) {
                 // User had opened fileChooser.showOpenDialog, but he doesn't choose a photo
@@ -422,12 +422,10 @@ public class SignupController implements Initializable {
 
                 System.out.println("\ntoken:" + Singleton.getInstance().
                         getJwtToken());
-                System.out.println("\nfirstName:" + Singleton.getInstance().
-                        getUser().getFirstName());
             } catch (IOException e) {
                 Logger.getLogger(SignupController.class.getName()).
                         log(Level.SEVERE, null, e);
-                Alerts.serverIsNotResponding();
+                Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
             }
 
         }

@@ -23,6 +23,12 @@
     -fx-text-fill: #FFFFFF;
 }
 
+.btn-back:pressed {
+    -fx-pref-height: 44px;
+    -fx-pref-width: 44px;
+    -fx-background-insets: 0;
+}
+
 .pane-ticket {
     -fx-background-color: #EFF0F6;
     -fx-background-radius: 32px;
@@ -64,6 +70,12 @@
     -fx-background-insets: 0;
 }
 
+.btn-register:pressed {
+    -fx-pref-height: 39px;
+    -fx-pref-width: 129px;
+    -fx-background-insets: 0;
+}
+
 .text-area {
     -fx-font-family: "Roboto";
     -fx-font-size: 16px;
@@ -86,10 +98,16 @@
     -fx-background-insets: 0;
 }
 
+.btn-back:pressed {
+    -fx-pref-height: 29px;
+    -fx-pref-width: 29px;
+    -fx-background-insets: 0;
+}
+
 .lbl-start-date {
     -fx-font-family: "Roboto";
     -fx-font-size: 17px;
-    -fx-font-weight: normal;
+    -fx-font-weight: bold;
     -fx-text-fill: black;
 }
 
@@ -103,8 +121,6 @@
 }
 
 .lbl-guide-price {
-    -fx-pref-width: 200px;
-    -fx-pref-height: 20px;
     -fx-font-family: "Roboto";
     -fx-font-size: 17px;
     -fx-font-weight: normal;

@@ -3,6 +3,8 @@
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -10,36 +12,63 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="border-pane" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.ProfileCustomerController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="border-pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.ProfileCustomerController">
    <left>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="left-pane" BorderPane.alignment="CENTER">
          <children>
             <ImageView fx:id="imageViewPhoto" fitHeight="190.0" fitWidth="190.0" layoutX="14.0" layoutY="80.0" pickOnBounds="true" smooth="false" />
-            <Label fx:id="lblName" layoutX="14.0" layoutY="282.0" styleClass="lbl-name" />
-            <Button fx:id="btnEditInformations" layoutX="14.0" layoutY="538.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-edit-informations" text="%profileCustomer.editInformationsButton.text" />
+            <Label fx:id="lblName" layoutX="14.0" layoutY="282.0" styleClass="lbl-name">
+               <effect>
+                  <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+               </effect></Label>
+            <Button fx:id="btnEditInformations" layoutX="14.0" layoutY="538.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-edit-informations" text="%profileCustomer.editInformationsButton.text">
+               <effect>
+                  <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+               </effect></Button>
             <Button fx:id="btnBack" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-back">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../icons/back.png" />
+                        <Image url="@../../../../../icons/back4.png" />
                      </image>
+                     <effect>
+                        <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect>
                   </ImageView>
                </graphic>
+               <effect>
+                  <DropShadow color="#000000e5" />
+               </effect>
             </Button>
          </children>
+         <effect>
+            <InnerShadow choke="0.3" color="#0000001c" height="50.0" radius="24.5" width="50.0" />
+         </effect>
       </Pane>
    </left>
    <center>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="center-pane" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="88.0" layoutY="60.0" styleClass="lbl-profile" text="%profileCustomer.title" />
+            <Label layoutX="88.0" layoutY="60.0" styleClass="lbl-profile" text="%profileCustomer.title">
+               <effect>
+                  <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+               </effect></Label>
             <HBox layoutX="540.0" layoutY="7.0" styleClass="hbox-control-buttons">
                <children>
-                  <Circle fx:id="btnMinimize" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize" />
-                  <Circle fx:id="btnExit" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-exit" />
+                  <Circle fx:id="btnMinimize" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize">
+                     <effect>
+                        <DropShadow color="#000000e5" />
+                     </effect></Circle>
+                  <Circle fx:id="btnExit" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-exit">
+                     <effect>
+                        <DropShadow color="#000000e5" />
+                     </effect></Circle>
                </children>
             </HBox>
-         </children></Pane>
+         </children>
+         <effect>
+            <InnerShadow choke="0.3" color="#0000001c" height="50.0" radius="24.5" width="50.0" />
+         </effect></Pane>
    </center>
    <stylesheets>
       <URL value="@../../../../../css/buttons_control.css" />

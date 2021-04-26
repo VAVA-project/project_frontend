@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -20,12 +22,21 @@
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../icons/back.png" />
+                        <Image url="@../../../../../icons/back4.png" />
                      </image>
+                     <effect>
+                        <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect>
                   </ImageView>
                </graphic>
+               <effect>
+                  <DropShadow color="#000000e5" />
+               </effect>
             </Button>
          </children>
+         <effect>
+            <InnerShadow choke="0.35" color="#0000001c" height="50.0" radius="24.5" width="50.0" />
+         </effect>
       </Pane>
    </left>
    <center>
@@ -33,19 +44,52 @@
          <children>
             <HBox layoutX="540.0" layoutY="7.0" styleClass="hbox-control-buttons">
                <children>
-                  <Circle fx:id="btnMinimize" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize" />
-                  <Circle fx:id="btnExit" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-exit" />
+                  <Circle fx:id="btnMinimize" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize">
+                     <effect>
+                        <DropShadow color="#000000e5" />
+                     </effect></Circle>
+                  <Circle fx:id="btnExit" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-exit">
+                     <effect>
+                        <DropShadow color="#000000e5" />
+                     </effect></Circle>
                </children>
             </HBox>
-            <TextField fx:id="tfStartPlace" layoutX="90.0" layoutY="150.0" promptText="Start place" />
-            <TextField fx:id="tfDestinationPlace" layoutX="90.0" layoutY="220.0" promptText="Destination place" />
-            <TextField fx:id="tfPrice" layoutX="90.0" layoutY="290.0" promptText="Price / person" />
-            <TextArea fx:id="taDescription" layoutX="90.0" layoutY="360.0" prefHeight="200.0" prefWidth="200.0" promptText="Tour description" />
-            <Label layoutX="90.0" layoutY="60.0" styleClass="lbl-profile" text="Edit tour" />
-            <Button fx:id="btnEditTour" layoutX="90.0" layoutY="470.0" mnemonicParsing="false" onMouseReleased="#handleEditTourButton" styleClass="btn-create-schedule" text="Edit tour" />
-            <Button fx:id="btnEditSchedule" layoutX="280.0" layoutY="470.0" mnemonicParsing="false" onMouseReleased="#handleGoToEditTourScheduleScreen" styleClass="btn-create-schedule" text="Edit schedule" />
-            <Button fx:id="btnDeleteTour" layoutX="90.0" layoutY="522.0" mnemonicParsing="false" onMouseReleased="#handleDeleteTourButton" styleClass="btn-create-schedule" text="Delete tour" />
+            <TextField fx:id="tfStartPlace" layoutX="88.0" layoutY="140.0" promptText="Start place">
+               <effect>
+                  <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
+               </effect></TextField>
+            <TextField fx:id="tfDestinationPlace" layoutX="88.0" layoutY="213.0" promptText="Destination place">
+               <effect>
+                  <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
+               </effect></TextField>
+            <TextField fx:id="tfPrice" layoutX="88.0" layoutY="286.0" promptText="Price / person">
+               <effect>
+                  <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
+               </effect></TextField>
+            <TextArea fx:id="taDescription" layoutX="88.0" layoutY="359.0" prefHeight="200.0" prefWidth="200.0" promptText="Tour description">
+               <effect>
+                  <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
+               </effect></TextArea>
+            <Label layoutX="69.0" layoutY="41.0" styleClass="lbl-profile" text="Edit tour">
+               <effect>
+                  <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+               </effect></Label>
+            <Button fx:id="btnEditTour" layoutX="88.0" layoutY="483.0" mnemonicParsing="false" onMouseReleased="#handleEditTourButton" styleClass="btn-create-schedule" text="Edit tour">
+               <effect>
+                  <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
+               </effect></Button>
+            <Button fx:id="btnEditSchedule" layoutX="278.0" layoutY="483.0" mnemonicParsing="false" onMouseReleased="#handleGoToEditTourScheduleScreen" styleClass="btn-create-schedule" text="Edit schedule">
+               <effect>
+                  <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
+               </effect></Button>
+            <Button fx:id="btnDeleteTour" layoutX="88.0" layoutY="540.0" mnemonicParsing="false" onMouseReleased="#handleDeleteTourButton" styleClass="btn-create-schedule" text="Delete tour">
+               <effect>
+                  <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
+               </effect></Button>
          </children>
+         <effect>
+            <InnerShadow choke="0.35" color="#0000001c" height="50.0" radius="24.5" width="50.0" />
+         </effect>
       </Pane>
    </center>
    <stylesheets>
