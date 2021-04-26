@@ -50,6 +50,7 @@ import sk.stu.fiit.parsers.Requests.dto.SearchRequest;
 import sk.stu.fiit.parsers.Requests.dto.TicketsRequest;
 import sk.stu.fiit.parsers.Requests.dto.TourDatesRequest;
 import sk.stu.fiit.parsers.Requests.dto.UserBookingsRequest;
+import sk.stu.fiit.parsers.Requests.dto.UserCompletedBookingsRequest;
 
 /**
  *
@@ -440,6 +441,18 @@ public class XMLRequestParser implements IRequestVisitor {
     public void constructUserBookingsRequest(UserBookingsRequest request) {
         HttpGet getRequest = new HttpGet(
                 "http://localhost:8080/api/v1/users/orders/new/");
+        getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        getRequest.setHeader("Authorization", "Bearer " + Singleton.
+                getInstance().getJwtToken());
+        
+        request.setRequest(getRequest);
+    }
+
+    @Override
+    public void constructUserCompletedBookingsRequest(
+            UserCompletedBookingsRequest request) {
+        HttpGet getRequest = new HttpGet(
+                "http://localhost:8080/api/v1/users/orders/past/");
         getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         getRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
