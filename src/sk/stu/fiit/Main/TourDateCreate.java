@@ -24,12 +24,12 @@ public class TourDateCreate {
         this.endDate = endDate;
     }
 
-    TourDateCreate(int numberOfTickets, LocalDateTime startDate, LocalDateTime endDate) {
+    public TourDateCreate(int numberOfTickets, LocalDateTime startDate, LocalDateTime endDate) {
         this.numberOfTickets = numberOfTickets;
         this.startDate = startDate;
         this.endDate = endDate;
     }
-
+    
     public int getNumberOfTourDate() {
         return numberOfTourDate;
     }

@@ -29,8 +29,26 @@ public class Alerts {
     public static final String TITLE_EMPTY_DESTINATION_PLACE = "Destination place field is empty";
     public static final String TITLE_EMPTY_PRICE = "Price per person field is empty";
     public static final String TITLE_EMPTY_DESCRIPTION = "Description field is empty";
-    public static final String TITLE_NOT_NUMBER = "Price per person field is not number";
+    public static final String TITLE_PRICE_NOT_NUMBER = "Price per person field is not number";
     
+    public static final String TITLE_DATE_RANGE = "Start date is later than end date";
+    public static final String TITLE_EMPTY_CAPACITY = "Capacity field is empty";
+    public static final String TITLE_EMPTY_START_DATE = "Start date is empty";
+    public static final String TITLE_EMPTY_END_DATE = "End date is empty";
+    public static final String TITLE_EMPTY_START_TIME = "Start time field is empty";
+    public static final String TITLE_EMPTY_END_TIME = "End time field is empty";
+    public static final String TITLE_CAPACITY_NOT_NUMBER = "Capacity field is not number";
+    public static final String TITLE_START_TIME = "Start time field is not in HH:MM format";
+    public static final String TITLE_END_TIME = "End time field is not in HH:MM format";
+    
+    public static final String TITLE_EMPTY_FIELDS = "Any field is empty";
+    public static final String TITLE_EMAIL_NOT_VALID = "Not valid e-mail format";
+    public static final String CONTENT_EMAIL_NOT_VALID = "E-mail must contain \"@\" and domain name";
+    public static final String TITLE_PASSWORD_NOT_VALID = "Not valid password";
+    public static final String CONTENT_PASSWORD_NOT_VALID = "Password can't contain spaces, tabs or linebreaks and must be at least 8 characters long";
+    
+    public static final String TITLE_DATE_OF_BIRTH = "You must be at least 15 years old";
+    public static final String TITLE_EMPTY_DATE_OF_BIRTH = "Date of Birth field is empty";
     
     
     public static void fieldsValidation(String contentText) {

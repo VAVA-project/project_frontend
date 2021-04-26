@@ -46,6 +46,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
+import sk.stu.fiit.Internationalisation.I18n;
 import sk.stu.fiit.User.User;
 import sk.stu.fiit.User.UserType;
 import sk.stu.fiit.Validators.UserRegistrationValidator;
@@ -149,20 +150,7 @@ public class SignupController implements Initializable {
             actual_stage.setIconified(true);
         }
         if (event.getSource().equals(btnBackCustomerAccount)) {
-            Parent signIn_node = null;
-            try {
-                signIn_node = FXMLLoader.load(getClass().getResource(
-                        "Views/Signin.fxml"));
-            } catch (IOException ex) {
-                Logger.getLogger(SignupController.class.getName()).
-                        log(Level.SEVERE, null, ex);
-            }
-            Scene signIn_scene = new Scene(signIn_node);
-            signIn_scene.setFill(Color.TRANSPARENT);
-            Stage appStage = (Stage) ((Node) event.getSource()).getScene().
-                    getWindow();
-            appStage.setScene(signIn_scene);
-            appStage.show();
+            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Signin.fxml");
         }
         if (event.getSource().equals(btnCreateCustomer)) {
             stackPaneSignupLeft.getChildren().clear();
@@ -225,8 +213,7 @@ public class SignupController implements Initializable {
         }
         if (event.getSource().equals(btnNextAccountInformations)) {
             if (UserRegistrationValidator.areEmpty.test(tfEmail, tfPassword)) {
-                if (UserRegistrationValidator.isEmailValid.test(tfEmail.
-                        getText())) {
+                if (UserRegistrationValidator.isEmailValid.test(tfEmail.getText())) {
                     if (UserRegistrationValidator.isPasswordValid.test(
                             tfPassword.getText())) {
                         email = tfEmail.getText();
@@ -246,15 +233,15 @@ public class SignupController implements Initializable {
                         hboxControlButtonsPersonalInformations.getChildren().
                                 add(btnExit);
                     } else {
-                        Alerts.fieldsValidation(
-                                "Please, enter password without spaces, tabs or linebreaks and at least 8 characters long");
+                        Alerts.showAlert(Alerts.TITLE_PASSWORD_NOT_VALID, 
+                                Alerts.CONTENT_PASSWORD_NOT_VALID);
                     }
                 } else {
-                    Alerts.fieldsValidation(
-                            "Please, enter email with valid format\n" + "(e.g. joseph123@gmail.com)");
+                    Alerts.showAlert(Alerts.TITLE_EMAIL_NOT_VALID, 
+                            Alerts.CONTENT_EMAIL_NOT_VALID);
                 }
             } else {
-                Alerts.fieldsValidation("Please, fill in all fields");
+                Alerts.showAlert(Alerts.TITLE_EMPTY_FIELDS);
             }
         }
         if (event.getSource().equals(btnBackPersonalInformations)) {
@@ -293,14 +280,13 @@ public class SignupController implements Initializable {
                             paneSignupPhoto.getChildren().add(btnChangePhoto);
                         }
                     } else {
-                        Alerts.fieldsValidation("Incorrect date range");
+                        Alerts.showAlert(Alerts.TITLE_DATE_OF_BIRTH);
                     }
                 } else {
-                    Alerts.fieldsValidation("Please, fill in date of birth");
+                    Alerts.showAlert(Alerts.TITLE_EMPTY_DATE_OF_BIRTH);
                 }
-
             } else {
-                Alerts.fieldsValidation("Please, fill in all fields");
+                Alerts.showAlert(Alerts.TITLE_EMPTY_FIELDS);
             }
         }
         if (event.getSource().equals(btnBackPhoto)) {

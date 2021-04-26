@@ -30,7 +30,7 @@ public class TourOfferValidator {
             Alerts.showAlert(Alerts.TITLE_EMPTY_DESCRIPTION);
             return false;
         } else if (isDouble(tf3)) {
-            Alerts.showAlert(Alerts.TITLE_NOT_NUMBER);
+            Alerts.showAlert(Alerts.TITLE_PRICE_NOT_NUMBER);
             return false;
         }
         return true;

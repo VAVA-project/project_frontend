@@ -18,17 +18,53 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPaneSignupMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="border-pane" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.SignupController">
+<BorderPane fx:id="borderPaneSignupMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="border-pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.SignupController">
    <left>
       <StackPane fx:id="stackPaneSignupLeft" BorderPane.alignment="CENTER">
          <children>
             <Pane fx:id="paneSignupLeft" prefHeight="200.0" prefWidth="200.0" styleClass="pane-signup-left">
                <children>
-                  <Label fx:id="lblUserType" layoutX="70.0" layoutY="45.0" prefHeight="60.0" styleClass="lbl-customer" />
-                  <Button fx:id="btnBackAccountInformations" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-back" text="&lt;" />
-                  <Button fx:id="btnBackPersonalInformations" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-back" text="&lt;" />
-                  <Button fx:id="btnBackPhoto" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-back" text="&lt;" />
+                  <Label fx:id="lblUserType" layoutX="20.0" layoutY="70.0" styleClass="lbl-customer">
+                     <effect>
+                        <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect></Label>
+                  <Button fx:id="btnBackAccountInformations" contentDisplay="CENTER" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-back">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../icons/back4.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <effect>
+                        <DropShadow color="#000000e5" />
+                     </effect></Button>
+                  <Button fx:id="btnBackPersonalInformations" contentDisplay="CENTER" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-back">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../icons/back4.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <effect>
+                        <DropShadow color="#000000e5" />
+                     </effect></Button>
+                  <Button fx:id="btnBackPhoto" contentDisplay="CENTER" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-back">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../icons/back4.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <effect>
+                        <DropShadow color="#000000e5" />
+                     </effect></Button>
                </children>
+               <effect>
+                  <InnerShadow choke="0.35" color="#0000001c" height="50.0" radius="24.5" width="50.0" />
+               </effect>
             </Pane>
             <Pane fx:id="paneSignupCustomerAccount" prefHeight="200.0" prefWidth="200.0" styleClass="pane-signup-customer-account">
                <children>
@@ -39,33 +75,36 @@
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../icons/back3.png" />
+                              <Image url="@../../../../../icons/back4.png" />
                            </image>
+                           <effect>
+                              <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                           </effect>
                         </ImageView>
                      </graphic>
                      <effect>
-                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                        <DropShadow color="#000000e5" />
                      </effect>
                   </Button>
                   <Label contentDisplay="CENTER" layoutX="142.0" layoutY="59.0" prefHeight="96.0" prefWidth="167.0" styleClass="lbl-customer" text="%signup.chooseAccount.customer.title" textAlignment="CENTER" wrapText="true">
                      <effect>
-                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                        <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                      </effect></Label>
                   <Label layoutX="130.0" layoutY="170.0" prefHeight="90.0" prefWidth="180.0" styleClass="txt-customer" text="%signup.chooseAccount.customer.description_1" wrapText="true">
                      <effect>
-                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                        <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                      </effect></Label>
                   <Label layoutX="130.0" layoutY="255.0" prefHeight="90.0" prefWidth="200.0" styleClass="txt-customer" text="%signup.chooseAccount.customer.description_2" wrapText="true">
                      <effect>
-                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                        <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                      </effect></Label>
                   <Label layoutX="130.0" layoutY="340.0" prefHeight="90.0" prefWidth="200.0" styleClass="txt-customer" text="%signup.chooseAccount.customer.description_3" wrapText="true">
                      <effect>
-                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                        <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                      </effect></Label>
                   <Button fx:id="btnCreateCustomer" layoutX="133.0" layoutY="470.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" prefHeight="86.0" prefWidth="183.0" styleClass="btn-customer" text="%signup.chooseAccount.createCustomerButton.text" textAlignment="CENTER" wrapText="true">
                      <effect>
-                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                        <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                      </effect></Button>
                   <Label layoutX="112.0" layoutY="179.0" prefHeight="28.0" prefWidth="13.0" styleClass="lbl-customer" text="•">
                      <effect>
@@ -95,58 +134,109 @@
          <children>
             <Pane fx:id="paneSignupAccountInformations" styleClass="pane-signup-account-informations">
                <children>
-                  <Label layoutX="114.0" layoutY="45.0" prefHeight="133.0" prefWidth="260.0" styleClass="lbl-guide" text="%signup.accountInformations.title" wrapText="true" />
-                  <TextField fx:id="tfEmail" layoutX="114.0" layoutY="175.0" promptText="Email" />
-                  <Button fx:id="btnNextAccountInformations" layoutX="284.0" layoutY="341.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-next" text="%signup.accountInformations.nextButton.text" />
+                  <Label layoutX="88.0" layoutY="45.0" prefHeight="133.0" prefWidth="260.0" styleClass="lbl-guide" text="%signup.accountInformations.title" wrapText="true">
+                     <effect>
+                        <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect></Label>
+                  <TextField fx:id="tfEmail" layoutX="88.0" layoutY="219.0" promptText="Email">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
+                     </effect></TextField>
+                  <Button fx:id="btnNextAccountInformations" layoutX="263.0" layoutY="393.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-next" text="%signup.accountInformations.nextButton.text">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
+                     </effect></Button>
                   <HBox fx:id="hboxControlButtonsAccountInformations" layoutX="540.0" layoutY="7.0" prefHeight="16.0" prefWidth="37.0" styleClass="hbox-control-buttons" />
-                  <PasswordField fx:id="tfPassword" layoutX="114.0" layoutY="258.0" promptText="%signup.accountInformations.password.prompt" />
+                  <PasswordField fx:id="tfPassword" layoutX="88.0" layoutY="302.0" promptText="%signup.accountInformations.password.prompt">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
+                     </effect></PasswordField>
                </children>
+               <effect>
+                  <InnerShadow choke="0.35" color="#0000001c" height="50.0" radius="24.5" width="50.0" />
+               </effect>
             </Pane>
             <Pane fx:id="paneSignupPersonalInformations" prefHeight="200.0" prefWidth="200.0" styleClass="pane-signup-account-informations">
                <children>
-                  <Label layoutX="115.0" layoutY="45.0" prefHeight="133.0" prefWidth="260.0" styleClass="lbl-guide" text="%signup.personalInformations.title" wrapText="true" />
-                  <TextField fx:id="tfFirstname" layoutX="115.0" layoutY="175.0" promptText="%signup.personalInformations.firstName.prompt" />
-                  <TextField fx:id="tfLastname" layoutX="115.0" layoutY="258.0" promptText="%signup.personalInformations.lastName.prompt" />
-                  <DatePicker fx:id="datePickerDateOfBirth" layoutX="115.0" layoutY="341.0" prefHeight="60.0" prefWidth="340.0" promptText="%signup.personalInformations.dateOfBirth.prompt" />
-                  <Button fx:id="btnNextPersonalInformations" layoutX="285.0" layoutY="424.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-next" text="%signup.personalInformations.nextButton.text" />
+                  <Label layoutX="88.0" layoutY="45.0" prefHeight="133.0" prefWidth="260.0" styleClass="lbl-guide" text="%signup.personalInformations.title" wrapText="true">
+                     <effect>
+                        <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect></Label>
+                  <TextField fx:id="tfFirstname" layoutX="88.0" layoutY="219.0" promptText="%signup.personalInformations.firstName.prompt">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
+                     </effect></TextField>
+                  <TextField fx:id="tfLastname" layoutX="88.0" layoutY="302.0" promptText="%signup.personalInformations.lastName.prompt">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
+                     </effect></TextField>
+                  <DatePicker fx:id="datePickerDateOfBirth" layoutX="88.0" layoutY="385.0" prefHeight="60.0" prefWidth="340.0" promptText="%signup.personalInformations.dateOfBirth.prompt">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
+                     </effect></DatePicker>
+                  <Button fx:id="btnNextPersonalInformations" layoutX="258.0" layoutY="476.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-next" text="%signup.personalInformations.nextButton.text">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
+                     </effect></Button>
                   <HBox fx:id="hboxControlButtonsPersonalInformations" layoutX="540.0" layoutY="7.0" prefHeight="16.0" prefWidth="37.0" styleClass="hbox-control-buttons" />
                </children>
+               <effect>
+                  <InnerShadow choke="0.35" color="#0000001c" height="50.0" radius="24.5" width="50.0" />
+               </effect>
             </Pane>
-            <Pane fx:id="paneSignupPhoto" prefHeight="200.0" prefWidth="200.0">
+            <Pane fx:id="paneSignupPhoto" prefHeight="200.0" prefWidth="200.0" styleClass="pane-signup-account-informations">
                <children>
-                  <Label layoutX="115.0" layoutY="45.0" prefHeight="133.0" prefWidth="260.0" styleClass="lbl-guide" text="%signup.personalInformations.title" wrapText="true" />
-                  <ImageView fx:id="imageViewPhoto" fitHeight="190.0" fitWidth="190.0" layoutX="115.0" layoutY="175.0" pickOnBounds="true" smooth="false" />
+                  <Label layoutX="88.0" layoutY="45.0" prefHeight="133.0" prefWidth="260.0" styleClass="lbl-guide" text="%signup.personalInformations.title" wrapText="true">
+                     <effect>
+                        <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                     </effect></Label>
+                  <ImageView fx:id="imageViewPhoto" fitHeight="190.0" fitWidth="190.0" layoutX="88.0" layoutY="219.0" pickOnBounds="true" smooth="false">
+                     <effect>
+                        <DropShadow color="#00000080" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
+                     </effect></ImageView>
                   <HBox fx:id="hboxControlButtonsPhoto" layoutX="540.0" layoutY="7.0" prefHeight="16.0" prefWidth="37.0" styleClass="hbox-control-buttons" />
-                  <Label fx:id="lblSelectPhoto" layoutX="115.0" layoutY="175.0" onMouseReleased="#handleMouseEvent" prefHeight="150.0" prefWidth="192.0" styleClass="lbl-photo" text="%signup.personalInformations.choosePhoto.prompt" textFill="#b2b2b2" wrapText="true">
+                  <Label fx:id="lblSelectPhoto" layoutX="88.0" layoutY="219.0" onMouseReleased="#handleMouseEvent" prefHeight="150.0" prefWidth="192.0" styleClass="lbl-photo" text="%signup.personalInformations.choosePhoto.prompt" textFill="#b2b2b2" wrapText="true">
                      <padding>
                         <Insets left="10.0" />
                      </padding>
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
+                     </effect>
                   </Label>
-                  <Button fx:id="btnRegister" layoutX="115.0" layoutY="392.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-next" text="%signup.personalInformations.registerButton.text" />
-                  <Button fx:id="btnChangePhoto" layoutX="316.0" layoutY="392.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-next" text="%signup.personalInformations.changePhotoButton.text" />
+                  <Button fx:id="btnRegister" layoutX="88.0" layoutY="437.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-next" text="%signup.personalInformations.registerButton.text">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
+                     </effect></Button>
+                  <Button fx:id="btnChangePhoto" layoutX="278.0" layoutY="437.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-next" text="%signup.personalInformations.changePhotoButton.text">
+                     <effect>
+                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
+                     </effect></Button>
                </children>
+               <effect>
+                  <InnerShadow choke="0.35" color="#0000001c" height="50.0" radius="24.5" width="50.0" />
+               </effect>
             </Pane>
             <Pane fx:id="paneSignupGuideAccount" prefHeight="200.0" prefWidth="200.0" styleClass="pane-signup-guide-account">
                <children>
                   <Label contentDisplay="CENTER" layoutX="142.0" layoutY="59.0" prefHeight="96.0" prefWidth="167.0" styleClass="lbl-guide" text="%signup.chooseAccount.guide.title" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" wrapText="true">
                      <effect>
-                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                        <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                      </effect></Label>
                   <Label layoutX="130.0" layoutY="170.0" prefHeight="90.0" prefWidth="240.0" styleClass="txt-guide" text="%signup.chooseAccount.guide.description_1" wrapText="true">
                      <effect>
-                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                        <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                      </effect></Label>
                   <Label layoutX="130.0" layoutY="255.0" prefHeight="90.0" prefWidth="201.0" styleClass="txt-guide" text="%signup.chooseAccount.guide.description_2" wrapText="true">
                      <effect>
-                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                        <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                      </effect></Label>
                   <Label layoutX="130.0" layoutY="340.0" prefHeight="90.0" prefWidth="243.0" styleClass="txt-guide" text="%signup.chooseAccount.guide.description_3" wrapText="true">
                      <effect>
-                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                        <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                      </effect></Label>
                   <Button fx:id="btnCreateGuide" layoutX="133.0" layoutY="470.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-guide" text="%signup.chooseAccount.createGuideButton.text" textAlignment="CENTER" wrapText="true">
                      <effect>
-                        <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+                        <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                      </effect></Button>
                   <HBox fx:id="hboxControlButtonsGuideAccount" layoutX="390.0" layoutY="7.0" spacing="5.0" styleClass="hbox-control-buttons">
                      <children>

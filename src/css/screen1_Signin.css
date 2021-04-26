@@ -55,7 +55,9 @@
 }
 
 .btn-signin:pressed {
-    -fx-background-color: #8258F9;
+    -fx-pref-height: 58px;
+    -fx-pref-width: 338px;
+    -fx-background-insets: 0;
 }
 
 .btn-signup {
@@ -72,6 +74,12 @@
 }
 
 .btn-signup:hover {
+    -fx-background-insets: 0;
+}
+
+.btn-signup:pressed {
+    -fx-pref-height: 44px;
+    -fx-pref-width: 169px;
     -fx-background-insets: 0;
 }
 

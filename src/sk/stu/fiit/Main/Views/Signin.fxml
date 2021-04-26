@@ -40,11 +40,11 @@
                </effect></PasswordField>
             <Button layoutX="88.0" layoutY="349.0" mnemonicParsing="false" onMouseReleased="#handleSignIn" styleClass="btn-signin" text="%signin.signinButton.text">
                <effect>
-                  <DropShadow color="#000000a6" height="30.0" offsetY="2.0" radius="14.5" spread="0.09" width="30.0" />
+                  <DropShadow color="#00000099" height="30.0" offsetY="2.0" radius="14.5" spread="0.08" width="30.0" />
                </effect></Button>
             <Button layoutX="88.0" layoutY="488.0" mnemonicParsing="false" onMouseReleased="#handleSignUp" styleClass="btn-signup" text="%signin.signupButton.text">
                <effect>
-                  <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.5" width="30.0" />
+                  <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
                </effect></Button>
             <HBox alignment="CENTER" layoutX="540.0" layoutY="7.0" spacing="5.0" styleClass="hbox-control-buttons">
                <children>
