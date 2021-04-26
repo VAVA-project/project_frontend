@@ -23,17 +23,16 @@
     -fx-text-fill: #FFFFFF;
 }
 
-.lbl-tour {
-    -fx-font-family: "Roboto";
-    -fx-font-size: 17px;
-    -fx-font-weight: bold;
-    -fx-text-fill: black;
+.btn-back:pressed {
+    -fx-pref-height: 44px;
+    -fx-pref-width: 44px;
+    -fx-background-insets: 0;
 }
 
-.lbl-informations {
+.lbl-tour {
     -fx-font-family: "Roboto";
-    -fx-font-size: 17px;
-    font-weight: normal;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
     -fx-text-fill: black;
 }
 
@@ -57,7 +56,6 @@
 .vbox-tourDates {
     -fx-pref-width: 650px;
     -fx-pref-height: 180px;
-    -fx-spacing: 10;
 }
 
 .btn-load {
@@ -73,11 +71,17 @@
     -fx-background-insets: 0;
 }
 
+.btn-load:pressed {
+    -fx-pref-height: 39px;
+    -fx-pref-width: 129px;
+    -fx-background-insets: 0;
+}
+
 .hbox-tour-date {
     -fx-background-color: #D9DBE9;
     -fx-background-radius: 16px;
     -fx-border-radius: 16px;
-    -fx-pref-width: 650px;
+    -fx-pref-width: 600px;
     -fx-pref-height: 50px;
 }
 
@@ -103,6 +107,12 @@
     -fx-background-insets: 0;
 }
 
+.btn-buy:pressed {
+    -fx-pref-height: 34px;
+    -fx-pref-width: 59px;
+    -fx-background-insets: 0;
+}
+
 .lbl-cap-date {
     -fx-font-family: "Roboto";
     -fx-font-size: 15px;
@@ -112,7 +122,7 @@
 
 .lbl-informations {
     -fx-font-family: "Roboto";
-    -fx-font-size: 15px;
+    -fx-font-size: 16px;
     font-weight: normal;
     -fx-text-fill: black;
 }
@@ -128,8 +138,9 @@
 }
 
 .tour-dates-wrappers {
+    -fx-background-radius: 16px;
     -fx-background-insets: 0;
-    -fx-background-color: white;
+    -fx-background-color: #EFF0F6;
 }
 
 .scroll-bar:vertical .track{

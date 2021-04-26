@@ -5,10 +5,14 @@
 package sk.stu.fiit.Main;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Base64;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -16,9 +20,23 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import sk.stu.fiit.Exceptions.APIValidationException;
+import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
+import sk.stu.fiit.parsers.Requests.XMLRequestParser;
+import sk.stu.fiit.parsers.Requests.dto.UserBookingsRequest;
+import sk.stu.fiit.parsers.Requests.dto.UserCompletedBookingsRequest;
+import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
+import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.CreateTourDateResponse;
+import sk.stu.fiit.parsers.Responses.V2.UserBookingsResponses.UserBooking;
+import sk.stu.fiit.parsers.Responses.V2.UserBookingsResponses.UserBookingsResponse;
 
 /**
  * FXML Controller class
@@ -26,7 +44,10 @@ import javafx.stage.Stage;
  * @author adamf
  */
 public class ProfileCustomerController implements Initializable {
-
+    
+    private List<UserBooking> bookedTours;
+    private List<UserBooking> completedTours;
+    
     @FXML
     private ImageView imageViewPhoto;
     @FXML
@@ -39,6 +60,10 @@ public class ProfileCustomerController implements Initializable {
     private Circle btnMinimize;
     @FXML
     private Circle btnExit;
+    @FXML
+    private VBox vbBookedTours;
+    @FXML
+    private VBox vbCompletedTours;
 
     /**
      * Initializes the controller class.
@@ -46,6 +71,8 @@ public class ProfileCustomerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setProfileInformations();
+        setBookedTours();
+        setCompletedTours();
     }
 
     @FXML
@@ -81,6 +108,65 @@ public class ProfileCustomerController implements Initializable {
         
         // Setting profile name
         lblName.setText(Singleton.getInstance().getUser().getFirstName() + " " + Singleton.getInstance().getUser().getLastName());
+    }
+
+    private void setBookedTours() {
+        sendUserBookingsRequest();
+    }
+
+    private void setCompletedTours() {
+        sendUserCompletedBookingsRequest();
+    }
+
+    private void sendUserBookingsRequest() {
+        UserBookingsRequest userBookingsRequest = new UserBookingsRequest();
+        userBookingsRequest.accept(new XMLRequestParser());
+        
+        HttpGet request = (HttpGet) userBookingsRequest.getRequest();
+        
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
+            
+            UserBookingsResponse userBookingsResponse = (UserBookingsResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.BOOKED_TOURS_RESPONSE).parse(response);
+            this.bookedTours = userBookingsResponse.getUserBookings();
+        } catch (IOException ex) {
+            Logger.getLogger(TourTicketsController.class.getName()).log(Level.SEVERE, null, ex);
+            Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
+        } catch (AuthTokenExpiredException ex) {
+            Logger.getLogger(TourTicketsController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+            Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
+        } catch (APIValidationException ex) {
+            Logger.getLogger(TourTicketsController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+            ex.getValidationErrors().forEach(System.out::println);
+        }
+    }
+
+    private void sendUserCompletedBookingsRequest() {
+        UserCompletedBookingsRequest userCompletedBookingsRequest = new UserCompletedBookingsRequest();
+        userCompletedBookingsRequest.accept(new XMLRequestParser());
+        
+        HttpGet request = (HttpGet) userCompletedBookingsRequest.getRequest();
+        
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
+            
+            UserBookingsResponse userBookingsResponse = (UserBookingsResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.BOOKED_TOURS_RESPONSE).parse(response);
+            this.completedTours = userBookingsResponse.getUserBookings();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(TourTicketsController.class.getName()).log(Level.SEVERE, null, ex);
+            Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
+        } catch (AuthTokenExpiredException ex) {
+            Logger.getLogger(TourTicketsController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+            Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
+        } catch (APIValidationException ex) {
+            Logger.getLogger(TourTicketsController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+            ex.getValidationErrors().forEach(System.out::println);
+        }
     }
 
 }

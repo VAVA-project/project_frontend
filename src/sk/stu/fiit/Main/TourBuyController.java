@@ -18,7 +18,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -33,6 +32,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
+import sk.stu.fiit.Internationalisation.I18n;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.TourDatesRequest;
 import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
@@ -62,13 +62,15 @@ public class TourBuyController implements Initializable {
     @FXML
     private Label lblRating;
     @FXML
-    private TextArea taDescription;
+    private Label taDescription;
     @FXML
     private Button btnLoad;
     @FXML
     private VBox vbTourDates;
     @FXML
     private Pane paneTourBuy;
+    @FXML
+    private Label lblstartPlace;
 
     /**
      * Initializes the controller class.
@@ -106,6 +108,7 @@ public class TourBuyController implements Initializable {
         clip.setArcHeight(30);
         this.photo.setClip(clip);
         this.lblName.setText(Singleton.getInstance().getTourBuy().getGuideName());
+        this.lblstartPlace.setText(Singleton.getInstance().getTourBuy().getStartPlace());
         this.lblDestination.setText(Singleton.getInstance().getTourBuy().getDestinationPlace());
         this.lblRating.setText(Singleton.getInstance().getTourBuy().getRating());
         this.lblPrice.setText(Singleton.getInstance().getTourBuy().getPricePerPerson());
@@ -134,7 +137,7 @@ public class TourBuyController implements Initializable {
     }
 
     private Node loadTourDate(TourDate tourDate) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/OneTourDate.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/OneTourDate.fxml"), I18n.getBundle());
         loader.setControllerFactory(c -> new OneTourDateController(tourDate));
         try {
             return loader.load();
@@ -162,10 +165,10 @@ public class TourBuyController implements Initializable {
             
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
-            Alerts.serverIsNotResponding();
+            Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
-            Alerts.authTokenExpired();
+            Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
         } catch (APIValidationException ex) {
             Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
         }

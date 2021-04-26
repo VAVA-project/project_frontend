@@ -40,3 +40,9 @@
     -fx-pref-width: 180px;
     -fx-background-insets: 0;
 }
+
+.btn-search:pressed {
+    -fx-pref-height: 49px;
+    -fx-pref-width: 179px;
+    -fx-background-insets: 0;
+}

@@ -36,16 +36,23 @@
     -fx-background-insets: 0;
 }
 
-.tours-wrappers {
+.btn-paging:pressed {
+    -fx-pref-height: 44px;
+    -fx-pref-width: 169px;
     -fx-background-insets: 0;
-    -fx-background-color: white;
+}
+
+.tours-wrappers {
+    -fx-background-radius: 16px;
+    -fx-background-insets: 0;
+    -fx-background-color: #EFF0F6;
 }
 
 .hbox-tour {
-    -fx-background-color: #EFF0F6;
+    -fx-background-color: #D9DBE9;
     -fx-background-radius: 16px;
     -fx-border-radius: 16px;
-    -fx-pref-width: 680px;
+    -fx-pref-width: 650px;
     -fx-pref-height: 150px;
     -fx-spacing: 10;
 }
@@ -70,6 +77,12 @@
     -fx-background-radius: 16px;
     -fx-pref-height: 35px;
     -fx-pref-width: 100px;
+    -fx-background-insets: 0;
+}
+
+.btn-interested:pressed {
+    -fx-pref-height: 34px;
+    -fx-pref-width: 99px;
     -fx-background-insets: 0;
 }
 

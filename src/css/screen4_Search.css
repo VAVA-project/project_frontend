@@ -41,6 +41,12 @@
     -fx-text-fill: #FFFFFF;
 }
 
+.btn-profile:pressed {
+    -fx-pref-height: 44px;
+    -fx-pref-width: 44px;
+    -fx-background-insets: 0;
+}
+
 .btn-search {
     -fx-font-family: "Roboto";
     -fx-font-size: 16px;
@@ -50,4 +56,10 @@
     -fx-background-radius: 16px;
     -fx-pref-height: 45px;
     -fx-pref-width: 170px;
+}
+
+.btn-search:pressed {
+    -fx-pref-height: 44px;
+    -fx-pref-width: 169px;
+    -fx-background-insets: 0;
 }

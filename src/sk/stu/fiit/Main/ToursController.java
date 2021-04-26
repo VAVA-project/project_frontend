@@ -32,6 +32,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
+import sk.stu.fiit.Internationalisation.I18n;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.SearchRequest;
 import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
@@ -137,7 +138,7 @@ public class ToursController implements Initializable {
 
     // Vytvorenie a inicializovanie fxml elementu jednej tury
     private Node loadTourOffer(Tour tour) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/TourOffer.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/TourOffer.fxml"), I18n.getBundle());
         loader.setControllerFactory(c -> new TourOfferController(tour));
         try {
             return loader.load();
@@ -189,11 +190,11 @@ public class ToursController implements Initializable {
 
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
-            Alerts.serverIsNotResponding();
+            Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(ToursController.class.getName()).
                     log(Level.SEVERE, null, ex);
-            Alerts.authTokenExpired();
+            Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
         } catch (APIValidationException ex) {
             Logger.getLogger(ToursController.class.getName()).
                     log(Level.SEVERE, null, ex);
@@ -243,10 +244,10 @@ public class ToursController implements Initializable {
                 });
             } catch (IOException ex) {
                 Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
-                Alerts.serverIsNotResponding();
+                Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
             } catch (AuthTokenExpiredException ex) {
                 Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
-                Alerts.authTokenExpired();
+                Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
             } catch (APIValidationException ex) {
                 Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -277,7 +278,7 @@ public class ToursController implements Initializable {
     @FXML
     private void handleSearchButton(MouseEvent event) {
         if(this.tfDestination.getText().isEmpty()) {
-            Alerts.showGenericAlertError("Search", null, "Please enter a destination.");
+            Alerts.showAlert(Alerts.TITLE_EMPTY_DESTINATION);
             return;
         }
         
@@ -324,10 +325,10 @@ public class ToursController implements Initializable {
 //            }
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
-            Alerts.serverIsNotResponding();
+            Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
-            Alerts.authTokenExpired();
+            Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
         } catch (APIValidationException ex) {
             Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
         }

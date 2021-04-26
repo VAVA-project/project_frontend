@@ -3,7 +3,7 @@
     Author     : adamf
 */
 .border-pane {
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: transparent;
     -fx-background-radius: 32px;
     -fx-pref-width: 900px;
     -fx-pref-height: 600px;
@@ -30,6 +30,12 @@
     -fx-pref-width: 45px;
     -fx-pref-height: 45px;
     -fx-text-fill: #FFFFFF;
+}
+
+.btn-back:pressed {
+    -fx-pref-height: 44px;
+    -fx-pref-width: 44px;
+    -fx-background-insets: 0;
 }
 
 .lbl-customer {
@@ -70,6 +76,12 @@
     -fx-pref-width: 170px;
 }
 
+.btn-customer:pressed {
+    -fx-pref-height: 54px;
+    -fx-pref-width: 169px;
+    -fx-background-insets: 0;
+}
+
 .btn-guide {
     -fx-font-family: "Roboto";
     -fx-font-size: 16px;
@@ -79,6 +91,12 @@
     -fx-background-color: transparent;
     -fx-pref-height: 55px;
     -fx-pref-width: 170px;
+}
+
+.btn-guide:pressed {
+    -fx-pref-height: 54px;
+    -fx-pref-width: 169px;
+    -fx-background-insets: 0;
 }
 
 .pane-signup-left {
@@ -102,6 +120,7 @@
     -fx-background-radius: 16px;
     -fx-pref-height: 60px;
     -fx-pref-width: 340px;
+    
 }
 
 .btn-next {
@@ -114,6 +133,12 @@
     -fx-background-radius: 16px;
     -fx-pref-height: 45px;
     -fx-pref-width: 170px;
+    -fx-background-insets: 0;
+}
+
+.btn-next:pressed {
+    -fx-pref-height: 44px;
+    -fx-pref-width: 169px;
     -fx-background-insets: 0;
 }
 

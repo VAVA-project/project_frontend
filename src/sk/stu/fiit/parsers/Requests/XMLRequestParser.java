@@ -268,13 +268,6 @@ public class XMLRequestParser implements IRequestVisitor {
         } catch (ParserConfigurationException
                 | TransformerConfigurationException ex) {
         }
-
-        System.out.println("startPlace = " + request.getStartPlace());
-        System.out.
-                println("destinationPlace = " + request.getDestinationPlace());
-        System.out.println("description = " + request.getDescription());
-        System.out.println("pricePerPerson = " + request.getPricePerPerson());
-
         request.setRequest(httpPost);
     }
 
@@ -326,14 +319,6 @@ public class XMLRequestParser implements IRequestVisitor {
                 put("numberOfTickets", String.valueOf(request.
                         getNumberOfTickets()));
         data.put("startDate", request.getStartDate().toString());
-
-        System.out.println("TUR id = " + request.getTourOfferId());
-        System.out.println("TUR startDate = " + request.getStartDate().
-                toString());
-        System.out.println("TUR endDate = " + request.getEndDate().toString());
-        System.out.println("TUR numberOfTickets = " + request.
-                getNumberOfTickets());
-
         try {
             httpPost.setEntity(new StringEntity(this.translateToXML(
                     "CreateTourDateRequest", data), CHARSET));

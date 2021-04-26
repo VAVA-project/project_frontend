@@ -6,6 +6,7 @@ package sk.stu.fiit.Main;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
@@ -16,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -28,6 +30,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
+import sk.stu.fiit.Internationalisation.I18n;
+import sk.stu.fiit.Validators.TourScheduleValidator;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.CreateTourDateRequest;
 import sk.stu.fiit.parsers.Requests.dto.CreateTourOfferRequest;
@@ -72,6 +76,7 @@ public class CreateScheduleController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.setupDatePickers();
     }
 
     @FXML
@@ -92,20 +97,14 @@ public class CreateScheduleController implements Initializable {
 
     @FXML
     private void handleAddTourDateButton(MouseEvent event) {
-        createTourDateCreate();
-        /*
-        System.out.println("number of tour Dates = " + Singleton.getInstance().getTourCreate().getTourDates().size());
-        Singleton.getInstance().getTourCreate().getTourDates().stream().forEach((t) -> {
-            System.out.println("numberOfTickets = " + t.getNumberOfTickets());
-            System.out.println("startDate = " + t.getStartDate());
-            System.out.println("endDate = " + t.getEndDate());
-        });*/
+        if (TourScheduleValidator.validate(tfCapacity, dpStartDate, dpEndDate, tfStartTime, tfEndTime)) {
+            createTourDateCreate();
+        }
     }
 
     @FXML
     private void handleCreateTourButton(MouseEvent event) {
         sendCreateTourOfferRequest();
-        System.out.println("\nTour ID = " + Singleton.getInstance().getTourCreate().getId());
         sendCreateTourDatesRequests();
     }
 
@@ -129,8 +128,8 @@ public class CreateScheduleController implements Initializable {
     }
 
     private Node loadTourDate(TourDateCreate tourDateCreate) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/OneTourDateSchedule.fxml"));
-        loader.setControllerFactory(c -> new OneTourDateScheduleController(tourDateCreate, this.vbTourDates));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/OneTourDateSchedule.fxml"), I18n.getBundle());
+        loader.setControllerFactory(c -> new OneTourDateScheduleController(tourDateCreate, vbTourDates));
         try {
             return loader.load();
         } catch (IOException ex) {
@@ -159,11 +158,11 @@ public class CreateScheduleController implements Initializable {
             
         } catch (IOException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).log(Level.SEVERE, null, ex);
-            Alerts.serverIsNotResponding();
+            Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
-            Alerts.authTokenExpired();
+            Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
         } catch (APIValidationException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
@@ -193,16 +192,42 @@ public class CreateScheduleController implements Initializable {
             
         } catch (IOException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).log(Level.SEVERE, null, ex);
-            Alerts.serverIsNotResponding();
+            Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
-            Alerts.authTokenExpired();
+            Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
         } catch (APIValidationException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
             ex.getValidationErrors().forEach(System.out::println);
         }
+    }
+
+    private void setupDatePickers() {
+        this.dpStartDate.setDayCellFactory(
+                (final DatePicker param) -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+
+                LocalDate today = LocalDate.now();
+                
+                setDisable(empty || item.compareTo(today) <= 0);
+            }
+        });
+        
+        this.dpEndDate.setDayCellFactory(
+                (final DatePicker param) -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+
+                LocalDate today = LocalDate.now();
+                        
+                setDisable(empty || item.compareTo(today) <= 0);
+            }
+        });
     }
 
 }

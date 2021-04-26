@@ -30,6 +30,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
+import sk.stu.fiit.Internationalisation.I18n;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.GuideToursRequest;
 import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
@@ -142,11 +143,11 @@ public class ProfileGuideController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE,
                     null, ex);
-            Alerts.serverIsNotResponding();
+            Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(ProfileGuideController.class.getName()).
                     log(Level.SEVERE, null, ex);
-            Alerts.authTokenExpired();
+            Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
         } catch (APIValidationException ex) {
             Logger.getLogger(ProfileGuideController.class.getName()).
                     log(Level.SEVERE, null, ex);
@@ -175,7 +176,7 @@ public class ProfileGuideController implements Initializable {
     }
 
     private Node loadGuideTourOfferItem(Tour tour) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/GuideTourOfferItem.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/GuideTourOfferItem.fxml"), I18n.getBundle());
         loader.setControllerFactory(c -> new GuideTourOfferItemController(tour));
         return loader.load();
     }

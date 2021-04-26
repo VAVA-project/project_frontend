@@ -2,17 +2,34 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="pane" stylesheets="@../../../../../css/Alerts.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.AlertController">
    <children>
-      <VBox alignment="CENTER" layoutX="5.0" layoutY="25.0" prefHeight="150.0" prefWidth="340.0" spacing="20.0">
+      <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="230.0" prefWidth="380.0" spacing="5.0">
          <children>
-            <Label fx:id="lblAlertTitle" styleClass="lbl-alert-title" text="Alert title" />
-            <Label fx:id="lblAlertContent" styleClass="lbl-alert-content" text="Alert content" />
-            <Button fx:id="btnOk" mnemonicParsing="false" onMouseReleased="#handleOkButton" styleClass="btn-ok" text="OK" />
+            <Label fx:id="lblAlertTitle" alignment="CENTER" contentDisplay="CENTER" prefHeight="69.0" prefWidth="350.0" styleClass="lbl-alert-title" text="Alert title" textAlignment="CENTER" wrapText="true">
+               <effect>
+                  <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+               </effect>
+            </Label>
+            <Label fx:id="lblAlertContent" alignment="CENTER" contentDisplay="CENTER" prefHeight="63.0" prefWidth="350.0" styleClass="lbl-alert-content" text="Alert content" textAlignment="CENTER" wrapText="true">
+               <effect>
+                  <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+               </effect>
+            </Label>
+            <Button fx:id="btnOk" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseReleased="#handleOkButton" styleClass="btn-ok" text="OK">
+               <effect>
+                  <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
+               </effect>
+            </Button>
          </children>
       </VBox>
    </children>
+   <effect>
+      <InnerShadow choke="0.35" color="#0000001c" height="50.0" radius="24.5" width="50.0" />
+   </effect>
 </Pane>

@@ -4,35 +4,61 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="pane" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.SearchController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.SearchController">
    <children>
-      <TextField fx:id="tfDestination" layoutX="160.0" layoutY="265.0" onKeyReleased="#handleEnterKey" prefHeight="114.0" prefWidth="590.0" promptText="%search.searchTextField.prompt" />
-      <Label layoutX="160.0" layoutY="186.0" text="%search.title" />
+      <TextField fx:id="tfDestination" layoutX="160.0" layoutY="265.0" onKeyReleased="#handleEnterKey" prefHeight="114.0" prefWidth="590.0" promptText="%search.searchTextField.prompt">
+         <effect>
+            <DropShadow color="#00000033" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
+         </effect></TextField>
+      <Label layoutX="160.0" layoutY="186.0" text="%search.title">
+         <effect>
+            <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+         </effect></Label>
       <Button fx:id="btnProfile" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-profile">
          <graphic>
             <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../icons/menu.png" />
+                  <Image url="@../../../../../icons/menu1.png" />
                </image>
+               <effect>
+                  <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+               </effect>
             </ImageView>
          </graphic>
+         <effect>
+            <DropShadow color="#000000e5" />
+         </effect>
       </Button>
       <HBox layoutX="840.0" layoutY="7.0" styleClass="hbox-control-buttons">
          <children>
-            <Circle fx:id="btnMinimize" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize" />
-            <Circle fx:id="btnExit" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-exit" />
+            <Circle fx:id="btnMinimize" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize">
+               <effect>
+                  <DropShadow color="#000000e5" />
+               </effect></Circle>
+            <Circle fx:id="btnExit" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-exit">
+               <effect>
+                  <DropShadow color="#000000e5" />
+               </effect></Circle>
          </children>
       </HBox>
-      <Button fx:id="btnSearch" layoutX="160.0" layoutY="369.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-search" text="%search.searchButton.text" />
+      <Button fx:id="btnSearch" layoutX="160.0" layoutY="369.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" styleClass="btn-search" text="%search.searchButton.text">
+         <effect>
+            <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
+         </effect></Button>
    </children>
    <stylesheets>
       <URL value="@../../../../../css/buttons_control.css" />
       <URL value="@../../../../../css/screen4_Search.css" />
    </stylesheets>
+   <effect>
+      <InnerShadow choke="0.35" color="#0000001c" height="50.0" radius="24.5" width="50.0" />
+   </effect>
 </Pane>

@@ -54,7 +54,7 @@ public class GuideTourOfferItemController implements Initializable {
         }
         this.startPlaceLabel.setText(this.tour.getStartPlace());
         this.destinationLabel.setText(this.tour.getDestinationPlace());
-        this.pricePerPersonLabel.setText(this.tour.getPricePerPerson());
+        this.pricePerPersonLabel.setText(this.tour.getPricePerPerson() + " €");
         this.ratingLabel.setText(String.valueOf(this.tour.getRating()));
     }
 

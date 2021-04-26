@@ -25,11 +25,12 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
+import sk.stu.fiit.Internationalisation.I18n;
+import sk.stu.fiit.Validators.TourOfferValidator;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.DeleteTourOfferRequest;
 import sk.stu.fiit.parsers.Requests.dto.EditTourOfferRequest;
 import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
-import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.TourDatesResponse;
 import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.DeleteTourOfferResponse;
 import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.TourOfferResponse;
 
@@ -39,9 +40,9 @@ import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.TourOfferResponse;
  * @author adamf
  */
 public class EditTourOfferController implements Initializable {
-    
+
     private Tour tour;
-    
+
     @FXML
     private Button btnBack;
     @FXML
@@ -69,7 +70,7 @@ public class EditTourOfferController implements Initializable {
     public EditTourOfferController(Tour tour) {
         this.tour = tour;
     }
-    
+
     /**
      * Initializes the controller class.
      */
@@ -117,56 +118,59 @@ public class EditTourOfferController implements Initializable {
     }
 
     private void loadEditTourScheduleScreen(MouseEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/EditTourSchedule.fxml"));
-        loader.setControllerFactory(c -> new EditTourScheduleController(this.tour));
-        ScreenSwitcher.getScreenSwitcher().switchToScreenConstructor(event, loader);
+        if (TourOfferValidator.validateTextInputs(tfStartPlace, tfDestinationPlace, tfPrice, taDescription)) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/EditTourSchedule.fxml"), I18n.getBundle());
+            loader.setControllerFactory(c -> new EditTourScheduleController(this.tour));
+            ScreenSwitcher.getScreenSwitcher().switchToScreenConstructor(event, loader);
+        }
     }
 
     private void sendUpdateTourOfferRequest() {
-        EditTourOfferRequest editTourOfferRequest = new EditTourOfferRequest(
-                this.tour.getId(), 
-                this.tfStartPlace.getText(),
-                this.tfDestinationPlace.getText(),
-                this.taDescription.getText(),
-                Double.parseDouble(this.tfPrice.getText()));
-        editTourOfferRequest.accept(new XMLRequestParser());
-        
-        HttpPut request = (HttpPut) editTourOfferRequest.getRequest();
-        
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                CloseableHttpResponse response = httpClient.execute(request)) {
+        if (TourOfferValidator.validateTextInputs(tfStartPlace, tfDestinationPlace, tfPrice, taDescription)) {
+            EditTourOfferRequest editTourOfferRequest = new EditTourOfferRequest(
+                    this.tour.getId(),
+                    this.tfStartPlace.getText(),
+                    this.tfDestinationPlace.getText(),
+                    this.taDescription.getText(),
+                    Double.parseDouble(this.tfPrice.getText()));
+            editTourOfferRequest.accept(new XMLRequestParser());
 
-            TourOfferResponse tourOfferResponse = (TourOfferResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.EDIT_TOUR_OFFER_RESPONSE).parse(response);
-            this.tfStartPlace.setText(tourOfferResponse.getStartPlace());
-            this.tfDestinationPlace.setText(tourOfferResponse.getDestinationPlace());
-            this.tfPrice.setText(String.valueOf(tourOfferResponse.getPricePerPerson()));
-            this.taDescription.setText(tourOfferResponse.getDescription());
-            
-        } catch (IOException ex) {
-            Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (AuthTokenExpiredException ex) {
-            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (APIValidationException ex) {
-            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
+            HttpPut request = (HttpPut) editTourOfferRequest.getRequest();
+
+            try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                    CloseableHttpResponse response = httpClient.execute(request)) {
+
+                TourOfferResponse tourOfferResponse = (TourOfferResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.EDIT_TOUR_OFFER_RESPONSE).parse(response);
+                this.tfStartPlace.setText(tourOfferResponse.getStartPlace());
+                this.tfDestinationPlace.setText(tourOfferResponse.getDestinationPlace());
+                this.tfPrice.setText(String.valueOf(tourOfferResponse.getPricePerPerson()));
+                this.taDescription.setText(tourOfferResponse.getDescription());
+
+            } catch (IOException ex) {
+                Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (AuthTokenExpiredException ex) {
+                Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (APIValidationException ex) {
+                Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        
     }
 
     private void sendDeleteTourOfferRequest() {
         DeleteTourOfferRequest deleteTourOfferRequest = new DeleteTourOfferRequest(this.tour.getId());
         deleteTourOfferRequest.accept(new XMLRequestParser());
-        
+
         HttpDelete request = (HttpDelete) deleteTourOfferRequest.getRequest();
-        
+
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(request)) {
 
             DeleteTourOfferResponse deleteTourOfferResponse = (DeleteTourOfferResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.DELETE_TOUR_OFFER_RESPONSE).parse(response);
-            
+
             if (deleteTourOfferRequest == null) {
                 System.out.println("Jeeeije");
             }
-            
+
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (AuthTokenExpiredException ex) {
@@ -174,7 +178,7 @@ public class EditTourOfferController implements Initializable {
         } catch (APIValidationException ex) {
             Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 
 }

@@ -10,8 +10,8 @@
 .pane {
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 32px;
-    -fx-pref-width: 350px;
-    -fx-pref-height: 200px;
+    -fx-pref-width: 400px;
+    -fx-pref-height: 250px;
     -fx-border-color: #5F2EEA;
     -fx-border-radius: 32px;
 }
@@ -40,5 +40,11 @@
     -fx-background-radius: 16px;
     -fx-pref-height: 35px;
     -fx-pref-width: 100px;
+    -fx-background-insets: 0;
+}
+
+.btn-ok:pressed {
+    -fx-pref-height: 34px;
+    -fx-pref-width: 99px;
     -fx-background-insets: 0;
 }

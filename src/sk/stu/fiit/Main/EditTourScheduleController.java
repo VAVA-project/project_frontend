@@ -6,6 +6,7 @@ package sk.stu.fiit.Main;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -18,6 +19,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -32,6 +34,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
+import sk.stu.fiit.Internationalisation.I18n;
+import sk.stu.fiit.Validators.TourScheduleValidator;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.CreateTourDateRequest;
 import sk.stu.fiit.parsers.Requests.dto.TourDatesRequest;
@@ -88,6 +92,7 @@ public class EditTourScheduleController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.setupDatePickers();
         getTourDates();
         initializeTourDates();
     }
@@ -106,14 +111,16 @@ public class EditTourScheduleController implements Initializable {
     @FXML
     private void handleGoToEditTourOfferScreen(MouseEvent event) {
         Singleton.getInstance().getTourDatesOnScreen().clear();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/EditTourOffer.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/EditTourOffer.fxml"), I18n.getBundle());
         loader.setControllerFactory(c -> new EditTourOfferController(this.tourToEdit));
         ScreenSwitcher.getScreenSwitcher().switchToScreenConstructor(event, loader);
     }
 
     @FXML
     private void handleAddTourDateButton(MouseEvent event) {
-        createTourDateCreate();
+        if (TourScheduleValidator.validate(tfCapacity, dpStartDate, dpEndDate, tfStartTime, tfEndTime)) {
+            createTourDateCreate();
+        }
     }
 
     @FXML
@@ -184,7 +191,7 @@ public class EditTourScheduleController implements Initializable {
     }
 
     private Node loadTourDate(TourDate tourDate) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/OneTourDateSchedule.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/OneTourDateSchedule.fxml"), I18n.getBundle());
         loader.setControllerFactory(c -> new OneTourDateScheduleController(tourDate, tourToEdit, vbTourDates));
         try {
             return loader.load();
@@ -222,7 +229,7 @@ public class EditTourScheduleController implements Initializable {
 
         Singleton.getInstance().getTourDatesOnScreen().add(tourDate);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/OneTourDateSchedule.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/OneTourDateSchedule.fxml"), I18n.getBundle());
         loader.setControllerFactory(c -> new OneTourDateScheduleController(tourDate, this.tourToEdit, this.vbTourDates));
         try {
             return loader.load();
@@ -259,6 +266,32 @@ public class EditTourScheduleController implements Initializable {
             ex.getValidationErrors().forEach(System.out::println);
         }
         return null;
+    }
+    
+    private void setupDatePickers() {
+        this.dpStartDate.setDayCellFactory(
+                (final DatePicker param) -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+
+                LocalDate today = LocalDate.now();
+                
+                setDisable(empty || item.compareTo(today) <= 0);
+            }
+        });
+        
+        this.dpEndDate.setDayCellFactory(
+                (final DatePicker param) -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+
+                LocalDate today = LocalDate.now();
+                        
+                setDisable(empty || item.compareTo(today) <= 0);
+            }
+        });
     }
 
 }
