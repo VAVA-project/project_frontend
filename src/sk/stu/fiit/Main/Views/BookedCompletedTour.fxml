@@ -24,6 +24,7 @@
             <RowConstraints prefHeight="25.0" vgrow="SOMETIMES" />
             <RowConstraints prefHeight="25.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label styleClass="lbl-tour" text="%bookedCompletedTour.startPlaceLabel.text">
@@ -92,16 +93,18 @@
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
                </effect></Label>
-            <Rating fx:id="rating" prefHeight="32.0" prefWidth="152.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <Rating fx:id="rating" prefHeight="32.0" prefWidth="152.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
                </effect>
             </Rating>
-            <Label styleClass="lbl-tour" text="%bookedCompletedTour.ratingLabel.text" GridPane.rowIndex="6">
+            <Label fx:id="ratingLabel" styleClass="lbl-tour" text="%bookedCompletedTour.ratingLabel.text" GridPane.rowIndex="7">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
                </effect>
             </Label>
+            <Label styleClass="lbl-tour" text="%bookedCompletedTour.averageRatingLabel.text" GridPane.rowIndex="6" />
+            <Rating fx:id="averageRating" disable="true" partialRating="true" GridPane.columnIndex="1" GridPane.rowIndex="6" />
          </children>
       </GridPane>
    </children>

@@ -20,6 +20,7 @@ public class Tour {
     private String pricePerPerson;
     private String createdAt;
     private String rating;
+    private String userRating;
 
     public Tour(String id, String creatorId, String startPlace, String destinationPlace, String description, String pricePerPerson, String createdAt, String rating) {
         this.id = id;
@@ -92,5 +93,14 @@ public class Tour {
     public String getRating() {
         return rating;
     }
+
+    public String getUserRating() {
+        return userRating;
+    }
+
+    public void setUserRating(String userRating) {
+        this.userRating = userRating;
+    }
+    
 
 }

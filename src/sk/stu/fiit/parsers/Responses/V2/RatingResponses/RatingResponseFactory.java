@@ -4,6 +4,7 @@
  */
 package sk.stu.fiit.parsers.Responses.V2.RatingResponses;
 
+import org.apache.http.Header;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import sk.stu.fiit.Exceptions.APIValidationException;
@@ -20,29 +21,17 @@ public class RatingResponseFactory implements AbstractResponseFactory<Response> 
     @Override
     public Response parse(CloseableHttpResponse response) throws
             AuthTokenExpiredException, APIValidationException {
-        int statusCode = response.getStatusLine().getStatusCode();
-        
-        switch(statusCode) {
-            case HttpStatus.SC_FORBIDDEN: {
-                throw new AuthTokenExpiredException();
-            }
-            
-            case HttpStatus.SC_CREATED: {
-                return new RatingResponse(true);
-            }
-            
-            case HttpStatus.SC_OK: {
-                return new RatingResponse(true);
-            }
-            
-            case HttpStatus.SC_BAD_REQUEST: {
-                return new RatingResponse(false);
-            }
-            
-            default: {
-                return new RatingResponse(false);
-            }
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_FORBIDDEN) {
+            throw new AuthTokenExpiredException();
         }
+
+        Header header = response.getFirstHeader("Content-Type");
+
+        if (header.getValue().equals("application/xml;charset=UTF-8")) {
+            return new RatingResponseProcessor().processResponse(response);
+        }
+
+        return null;
     }
-    
+
 }
