@@ -115,11 +115,11 @@ public class EditAccountController implements Initializable {
           
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
-            Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
+            Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(EditAccountController.class.getName()).
                     log(Level.SEVERE, null, ex);
-            Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
+            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
         } catch (APIValidationException ex) {
             Logger.getLogger(EditAccountController.class.getName()).
                     log(Level.SEVERE, null, ex);
@@ -128,17 +128,17 @@ public class EditAccountController implements Initializable {
     
     private boolean validateInputs() {
         if(this.tfFirstname.getText().isEmpty()) {
-            Alerts.showAlert(Alerts.TITLE_EMPTY_FIRST_NAME);
+            Alerts.showAlert("TITLE_EMPTY_FIRST_NAME");
             return false;
         }
         
         if(this.tfLastname.getText().isEmpty()) {
-            Alerts.showAlert(Alerts.TITLE_EMPTY_LAST_NAME);
+            Alerts.showAlert("TITLE_EMPTY_LAST_NAME");
             return false;
         }
         
         if(this.dpDateOfBirth.getValue() == null) {
-            Alerts.showAlert(Alerts.TITLE_EMPTY_DATE_OF_BIRTH);
+            Alerts.showAlert("TITLE_EMPTY_DATE_OF_BIRTH");
             return false;
         }
         

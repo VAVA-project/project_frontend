@@ -23,39 +23,39 @@ public class TourScheduleValidator {
             DatePicker dpEndDate, TextField tfStartTime, TextField tfEndTime) {
         
         if (tfCapacity.getText().isEmpty()) {
-            Alerts.showAlert(Alerts.TITLE_EMPTY_CAPACITY);
+            Alerts.showAlert("TITLE_EMPTY_CAPACITY");
             return false;
         }
         if (dpStartDate.getValue() == null) {
-            Alerts.showAlert(Alerts.TITLE_EMPTY_START_DATE);
+            Alerts.showAlert("TITLE_EMPTY_START_DATE");
             return false;
         }
         if (dpEndDate.getValue() == null) {
-            Alerts.showAlert(Alerts.TITLE_EMPTY_END_DATE);
+            Alerts.showAlert("TITLE_EMPTY_END_DATE");
             return false;
         }
         if (tfStartTime.getText().isEmpty()) {
-            Alerts.showAlert(Alerts.TITLE_EMPTY_START_TIME);
+            Alerts.showAlert("TITLE_EMPTY_START_TIME");
             return false;
         }
         if (tfEndTime.getText().isEmpty()) {
-            Alerts.showAlert(Alerts.TITLE_EMPTY_END_TIME);
+            Alerts.showAlert("TITLE_EMPTY_END_TIME");
             return false;
         }
         if (isInteger(tfCapacity)) {
-            Alerts.showAlert(Alerts.TITLE_CAPACITY_NOT_NUMBER);
+            Alerts.showAlert("TITLE_CAPACITY_NOT_NUMBER");
             return false;
         }
         if (!tfStartTime.getText().matches("^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$")) {
-            Alerts.showAlert(Alerts.TITLE_START_TIME);
+            Alerts.showAlert("TITLE_START_TIME");
             return false;
         }
         if (!tfEndTime.getText().matches("^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$")) {
-            Alerts.showAlert(Alerts.TITLE_END_TIME);
+            Alerts.showAlert("TITLE_END_TIME");
             return false;
         }
         if (validateDateRange(dpStartDate, dpEndDate)) {
-            Alerts.showAlert(Alerts.TITLE_DATE_RANGE);
+            Alerts.showAlert("TITLE_DATE_RANGE");
             return false;
         }
         return true;

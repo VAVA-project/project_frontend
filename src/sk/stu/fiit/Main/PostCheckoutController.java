@@ -51,8 +51,7 @@ public class PostCheckoutController implements Initializable {
 
     @FXML
     private void handleBookedTours(MouseEvent event) {
-        // TODO
-        System.out.println("TODO");
+        ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileCustomer.fxml");
     }
     
 }

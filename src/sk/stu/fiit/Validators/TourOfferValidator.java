@@ -16,21 +16,21 @@ public class TourOfferValidator {
 
     public static boolean validateTextInputs(TextField tf1, TextField tf2, TextField tf3, TextArea ta) {
         if (tf1.getText().isEmpty()) {
-            Alerts.showAlert(Alerts.TITLE_EMPTY_START_PLACE);
+            Alerts.showAlert("TITLE_EMPTY_START_PLACE");
             return false;
         } else if (tf2.getText().isEmpty()) {
-            Alerts.showAlert(Alerts.TITLE_EMPTY_DESTINATION_PLACE);
+            Alerts.showAlert("TITLE_EMPTY_DESTINATION_PLACE");
             return false;
         }
         else if (tf3.getText().isEmpty()) {
-            Alerts.showAlert(Alerts.TITLE_EMPTY_PRICE);
+            Alerts.showAlert("TITLE_EMPTY_PRICE");
             return false;
         }
         else if (ta.getText().isEmpty()) {
-            Alerts.showAlert(Alerts.TITLE_EMPTY_DESCRIPTION);
+            Alerts.showAlert("TITLE_EMPTY_DESCRIPTION");
             return false;
         } else if (isDouble(tf3)) {
-            Alerts.showAlert(Alerts.TITLE_PRICE_NOT_NUMBER);
+            Alerts.showAlert("TITLE_PRICE_NOT_NUMBER");
             return false;
         }
         return true;

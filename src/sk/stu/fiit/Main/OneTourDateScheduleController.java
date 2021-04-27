@@ -39,7 +39,7 @@ public class OneTourDateScheduleController implements Initializable {
     private Tour tourToEdit;
     private VBox vbTourDates;
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
 
     @FXML
     private Label lblCapacity;
