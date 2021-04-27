@@ -113,7 +113,7 @@
             <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
          </effect>
       </Label>
-      <Rating fx:id="ratingStars" layoutX="371.0" layoutY="171.0" />
+      <Rating fx:id="ratingStars" layoutX="371.0" layoutY="171.0" partialRating="true" />
    </children>
    <stylesheets>
       <URL value="@../../../../../css/screen8_TourBuy.css" />
