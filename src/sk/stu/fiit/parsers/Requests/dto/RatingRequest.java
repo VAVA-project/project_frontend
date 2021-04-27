@@ -13,9 +13,11 @@ import sk.stu.fiit.parsers.Requests.IRequestVisitor;
 public class RatingRequest extends Request {
     
     private String tourOfferId;
+    private int rating;
 
-    public RatingRequest(String tourOfferId) {
+    public RatingRequest(String tourOfferId, int rating) {
         this.tourOfferId = tourOfferId;
+        this.rating = rating;
     }
     
     @Override
@@ -26,5 +28,10 @@ public class RatingRequest extends Request {
     public String getTourOfferId() {
         return tourOfferId;
     }
+
+    public int getRating() {
+        return rating;
+    }
+    
     
 }

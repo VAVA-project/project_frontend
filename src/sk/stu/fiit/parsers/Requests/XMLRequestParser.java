@@ -453,6 +453,16 @@ public class XMLRequestParser implements IRequestVisitor {
         postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         postRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
+        
+        Map<String, Object> data = new HashMap<>();
+        data.put("rating", request.getRating());
+
+        try {
+            postRequest.setEntity(new StringEntity(this.translateToXML(
+                    "RatingRequest", data), CHARSET));
+        } catch (ParserConfigurationException
+                | TransformerConfigurationException ex) {
+        }
 
         request.setRequest(postRequest);
     }
