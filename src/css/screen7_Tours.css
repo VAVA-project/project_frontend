@@ -54,7 +54,6 @@
     -fx-border-radius: 16px;
     -fx-pref-width: 650px;
     -fx-pref-height: 150px;
-    -fx-spacing: 10;
 }
 
 .photo-tour {
@@ -169,4 +168,12 @@
     -fx-background-color :derive(#4D4C4F,10.0%);
     -fx-background-insets : 2.0, 0.0, 0.0;
     -fx-background-radius : 2.0em;
+}
+
+.booked-tour {
+    -fx-background-color: #D9DBE9;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+    -fx-pref-width: 460px;
+    -fx-pref-height: 200px;
 }

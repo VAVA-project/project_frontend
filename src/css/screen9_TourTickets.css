@@ -46,14 +46,14 @@
 .pane-place {
     -fx-background-color: #EFF0F6;
     -fx-background-radius: 32px;
-    -fx-pref-width: 365px;
+    -fx-pref-width: 380px;
     -fx-pref-height: 165px;
 }
 
 .pane-adding {
     -fx-background-color: #EFF0F6;
     -fx-background-radius: 32px;
-    -fx-pref-width: 90px;
+    -fx-pref-width: 70px;
     -fx-pref-height: 165px;
 }
 
@@ -111,6 +111,13 @@
     -fx-text-fill: black;
 }
 
+.lbl-info {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
+
 .lbl-place {
     -fx-pref-width: 200px;
     -fx-pref-height: 20px;
@@ -120,13 +127,12 @@
     -fx-text-fill: black;
 }
 
-.lbl-guide-price {
+.lbl-info2 {
     -fx-font-family: "Roboto";
     -fx-font-size: 17px;
     -fx-font-weight: normal;
     -fx-text-fill: black;
 }
-
 
 .scroll-bar:vertical .track{
     -fx-background-color :transparent;

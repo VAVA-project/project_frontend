@@ -60,6 +60,8 @@ public class ProfileGuideController implements Initializable {
     private VBox vbTours;
     @FXML
     private Button btnCreateTour;
+    @FXML
+    private Button btnPersonalProfile;
 
     /**
      * Initializes the controller class.
@@ -114,7 +116,7 @@ public class ProfileGuideController implements Initializable {
 
     @FXML
     private void handleGoToPersonalProfileScreen(MouseEvent event) {
-
+        ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileCustomer.fxml");
     }
 
     @FXML

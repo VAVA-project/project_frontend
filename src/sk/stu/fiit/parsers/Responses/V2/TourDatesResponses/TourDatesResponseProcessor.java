@@ -42,8 +42,8 @@ public class TourDatesResponseProcessor extends XMLProcessor {
     @Override
     public Response parseOK(Document document) {
 
-        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat format2 = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        SimpleDateFormat format2 = new SimpleDateFormat("dd.MM.yyyy, HH:mm");
 
         try {
             XPath xPath = XPathFactory.newInstance().newXPath();
@@ -72,6 +72,8 @@ public class TourDatesResponseProcessor extends XMLProcessor {
                 String id = element.getElementsByTagName("id").item(0).
                         getTextContent();
                 Date StartDate = format1.parse(element.getElementsByTagName(
+                        "startDate").item(0).getTextContent());
+                System.out.println("startDate = " + element.getElementsByTagName(
                         "startDate").item(0).getTextContent());
                 Date endDate = format1.parse(element.getElementsByTagName(
                         "endDate").item(0).getTextContent()); 
