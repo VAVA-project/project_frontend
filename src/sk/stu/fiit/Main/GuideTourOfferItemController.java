@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import org.controlsfx.control.Rating;
 
 /**
  * FXML Controller class
@@ -32,6 +33,8 @@ public class GuideTourOfferItemController implements Initializable {
     private Label startPlaceLabel;
     @FXML
     private Button btnEdit;
+    @FXML
+    private Rating starsRating;
     
     public GuideTourOfferItemController() {
     }
@@ -56,6 +59,9 @@ public class GuideTourOfferItemController implements Initializable {
         this.destinationLabel.setText(this.tour.getDestinationPlace());
         this.pricePerPersonLabel.setText(this.tour.getPricePerPerson() + " €");
         this.ratingLabel.setText(String.valueOf(this.tour.getRating()));
+        
+        this.starsRating.setRating(Double.parseDouble(this.tour.getRating()));
+        this.starsRating.setDisable(true);
     }
 
     @FXML

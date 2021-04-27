@@ -25,6 +25,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.controlsfx.control.Rating;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
@@ -53,11 +54,11 @@ public class TourOfferController implements Initializable {
     @FXML
     private Label lblPrice;
     @FXML
-    private Label lblRating;
-    @FXML
     private Button btnInterested;
     @FXML
     private Label lblStartPlace;
+    @FXML
+    private Rating starsRating;
 
     public TourOfferController() {
     }
@@ -96,8 +97,10 @@ public class TourOfferController implements Initializable {
         this.lblName.setText(tour.getGuideName());
         this.lblStartPlace.setText(tour.getStartPlace());
         this.lblDestination.setText(tour.getDestinationPlace());
-        this.lblRating.setText(tour.getRating());
         this.lblPrice.setText(tour.getPricePerPerson() + " €");
+        
+        this.starsRating.setRating(Double.parseDouble(tour.getRating()));
+        this.starsRating.setDisable(true);
     }
 
     private void getTourDates() {

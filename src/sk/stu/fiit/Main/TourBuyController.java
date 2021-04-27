@@ -30,6 +30,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.controlsfx.control.Rating;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.Internationalisation.I18n;
@@ -60,8 +61,6 @@ public class TourBuyController implements Initializable {
     @FXML
     private Label lblPrice;
     @FXML
-    private Label lblRating;
-    @FXML
     private Label taDescription;
     @FXML
     private Button btnLoad;
@@ -71,6 +70,8 @@ public class TourBuyController implements Initializable {
     private Pane paneTourBuy;
     @FXML
     private Label lblstartPlace;
+    @FXML
+    private Rating ratingStars;
 
     /**
      * Initializes the controller class.
@@ -110,9 +111,11 @@ public class TourBuyController implements Initializable {
         this.lblName.setText(Singleton.getInstance().getTourBuy().getGuideName());
         this.lblstartPlace.setText(Singleton.getInstance().getTourBuy().getStartPlace());
         this.lblDestination.setText(Singleton.getInstance().getTourBuy().getDestinationPlace());
-        this.lblRating.setText(Singleton.getInstance().getTourBuy().getRating());
         this.lblPrice.setText(Singleton.getInstance().getTourBuy().getPricePerPerson());
         this.taDescription.setText(Singleton.getInstance().getTourBuy().getDescription());
+        
+        this.ratingStars.setRating(Double.parseDouble(Singleton.getInstance().getTourBuy().getRating()));
+        this.ratingStars.setDisable(true);
     }
 
     @FXML
