@@ -7,6 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import org.controlsfx.control.Rating?>
 
 <HBox fx:id="tour1" alignment="CENTER" prefHeight="170.0" prefWidth="735.0" spacing="10.0" styleClass="hbox-tour" stylesheets="@../../../../../css/screen7_Tours.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.TourOfferController">
    <children>
@@ -55,10 +56,7 @@
                <effect>
                   <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                </effect></Label>
-            <Label fx:id="lblRating" layoutX="70.0" layoutY="101.0" styleClass="lbl-informations" text="Label">
-               <effect>
-                  <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
-               </effect></Label>
+            <Rating fx:id="starsRating" layoutX="77.0" layoutY="96.0" partialRating="true" />
          </children>
          <HBox.margin>
             <Insets />

@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
+<?import org.controlsfx.control.Rating?>
 
 <Pane fx:id="paneTourBuy" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.TourBuyController">
    <children>
@@ -73,10 +74,6 @@
          <effect>
             <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
          </effect></Label>
-      <Label fx:id="lblRating" layoutX="360.0" layoutY="174.0" styleClass="lbl-informations" text="Label">
-         <effect>
-            <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
-         </effect></Label>
       <Label layoutX="126.0" layoutY="250.0" styleClass="lbl-tour" text="%tourBuy.descriptionLabel.text">
          <effect>
             <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
@@ -116,6 +113,7 @@
             <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
          </effect>
       </Label>
+      <Rating fx:id="ratingStars" layoutX="371.0" layoutY="171.0" partialRating="true" />
    </children>
    <stylesheets>
       <URL value="@../../../../../css/screen8_TourBuy.css" />
