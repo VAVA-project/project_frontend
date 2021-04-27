@@ -98,6 +98,7 @@ public class EditTourOfferController implements Initializable {
     @FXML
     private void handleEditTourButton(MouseEvent event) {
         sendUpdateTourOfferRequest();
+        Alerts.showAlert("TITLE_EDITED_TOUR");
     }
 
     @FXML
@@ -108,6 +109,7 @@ public class EditTourOfferController implements Initializable {
     @FXML
     private void handleDeleteTourButton(MouseEvent event) {
         sendDeleteTourOfferRequest();
+        Alerts.showAlert("TITLE_DELETED_TOUR");
     }
 
     private void initializeTextFieldsWithTour() {

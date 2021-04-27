@@ -57,27 +57,27 @@
                      </effect></Circle>
                </children>
             </HBox>
-            <Label layoutX="50.0" layoutY="41.0" styleClass="lbl-create-schedule" text="Edit schedule">
+            <Label layoutX="50.0" layoutY="41.0" styleClass="lbl-create-schedule" text="%editSchedule.title">
                <effect>
                   <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                </effect></Label>
-            <TextField fx:id="tfCapacity" layoutX="50.0" layoutY="140.0" promptText="Capacity">
+            <TextField fx:id="tfCapacity" layoutX="50.0" layoutY="140.0" promptText="%createSchedule.capacityTextField.prompt">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
                </effect></TextField>
-            <DatePicker fx:id="dpStartDate" layoutX="50.0" layoutY="201.0" prefWidth="180.0" promptText="Tour start date">
+            <DatePicker fx:id="dpStartDate" layoutX="50.0" layoutY="201.0" prefHeight="50.0" prefWidth="210.0" promptText="%createSchedule.tourStartDatePicker.prompt">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
                </effect></DatePicker>
-            <DatePicker fx:id="dpEndDate" layoutX="240.0" layoutY="201.0" prefHeight="50.0" prefWidth="180.0" promptText="Tour end date">
+            <DatePicker fx:id="dpEndDate" layoutX="271.0" layoutY="201.0" prefHeight="50.0" prefWidth="210.0" promptText="%createSchedule.tourEndDatePicker.prompt">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
                </effect></DatePicker>
-            <TextField fx:id="tfStartTime" layoutX="50.0" layoutY="261.0" promptText="Start time (e.g 14:00)">
+            <TextField fx:id="tfStartTime" layoutX="50.0" layoutY="262.0" promptText="%createSchedule.startTimeTextField.prompt">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
                </effect></TextField>
-            <TextField fx:id="tfEndTime" layoutX="240.0" layoutY="261.0" promptText="End time (e.g 18:30)">
+            <TextField fx:id="tfEndTime" layoutX="271.0" layoutY="262.0" promptText="%createSchedule.endTimeTextField.prompt">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
                </effect></TextField>
@@ -93,11 +93,11 @@
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
                </effect>
             </ScrollPane>
-            <Button fx:id="btnAdd" layoutX="50.0" layoutY="319.0" mnemonicParsing="false" onMouseReleased="#handleAddTourDateButton" styleClass="btn-add" text="Add">
+            <Button fx:id="btnAdd" layoutX="50.0" layoutY="319.0" mnemonicParsing="false" onMouseReleased="#handleAddTourDateButton" styleClass="btn-add" text="%createSchedule.addButton.text">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
                </effect></Button>
-            <Button fx:id="btnLoadMore" layoutX="50.0" layoutY="543.0" mnemonicParsing="false" onMouseReleased="#handleLoadMoreButton" styleClass="btn-create-schedule" text="Load more">
+            <Button fx:id="btnLoadMore" layoutX="50.0" layoutY="543.0" mnemonicParsing="false" onMouseReleased="#handleLoadMoreButton" styleClass="btn-create-schedule" text="%editSchedule.loadMoreButton.text">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
                </effect></Button>

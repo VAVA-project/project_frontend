@@ -61,7 +61,7 @@
                   <String fx:value="vbox-tourDates" />
                </styleClass>
                <padding>
-                  <Insets top="10.0" />
+                  <Insets bottom="10.0" top="10.0" />
                </padding>
             </VBox>
          </content>

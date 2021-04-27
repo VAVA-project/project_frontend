@@ -190,11 +190,11 @@ public class ToursController implements Initializable {
 
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
-            Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
+            Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(ToursController.class.getName()).
                     log(Level.SEVERE, null, ex);
-            Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
+            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
         } catch (APIValidationException ex) {
             Logger.getLogger(ToursController.class.getName()).
                     log(Level.SEVERE, null, ex);
@@ -244,10 +244,10 @@ public class ToursController implements Initializable {
                 });
             } catch (IOException ex) {
                 Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
-                Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
+                Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
             } catch (AuthTokenExpiredException ex) {
                 Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
-                Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
+                Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
             } catch (APIValidationException ex) {
                 Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -278,7 +278,7 @@ public class ToursController implements Initializable {
     @FXML
     private void handleSearchButton(MouseEvent event) {
         if(this.tfDestination.getText().isEmpty()) {
-            Alerts.showAlert(Alerts.TITLE_EMPTY_DESTINATION);
+            Alerts.showAlert("TITLE_EMPTY_DESTINATION");
             return;
         }
         
@@ -325,10 +325,10 @@ public class ToursController implements Initializable {
 //            }
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
-            Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
+            Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
-            Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
+            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
         } catch (APIValidationException ex) {
             Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
         }

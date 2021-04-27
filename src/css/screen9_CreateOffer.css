@@ -55,3 +55,41 @@
     -fx-pref-width: 149px;
     -fx-background-insets: 0;
 }
+
+.btn-create-schedule {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14px;
+    -fx-border-color: #5F2EEA;
+    -fx-border-radius: 16px;
+    -fx-text-fill: #5F2EEA;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 35px;
+    -fx-pref-width: 150px;
+    -fx-background-insets: 0;
+}
+
+.btn-create-schedule:pressed {
+    -fx-pref-height: 34px;
+    -fx-pref-width: 149px;
+    -fx-background-insets: 0;
+}
+
+.btn-edit-schedule2 {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14px;
+    -fx-border-color: #5F2EEA;
+    -fx-border-radius: 16px;
+    -fx-text-fill: #5F2EEA;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 35px;
+    -fx-pref-width: 200px;
+    -fx-background-insets: 0;
+}
+
+.btn-edit-schedule2:pressed {
+    -fx-pref-height: 34px;
+    -fx-pref-width: 199px;
+    -fx-background-insets: 0;
+}

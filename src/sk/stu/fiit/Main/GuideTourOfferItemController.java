@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import org.controlsfx.control.Rating;
+import sk.stu.fiit.Internationalisation.I18n;
 
 /**
  * FXML Controller class
@@ -67,7 +68,7 @@ public class GuideTourOfferItemController implements Initializable {
     }
 
     private void loadEditTourOfferScreen(MouseEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/EditTourOffer.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/EditTourOffer.fxml"), I18n.getBundle());
         loader.setControllerFactory(c -> new EditTourOfferController(this.tour));
         ScreenSwitcher.getScreenSwitcher().switchToScreenConstructor(event, loader);
     }

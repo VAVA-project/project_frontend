@@ -169,11 +169,11 @@ public class TourTicketsController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE,
                     null, ex);
-            Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
+            Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(TourOfferController.class.getName()).log(
                     Level.SEVERE, null, ex);
-            Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
+            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
         } catch (APIValidationException ex) {
             Logger.getLogger(TourOfferController.class.getName()).log(
                     Level.SEVERE, null, ex);
@@ -190,7 +190,7 @@ public class TourTicketsController implements Initializable {
         List<TourTicket> fetchedTickets = response.getTourTickets();
 
         if (fetchedTickets.isEmpty()) {
-            Alerts.showAlert(Alerts.TITLE_TICKETS_RESERVED);
+            Alerts.showAlert("TITLE_TICKETS_RESERVED");
             return;
         }
 
@@ -229,7 +229,7 @@ public class TourTicketsController implements Initializable {
     @FXML
     private void handleMinusButton(MouseEvent event) {
         if (this.ticketsInCart.isEmpty()) {
-            Alerts.showAlert(Alerts.TITLE_EMPTY_CART_ALREADY);
+            Alerts.showAlert("TITLE_EMPTY_CART_ALREADY");
             return;
         }
 
@@ -249,14 +249,14 @@ public class TourTicketsController implements Initializable {
     @FXML
     private void handleRagisterButton(MouseEvent event) {
         if (this.ticketsInCart.isEmpty()) {
-            Alerts.showAlert(Alerts.TITLE_EMPTY_CART);
+            Alerts.showAlert("TITLE_EMPTY_CART");
             return;
         }
 
         if (checkoutTicketsInCart().isSuccess()) {
             ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/PostCheckout.fxml");
         } else {
-            Alerts.showAlert(Alerts.TITLE_CHECKOUT_ERROR);
+            Alerts.showAlert("TITLE_CHECKOUT_ERROR");
         }
     }
 
@@ -283,11 +283,11 @@ public class TourTicketsController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).log(
                     Level.SEVERE, null, ex);
-            Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
+            Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
-            Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
+            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
         } catch (APIValidationException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
@@ -321,11 +321,11 @@ public class TourTicketsController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).log(
                     Level.SEVERE, null, ex);
-            Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
+            Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
-            Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
+            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
         } catch (APIValidationException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
@@ -337,7 +337,7 @@ public class TourTicketsController implements Initializable {
         CompletableFuture.supplyAsync(this::sendDeleteCartRequest)
                 .thenAccept((response) -> {
                     if (!response.isSuccess()) {
-                        Alerts.showAlert(Alerts.TITLE_CART_CLEARED);
+                        Alerts.showAlert("TITLE_CART_CLEARED");
                     }
                 });
     }
@@ -357,11 +357,11 @@ public class TourTicketsController implements Initializable {
         } catch (IOException e) {
             Logger.getLogger(TourTicketsController.class.getName()).log(
                     Level.SEVERE, null, e);
-            Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
+            Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
-            Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
+            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
         } catch (APIValidationException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
@@ -386,11 +386,11 @@ public class TourTicketsController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).log(
                     Level.SEVERE, null, ex);
-            Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
+            Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
-            Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
+            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
         } catch (APIValidationException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);

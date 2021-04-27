@@ -106,6 +106,8 @@ public class CreateScheduleController implements Initializable {
     private void handleCreateTourButton(MouseEvent event) {
         sendCreateTourOfferRequest();
         sendCreateTourDatesRequests();
+        Alerts.showAlert("TITLE_NEW_TOUR");
+        ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileGuide.fxml");
     }
 
     private void createTourDateCreate() {
@@ -158,11 +160,11 @@ public class CreateScheduleController implements Initializable {
             
         } catch (IOException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).log(Level.SEVERE, null, ex);
-            Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
+            Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
-            Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
+            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
         } catch (APIValidationException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
@@ -192,11 +194,11 @@ public class CreateScheduleController implements Initializable {
             
         } catch (IOException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).log(Level.SEVERE, null, ex);
-            Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
+            Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
-            Alerts.showAlert(Alerts.TITLE_AUTHENTICATION_ERROR, Alerts.CONTENT_AUTHENTICATION_ERROR);
+            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
         } catch (APIValidationException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);

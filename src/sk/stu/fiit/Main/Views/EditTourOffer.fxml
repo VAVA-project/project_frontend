@@ -54,35 +54,35 @@
                      </effect></Circle>
                </children>
             </HBox>
-            <TextField fx:id="tfStartPlace" layoutX="88.0" layoutY="140.0" promptText="Start place">
+            <TextField fx:id="tfStartPlace" layoutX="88.0" layoutY="140.0" promptText="%createTourOffer.startPlaceTextField.prompt">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
                </effect></TextField>
-            <TextField fx:id="tfDestinationPlace" layoutX="88.0" layoutY="213.0" promptText="Destination place">
+            <TextField fx:id="tfDestinationPlace" layoutX="88.0" layoutY="213.0" promptText="%createTourOffer.destinationPlaceTextField.prompt">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
                </effect></TextField>
-            <TextField fx:id="tfPrice" layoutX="88.0" layoutY="286.0" promptText="Price / person">
+            <TextField fx:id="tfPrice" layoutX="88.0" layoutY="286.0" promptText="%createTourOffer.pricePerPersonTextField.prompt">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
                </effect></TextField>
-            <TextArea fx:id="taDescription" layoutX="88.0" layoutY="359.0" prefHeight="200.0" prefWidth="200.0" promptText="Tour description">
+            <TextArea fx:id="taDescription" layoutX="88.0" layoutY="359.0" prefHeight="200.0" prefWidth="200.0" promptText="%createTourOffer.tourDescriptionTextArea.prompt">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
                </effect></TextArea>
-            <Label layoutX="69.0" layoutY="41.0" styleClass="lbl-profile" text="Edit tour">
+            <Label layoutX="69.0" layoutY="41.0" styleClass="lbl-profile" text="%editTour.title">
                <effect>
                   <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                </effect></Label>
-            <Button fx:id="btnEditTour" layoutX="88.0" layoutY="483.0" mnemonicParsing="false" onMouseReleased="#handleEditTourButton" styleClass="btn-create-schedule" text="Edit tour">
+            <Button fx:id="btnEditTour" layoutX="88.0" layoutY="483.0" mnemonicParsing="false" onMouseReleased="#handleEditTourButton" styleClass="btn-create-schedule" text="%editTour.editTourButton.text">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
                </effect></Button>
-            <Button fx:id="btnEditSchedule" layoutX="278.0" layoutY="483.0" mnemonicParsing="false" onMouseReleased="#handleGoToEditTourScheduleScreen" styleClass="btn-create-schedule" text="Edit schedule">
+            <Button fx:id="btnEditSchedule" layoutX="88.0" layoutY="530.0" mnemonicParsing="false" onMouseReleased="#handleGoToEditTourScheduleScreen" styleClass="btn-edit-schedule2" text="%editTour.editScheduleButton.text">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
                </effect></Button>
-            <Button fx:id="btnDeleteTour" layoutX="88.0" layoutY="540.0" mnemonicParsing="false" onMouseReleased="#handleDeleteTourButton" styleClass="btn-create-schedule" text="Delete tour">
+            <Button fx:id="btnDeleteTour" layoutX="278.0" layoutY="483.0" mnemonicParsing="false" onMouseReleased="#handleDeleteTourButton" styleClass="btn-create-schedule" text="%editTour.deleteTourButton.text">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
                </effect></Button>
