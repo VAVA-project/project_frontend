@@ -35,6 +35,7 @@ import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.Internationalisation.I18n;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.SearchRequest;
+import sk.stu.fiit.parsers.Requests.dto.UserRequest;
 import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.SearchResponses.SearchResponse;
 import sk.stu.fiit.parsers.Responses.V2.UserResponses.UserResponse;
@@ -171,10 +172,10 @@ public class ToursController implements Initializable {
     }
 
     private void getUserRequest(String creatorId, Tour tour) {
+        UserRequest userRequest = new UserRequest(creatorId);
+        userRequest.accept(new XMLRequestParser());
         
-        HttpGet request = new HttpGet("http://localhost:8080/api/v1/users/" + creatorId + "/");
-        request.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
-        request.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        HttpGet request = (HttpGet) userRequest.getRequest();
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(request)) {

@@ -52,13 +52,16 @@ import sk.stu.fiit.parsers.Requests.dto.TicketsRequest;
 import sk.stu.fiit.parsers.Requests.dto.TourDatesRequest;
 import sk.stu.fiit.parsers.Requests.dto.UserBookingsRequest;
 import sk.stu.fiit.parsers.Requests.dto.UserCompletedBookingsRequest;
+import sk.stu.fiit.parsers.Requests.dto.UserRequest;
 
 /**
  *
  * @author Adam Bublavý
  */
 public class XMLRequestParser implements IRequestVisitor {
-
+    
+    private static final String serverAddress = "https://vava-project.herokuapp.com/";
+    
     private static final String CHARSET = "UTF-8";
 
     private Document createNewDocument() throws ParserConfigurationException {
@@ -112,7 +115,7 @@ public class XMLRequestParser implements IRequestVisitor {
     @Override
     public void constructRegisterRequest(RegisterRequest request) {
         HttpPost postRequest = new HttpPost(
-                "http://localhost:8080/api/v1/register/");
+                serverAddress + "api/v1/register/");
         postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
 
         Map<String, Object> data = new HashMap<>();
@@ -138,7 +141,7 @@ public class XMLRequestParser implements IRequestVisitor {
     @Override
     public void constructLoginRequest(LoginRequest request) {
         HttpPost postRequest = new HttpPost(
-                "http://localhost:8080/api/v1/login/");
+                serverAddress + "api/v1/login/");
         postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
 
         Map<String, Object> data = new HashMap<>();
@@ -157,7 +160,7 @@ public class XMLRequestParser implements IRequestVisitor {
 
     @Override
     public void constructEditRequest(EditRequest request) {
-        HttpPut httpPut = new HttpPut("http://localhost:8080/api/v1/users/");
+        HttpPut httpPut = new HttpPut(serverAddress + "api/v1/users/");
         httpPut.setHeader("Content-Type", "application/xml;charset=UTF-8");
         httpPut.setHeader("Authorization", "Bearer " + Singleton.getInstance().
                 getJwtToken());
@@ -181,7 +184,7 @@ public class XMLRequestParser implements IRequestVisitor {
     @Override
     public void constructGuideToursRequest(GuideToursRequest request) {
         HttpGet getRequest = new HttpGet(
-                "http://localhost:8080/api/v1/users/tours/");
+                serverAddress + "api/v1/users/tours/");
         getRequest.setHeader("Content-Type", "application/xml");
         getRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
@@ -202,7 +205,7 @@ public class XMLRequestParser implements IRequestVisitor {
 
     @Override
     public void constructSearchRequest(SearchRequest request) {
-        HttpGet getRequest = new HttpGet("http://localhost:8080/api/v1/search/");
+        HttpGet getRequest = new HttpGet(serverAddress + "api/v1/search/");
         getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         getRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
@@ -227,7 +230,7 @@ public class XMLRequestParser implements IRequestVisitor {
     @Override
     public void constructTourDatesRequest(TourDatesRequest request) {
         HttpGet getRequest = new HttpGet(
-                "http://localhost:8080/api/v1/tours/" + request.getTourId() + "/dates/");
+                serverAddress + "api/v1/tours/" + request.getTourId() + "/dates/");
         getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         getRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
@@ -251,7 +254,7 @@ public class XMLRequestParser implements IRequestVisitor {
 
     @Override
     public void constructCreateTourOfferRequest(CreateTourOfferRequest request) {
-        HttpPost httpPost = new HttpPost("http://localhost:8080/api/v1/tours/");
+        HttpPost httpPost = new HttpPost(serverAddress + "api/v1/tours/");
         httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
         httpPost.setHeader("Authorization", "Bearer " + Singleton.getInstance().
                 getJwtToken());
@@ -274,7 +277,7 @@ public class XMLRequestParser implements IRequestVisitor {
     @Override
     public void constructEditTourOfferRequest(EditTourOfferRequest request) {
         HttpPut httpPut = new HttpPut(
-                "http://localhost:8080/api/v1/tours/" + request.getId() + "/");
+                serverAddress + "api/v1/tours/" + request.getId() + "/");
         httpPut.setHeader("Content-Type", "application/xml;charset=UTF-8");
         httpPut.setHeader("Authorization", "Bearer " + Singleton.getInstance().
                 getJwtToken());
@@ -298,7 +301,7 @@ public class XMLRequestParser implements IRequestVisitor {
     @Override
     public void constructDeleteTourOfferRequest(DeleteTourOfferRequest request) {
         HttpDelete deleteRequest = new HttpDelete(
-                "http://localhost:8080/api/v1/tours/" + request.getId() + "/");
+                serverAddress + "api/v1/tours/" + request.getId() + "/");
         deleteRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         deleteRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
@@ -308,7 +311,7 @@ public class XMLRequestParser implements IRequestVisitor {
     @Override
     public void constructCreateTourDateRequest(CreateTourDateRequest request) {
         HttpPost httpPost = new HttpPost(
-                "http://localhost:8080/api/v1/tours/" + request.getTourOfferId() + "/dates/");
+                serverAddress + "api/v1/tours/" + request.getTourOfferId() + "/dates/");
         httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
         httpPost.setHeader("Authorization", "Bearer " + Singleton.getInstance().
                 getJwtToken());
@@ -333,7 +336,7 @@ public class XMLRequestParser implements IRequestVisitor {
     public void constructCheckoutTicketsInCartRequest(
             CheckoutTicketsInCartRequest request) {
         HttpPost postRequest = new HttpPost(
-                "http://localhost:8080/api/v1/cart/checkout/");
+                serverAddress + "api/v1/cart/checkout/");
         postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         postRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
@@ -354,7 +357,7 @@ public class XMLRequestParser implements IRequestVisitor {
     @Override
     public void constructDeleteTourDateRequest(DeleteTourDateRequest request) {
         HttpDelete deleteRequest = new HttpDelete(
-                "http://localhost:8080/api/v1/tours/"
+                serverAddress + "api/v1/tours/"
                 + request.getTourOfferId() + "/dates/"
                 + request.getTourDateId() + "/");
         deleteRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
@@ -368,7 +371,7 @@ public class XMLRequestParser implements IRequestVisitor {
     @Override
     public void constructTourTicketsRequest(TicketsRequest request) {
         HttpGet getRequest = new HttpGet(
-                "http://localhost:8080/api/v1/tickets/" + request.
+                serverAddress + "api/v1/tickets/" + request.
                         getTourDateId() + "/");
         getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         getRequest.setHeader("Authorization", "Bearer " + Singleton.
@@ -392,7 +395,7 @@ public class XMLRequestParser implements IRequestVisitor {
     @Override
     public void constructAddTicketToCartRequest(AddTicketToCartRequest request) {
         HttpPost postRequest = new HttpPost(
-                "http://localhost:8080/api/v1/cart/ticket/" + request.getId() + "/");
+                serverAddress + "api/v1/cart/ticket/" + request.getId() + "/");
         postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         postRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
@@ -404,7 +407,7 @@ public class XMLRequestParser implements IRequestVisitor {
     public void constructDeleteTicketFromCartRequest(
             DeleteTicketFromCartRequest request) {
         HttpDelete deleteRequest = new HttpDelete(
-                "http://localhost:8080/api/v1/cart/ticket/" + request.getId() + "/");
+                serverAddress + "api/v1/cart/ticket/" + request.getId() + "/");
         deleteRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         deleteRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
@@ -415,7 +418,7 @@ public class XMLRequestParser implements IRequestVisitor {
     @Override
     public void constructDeleteCartRequest(DeleteCartRequest request) {
         HttpDelete deleteRequest = new HttpDelete(
-                "http://localhost:8080/api/v1/cart/");
+                serverAddress + "api/v1/cart/");
         deleteRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         deleteRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
@@ -426,7 +429,7 @@ public class XMLRequestParser implements IRequestVisitor {
     @Override
     public void constructUserBookingsRequest(UserBookingsRequest request) {
         HttpGet getRequest = new HttpGet(
-                "http://localhost:8080/api/v1/users/orders/new/");
+                serverAddress + "api/v1/users/orders/new/");
         getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         getRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
@@ -438,7 +441,7 @@ public class XMLRequestParser implements IRequestVisitor {
     public void constructUserCompletedBookingsRequest(
             UserCompletedBookingsRequest request) {
         HttpGet getRequest = new HttpGet(
-                "http://localhost:8080/api/v1/users/orders/past/");
+                serverAddress + "api/v1/users/orders/past/");
         getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         getRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
@@ -449,7 +452,7 @@ public class XMLRequestParser implements IRequestVisitor {
     @Override
     public void constructRatingRequest(RatingRequest request) {
         HttpPost postRequest = new HttpPost(
-                "http://localhost:8080/api/v1/rating/" + request.getTourOfferId() + "/");
+                serverAddress + "api/v1/rating/" + request.getTourOfferId() + "/");
         postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         postRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
@@ -465,5 +468,14 @@ public class XMLRequestParser implements IRequestVisitor {
         }
 
         request.setRequest(postRequest);
+    }
+
+    @Override
+    public void constructUserRequest(UserRequest request) {
+        HttpGet getRequest = new HttpGet(serverAddress + "api/v1/users/" + request.getCreatorId() + "/");
+        getRequest.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
+        getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
+        
+        request.setRequest(getRequest);
     }
 }

@@ -25,6 +25,7 @@ import sk.stu.fiit.parsers.Requests.dto.TicketsRequest;
 import sk.stu.fiit.parsers.Requests.dto.TourDatesRequest;
 import sk.stu.fiit.parsers.Requests.dto.UserBookingsRequest;
 import sk.stu.fiit.parsers.Requests.dto.UserCompletedBookingsRequest;
+import sk.stu.fiit.parsers.Requests.dto.UserRequest;
 
 /**
  *
@@ -51,5 +52,6 @@ public interface IRequestVisitor {
     public void constructUserBookingsRequest(UserBookingsRequest request);
     public void constructUserCompletedBookingsRequest(UserCompletedBookingsRequest request);
     public void constructRatingRequest(RatingRequest request);
+    public void constructUserRequest(UserRequest request);
     
 }
