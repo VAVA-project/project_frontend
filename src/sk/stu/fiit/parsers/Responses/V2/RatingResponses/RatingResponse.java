@@ -12,14 +12,27 @@ import sk.stu.fiit.parsers.Responses.V2.Response;
  */
 public class RatingResponse extends Response {
     
-    private boolean success;
+    private String tourOfferId;
+    private Integer rating;
+    private Double averageRating;
 
-    public RatingResponse(boolean success) {
-        this.success = success;
+    public RatingResponse(String tourOfferId, Integer rating,
+            Double averageRating) {
+        this.tourOfferId = tourOfferId;
+        this.rating = rating;
+        this.averageRating = averageRating;
+    }
+    
+    public String getTourOfferId() {
+        return tourOfferId;
     }
 
-    public boolean isSuccess() {
-        return success;
+    public Integer getRating() {
+        return rating;
+    }
+
+    public Double getAverageRating() {
+        return averageRating;
     }
     
 }

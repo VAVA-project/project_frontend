@@ -84,7 +84,7 @@ public class BookedCompletedTourController implements Initializable {
             this.rating.ratingProperty().addListener(new ChangeListener<Number>() {
                 @Override
                 public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    System.out.println("New value: " + newValue);
                 }
             });
         } catch (ParseException ex) {
