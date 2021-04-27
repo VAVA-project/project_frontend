@@ -82,7 +82,7 @@
     -fx-background-radius: 16px;
     -fx-border-radius: 16px;
     -fx-pref-width: 600px;
-    -fx-pref-height: 50px;
+    -fx-pref-height: 90px;
 }
 
 /*
@@ -103,13 +103,13 @@
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 16px;
     -fx-pref-height: 35px;
-    -fx-pref-width: 60px;
+    -fx-pref-width: 80px;
     -fx-background-insets: 0;
 }
 
 .btn-buy:pressed {
     -fx-pref-height: 34px;
-    -fx-pref-width: 59px;
+    -fx-pref-width: 79px;
     -fx-background-insets: 0;
 }
 
@@ -128,13 +128,13 @@
 }
 
 .pane-cap-date {
-    -fx-pref-width: 250px;
+    -fx-pref-width: 166px;
     -fx-pref-height: 50px;
 }
 
 .pane-btn-buy {
-    -fx-pref-width: 150px;
-    -fx-pref-height: 50px;
+    -fx-pref-width: 100px;
+    -fx-pref-height: 90px;
 }
 
 .tour-dates-wrappers {

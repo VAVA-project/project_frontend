@@ -75,7 +75,7 @@ public class ProfileCustomerController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         setProfileInformations();
         setBookedTours();
-        //setCompletedTours();
+        setCompletedTours();
     }
 
     @FXML
@@ -115,12 +115,12 @@ public class ProfileCustomerController implements Initializable {
 
     private void setBookedTours() {
         sendUserBookingsRequest();
-        initializeBookedTours();
+        initializeTours(this.bookedTours);
     }
 
     private void setCompletedTours() {
         sendUserCompletedBookingsRequest();
-        initializeCompletedBookedTours();
+        initializeTours(this.completedTours);
     }
 
     private void sendUserBookingsRequest() {
@@ -134,6 +134,17 @@ public class ProfileCustomerController implements Initializable {
 
             UserBookingsResponse userBookingsResponse = (UserBookingsResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.BOOKED_TOURS_RESPONSE).parse(response);
             this.bookedTours = userBookingsResponse.getUserBookings();
+            
+            this.bookedTours.stream().forEach((bookedTour) -> {
+                System.out.println("*totalTickets = " + bookedTour.getOrderedTickets().size());
+                bookedTour.getOrderedTickets().stream().forEach((orderedTicket) -> {
+                    System.out.println("*startPlace = " + orderedTicket.getTour().getStartPlace());
+                    System.out.println("*destinationPlace = " + orderedTicket.getTour().getDestinationPlace());
+                    System.out.println("*guideName = " + orderedTicket.getTour().getGuideName());
+                });
+            });
+            
+            
         } catch (IOException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).log(Level.SEVERE, null, ex);
             Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
@@ -159,7 +170,6 @@ public class ProfileCustomerController implements Initializable {
 
             UserBookingsResponse userBookingsResponse = (UserBookingsResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.BOOKED_TOURS_RESPONSE).parse(response);
             this.completedTours = userBookingsResponse.getUserBookings();
-
         } catch (IOException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).log(Level.SEVERE, null, ex);
             Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
@@ -174,12 +184,12 @@ public class ProfileCustomerController implements Initializable {
         }
     }
 
-    private void initializeBookedTours() {
-        this.bookedTours.stream().forEach((bookedTour) -> {
+    private void initializeTours(List<UserBooking> tours) {
+        tours.stream().forEach((bookedTour) -> {
             try {
                 Node tourDateNode = this.loadTour(bookedTour.getOrderedTickets().get(0).getTour().getStartPlace(),
-                        bookedTour.getOrderedTickets().get(0).getTour().getDestinationPlace(),
-                        bookedTour.getOrderedTickets().get(0).getTour().getGuideName(),
+                        bookedTour.getOrderedTickets().get(0).getTourDate().getStartDate(),
+                        bookedTour.getOrderedTickets().get(0).getTourDate().getEndDate(),
                         bookedTour.getOrderedTickets().size(),
                         bookedTour.getTotalPrice(),
                         bookedTour.getOrderTime());
@@ -190,13 +200,9 @@ public class ProfileCustomerController implements Initializable {
         });
     }
 
-    private void initializeCompletedBookedTours() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private Node loadTour(String startPlace, String destinationPlace, String guideName, int size, double totalPrice, LocalDateTime orderTime) {
+    private Node loadTour(String startPlace, String startDate, String endDate, int totalTickets, double totalPrice, LocalDateTime orderTime) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/BookedCompletedTour.fxml"), I18n.getBundle());
-        loader.setControllerFactory(c -> new BookedCompletedTourController(startPlace, destinationPlace, guideName, size, totalPrice, orderTime));
+        loader.setControllerFactory(c -> new BookedCompletedTourController(startPlace, startDate, endDate, totalTickets, totalPrice, orderTime));
         try {
             return loader.load();
         } catch (IOException ex) {
@@ -206,24 +212,3 @@ public class ProfileCustomerController implements Initializable {
     }
 
 }
-/*
-private void initializeTourDate(TourDateCreate tourDateCreate) {
-        try {
-            Node tourDateNode = this.loadTourDate(tourDateCreate);
-            this.vbTourDates.getChildren().add(tourDateNode);
-        } catch (Exception e) {
-            Logger.getLogger(TourBuyController.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
-private Node loadTourDate(TourDateCreate tourDateCreate) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/OneTourDateSchedule.fxml"), I18n.getBundle());
-        loader.setControllerFactory(c -> new OneTourDateScheduleController(tourDateCreate, vbTourDates));
-        try {
-            return loader.load();
-        } catch (IOException ex) {
-            Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-    
- */

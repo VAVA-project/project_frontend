@@ -38,7 +38,7 @@
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                </effect></Label>
-            <VBox layoutX="14.0" layoutY="450.0" prefHeight="136.0" prefWidth="140.0" spacing="15.0">
+            <VBox layoutX="14.0" layoutY="450.0" spacing="15.0">
                <children>
                   <Button fx:id="btnCreateTour" mnemonicParsing="false" onMouseReleased="#handleCreateTourButton" styleClass="btn-edit-informations" text="%profileGuide.createTourButton.text">
                      <effect>
@@ -60,7 +60,7 @@
    <center>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="center-pane" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="69.0" layoutY="41.0" styleClass="lbl-profile" text="%profileGuide.title">
+            <Label layoutX="59.0" layoutY="41.0" styleClass="lbl-profile" text="%profileGuide.title">
                <effect>
                   <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                </effect></Label>
@@ -76,13 +76,13 @@
                      </effect></Circle>
                </children>
             </HBox>
-            <Pane layoutX="59.0" layoutY="113.0" prefHeight="500.0" prefWidth="450.0" styleClass="pane-wrap">
+            <Pane layoutX="59.0" layoutY="103.0" prefHeight="500.0" prefWidth="450.0" styleClass="pane-wrap">
                <children>
                   <ScrollPane hbarPolicy="NEVER" layoutY="60.0" prefHeight="330.0" prefWidth="450.0" styleClass="scroll-vbox-tours">
                      <content>
                         <VBox fx:id="vbTours" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" styleClass="scroll-vbox-tours">
                            <padding>
-                              <Insets right="10.0" top="10.0" />
+                              <Insets bottom="10.0" right="10.0" top="10.0" />
                            </padding></VBox>
                      </content>
                   </ScrollPane>

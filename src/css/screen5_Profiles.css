@@ -44,7 +44,7 @@
     -fx-background-color: #5F2EEA;
     -fx-background-radius: 16px;
     -fx-pref-height: 35px;
-    -fx-pref-width: 140px;
+    -fx-pref-width: 150px;
 }
 
 .btn-edit-informations:pressed {
@@ -111,12 +111,20 @@
     -fx-pref-height: 330px;
 }
 
+.pane-tours2 {
+    -fx-background-radius: 16px;
+    -fx-background-insets: 0;
+    -fx-background-color: #EFF0F6;
+    -fx-pref-width: 520px;
+    -fx-pref-height: 230px;
+}
+
 .scroll-vbox-tours2 {
     -fx-background-radius: 16px;
     -fx-background-insets: 0;
     -fx-background-color: #EFF0F6;
-    -fx-pref-width: 500px;
-    -fx-pref-height: 170px;
+    -fx-pref-width: 520px;
+    -fx-pref-height: 180px;
 }
 
 .lbl-my-tours {
@@ -130,7 +138,7 @@
     -fx-background-color: #D9DBE9;
     -fx-background-radius: 16px;
     -fx-pref-width: 450px;
-    -fx-pref-height: 110px;
+    -fx-pref-height: 115px;
 }
 
 .btn-edit {
@@ -142,13 +150,13 @@
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 16px;
     -fx-pref-height: 35px;
-    -fx-pref-width: 70px;
+    -fx-pref-width: 80px;
     -fx-background-insets: 0;
 }
 
 .btn-edit:pressed {
     -fx-pref-height: 34px;
-    -fx-pref-width: 69px;
+    -fx-pref-width: 79px;
     -fx-background-insets: 0;
 }
 

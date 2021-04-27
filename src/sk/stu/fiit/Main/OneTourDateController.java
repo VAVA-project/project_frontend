@@ -34,9 +34,11 @@ public class OneTourDateController implements Initializable {
     @FXML
     private Label lblCapacity;
     @FXML
-    private Label lblDate;
-    @FXML
     private Button btnBuy;
+    @FXML
+    private Label lblStartDate;
+    @FXML
+    private Label lblEndDate;
 
     public OneTourDateController() {
     }
@@ -77,7 +79,8 @@ public class OneTourDateController implements Initializable {
         }
         
         this.lblCapacity.setText(this.tourDate.getNumberOfSoldTickets() + "/" + this.tourDate.getNumberOfTickets());
-        this.lblDate.setText(tourDate.getStartDate());
+        this.lblStartDate.setText(tourDate.getStartDate());
+        this.lblEndDate.setText(tourDate.getEndDate());
     }
     
 }

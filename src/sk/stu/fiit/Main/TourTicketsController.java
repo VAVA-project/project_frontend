@@ -50,12 +50,12 @@ import sk.stu.fiit.parsers.Responses.V2.TourTicketsResponses.TourTicketsResponse
  * @author adamf
  */
 public class TourTicketsController implements Initializable {
-    
+
     private TourDate tourDate;
-    
+
     private List<TourTicket> ticketsInCart;
     private CopyOnWriteArrayList<TourTicket> availableTickets;
-    
+
     @FXML
     private Button btnBack;
     @FXML
@@ -82,12 +82,14 @@ public class TourTicketsController implements Initializable {
     private TextArea taComment;
     @FXML
     private Label lblDestination;
-    
+    @FXML
+    private Label lblEndDate;
+
     public TourTicketsController() {
         this.ticketsInCart = new ArrayList<>();
         this.availableTickets = new CopyOnWriteArrayList<>();
     }
-    
+
     public TourTicketsController(TourDate tourDate) {
         this();
         this.tourDate = tourDate;
@@ -101,12 +103,12 @@ public class TourTicketsController implements Initializable {
         if (this.tourDate == null) {
             return;
         }
-        
+
         this.fillLabelsWithData();
         this.getFreeTickets((res) -> {
         });
     }
-    
+
     @FXML
     private void handleMouseEvent(MouseEvent event) {
         if (event.getSource().equals(btnExit)) {
@@ -123,11 +125,20 @@ public class TourTicketsController implements Initializable {
                     switchToScreen((MouseEvent) event, "Views/TourBuy.fxml");
         }
     }
-    
+
     private void fillLabelsWithData() {
         lblDestination.setText(Singleton.getInstance().getTourBuy().
                 getDestinationPlace());
-        lblStartDate.setText(this.tourDate.getStartDate());
+        String date = this.tourDate.getStartDate();
+        String[] parts = date.split(", ");
+        String part1 = parts[0];
+        String part2 = parts[1];
+        lblStartDate.setText(part1 + "\n" + part2);
+        date = this.tourDate.getEndDate();
+        parts = date.split(", ");
+        part1 = parts[0];
+        part2 = parts[1];
+        lblEndDate.setText(part1 + "\n" + part2);
         lblStartPlace.setText(Singleton.getInstance().getTourBuy().
                 getStartPlace());
         lblGuideName.
@@ -135,26 +146,26 @@ public class TourTicketsController implements Initializable {
         lblPrice.setText(Singleton.getInstance().getTourBuy().
                 getPricePerPerson());
     }
-    
+
     private void getFreeTickets(Consumer<? super Void> callback) {
         CompletableFuture.supplyAsync(this::fetchAvailableTickets).thenAccept(
                 this::processFetchedAvailableTickets).thenAccept(callback);
     }
-    
+
     private TourTicketsResponse fetchAvailableTickets() {
         TicketsRequest ticketsRequest = new TicketsRequest(this.tourDate.getId());
         ticketsRequest.accept(new XMLRequestParser());
-        
+
         HttpGet request = (HttpGet) ticketsRequest.getRequest();
-        
-        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
-                 CloseableHttpResponse response = httpClient.execute(request)) {
-            
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
+
             return (TourTicketsResponse) ResponseFactory.
                     getFactory(
                             ResponseFactory.ResponseFactoryType.TOUR_TICKETS_RESPONSE).
                     parse(response);
-            
+
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE,
                     null, ex);
@@ -167,38 +178,38 @@ public class TourTicketsController implements Initializable {
             Logger.getLogger(TourOfferController.class.getName()).log(
                     Level.SEVERE, null, ex);
         }
-        
+
         return null;
     }
-    
+
     private void processFetchedAvailableTickets(TourTicketsResponse response) {
         if (response == null) {
             return;
         }
-        
+
         List<TourTicket> fetchedTickets = response.getTourTickets();
-        
+
         if (fetchedTickets.isEmpty()) {
             Alerts.showAlert(Alerts.TITLE_TICKETS_RESERVED);
             return;
         }
-        
+
         this.availableTickets.addAll(fetchedTickets);
     }
-    
+
     @FXML
     private void handlePlusButton(MouseEvent event) {
         if (this.availableTickets.isEmpty()) {
             this.getFreeTickets((response) -> {
                 addTicketToCart(event);
             });
-            
+
             return;
         }
-        
+
         addTicketToCart(event);
     }
-    
+
     private void addTicketToCart(MouseEvent event) {
         CompletableFuture.supplyAsync(() -> this.sendAddTicketToCartRequest(
                 this.availableTickets.get(0))).thenAccept((result) -> {
@@ -207,21 +218,21 @@ public class TourTicketsController implements Initializable {
                 handlePlusButton(event);
                 return;
             }
-            
+
             TourTicket lockedTicket = this.availableTickets.remove(0);
             this.ticketsInCart.add(lockedTicket);
-            
+
             updateTicketCountLabel();
         });
     }
-    
+
     @FXML
     private void handleMinusButton(MouseEvent event) {
         if (this.ticketsInCart.isEmpty()) {
             Alerts.showAlert(Alerts.TITLE_EMPTY_CART_ALREADY);
             return;
         }
-        
+
         CompletableFuture.supplyAsync(() -> this.
                 sendDeleteTicketFromCartRequest(this.ticketsInCart.get(0))).
                 thenAccept((response) -> {
@@ -229,45 +240,45 @@ public class TourTicketsController implements Initializable {
                     updateTicketCountLabel();
                 });
     }
-    
+
     private void updateTicketCountLabel() {
         Platform.runLater(() -> this.lblNumberOfTickets.setText(
                 String.valueOf(this.ticketsInCart.size())));
     }
-    
+
     @FXML
     private void handleRagisterButton(MouseEvent event) {
-        if(this.ticketsInCart.isEmpty()) {
+        if (this.ticketsInCart.isEmpty()) {
             Alerts.showAlert(Alerts.TITLE_EMPTY_CART);
             return;
         }
-        
+
         if (checkoutTicketsInCart().isSuccess()) {
             ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/PostCheckout.fxml");
         } else {
             Alerts.showAlert(Alerts.TITLE_CHECKOUT_ERROR);
         }
     }
-    
+
     private boolean sendAddTicketToCartRequest(TourTicket availableTicket) {
         if (availableTicket == null) {
             return false;
         }
-        
+
         AddTicketToCartRequest addTicketToCartRequest = new AddTicketToCartRequest(
                 availableTicket.getId());
         addTicketToCartRequest.accept(new XMLRequestParser());
-        
+
         HttpPost request = (HttpPost) addTicketToCartRequest.getRequest();
-        
-        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
-                 CloseableHttpResponse response = httpClient.execute(request)) {
-            
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
+
             TicketToCartResponse addTicketToCartResponse = (TicketToCartResponse) ResponseFactory.
                     getFactory(
                             ResponseFactory.ResponseFactoryType.ADD_TICKET_TO_CART_RESPONSE).
                     parse(response);
-            
+
             return addTicketToCartResponse.isIsTicketAddedToCart();
         } catch (IOException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).log(
@@ -281,32 +292,32 @@ public class TourTicketsController implements Initializable {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
-        
+
         return false;
     }
-    
+
     private boolean sendDeleteTicketFromCartRequest(TourTicket tourTicket) {
         if (tourTicket == null) {
             return false;
         }
-        
+
         DeleteTicketFromCartRequest deleteTicketFromCartRequest = new DeleteTicketFromCartRequest(
                 tourTicket.getId());
         deleteTicketFromCartRequest.accept(new XMLRequestParser());
-        
+
         HttpDelete request = (HttpDelete) deleteTicketFromCartRequest.
                 getRequest();
-        
-        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
-                 CloseableHttpResponse response = httpClient.execute(request)) {
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
 
             TicketToCartResponse deleteTicketFromCartResponse = (TicketToCartResponse) ResponseFactory.
                     getFactory(
                             ResponseFactory.ResponseFactoryType.DELETE_TICKET_TO_CART_RESPONSE).
                     parse(response);
-            
+
             return deleteTicketFromCartResponse.isIsTicketAddedToCart();
-            
+
         } catch (IOException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).log(
                     Level.SEVERE, null, ex);
@@ -321,7 +332,7 @@ public class TourTicketsController implements Initializable {
         }
         return false;
     }
-    
+
     private void clearCart() {
         CompletableFuture.supplyAsync(this::sendDeleteCartRequest)
                 .thenAccept((response) -> {
@@ -330,15 +341,15 @@ public class TourTicketsController implements Initializable {
                     }
                 });
     }
-    
+
     private DeleteCartResponse sendDeleteCartRequest() {
         DeleteCartRequest request = new DeleteCartRequest();
         request.accept(new XMLRequestParser());
-        
+
         HttpDelete deleteRequest = (HttpDelete) request.getRequest();
-        
-        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
-                 CloseableHttpResponse response = httpClient.execute(
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(
                         deleteRequest)) {
             return (DeleteCartResponse) ResponseFactory.getFactory(
                     ResponseFactory.ResponseFactoryType.DELETE_CART_RESPONSE).
@@ -355,20 +366,20 @@ public class TourTicketsController implements Initializable {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
-        
+
         return null;
     }
-    
+
     private CheckoutTicketsInCartResponse checkoutTicketsInCart() {
         CheckoutTicketsInCartRequest checkoutTicketsInCartRequest = new CheckoutTicketsInCartRequest(
                 taComment.getText());
         checkoutTicketsInCartRequest.accept(new XMLRequestParser());
-        
+
         HttpPost request = (HttpPost) checkoutTicketsInCartRequest.getRequest();
-        
-        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
-                 CloseableHttpResponse response = httpClient.execute(request)) {
-            
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
+
             return (CheckoutTicketsInCartResponse) ResponseFactory.getFactory(
                     ResponseFactory.ResponseFactoryType.CHECKOUT_CART_RESPONSE).
                     parse(response);
@@ -385,18 +396,18 @@ public class TourTicketsController implements Initializable {
                     log(Level.SEVERE, null, ex);
             handleExpiredTicketsError(ex);
         }
-        
+
         return null;
     }
-    
+
     private void handleExpiredTicketsError(APIValidationException e) {
         List<APIValidationError> errors = e.getValidationErrors();
-        
+
         errors.stream().forEach(error -> {
             this.ticketsInCart.removeIf(ticket -> ticket.getId().equals(
                     error.getErrorMessage()));
         });
-        
+
         this.updateTicketCountLabel();
     }
 }

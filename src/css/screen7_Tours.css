@@ -54,7 +54,6 @@
     -fx-border-radius: 16px;
     -fx-pref-width: 650px;
     -fx-pref-height: 150px;
-    -fx-spacing: 10;
 }
 
 .photo-tour {
@@ -176,5 +175,5 @@
     -fx-background-radius: 16px;
     -fx-border-radius: 16px;
     -fx-pref-width: 460px;
-    -fx-pref-height: 170px;
+    -fx-pref-height: 200px;
 }
