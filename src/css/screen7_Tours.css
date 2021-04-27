@@ -170,3 +170,11 @@
     -fx-background-insets : 2.0, 0.0, 0.0;
     -fx-background-radius : 2.0em;
 }
+
+.booked-tour {
+    -fx-background-color: #D9DBE9;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+    -fx-pref-width: 460px;
+    -fx-pref-height: 170px;
+}

@@ -44,7 +44,7 @@
                      <effect>
                         <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                      </effect></Button>
-                  <Button mnemonicParsing="false" onMouseReleased="#handleGoToPersonalProfileScreen" styleClass="btn-edit-informations" text="%profileGuide.personalProfileButton.text">
+                  <Button fx:id="btnPersonalProfile" mnemonicParsing="false" onMouseReleased="#handleGoToPersonalProfileScreen" styleClass="btn-edit-informations" text="%profileGuide.personalProfileButton.text">
                      <effect>
                         <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                      </effect></Button>
