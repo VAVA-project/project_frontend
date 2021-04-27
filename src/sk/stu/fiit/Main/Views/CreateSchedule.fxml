@@ -57,7 +57,7 @@
                <content>
                   <VBox fx:id="vbTourDates" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" styleClass="scroll-vbox-tours">
                      <padding>
-                        <Insets right="15.0" top="10.0" />
+                        <Insets bottom="10.0" right="15.0" top="10.0" />
                      </padding></VBox>
                </content>
                <effect>
@@ -84,19 +84,19 @@
                      </effect></Circle>
                </children>
             </HBox>
-            <DatePicker fx:id="dpStartDate" layoutX="50.0" layoutY="201.0" prefHeight="50.0" prefWidth="180.0" promptText="%createSchedule.tourStartDatePicker.prompt">
+            <DatePicker fx:id="dpStartDate" layoutX="50.0" layoutY="201.0" prefHeight="50.0" prefWidth="210.0" promptText="%createSchedule.tourStartDatePicker.prompt">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
                </effect></DatePicker>
-            <DatePicker fx:id="dpEndDate" layoutX="240.0" layoutY="201.0" prefHeight="50.0" prefWidth="180.0" promptText="%createSchedule.tourEndDatePicker.prompt">
+            <DatePicker fx:id="dpEndDate" layoutX="271.0" layoutY="201.0" prefHeight="50.0" prefWidth="210.0" promptText="%createSchedule.tourEndDatePicker.prompt">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
                </effect></DatePicker>
-            <TextField fx:id="tfStartTime" layoutX="50.0" layoutY="261.0" promptText="%createSchedule.startTimeTextField.prompt" styleClass="text-field-time">
+            <TextField fx:id="tfStartTime" layoutX="50.0" layoutY="262.0" promptText="%createSchedule.startTimeTextField.prompt" styleClass="text-field-time">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
                </effect></TextField>
-            <TextField fx:id="tfEndTime" layoutX="240.0" layoutY="261.0" promptText="%createSchedule.endTimeTextField.prompt" styleClass="text-field-time">
+            <TextField fx:id="tfEndTime" layoutX="271.0" layoutY="262.0" promptText="%createSchedule.endTimeTextField.prompt" styleClass="text-field-time">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
                </effect></TextField>

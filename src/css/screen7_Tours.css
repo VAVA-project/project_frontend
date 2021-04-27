@@ -42,6 +42,25 @@
     -fx-background-insets: 0;
 }
 
+.btn-search {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14px;
+    -fx-border-color: #5F2EEA;
+    -fx-border-radius: 16px;
+    -fx-text-fill: #5F2EEA;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 35px;
+    -fx-pref-width: 140px;
+    -fx-background-insets: 0;
+}
+
+.btn-search:pressed {
+    -fx-pref-height: 34px;
+    -fx-pref-width: 139px;
+    -fx-background-insets: 0;
+}
+
 .tours-wrappers {
     -fx-background-radius: 16px;
     -fx-background-insets: 0;

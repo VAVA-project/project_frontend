@@ -72,7 +72,7 @@
          <effect>
             <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
          </effect></TextField>
-      <Button fx:id="btnSearch" layoutX="471.0" layoutY="17.0" mnemonicParsing="false" onMouseReleased="#handleSearchButton" styleClass="btn-paging" text="%tours.searchButton.text">
+      <Button fx:id="btnSearch" layoutX="460.0" layoutY="29.0" mnemonicParsing="false" onMouseReleased="#handleSearchButton" styleClass="btn-search" text="%tours.searchButton.text">
          <effect>
             <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
          </effect></Button>

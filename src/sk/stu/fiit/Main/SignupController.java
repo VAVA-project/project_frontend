@@ -233,15 +233,14 @@ public class SignupController implements Initializable {
                         hboxControlButtonsPersonalInformations.getChildren().
                                 add(btnExit);
                     } else {
-                        Alerts.showAlert(Alerts.TITLE_PASSWORD_NOT_VALID, 
-                                Alerts.CONTENT_PASSWORD_NOT_VALID);
+                        Alerts.showAlert("TITLE_PASSWORD_NOT_VALID", "CONTENT_PASSWORD_NOT_VALID");
                     }
                 } else {
-                    Alerts.showAlert(Alerts.TITLE_EMAIL_NOT_VALID, 
-                            Alerts.CONTENT_EMAIL_NOT_VALID);
+                    Alerts.showAlert("TITLE_EMAIL_NOT_VALID", 
+                            "CONTENT_EMAIL_NOT_VALID");
                 }
             } else {
-                Alerts.showAlert(Alerts.TITLE_EMPTY_FIELDS);
+                Alerts.showAlert("TITLE_EMPTY_FIELDS");
             }
         }
         if (event.getSource().equals(btnBackPersonalInformations)) {
@@ -280,13 +279,13 @@ public class SignupController implements Initializable {
                             paneSignupPhoto.getChildren().add(btnChangePhoto);
                         }
                     } else {
-                        Alerts.showAlert(Alerts.TITLE_DATE_OF_BIRTH);
+                        Alerts.showAlert("TITLE_DATE_OF_BIRTH");
                     }
                 } else {
-                    Alerts.showAlert(Alerts.TITLE_EMPTY_DATE_OF_BIRTH);
+                    Alerts.showAlert("TITLE_EMPTY_DATE_OF_BIRTH");
                 }
             } else {
-                Alerts.showAlert(Alerts.TITLE_EMPTY_FIELDS);
+                Alerts.showAlert("TITLE_EMPTY_FIELDS");
             }
         }
         if (event.getSource().equals(btnBackPhoto)) {
@@ -339,7 +338,7 @@ public class SignupController implements Initializable {
                     paneSignupPhoto.getChildren().remove(lblSelectPhoto);
                     photoSet = true;
                 } catch (FileNotFoundException ex) {
-                    Alerts.showAlert(Alerts.TITLE_FILE_NOT_FOUND);
+                    Alerts.showAlert("TITLE_FILE_NOT_FOUND");
                 }
             } catch (NullPointerException e) {
                 // User had opened fileChooser.showOpenDialog, but he doesn't choose his image
@@ -380,7 +379,7 @@ public class SignupController implements Initializable {
 
                     imageViewPhoto.setClip(clip);
                 } catch (FileNotFoundException ex) {
-                    Alerts.showAlert(Alerts.TITLE_FILE_NOT_FOUND);
+                    Alerts.showAlert("TITLE_FILE_NOT_FOUND");
                 }
             } catch (NullPointerException e) {
                 // User had opened fileChooser.showOpenDialog, but he doesn't choose a photo
@@ -425,7 +424,7 @@ public class SignupController implements Initializable {
             } catch (IOException e) {
                 Logger.getLogger(SignupController.class.getName()).
                         log(Level.SEVERE, null, e);
-                Alerts.showAlert(Alerts.TITLE_SERVER_ERROR, Alerts.CONTENT_SERVER_NOT_RESPONDING);
+                Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
             }
 
         }

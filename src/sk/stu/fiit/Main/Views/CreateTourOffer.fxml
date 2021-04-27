@@ -74,7 +74,7 @@
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.05" width="30.0" />
                </effect></TextArea>
-            <Button fx:id="btnCreateSchedule" layoutX="278.0" layoutY="483.0" mnemonicParsing="false" onMouseReleased="#handleGoToCreateScheduleScreen" styleClass="btn-create-schedule" text="%createTourOffer.createScheduleButton.text">
+            <Button fx:id="btnCreateSchedule" layoutX="230.0" layoutY="483.0" mnemonicParsing="false" onMouseReleased="#handleGoToCreateScheduleScreen" styleClass="btn-edit-schedule2" text="%createTourOffer.createScheduleButton.text">
                <effect>
                   <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
                </effect></Button>
