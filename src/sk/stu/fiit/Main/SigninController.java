@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -22,7 +23,9 @@ import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.Validators.UserRegistrationValidator;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
+import sk.stu.fiit.parsers.Requests.dto.DeleteCartRequest;
 import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
+import sk.stu.fiit.parsers.Responses.V2.DeleteCartResponses.DeleteCartResponse;
 import sk.stu.fiit.parsers.Responses.V2.LoginResponses.LoginResponse;
 import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
 
@@ -100,6 +103,8 @@ public class SigninController {
             Singleton.getInstance().setUser(loginResponse.getUser());
             
             System.out.println("Token: " + loginResponse.getJwtToken());
+            
+            this.clearCart();
 
             this.gotToSearch(event);
         } catch (AuthTokenExpiredException ex) {
@@ -114,6 +119,45 @@ public class SigninController {
         loginRequest.accept(new XMLRequestParser());
 
         return (HttpPost) loginRequest.getRequest();
+    }
+    
+    private void clearCart() {
+        CompletableFuture.supplyAsync(this::sendDeleteCartRequest)
+                .thenAccept((response) -> {
+                    if (!response.isSuccess()) {
+                        Alerts.showAlert("TITLE_CART_CLEARED");
+                    }
+                });
+    }
+
+    private DeleteCartResponse sendDeleteCartRequest() {
+        DeleteCartRequest request = new DeleteCartRequest();
+        request.accept(new XMLRequestParser());
+
+        HttpDelete deleteRequest = (HttpDelete) request.getRequest();
+
+        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
+                 CloseableHttpResponse response = httpClient.execute(
+                        deleteRequest)) {
+            return (DeleteCartResponse) ResponseFactory.getFactory(
+                    ResponseFactory.ResponseFactoryType.DELETE_CART_RESPONSE).
+                    parse(response);
+        } catch (IOException e) {
+            Logger.getLogger(TourTicketsController.class.getName()).log(
+                    Level.SEVERE, null, e);
+            Alerts.showAlert("TITLE_SERVER_ERROR",
+                    "CONTENT_SERVER_NOT_RESPONDING");
+        } catch (AuthTokenExpiredException ex) {
+            Logger.getLogger(TourTicketsController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR",
+                    "CONTENT_AUTHENTICATION_ERROR");
+        } catch (APIValidationException ex) {
+            Logger.getLogger(TourTicketsController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+
+        return null;
     }
 
     private void handleIOException(IOException ex) {
