@@ -46,6 +46,8 @@ import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.TourOfferResponse;
  */
 public class CreateScheduleController implements Initializable {
     
+    private double xOffset = 0;
+    private double yOffset = 0;
     private int numberOfTourDate = 0;
 
     @FXML
@@ -231,5 +233,18 @@ public class CreateScheduleController implements Initializable {
             }
         });
     }
+    
+    @FXML
+    private void setOnMouseDragged(MouseEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setX(event.getScreenX() - xOffset);
+        stage.setY(event.getScreenY() - yOffset);
+    }
 
+    @FXML
+    private void setOnMousePressed(MouseEvent event) {
+        xOffset = event.getSceneX();
+        yOffset = event.getSceneY();
+    }
+    
 }

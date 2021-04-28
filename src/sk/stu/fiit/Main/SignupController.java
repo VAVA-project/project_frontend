@@ -17,11 +17,8 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
@@ -35,7 +32,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
@@ -46,7 +42,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
-import sk.stu.fiit.Internationalisation.I18n;
 import sk.stu.fiit.User.User;
 import sk.stu.fiit.User.UserType;
 import sk.stu.fiit.Validators.UserRegistrationValidator;
@@ -61,6 +56,9 @@ import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
  * @author adamf
  */
 public class SignupController implements Initializable {
+
+    private double xOffset = 0;
+    private double yOffset = 0;
 
     private UserType userType;
     private String email;
@@ -153,280 +151,34 @@ public class SignupController implements Initializable {
             ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Signin.fxml");
         }
         if (event.getSource().equals(btnCreateCustomer)) {
-            stackPaneSignupLeft.getChildren().clear();
-            stackPaneSignupLeft.getChildren().add(paneSignupLeft);
-
-            paneSignupLeft.getChildren().remove(btnBackPersonalInformations);
-            paneSignupLeft.getChildren().remove(btnBackPhoto);
-
-            stackPaneSignupRight.getChildren().clear();
-            stackPaneSignupRight.getChildren().
-                    add(paneSignupAccountInformations);
-
-            hboxControlButtonsAccountInformations.getChildren().add(btnMinimize);
-            hboxControlButtonsAccountInformations.getChildren().add(btnExit);
-
-            lblUserType.setText("Customer");
-            userType = UserType.NORMAL_USER;
+            createCustomer();
         }
         if (event.getSource().equals(btnCreateGuide)) {
-            stackPaneSignupLeft.getChildren().clear();
-            stackPaneSignupLeft.getChildren().add(paneSignupLeft);
-
-            paneSignupLeft.getChildren().remove(btnBackPersonalInformations);
-            paneSignupLeft.getChildren().remove(btnBackPhoto);
-
-            stackPaneSignupRight.getChildren().clear();
-            stackPaneSignupRight.getChildren().
-                    add(paneSignupAccountInformations);
-
-            hboxControlButtonsAccountInformations.getChildren().add(btnMinimize);
-            hboxControlButtonsAccountInformations.getChildren().add(btnExit);
-
-            lblUserType.setText("Guide");
-            userType = UserType.GUIDE;
-            //userType = "GUIDE";
+            createGuide();
         }
         if (event.getSource().equals(btnBackAccountInformations)) {
-            stackPaneSignupLeft.getChildren().clear();
-            stackPaneSignupLeft.getChildren().add(paneSignupCustomerAccount);
-
-            stackPaneSignupRight.getChildren().clear();
-            stackPaneSignupRight.getChildren().add(paneSignupGuideAccount);
-
-            hboxControlButtonsGuideAccount.getChildren().add(btnMinimize);
-            hboxControlButtonsGuideAccount.getChildren().add(btnExit);
-
-            tfEmail.clear();
-            tfPassword.clear();
-            tfFirstname.clear();
-            tfLastname.clear();
-            datePickerDateOfBirth.getEditor().clear();
-            datePickerDateOfBirth.setValue(null);
-            if (photoSet) {
-                imageViewPhoto.setImage(null);
-                paneSignupPhoto.getChildren().remove(btnChangePhoto);
-                paneSignupPhoto.getChildren().remove(btnChangePhoto);
-                paneSignupPhoto.getChildren().add(lblSelectPhoto);
-                photoSet = false;
-            }
+            handleBtnBackAccountInformations();
         }
         if (event.getSource().equals(btnNextAccountInformations)) {
-            if (UserRegistrationValidator.areEmpty.test(tfEmail, tfPassword)) {
-                if (UserRegistrationValidator.isEmailValid.test(tfEmail.getText())) {
-                    if (UserRegistrationValidator.isPasswordValid.test(
-                            tfPassword.getText())) {
-                        email = tfEmail.getText();
-                        password = tfPassword.getText();
-
-                        stackPaneSignupRight.getChildren().clear();
-                        stackPaneSignupRight.getChildren().add(
-                                paneSignupPersonalInformations);
-
-                        paneSignupLeft.getChildren().remove(
-                                btnBackAccountInformations);
-                        paneSignupLeft.getChildren().add(
-                                btnBackPersonalInformations);
-
-                        hboxControlButtonsPersonalInformations.getChildren().
-                                add(btnMinimize);
-                        hboxControlButtonsPersonalInformations.getChildren().
-                                add(btnExit);
-                    } else {
-                        Alerts.showAlert("TITLE_PASSWORD_NOT_VALID", "CONTENT_PASSWORD_NOT_VALID");
-                    }
-                } else {
-                    Alerts.showAlert("TITLE_EMAIL_NOT_VALID", 
-                            "CONTENT_EMAIL_NOT_VALID");
-                }
-            } else {
-                Alerts.showAlert("TITLE_EMPTY_FIELDS");
-            }
+            handleBtnNextAccountInformations();
         }
         if (event.getSource().equals(btnBackPersonalInformations)) {
-            stackPaneSignupRight.getChildren().clear();
-            stackPaneSignupRight.getChildren().
-                    add(paneSignupAccountInformations);
-
-            paneSignupLeft.getChildren().remove(btnBackPersonalInformations);
-            paneSignupLeft.getChildren().add(btnBackAccountInformations);
-
-            hboxControlButtonsAccountInformations.getChildren().add(btnMinimize);
-            hboxControlButtonsAccountInformations.getChildren().add(btnExit);
+            handleBtnBackPersonalInformations();
         }
         if (event.getSource().equals(btnNextPersonalInformations)) {
-            if (UserRegistrationValidator.areEmpty.test(tfFirstname, tfLastname)) {
-                if (datePickerDateOfBirth.getValue() != null) {
-                    if (UserRegistrationValidator.isDateValid.test(
-                            datePickerDateOfBirth.getValue())) {
-                        firstName = tfFirstname.getText();
-                        lastName = tfLastname.getText();
-                        dateOfBirth = datePickerDateOfBirth.getValue();
-
-                        stackPaneSignupRight.getChildren().clear();
-                        stackPaneSignupRight.getChildren().add(paneSignupPhoto);
-                        paneSignupPhoto.getChildren().remove(btnRegister);
-                        paneSignupPhoto.getChildren().remove(btnChangePhoto);
-
-                        paneSignupLeft.getChildren().remove(
-                                btnBackPersonalInformations);
-                        paneSignupLeft.getChildren().add(btnBackPhoto);
-
-                        hboxControlButtonsPhoto.getChildren().add(btnMinimize);
-                        hboxControlButtonsPhoto.getChildren().add(btnExit);
-                        if (photoSet) {
-                            paneSignupPhoto.getChildren().add(btnRegister);
-                            paneSignupPhoto.getChildren().add(btnChangePhoto);
-                        }
-                    } else {
-                        Alerts.showAlert("TITLE_DATE_OF_BIRTH");
-                    }
-                } else {
-                    Alerts.showAlert("TITLE_EMPTY_DATE_OF_BIRTH");
-                }
-            } else {
-                Alerts.showAlert("TITLE_EMPTY_FIELDS");
-            }
+            handleBtnNextPersonalInformations();
         }
         if (event.getSource().equals(btnBackPhoto)) {
-            stackPaneSignupRight.getChildren().clear();
-            stackPaneSignupRight.getChildren().add(
-                    paneSignupPersonalInformations);
-
-            paneSignupLeft.getChildren().remove(btnBackPhoto);
-            paneSignupLeft.getChildren().add(btnBackPersonalInformations);
-
-            hboxControlButtonsPersonalInformations.getChildren().
-                    add(btnMinimize);
-            hboxControlButtonsPersonalInformations.getChildren().add(btnExit);
+            handleBtnBackPhoto();
         }
         if (event.getSource().equals(lblSelectPhoto)) {
-            try {
-                FileChooser fileChooser = new FileChooser();
-
-                // Nastavenie filtra len na .jpg a .png subory
-                FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter(
-                        "JPG files (*.jpg)", "*.JPG");
-                FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter(
-                        "PNG files (*.png)", "*.PNG");
-                fileChooser.getExtensionFilters().addAll(extFilterJPG,
-                        extFilterPNG);
-
-                // Zobrazenie okna na vyberanie suborov
-                File file = fileChooser.showOpenDialog(null);
-                String fileNamePath = file.getAbsolutePath();
-
-                // Encode
-                byte[] fileContent = Files.readAllBytes(file.toPath());
-                photo = Base64.getEncoder().encodeToString(fileContent);
-                //photo = new String(fileContent);
-
-                try {
-                    InputStream inputStream = new FileInputStream(fileNamePath);
-                    Image image = new Image(inputStream);
-                    imageViewPhoto.setImage(image);
-
-                    Rectangle clip = new Rectangle();
-                    clip.setWidth(190.0f);
-                    clip.setHeight(190.0f);
-                    clip.setArcWidth(30);
-                    clip.setArcHeight(30);
-
-                    imageViewPhoto.setClip(clip);
-                    paneSignupPhoto.getChildren().add(btnRegister);
-                    paneSignupPhoto.getChildren().add(btnChangePhoto);
-                    paneSignupPhoto.getChildren().remove(lblSelectPhoto);
-                    photoSet = true;
-                } catch (FileNotFoundException ex) {
-                    Alerts.showAlert("TITLE_FILE_NOT_FOUND");
-                }
-            } catch (NullPointerException e) {
-                // User had opened fileChooser.showOpenDialog, but he doesn't choose his image
-            } catch (IOException ex) {
-                Logger.getLogger(SignupController.class.getName()).
-                        log(Level.SEVERE, null, ex);
-            }
+            handleSelectPhoto();
         }
         if (event.getSource().equals(btnChangePhoto)) {
-            try {
-                FileChooser fileChooser = new FileChooser();
-
-                FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter(
-                        "JPG files (*.jpg)", "*.JPG");
-                FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter(
-                        "PNG files (*.png)", "*.PNG");
-                fileChooser.getExtensionFilters().addAll(extFilterJPG,
-                        extFilterPNG);
-
-                File file = fileChooser.showOpenDialog(null);
-                String fileNamePath = file.getAbsolutePath();
-
-                // Encode
-                byte[] fileContent = Files.readAllBytes(file.toPath());
-                photo = Base64.getEncoder().encodeToString(fileContent);
-                //photo = new String(fileContent);
-
-                try {
-                    InputStream inputStream = new FileInputStream(fileNamePath);
-                    Image image = new Image(inputStream);
-                    imageViewPhoto.setImage(image);
-
-                    Rectangle clip = new Rectangle();
-                    clip.setWidth(190.0f);
-                    clip.setHeight(190.0f);
-                    clip.setArcWidth(30);
-                    clip.setArcHeight(30);
-
-                    imageViewPhoto.setClip(clip);
-                } catch (FileNotFoundException ex) {
-                    Alerts.showAlert("TITLE_FILE_NOT_FOUND");
-                }
-            } catch (NullPointerException e) {
-                // User had opened fileChooser.showOpenDialog, but he doesn't choose a photo
-            } catch (IOException ex) {
-                Logger.getLogger(SignupController.class.getName()).
-                        log(Level.SEVERE, null, ex);
-            }
+            handleBtnChangePhoto();
         }
         if (event.getSource().equals(btnRegister)) {
-            RegisterRequest registerRequest = new RegisterRequest(email,
-                    password, userType.name(), firstName, lastName, dateOfBirth,
-                    photo);
-            registerRequest.accept(new XMLRequestParser());
-
-            HttpPost httpPost = (HttpPost) registerRequest.getRequest();
-
-            try ( CloseableHttpClient httpClient = HttpClients.createDefault();
-                     CloseableHttpResponse response = httpClient.execute(
-                            httpPost)) {
-                try {
-                    RegisterResponse registerResponse = (RegisterResponse) ResponseFactory.
-                            getFactory(
-                                    ResponseFactory.ResponseFactoryType.REGISTER_RESPONSE).
-                            parse(response);
-
-                    Singleton.getInstance().setJwtToken(registerResponse.
-                            getJwtToken());
-                    Singleton.getInstance().setUser(new User(userType, email,
-                            firstName, lastName, photo));
-
-                } catch (AuthTokenExpiredException ex) {
-                } catch (APIValidationException ex) {
-                    Logger.getLogger(SignupController.class.getName()).
-                            log(Level.SEVERE, null, ex);
-                }
-
-                ScreenSwitcher.getScreenSwitcher().switchToScreen(event,
-                        "Views/Welcome.fxml");
-
-                System.out.println("\ntoken:" + Singleton.getInstance().
-                        getJwtToken());
-            } catch (IOException e) {
-                Logger.getLogger(SignupController.class.getName()).
-                        log(Level.SEVERE, null, e);
-                Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
-            }
-
+            registerUser(event);
         }
     }
 
@@ -435,6 +187,272 @@ public class SignupController implements Initializable {
         this.setupBirthDayDatePicker();
     }
 
+    private void createCustomer() {
+        stackPaneSignupLeft.getChildren().clear();
+        stackPaneSignupLeft.getChildren().add(paneSignupLeft);
+
+        paneSignupLeft.getChildren().remove(btnBackPersonalInformations);
+        paneSignupLeft.getChildren().remove(btnBackPhoto);
+
+        stackPaneSignupRight.getChildren().clear();
+        stackPaneSignupRight.getChildren().add(paneSignupAccountInformations);
+
+        hboxControlButtonsAccountInformations.getChildren().add(btnMinimize);
+        hboxControlButtonsAccountInformations.getChildren().add(btnExit);
+
+        lblUserType.setText("Customer");
+        userType = UserType.NORMAL_USER;
+    }
+
+    private void createGuide() {
+        stackPaneSignupLeft.getChildren().clear();
+        stackPaneSignupLeft.getChildren().add(paneSignupLeft);
+
+        paneSignupLeft.getChildren().remove(btnBackPersonalInformations);
+        paneSignupLeft.getChildren().remove(btnBackPhoto);
+
+        stackPaneSignupRight.getChildren().clear();
+        stackPaneSignupRight.getChildren().add(paneSignupAccountInformations);
+
+        hboxControlButtonsAccountInformations.getChildren().add(btnMinimize);
+        hboxControlButtonsAccountInformations.getChildren().add(btnExit);
+
+        lblUserType.setText("Guide");
+        userType = UserType.GUIDE;
+    }
+
+    private void handleBtnBackAccountInformations() {
+        stackPaneSignupLeft.getChildren().clear();
+        stackPaneSignupLeft.getChildren().add(paneSignupCustomerAccount);
+
+        stackPaneSignupRight.getChildren().clear();
+        stackPaneSignupRight.getChildren().add(paneSignupGuideAccount);
+
+        hboxControlButtonsGuideAccount.getChildren().add(btnMinimize);
+        hboxControlButtonsGuideAccount.getChildren().add(btnExit);
+
+        tfEmail.clear();
+        tfPassword.clear();
+        tfFirstname.clear();
+        tfLastname.clear();
+        datePickerDateOfBirth.getEditor().clear();
+        datePickerDateOfBirth.setValue(null);
+        if (photoSet) {
+            imageViewPhoto.setImage(null);
+            paneSignupPhoto.getChildren().remove(btnChangePhoto);
+            paneSignupPhoto.getChildren().remove(btnChangePhoto);
+            paneSignupPhoto.getChildren().add(lblSelectPhoto);
+            photoSet = false;
+        }
+    }
+
+    private void handleBtnNextAccountInformations() {
+        if (UserRegistrationValidator.areEmpty.test(tfEmail, tfPassword)) {
+            if (UserRegistrationValidator.isEmailValid.test(tfEmail.getText())) {
+                if (UserRegistrationValidator.isPasswordValid.test(
+                        tfPassword.getText())) {
+                    email = tfEmail.getText();
+                    password = tfPassword.getText();
+
+                    stackPaneSignupRight.getChildren().clear();
+                    stackPaneSignupRight.getChildren().add(paneSignupPersonalInformations);
+
+                    paneSignupLeft.getChildren().remove(btnBackAccountInformations);
+                    paneSignupLeft.getChildren().add(btnBackPersonalInformations);
+
+                    hboxControlButtonsPersonalInformations.getChildren().add(btnMinimize);
+                    hboxControlButtonsPersonalInformations.getChildren().add(btnExit);
+                } else {
+                    Alerts.showAlert("TITLE_PASSWORD_NOT_VALID", "CONTENT_PASSWORD_NOT_VALID");
+                }
+            } else {
+                Alerts.showAlert("TITLE_EMAIL_NOT_VALID", "CONTENT_EMAIL_NOT_VALID");
+            }
+        } else {
+            Alerts.showAlert("TITLE_EMPTY_FIELDS");
+        }
+    }
+
+    private void handleBtnBackPersonalInformations() {
+        stackPaneSignupRight.getChildren().clear();
+        stackPaneSignupRight.getChildren().add(paneSignupAccountInformations);
+
+        paneSignupLeft.getChildren().remove(btnBackPersonalInformations);
+        paneSignupLeft.getChildren().add(btnBackAccountInformations);
+
+        hboxControlButtonsAccountInformations.getChildren().add(btnMinimize);
+        hboxControlButtonsAccountInformations.getChildren().add(btnExit);
+    }
+
+    private void handleBtnNextPersonalInformations() {
+        if (UserRegistrationValidator.areEmpty.test(tfFirstname, tfLastname)) {
+            if (datePickerDateOfBirth.getValue() != null) {
+                if (UserRegistrationValidator.isDateValid.test(
+                        datePickerDateOfBirth.getValue())) {
+                    firstName = tfFirstname.getText();
+                    lastName = tfLastname.getText();
+                    dateOfBirth = datePickerDateOfBirth.getValue();
+
+                    stackPaneSignupRight.getChildren().clear();
+                    stackPaneSignupRight.getChildren().add(paneSignupPhoto);
+                    paneSignupPhoto.getChildren().remove(btnRegister);
+                    paneSignupPhoto.getChildren().remove(btnChangePhoto);
+
+                    paneSignupLeft.getChildren().remove(btnBackPersonalInformations);
+                    paneSignupLeft.getChildren().add(btnBackPhoto);
+
+                    hboxControlButtonsPhoto.getChildren().add(btnMinimize);
+                    hboxControlButtonsPhoto.getChildren().add(btnExit);
+                    if (photoSet) {
+                        paneSignupPhoto.getChildren().add(btnRegister);
+                        paneSignupPhoto.getChildren().add(btnChangePhoto);
+                    }
+                } else {
+                    Alerts.showAlert("TITLE_DATE_OF_BIRTH");
+                }
+            } else {
+                Alerts.showAlert("TITLE_EMPTY_DATE_OF_BIRTH");
+            }
+        } else {
+            Alerts.showAlert("TITLE_EMPTY_FIELDS");
+        }
+    }
+
+    private void handleBtnBackPhoto() {
+        stackPaneSignupRight.getChildren().clear();
+        stackPaneSignupRight.getChildren().add(paneSignupPersonalInformations);
+
+        paneSignupLeft.getChildren().remove(btnBackPhoto);
+        paneSignupLeft.getChildren().add(btnBackPersonalInformations);
+
+        hboxControlButtonsPersonalInformations.getChildren().add(btnMinimize);
+        hboxControlButtonsPersonalInformations.getChildren().add(btnExit);
+    }
+
+    private void handleSelectPhoto() {
+        try {
+            FileChooser fileChooser = new FileChooser();
+
+            // Nastavenie filtra len na .jpg a .png subory
+            FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter(
+                    "JPG files (*.jpg)", "*.JPG");
+            FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter(
+                    "PNG files (*.png)", "*.PNG");
+            fileChooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
+
+            // Zobrazenie okna na vyberanie suborov
+            File file = fileChooser.showOpenDialog(null);
+            String fileNamePath = file.getAbsolutePath();
+
+            // Encode
+            byte[] fileContent = Files.readAllBytes(file.toPath());
+            photo = Base64.getEncoder().encodeToString(fileContent);
+
+            try {
+                InputStream inputStream = new FileInputStream(fileNamePath);
+                Image image = new Image(inputStream);
+                imageViewPhoto.setImage(image);
+
+                Rectangle clip = new Rectangle();
+                clip.setWidth(190.0f);
+                clip.setHeight(190.0f);
+                clip.setArcWidth(30);
+                clip.setArcHeight(30);
+
+                imageViewPhoto.setClip(clip);
+                paneSignupPhoto.getChildren().add(btnRegister);
+                paneSignupPhoto.getChildren().add(btnChangePhoto);
+                paneSignupPhoto.getChildren().remove(lblSelectPhoto);
+                photoSet = true;
+            } catch (FileNotFoundException ex) {
+                Alerts.showAlert("TITLE_FILE_NOT_FOUND");
+            }
+        } catch (NullPointerException e) {
+            // User had opened fileChooser.showOpenDialog, but he doesn't choose his image
+        } catch (IOException ex) {
+            Logger.getLogger(SignupController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void handleBtnChangePhoto() {
+        try {
+            FileChooser fileChooser = new FileChooser();
+
+            FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter(
+                    "JPG files (*.jpg)", "*.JPG");
+            FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter(
+                    "PNG files (*.png)", "*.PNG");
+            fileChooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
+
+            File file = fileChooser.showOpenDialog(null);
+            String fileNamePath = file.getAbsolutePath();
+
+            // Encode
+            byte[] fileContent = Files.readAllBytes(file.toPath());
+            photo = Base64.getEncoder().encodeToString(fileContent);
+            //photo = new String(fileContent);
+
+            try {
+                InputStream inputStream = new FileInputStream(fileNamePath);
+                Image image = new Image(inputStream);
+                imageViewPhoto.setImage(image);
+
+                Rectangle clip = new Rectangle();
+                clip.setWidth(190.0f);
+                clip.setHeight(190.0f);
+                clip.setArcWidth(30);
+                clip.setArcHeight(30);
+
+                imageViewPhoto.setClip(clip);
+            } catch (FileNotFoundException ex) {
+                Alerts.showAlert("TITLE_FILE_NOT_FOUND");
+            }
+        } catch (NullPointerException e) {
+            // User had opened fileChooser.showOpenDialog, but he doesn't choose a photo
+        } catch (IOException ex) {
+            Logger.getLogger(SignupController.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void registerUser(MouseEvent event) {
+        RegisterRequest registerRequest = new RegisterRequest(email,
+                password, userType.name(), firstName, lastName, dateOfBirth, photo);
+        registerRequest.accept(new XMLRequestParser());
+
+        HttpPost httpPost = (HttpPost) registerRequest.getRequest();
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(httpPost)) {
+            try {
+                RegisterResponse registerResponse = (RegisterResponse) ResponseFactory.
+                        getFactory(ResponseFactory.ResponseFactoryType.REGISTER_RESPONSE).
+                        parse(response);
+
+                Singleton.getInstance().setJwtToken(registerResponse.getJwtToken());
+                Singleton.getInstance().setUser(new User(userType, email,
+                        firstName, lastName, photo, dateOfBirth));
+
+            } catch (AuthTokenExpiredException ex) {
+            } catch (APIValidationException ex) {
+                Logger.getLogger(SignupController.class.getName()).
+                        log(Level.SEVERE, null, ex);
+            }
+            ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Welcome.fxml");
+
+            System.out.println("\ntoken:" + Singleton.getInstance().getJwtToken());
+        } catch (IOException e) {
+            Logger.getLogger(SignupController.class.getName()).
+                    log(Level.SEVERE, null, e);
+            Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
+        }
+    }
+
+    /**
+     * Sets date in date picker less than the current date to prevent the user
+     * from registering in the future.
+     */
     private void setupBirthDayDatePicker() {
         this.datePickerDateOfBirth.setDayCellFactory(
                 (final DatePicker param) -> new DateCell() {
@@ -443,10 +461,23 @@ public class SignupController implements Initializable {
                 super.updateItem(item, empty);
 
                 LocalDate today = LocalDate.now();
-                        
+
                 setDisable(empty || item.compareTo(today) > 0);
             }
         });
+    }
+
+    @FXML
+    private void setOnMouseDragged(MouseEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setX(event.getScreenX() - xOffset);
+        stage.setY(event.getScreenY() - yOffset);
+    }
+
+    @FXML
+    private void setOnMousePressed(MouseEvent event) {
+        xOffset = event.getSceneX();
+        yOffset = event.getSceneY();
     }
 
 }

@@ -47,7 +47,10 @@ import sk.stu.fiit.parsers.Responses.V2.UserBookingsResponses.UserBookingsRespon
  * @author adamf
  */
 public class ProfileCustomerController implements Initializable {
-
+    
+    private double xOffset = 0;
+    private double yOffset = 0;
+    
     private List<UserBooking> bookedTours;
     private List<UserBooking> completedTours;
 
@@ -243,5 +246,19 @@ public class ProfileCustomerController implements Initializable {
         }
         return null;
     }
+    
+    @FXML
+    private void setOnMouseDragged(MouseEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setX(event.getScreenX() - xOffset);
+        stage.setY(event.getScreenY() - yOffset);
+    }
+
+    @FXML
+    private void setOnMousePressed(MouseEvent event) {
+        xOffset = event.getSceneX();
+        yOffset = event.getSceneY();
+    }
+    
 
 }

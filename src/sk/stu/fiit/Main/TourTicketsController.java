@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -50,11 +51,15 @@ import sk.stu.fiit.parsers.Responses.V2.TourTicketsResponses.TourTicketsResponse
  * @author adamf
  */
 public class TourTicketsController implements Initializable {
-
+    
+    private double xOffset = 0;
+    private double yOffset = 0;
+    
     private TourDate tourDate;
 
     private Set<TourTicket> ticketsInCart;
     private Set<TourTicket> availableTickets;
+
 
     @FXML
     private Button btnBack;
@@ -254,8 +259,7 @@ public class TourTicketsController implements Initializable {
                         return;
                     }
 
-                    TourTicket ticketToDelete = this.ticketsInCart.iterator().
-                            next();
+                    TourTicket ticketToDelete = this.ticketsInCart.iterator().next();
                     this.ticketsInCart.remove(ticketToDelete);
 
                     updateTicketCountLabel();
@@ -466,4 +470,18 @@ public class TourTicketsController implements Initializable {
 
         this.updateTicketCountLabel();
     }
+    
+    @FXML
+    private void setOnMouseDragged(MouseEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setX(event.getScreenX() - xOffset);
+        stage.setY(event.getScreenY() - yOffset);
+    }
+
+    @FXML
+    private void setOnMousePressed(MouseEvent event) {
+        xOffset = event.getSceneX();
+        yOffset = event.getSceneY();
+    }
+    
 }

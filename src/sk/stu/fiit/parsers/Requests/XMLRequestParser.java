@@ -140,8 +140,7 @@ public class XMLRequestParser implements IRequestVisitor {
 
     @Override
     public void constructLoginRequest(LoginRequest request) {
-        HttpPost postRequest = new HttpPost(
-                serverAddress + "api/v1/login/");
+        HttpPost postRequest = new HttpPost(serverAddress + "api/v1/login/");
         postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
 
         Map<String, Object> data = new HashMap<>();
@@ -149,8 +148,7 @@ public class XMLRequestParser implements IRequestVisitor {
         data.put("password", request.getPassword());
 
         try {
-            postRequest.setEntity(new StringEntity(this.translateToXML(
-                    "loginRequest", data), CHARSET));
+            postRequest.setEntity(new StringEntity(this.translateToXML("loginRequest", data), CHARSET));
         } catch (ParserConfigurationException
                 | TransformerConfigurationException ex) {
         }

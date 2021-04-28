@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -40,7 +41,9 @@ import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.TourOfferResponse;
  * @author adamf
  */
 public class EditTourOfferController implements Initializable {
-
+    
+    private double xOffset = 0;
+    private double yOffset = 0;
     private Tour tour;
 
     @FXML
@@ -109,7 +112,6 @@ public class EditTourOfferController implements Initializable {
     @FXML
     private void handleDeleteTourButton(MouseEvent event) {
         sendDeleteTourOfferRequest();
-        Alerts.showAlert("TITLE_DELETED_TOUR");
     }
 
     private void initializeTextFieldsWithTour() {
@@ -168,11 +170,13 @@ public class EditTourOfferController implements Initializable {
                 CloseableHttpResponse response = httpClient.execute(request)) {
 
             DeleteTourOfferResponse deleteTourOfferResponse = (DeleteTourOfferResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.DELETE_TOUR_OFFER_RESPONSE).parse(response);
-
-            if (deleteTourOfferRequest == null) {
-                System.out.println("Jeeeije");
+            
+            if (deleteTourOfferResponse.isDeleted()) {
+                Alerts.showAlert("TITLE_DELETED_TOUR");
+            } else {
+                Alerts.showAlert("TITLE_NOT_DELETED_TOUR", "CONTENT_NOT_DELETED_TOUR");
             }
-
+            
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (AuthTokenExpiredException ex) {
@@ -180,7 +184,19 @@ public class EditTourOfferController implements Initializable {
         } catch (APIValidationException ex) {
             Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+    }
+    
+    @FXML
+    private void setOnMouseDragged(MouseEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setX(event.getScreenX() - xOffset);
+        stage.setY(event.getScreenY() - yOffset);
     }
 
+    @FXML
+    private void setOnMousePressed(MouseEvent event) {
+        xOffset = event.getSceneX();
+        yOffset = event.getSceneY();
+    }
+    
 }

@@ -49,7 +49,9 @@ import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.TourDatesResponse;
  * @author adamf
  */
 public class EditTourScheduleController implements Initializable {
-
+    
+    private double xOffset = 0;
+    private double yOffset = 0;
     private Tour tourToEdit;
     private List<TourDate> tourDates;
     private boolean firstPageLoaded = false;
@@ -293,5 +295,18 @@ public class EditTourScheduleController implements Initializable {
             }
         });
     }
+    
+    @FXML
+    private void setOnMouseDragged(MouseEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setX(event.getScreenX() - xOffset);
+        stage.setY(event.getScreenY() - yOffset);
+    }
 
+    @FXML
+    private void setOnMousePressed(MouseEvent event) {
+        xOffset = event.getSceneX();
+        yOffset = event.getSceneY();
+    }
+    
 }

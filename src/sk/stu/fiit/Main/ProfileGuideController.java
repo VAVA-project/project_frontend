@@ -42,7 +42,10 @@ import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponse;
  * @author adamf
  */
 public class ProfileGuideController implements Initializable {
-
+    
+    private double xOffset = 0;
+    private double yOffset = 0;
+    
     private int pageNumber = 0;
     private int pageSize = 5;
 
@@ -181,6 +184,19 @@ public class ProfileGuideController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/GuideTourOfferItem.fxml"), I18n.getBundle());
         loader.setControllerFactory(c -> new GuideTourOfferItemController(tour));
         return loader.load();
+    }
+    
+    @FXML
+    private void setOnMouseDragged(MouseEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setX(event.getScreenX() - xOffset);
+        stage.setY(event.getScreenY() - yOffset);
+    }
+
+    @FXML
+    private void setOnMousePressed(MouseEvent event) {
+        xOffset = event.getSceneX();
+        yOffset = event.getSceneY();
     }
     
 }

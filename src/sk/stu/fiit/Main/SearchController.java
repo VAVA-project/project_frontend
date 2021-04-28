@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -38,6 +39,8 @@ import sk.stu.fiit.parsers.Responses.V2.SearchResponses.SearchResponse;
  */
 public class SearchController implements Initializable {
     
+    private double xOffset = 0;
+    private double yOffset = 0;
     
     @FXML
     private Button btnProfile;
@@ -128,6 +131,19 @@ public class SearchController implements Initializable {
         if (event.getCode() == KeyCode.ENTER) {
             searchToursForDestination(event);
         }
+    }
+    
+    @FXML
+    private void setOnMouseDragged(MouseEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setX(event.getScreenX() - xOffset);
+        stage.setY(event.getScreenY() - yOffset);
+    }
+
+    @FXML
+    private void setOnMousePressed(MouseEvent event) {
+        xOffset = event.getSceneX();
+        yOffset = event.getSceneY();
     }
 
 }

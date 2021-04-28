@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.PostCheckoutController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#setOnMouseDragged" onMousePressed="#setOnMousePressed" prefHeight="400.0" prefWidth="600.0" styleClass="pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.PostCheckoutController">
    <children>
-      <Button layoutX="255.0" layoutY="345.0" mnemonicParsing="false" onMouseReleased="#handleSearchDestination" prefHeight="73.0" prefWidth="229.0" styleClass="btn-search" text="%postCheckout.searchDestinationButton.text">
+      <Button layoutX="250.0" layoutY="401.0" mnemonicParsing="false" onMouseReleased="#handleSearchDestination" prefHeight="73.0" prefWidth="229.0" styleClass="btn-search" text="%postCheckout.searchDestinationButton.text">
          <effect>
             <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
          </effect></Button>
@@ -28,11 +28,11 @@
                </effect></Circle>
          </children>
       </HBox>
-      <Button layoutX="473.0" layoutY="345.0" mnemonicParsing="false" onMouseReleased="#handleBookedTours" prefHeight="73.0" prefWidth="229.0" styleClass="btn-search" text="%postCheckout.bookedToursButton.text">
+      <Button layoutX="470.0" layoutY="401.0" mnemonicParsing="false" onMouseReleased="#handleBookedTours" prefHeight="73.0" prefWidth="229.0" styleClass="btn-search" text="%postCheckout.bookedToursButton.text">
          <effect>
             <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
          </effect></Button>
-      <VBox alignment="CENTER" fillWidth="false" layoutX="60.0" layoutY="94.0" prefHeight="216.0" prefWidth="780.0" spacing="40.0">
+      <VBox alignment="CENTER" fillWidth="false" layoutX="60.0" layoutY="150.0" prefHeight="216.0" prefWidth="780.0" spacing="40.0">
          <children>
             <Label styleClass="label-welcome" text="%postCheckout.title">
                <effect>
