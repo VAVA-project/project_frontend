@@ -46,7 +46,7 @@ public class Alerts {
         Platform.runLater(() -> {
             try {
                 FXMLLoader loader = new FXMLLoader(Alerts.class.getResource("Alerts/Alert.fxml"));
-                loader.setControllerFactory(c -> new AlertController(title, content));
+                loader.setControllerFactory(c -> new AlertController(I18n.getMessage(title), I18n.getMessage(content)));
                 Parent root = (Parent) loader.load();
                 Stage stage = new Stage();
                 stage.initStyle(StageStyle.TRANSPARENT);

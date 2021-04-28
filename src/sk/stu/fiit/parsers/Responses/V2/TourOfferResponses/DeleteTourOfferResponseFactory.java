@@ -32,6 +32,9 @@ public class DeleteTourOfferResponseFactory implements AbstractResponseFactory<R
             case HttpStatus.SC_NOT_FOUND: {
                 return new DeleteTourOfferResponse(false);
             }
+            case HttpStatus.SC_BAD_REQUEST: {
+                return new DeleteTourOfferResponse(false); 
+            }
         }
         
         return null;

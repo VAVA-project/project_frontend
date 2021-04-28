@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -19,7 +20,10 @@ import javafx.stage.Stage;
  * @author adamf
  */
 public class AlertController implements Initializable {
-
+    
+    private double xOffset = 0;
+    private double yOffset = 0;
+    
     private String title;
     private String content;
     
@@ -61,6 +65,19 @@ public class AlertController implements Initializable {
     private void setAlertTexts() {
         this.lblAlertTitle.setText(this.title);
         this.lblAlertContent.setText(this.content);
+    }
+    
+    @FXML
+    private void setOnMouseDragged(MouseEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setX(event.getScreenX() - xOffset);
+        stage.setY(event.getScreenY() - yOffset);
+    }
+
+    @FXML
+    private void setOnMousePressed(MouseEvent event) {
+        xOffset = event.getSceneX();
+        yOffset = event.getSceneY();
     }
     
 }

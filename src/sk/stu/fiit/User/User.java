@@ -7,6 +7,7 @@ package sk.stu.fiit.User;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.Base64;
 import javafx.scene.image.Image;
 
@@ -21,14 +22,15 @@ public class User {
     private String firstName;
     private String lastName;
     private String photo;
+    private LocalDate dateOfBirth;
 
-    public User(UserType type, String email, String firstName, String lastName,
-            String photo) {
-        this.userType = type;
+    public User(UserType userType, String email, String firstName, String lastName, String photo, LocalDate dateOfBirth) {
+        this.userType = userType;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.photo = photo;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Image getProfilePhoto() {
@@ -82,4 +84,8 @@ public class User {
         this.photo = photo;
     }
 
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+    
 }

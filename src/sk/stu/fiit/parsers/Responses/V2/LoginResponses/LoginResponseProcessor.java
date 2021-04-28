@@ -4,6 +4,7 @@
  */
 package sk.stu.fiit.parsers.Responses.V2.LoginResponses;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
@@ -45,9 +46,11 @@ public class LoginResponseProcessor extends XMLProcessor {
                     evaluate(document, XPathConstants.STRING);
             String photo = (String) xPath.compile("//user/photo/text()").
                     evaluate(document, XPathConstants.STRING);
+            LocalDate dateOfBirth = LocalDate.parse((String) xPath.compile("//user/dateOfBirth/text()").
+                    evaluate(document, XPathConstants.STRING));
             
             return new LoginResponse(token, new User(UserType.valueOf(
-                    type), email, firstName, lastName, photo));
+                    type), email, firstName, lastName, photo, dateOfBirth));
         } catch (UnsupportedOperationException | XPathExpressionException ex) {
             Logger.getLogger(LoginResponseProcessor.class.getName()).
                     log(Level.SEVERE, null, ex);

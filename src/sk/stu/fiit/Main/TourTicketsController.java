@@ -6,7 +6,6 @@ package sk.stu.fiit.Main;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.CompletableFuture;
@@ -17,6 +16,7 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -50,10 +50,12 @@ import sk.stu.fiit.parsers.Responses.V2.TourTicketsResponses.TourTicketsResponse
  * @author adamf
  */
 public class TourTicketsController implements Initializable {
-
+    
+    private double xOffset = 0;
+    private double yOffset = 0;
+    
     private TourDate tourDate;
-
-    private List<TourTicket> ticketsInCart;
+    private CopyOnWriteArrayList<TourTicket> ticketsInCart;
     private CopyOnWriteArrayList<TourTicket> availableTickets;
 
     @FXML
@@ -86,7 +88,7 @@ public class TourTicketsController implements Initializable {
     private Label lblEndDate;
 
     public TourTicketsController() {
-        this.ticketsInCart = new ArrayList<>();
+        this.ticketsInCart = new CopyOnWriteArrayList<>();
         this.availableTickets = new CopyOnWriteArrayList<>();
     }
 
@@ -236,6 +238,9 @@ public class TourTicketsController implements Initializable {
         CompletableFuture.supplyAsync(() -> this.
                 sendDeleteTicketFromCartRequest(this.ticketsInCart.get(0))).
                 thenAccept((response) -> {
+                    if (!response) {
+                        return;
+                    }
                     this.ticketsInCart.remove(0);
                     updateTicketCountLabel();
                 });
@@ -410,4 +415,18 @@ public class TourTicketsController implements Initializable {
 
         this.updateTicketCountLabel();
     }
+    
+    @FXML
+    private void setOnMouseDragged(MouseEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setX(event.getScreenX() - xOffset);
+        stage.setY(event.getScreenY() - yOffset);
+    }
+
+    @FXML
+    private void setOnMousePressed(MouseEvent event) {
+        xOffset = event.getSceneX();
+        yOffset = event.getSceneY();
+    }
+    
 }

@@ -121,7 +121,10 @@ public class OneTourDateScheduleController implements Initializable {
             if (deleteTourDateResponse.isDeleted()) {
                 deleteTourDateFromScreen();
                 Singleton.getInstance().setTourDateDeleted(true);
-            } 
+                Alerts.showAlert("TITLE_DELETED_TOUR_DATE");
+            } else {
+                Alerts.showAlert("TITLE_NOT_DELETED_TOUR_DATE", "CONTENT_NOT_DELETED_TOUR_DATE");
+            }
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (AuthTokenExpiredException ex) {

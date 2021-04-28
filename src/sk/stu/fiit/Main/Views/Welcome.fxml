@@ -7,22 +7,11 @@
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.WelcomeController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#setOnMouseDragged" onMousePressed="#setOnMousePressed" prefHeight="400.0" prefWidth="600.0" styleClass="pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.WelcomeController">
    <children>
-      <Label layoutX="325.0" layoutY="186.0" styleClass="label-welcome" text="%welcome.title">
-         <effect>
-            <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
-         </effect></Label>
-      <Label layoutX="280.0" layoutY="288.0" styleClass="label-success" text="%welcome.text">
-         <effect>
-            <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
-         </effect></Label>
-      <Button fx:id="btnSearch" layoutX="360.0" layoutY="346.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" prefHeight="73.0" prefWidth="229.0" styleClass="btn-search" text="%welcome.searchDestinationButton.text">
-         <effect>
-            <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
-         </effect></Button>
       <HBox layoutX="840.0" layoutY="7.0" styleClass="hbox-control-buttons">
          <children>
             <Circle fx:id="btnMinimize" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize">
@@ -35,6 +24,25 @@
                </effect></Circle>
          </children>
       </HBox>
+      <VBox alignment="CENTER" layoutX="60.0" layoutY="150.0" prefHeight="216.0" prefWidth="780.0" spacing="40.0">
+         <children>
+            <Label styleClass="label-welcome" text="%welcome.title">
+               <effect>
+                  <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+               </effect>
+            </Label>
+            <Label styleClass="label-success" text="%welcome.text">
+               <effect>
+                  <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+               </effect>
+            </Label>
+         </children>
+      </VBox>
+      <Button fx:id="btnSearch" layoutX="360.0" layoutY="401.0" mnemonicParsing="false" onMouseReleased="#handleMouseEvent" prefHeight="73.0" prefWidth="229.0" styleClass="btn-search" text="%welcome.searchDestinationButton.text">
+         <effect>
+            <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
+         </effect>
+      </Button>
    </children>
    <stylesheets>
       <URL value="@../../../../../css/buttons_control.css" />

@@ -45,7 +45,10 @@ import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.TourDatesResponse;
  * @author adamf
  */
 public class TourBuyController implements Initializable {
-
+    
+    private double xOffset = 0;
+    private double yOffset = 0;
+    
     @FXML
     private Button btnBack;
     @FXML
@@ -175,6 +178,19 @@ public class TourBuyController implements Initializable {
         } catch (APIValidationException ex) {
             Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    @FXML
+    private void setOnMouseDragged(MouseEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setX(event.getScreenX() - xOffset);
+        stage.setY(event.getScreenY() - yOffset);
+    }
+
+    @FXML
+    private void setOnMousePressed(MouseEvent event) {
+        xOffset = event.getSceneX();
+        yOffset = event.getSceneY();
     }
     
 }

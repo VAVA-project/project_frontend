@@ -40,14 +40,15 @@ import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.SearchResponses.SearchResponse;
 import sk.stu.fiit.parsers.Responses.V2.UserResponses.UserResponse;
 
-
-
 /**
  * FXML Controller class
  *
  * @author adamf
  */
 public class ToursController implements Initializable {
+
+    private double xOffset = 0;
+    private double yOffset = 0;
 
     private final int numOfToursPerPage = 5;
     private List<HBox> toursOnScreen;
@@ -174,7 +175,7 @@ public class ToursController implements Initializable {
     private void getUserRequest(String creatorId, Tour tour) {
         UserRequest userRequest = new UserRequest(creatorId);
         userRequest.accept(new XMLRequestParser());
-        
+
         HttpGet request = (HttpGet) userRequest.getRequest();
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -183,7 +184,7 @@ public class ToursController implements Initializable {
             UserResponse userResponse = (UserResponse) ResponseFactory.getFactory(
                     ResponseFactory.ResponseFactoryType.USER_RESPONSE).parse(
                             response);
-            
+
             TourGuide tourGuide = userResponse.getTourGuide();
             Singleton.getInstance().addTourGuide(tourGuide);
             tour.setGuideName(tourGuide.getFirstName() + " " + tourGuide.getLastName());
@@ -221,17 +222,17 @@ public class ToursController implements Initializable {
             // pageNumber nemoze byt +1, pretoze uz sa zvysil pri nastavovani
             // actualPageNumber pri parsovani response. Teda pageNumber
             // uz ma pozadovanu hodnotu (o 1 vacsiu)
-            
-            SearchRequest searchRequest = new SearchRequest(Singleton.getInstance().getActualDestination(), 
+
+            SearchRequest searchRequest = new SearchRequest(Singleton.getInstance().getActualDestination(),
                     Singleton.getInstance().getActualPageNumber(), 5);
             searchRequest.accept(new XMLRequestParser());
             HttpGet request = (HttpGet) searchRequest.getRequest();
-            
+
             try (CloseableHttpClient httpClient = HttpClients.createDefault();
                     CloseableHttpResponse response = httpClient.execute(request)) {
 
                 SearchResponse searchResponse = (SearchResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.SEACH_RESPONSE).parse(response);
-                
+
                 // Ulozenie si prave nacitanych tur, pre ich zobrazenie
                 Singleton.getInstance().setTours(searchResponse.getTours());
 
@@ -278,11 +279,11 @@ public class ToursController implements Initializable {
 
     @FXML
     private void handleSearchButton(MouseEvent event) {
-        if(this.tfDestination.getText().isEmpty()) {
+        if (this.tfDestination.getText().isEmpty()) {
             Alerts.showAlert("TITLE_EMPTY_DESTINATION");
             return;
         }
-        
+
         searchToursForDestination();
     }
 
@@ -298,17 +299,17 @@ public class ToursController implements Initializable {
         Singleton.getInstance().getTours().clear();
         Singleton.getInstance().getTourGuides().clear();
         Singleton.getInstance().getAllPages().clear();
-        
-        SearchRequest searchRequest = new SearchRequest(tfDestination.getText(), 
-                    0, 5);
-            searchRequest.accept(new XMLRequestParser());
-            HttpGet request = (HttpGet) searchRequest.getRequest();
-        
+
+        SearchRequest searchRequest = new SearchRequest(tfDestination.getText(),
+                0, 5);
+        searchRequest.accept(new XMLRequestParser());
+        HttpGet request = (HttpGet) searchRequest.getRequest();
+
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(request)) {
-            
+
             SearchResponse searchResponse = (SearchResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.SEACH_RESPONSE).parse(response);
-            
+
             // Ulozenie si prave nacitanych tur, pre ich zobrazenie
             Singleton.getInstance().setTours(searchResponse.getTours());
             Singleton.getInstance().setActualDestination(tfDestination.getText());
@@ -318,12 +319,6 @@ public class ToursController implements Initializable {
             });
 
             initializeTours(true);
-            
-//            if (type.equals(InputEventType.MOUSEEVENT)) {
-//                ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/Tours.fxml");
-//            } else {
-//                ScreenSwitcher.getScreenSwitcher().switchToScreen((KeyEvent) event, "Views/Tours.fxml");
-//            }
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
             Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
@@ -333,6 +328,19 @@ public class ToursController implements Initializable {
         } catch (APIValidationException ex) {
             Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @FXML
+    private void setOnMouseDragged(MouseEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setX(event.getScreenX() - xOffset);
+        stage.setY(event.getScreenY() - yOffset);
+    }
+
+    @FXML
+    private void setOnMousePressed(MouseEvent event) {
+        xOffset = event.getSceneX();
+        yOffset = event.getSceneY();
     }
 
 }

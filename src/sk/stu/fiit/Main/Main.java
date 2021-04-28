@@ -27,7 +27,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         I18n.setLocale(Languages.US.getLocale());
-        
         Parent root = FXMLLoader.load(getClass().getResource("Views/Signin.fxml"), I18n.getBundle());
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);

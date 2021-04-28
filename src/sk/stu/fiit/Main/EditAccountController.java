@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
@@ -37,7 +38,10 @@ import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
  * @author adamf
  */
 public class EditAccountController implements Initializable {
-
+    
+    private double xOffset = 0;
+    private double yOffset = 0;
+    
     @FXML
     private Button btnBack;
     @FXML
@@ -108,11 +112,6 @@ public class EditAccountController implements Initializable {
             } else {
                 ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/ProfileGuide.fxml");
             }
-            
-            
-            System.out.println("firstName: " + Singleton.getInstance().getUser().getFirstName());
-            System.out.println("lastName: " + Singleton.getInstance().getUser().getLastName());
-          
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
             Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
@@ -148,6 +147,7 @@ public class EditAccountController implements Initializable {
     private void fillData() {
         this.tfFirstname.setText(Singleton.getInstance().getUser().getFirstName());
         this.tfLastname.setText(Singleton.getInstance().getUser().getLastName());
+        this.dpDateOfBirth.setValue(Singleton.getInstance().getUser().getDateOfBirth());
     }
     
     private void setupDateOfBirthDatePicker() {
@@ -162,6 +162,19 @@ public class EditAccountController implements Initializable {
                 setDisable(empty || item.compareTo(today) > 0);
             }
         });
+    }
+    
+    @FXML
+    private void setOnMouseDragged(MouseEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setX(event.getScreenX() - xOffset);
+        stage.setY(event.getScreenY() - yOffset);
+    }
+
+    @FXML
+    private void setOnMousePressed(MouseEvent event) {
+        xOffset = event.getSceneX();
+        yOffset = event.getSceneY();
     }
     
 }

@@ -32,6 +32,9 @@ public class DeleteTourDateResponseFactory implements AbstractResponseFactory<Re
             case HttpStatus.SC_NOT_FOUND: {
                 return new DeleteTourDateResponse(false);
             }
+            case HttpStatus.SC_BAD_REQUEST: {
+                return new DeleteTourDateResponse(false);
+            }
         }
         
         return null;
