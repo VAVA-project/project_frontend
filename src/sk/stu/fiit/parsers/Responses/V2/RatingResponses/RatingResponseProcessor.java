@@ -18,6 +18,7 @@ import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.TourOfferResponseProc
 import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
 
 /**
+ * RatingResponseProcessor is used to process XML response of rating tour offer
  *
  * @author Adam Bublavý
  */
@@ -26,11 +27,21 @@ public class RatingResponseProcessor extends XMLProcessor {
     private static final List<String> possibleValidationErrors
             = Arrays.asList("rating");
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public List<String> getPossibleValidationErrors() {
         return possibleValidationErrors;
     }
 
+    /**
+     * {@inheritDoc }
+     *
+     * @return Returns parsed data mapped into RatingResponse
+     *
+     * @see RatingResponse
+     */
     @Override
     public Response parseOK(Document document) {
         try {
