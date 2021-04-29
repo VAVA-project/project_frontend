@@ -22,6 +22,8 @@ import sk.stu.fiit.parsers.Responses.V2.Response;
 import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
 
 /**
+ * SearchResponseProcessor is used to process XML response of searching tour
+ * offers
  *
  * @author Adam Bublavý
  */
@@ -30,11 +32,21 @@ public class SearchResponseProcessor extends XMLProcessor {
     private static final List<String> possibleValidationErrors
             = Arrays.asList("errors");
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public List<String> getPossibleValidationErrors() {
         return possibleValidationErrors;
     }
 
+    /**
+     * {@inheritDoc }
+     *
+     * @return Returns parsed data mapped into SearchResponse
+     *
+     * @see SearchResponse
+     */
     @Override
     public Response parseOK(Document document) {
         SearchResponse searchResponse = new SearchResponse();
@@ -47,14 +59,17 @@ public class SearchResponseProcessor extends XMLProcessor {
                             XPathConstants.NODESET);
             System.out.println("contentList = " + contentList.getLength());
 
-            String pageNumber = (String) xPath.compile("//PageImpl/number/text()").
+            String pageNumber = (String) xPath.compile(
+                    "//PageImpl/number/text()").
                     evaluate(document, XPathConstants.STRING);
-            Singleton.getInstance().setActualPageNumber(Integer.parseInt(pageNumber) + 1);
+            Singleton.getInstance().setActualPageNumber(Integer.parseInt(
+                    pageNumber) + 1);
 
             String isPageLast = (String) xPath.compile("//PageImpl/last/text()").
                     evaluate(document, XPathConstants.STRING);
             if (Boolean.parseBoolean(isPageLast)) {
-                Singleton.getInstance().setLastPageNumber(Singleton.getInstance().getActualPageNumber());
+                Singleton.getInstance().setLastPageNumber(Singleton.
+                        getInstance().getActualPageNumber());
             }
 
             for (int i = 0; i < contentList.getLength(); i++) {
