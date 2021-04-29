@@ -59,11 +59,19 @@ import sk.stu.fiit.parsers.Requests.dto.UserRequest;
  * @author Adam Bublavý
  */
 public class XMLRequestParser implements IRequestVisitor {
-    
+
     private static final String serverAddress = "https://vava-project.herokuapp.com/";
-    
+
     private static final String CHARSET = "UTF-8";
 
+    /**
+     * Creates new instance of Document
+     *
+     * @return Returns newly created instance of Document
+     * @throws ParserConfigurationException
+     *
+     * @see Document
+     */
     private Document createNewDocument() throws ParserConfigurationException {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.
                 newInstance();
@@ -71,12 +79,31 @@ public class XMLRequestParser implements IRequestVisitor {
         return builder.newDocument();
     }
 
+    /**
+     * Creates new instance of Transformer
+     *
+     * @return Returns newly created instance of Transformer
+     * @throws TransformerConfigurationException
+     *
+     * @see Transformer
+     */
     private Transformer createNewTransformer() throws
             TransformerConfigurationException {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         return transformerFactory.newTransformer();
     }
 
+    /**
+     * Translates data to XML format
+     *
+     * @param rootElementName Name of root element that will be used to wrap all
+     * data
+     * @param data Data that will be translated to XML format. Key will be used
+     * as tag name and value will be put as tag value.
+     * @return Returns translated to XML
+     * @throws ParserConfigurationException
+     * @throws TransformerConfigurationException
+     */
     private String translateToXML(String rootElementName,
             Map<String, Object> data)
             throws
@@ -112,6 +139,9 @@ public class XMLRequestParser implements IRequestVisitor {
         return writer.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructRegisterRequest(RegisterRequest request) {
         HttpPost postRequest = new HttpPost(
@@ -138,6 +168,9 @@ public class XMLRequestParser implements IRequestVisitor {
         request.setRequest(postRequest);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructLoginRequest(LoginRequest request) {
         HttpPost postRequest = new HttpPost(serverAddress + "api/v1/login/");
@@ -148,7 +181,8 @@ public class XMLRequestParser implements IRequestVisitor {
         data.put("password", request.getPassword());
 
         try {
-            postRequest.setEntity(new StringEntity(this.translateToXML("loginRequest", data), CHARSET));
+            postRequest.setEntity(new StringEntity(this.translateToXML(
+                    "loginRequest", data), CHARSET));
         } catch (ParserConfigurationException
                 | TransformerConfigurationException ex) {
         }
@@ -156,6 +190,9 @@ public class XMLRequestParser implements IRequestVisitor {
         request.setRequest(postRequest);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructEditRequest(EditRequest request) {
         HttpPut httpPut = new HttpPut(serverAddress + "api/v1/users/");
@@ -179,6 +216,9 @@ public class XMLRequestParser implements IRequestVisitor {
         request.setRequest(httpPut);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructGuideToursRequest(GuideToursRequest request) {
         HttpGet getRequest = new HttpGet(
@@ -201,6 +241,9 @@ public class XMLRequestParser implements IRequestVisitor {
         request.setRequest(getRequest);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructSearchRequest(SearchRequest request) {
         HttpGet getRequest = new HttpGet(serverAddress + "api/v1/search/");
@@ -225,6 +268,9 @@ public class XMLRequestParser implements IRequestVisitor {
         request.setRequest(getRequest);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructTourDatesRequest(TourDatesRequest request) {
         HttpGet getRequest = new HttpGet(
@@ -250,6 +296,9 @@ public class XMLRequestParser implements IRequestVisitor {
         request.setRequest(getRequest);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructCreateTourOfferRequest(CreateTourOfferRequest request) {
         HttpPost httpPost = new HttpPost(serverAddress + "api/v1/tours/");
@@ -272,6 +321,9 @@ public class XMLRequestParser implements IRequestVisitor {
         request.setRequest(httpPost);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructEditTourOfferRequest(EditTourOfferRequest request) {
         HttpPut httpPut = new HttpPut(
@@ -296,6 +348,9 @@ public class XMLRequestParser implements IRequestVisitor {
         request.setRequest(httpPut);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructDeleteTourOfferRequest(DeleteTourOfferRequest request) {
         HttpDelete deleteRequest = new HttpDelete(
@@ -306,6 +361,9 @@ public class XMLRequestParser implements IRequestVisitor {
         request.setRequest(deleteRequest);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructCreateTourDateRequest(CreateTourDateRequest request) {
         HttpPost httpPost = new HttpPost(
@@ -330,6 +388,9 @@ public class XMLRequestParser implements IRequestVisitor {
         request.setRequest(httpPost);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructCheckoutTicketsInCartRequest(
             CheckoutTicketsInCartRequest request) {
@@ -352,6 +413,9 @@ public class XMLRequestParser implements IRequestVisitor {
         request.setRequest(postRequest);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructDeleteTourDateRequest(DeleteTourDateRequest request) {
         HttpDelete deleteRequest = new HttpDelete(
@@ -366,6 +430,9 @@ public class XMLRequestParser implements IRequestVisitor {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructTourTicketsRequest(TicketsRequest request) {
         HttpGet getRequest = new HttpGet(
@@ -390,6 +457,9 @@ public class XMLRequestParser implements IRequestVisitor {
         request.setRequest(getRequest);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructAddTicketToCartRequest(AddTicketToCartRequest request) {
         HttpPost postRequest = new HttpPost(
@@ -401,6 +471,9 @@ public class XMLRequestParser implements IRequestVisitor {
         request.setRequest(postRequest);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructDeleteTicketFromCartRequest(
             DeleteTicketFromCartRequest request) {
@@ -413,6 +486,9 @@ public class XMLRequestParser implements IRequestVisitor {
         request.setRequest(deleteRequest);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructDeleteCartRequest(DeleteCartRequest request) {
         HttpDelete deleteRequest = new HttpDelete(
@@ -424,6 +500,9 @@ public class XMLRequestParser implements IRequestVisitor {
         request.setRequest(deleteRequest);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructUserBookingsRequest(UserBookingsRequest request) {
         HttpGet getRequest = new HttpGet(
@@ -431,10 +510,13 @@ public class XMLRequestParser implements IRequestVisitor {
         getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         getRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
-        
+
         request.setRequest(getRequest);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructUserCompletedBookingsRequest(
             UserCompletedBookingsRequest request) {
@@ -443,10 +525,13 @@ public class XMLRequestParser implements IRequestVisitor {
         getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         getRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
-        
+
         request.setRequest(getRequest);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructRatingRequest(RatingRequest request) {
         HttpPost postRequest = new HttpPost(
@@ -454,7 +539,7 @@ public class XMLRequestParser implements IRequestVisitor {
         postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         postRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
-        
+
         Map<String, Object> data = new HashMap<>();
         data.put("rating", request.getRating());
 
@@ -468,12 +553,17 @@ public class XMLRequestParser implements IRequestVisitor {
         request.setRequest(postRequest);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void constructUserRequest(UserRequest request) {
-        HttpGet getRequest = new HttpGet(serverAddress + "api/v1/users/" + request.getCreatorId() + "/");
-        getRequest.setHeader("Authorization", "Bearer " + Singleton.getInstance().getJwtToken());
+        HttpGet getRequest = new HttpGet(
+                serverAddress + "api/v1/users/" + request.getCreatorId() + "/");
+        getRequest.setHeader("Authorization", "Bearer " + Singleton.
+                getInstance().getJwtToken());
         getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
-        
+
         request.setRequest(getRequest);
     }
 }
