@@ -26,6 +26,9 @@ public interface AbstractResponseFactory<T> {
      * for authentication has expired
      * @throws APIValidationException is thrown, when the request has invalid
      * data
+     * 
+     * @see AuthTokenExpiredException
+     * @see APIValidationException
      */
     T parse(CloseableHttpResponse response) throws AuthTokenExpiredException,
             APIValidationException;
