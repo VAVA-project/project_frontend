@@ -7,16 +7,27 @@ package sk.stu.fiit.parsers.Requests.dto;
 import sk.stu.fiit.parsers.Requests.IRequestVisitor;
 
 /**
+ * CreateTourOfferRequest request is used to create new tour offer
  *
  * @author Adam Bublavý
+ *
+ * @see Tour
  */
 public class CreateTourOfferRequest extends Request {
-    
+
     private String startPlace;
     private String destinationPlace;
     private String description;
     private double pricePerPerson;
 
+    /**
+     * Creates new CreateTourOfferRequest
+     *
+     * @param startPlace Tour start place
+     * @param destinationPlace Tour destination place
+     * @param description Tour description
+     * @param pricePerPerson Price for one ticket
+     */
     public CreateTourOfferRequest(String startPlace, String destinationPlace,
             String description, double pricePerPerson) {
         this.startPlace = startPlace;
@@ -25,6 +36,12 @@ public class CreateTourOfferRequest extends Request {
         this.pricePerPerson = pricePerPerson;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * {@link IRequestVisitor#constructCreateTourOfferRequest(sk.stu.fiit.parsers.Requests.dto.CreateTourOfferRequest)
+     * }
+     */
     @Override
     public void accept(IRequestVisitor visitor) {
         visitor.constructCreateTourOfferRequest(this);
@@ -61,7 +78,5 @@ public class CreateTourOfferRequest extends Request {
     public void setPricePerPerson(double pricePerPerson) {
         this.pricePerPerson = pricePerPerson;
     }
-    
-    
-    
+
 }
