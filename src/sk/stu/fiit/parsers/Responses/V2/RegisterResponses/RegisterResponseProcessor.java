@@ -18,15 +18,24 @@ import sk.stu.fiit.parsers.Responses.V2.Response;
 import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
 
 /**
+ * RegisterResponseProcessor is used to process XML response of registering a
+ * new user
  *
  * @author Adam Bublavý
  */
 public class RegisterResponseProcessor extends XMLProcessor {
 
     private static final List<String> possibleValidationErrors = Arrays.
-            asList("email", "password", "type","firstName", "lastName", 
+            asList("email", "password", "type", "firstName", "lastName",
                     "dateOfBirth", "errors");
 
+    /**
+     * {@inheritDoc }
+     *
+     * @return Returns parsed data mapped into RegisterResponse
+     *
+     * @see RegisterResponse
+     */
     @Override
     public Response parseOK(Document document) {
         try {
@@ -45,6 +54,9 @@ public class RegisterResponseProcessor extends XMLProcessor {
         return null;
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public List<String> getPossibleValidationErrors() {
         return possibleValidationErrors;
