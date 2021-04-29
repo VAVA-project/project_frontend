@@ -31,7 +31,6 @@ public class AddTicketToCartRequest extends Request {
 
     /**
      * {@inheritDoc}
-     * <p>
      *
      * {@link sk.stu.fiit.parsers.Requests.IRequestVisitor#constructAddTicketToCartRequest(sk.stu.fiit.parsers.Requests.dto.AddTicketToCartRequest)
      * }
