@@ -20,19 +20,27 @@ import sk.stu.fiit.parsers.Responses.V2.Response;
 import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
 
 /**
+ * LoginResponseProcessor is used to process XML response of user's login
  *
  * @author Adam Bublavý
  */
 public class LoginResponseProcessor extends XMLProcessor {
-    
+
     private static final List<String> possibleValidationErrors = Arrays.asList(
             "errors", "email", "password");
-    
+
+    /**
+     * {@inheritDoc }
+     *
+     * @return Returns parsed data mapped into LoginResponse
+     *
+     * @see LoginResponse
+     */
     @Override
     public Response parseOK(Document document) {
         try {
             XPath xPath = XPathFactory.newInstance().newXPath();
-            
+
             String token = (String) xPath.compile("//jwtToken/text()").evaluate(
                     document,
                     XPathConstants.STRING);
@@ -46,22 +54,26 @@ public class LoginResponseProcessor extends XMLProcessor {
                     evaluate(document, XPathConstants.STRING);
             String photo = (String) xPath.compile("//user/photo/text()").
                     evaluate(document, XPathConstants.STRING);
-            LocalDate dateOfBirth = LocalDate.parse((String) xPath.compile("//user/dateOfBirth/text()").
+            LocalDate dateOfBirth = LocalDate.parse((String) xPath.compile(
+                    "//user/dateOfBirth/text()").
                     evaluate(document, XPathConstants.STRING));
-            
+
             return new LoginResponse(token, new User(UserType.valueOf(
                     type), email, firstName, lastName, photo, dateOfBirth));
         } catch (UnsupportedOperationException | XPathExpressionException ex) {
             Logger.getLogger(LoginResponseProcessor.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
-        
+
         return null;
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public List<String> getPossibleValidationErrors() {
         return possibleValidationErrors;
     }
-    
+
 }
