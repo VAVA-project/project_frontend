@@ -23,7 +23,7 @@ public class LoginResponse extends Response {
     /**
      * Creates new LoginResponse
      *
-     * @param jwtToken Authorization token
+     * @param jwtToken JWT token
      * @param user Data about logged user
      */
     public LoginResponse(String jwtToken, User user) {
