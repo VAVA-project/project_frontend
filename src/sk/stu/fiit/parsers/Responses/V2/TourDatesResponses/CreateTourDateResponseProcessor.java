@@ -18,6 +18,8 @@ import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.TourOfferResponseProc
 import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
 
 /**
+ * CreateTourDateResponseProcessor is used to process XML response of creating
+ * tour date
  *
  * @author adamf
  */
@@ -26,11 +28,21 @@ public class CreateTourDateResponseProcessor extends XMLProcessor {
     private static final List<String> possibleValidationErrors
             = Arrays.asList("errors");
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public List<String> getPossibleValidationErrors() {
         return possibleValidationErrors;
     }
 
+    /**
+     * {@inheritDoc }
+     *
+     * @return Returns parsed data mapped into CreateTourDateResponse
+     *
+     * @see CreateTourDateResponse
+     */
     @Override
     public Response parseOK(Document document) {
         try {
@@ -38,9 +50,9 @@ public class CreateTourDateResponseProcessor extends XMLProcessor {
 
             String id = (String) xPath.compile("//TourDateResponse/id/text()").
                     evaluate(document, XPathConstants.STRING);
-           
+
             return new CreateTourDateResponse(id);
-            
+
         } catch (XPathExpressionException ex) {
             Logger.getLogger(TourOfferResponseProcessor.class.getName()).
                     log(Level.SEVERE, null, ex);
@@ -48,6 +60,5 @@ public class CreateTourDateResponseProcessor extends XMLProcessor {
 
         return null;
     }
-    
-}
 
+}
