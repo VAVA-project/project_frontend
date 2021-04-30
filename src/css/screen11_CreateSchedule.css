@@ -1,0 +1,202 @@
+/*
+ VAVA Project
+
+*/
+/* 
+    Created on : 23. 4. 2021, 14:35:44
+    Author     : adamf
+*/
+
+.border-pane {
+    -fx-background-color: transparent;
+    -fx-background-radius: 32px;
+    -fx-pref-width: 900px;
+    -fx-pref-height: 600px;
+}
+
+.left-pane {
+    -fx-background-color: #5F2EEA;
+    -fx-background-radius: 32px;
+    -fx-pref-width: 300px;
+    -fx-pref-height: 600px;
+}
+
+.center-pane {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 32px;
+    -fx-pref-width: 600px;
+    -fx-pref-height: 600px;
+}
+
+.lbl-create-schedule {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+}
+
+.text-field {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 16px;
+    -fx-background-color: #EFF0F6; 
+    -fx-background-radius: 16px;
+    -fx-pref-height: 50px;
+    -fx-pref-width: 210px;
+}
+
+.scroll-vbox-tours {
+    -fx-background-radius: 16px;
+    -fx-background-insets: 0;
+    -fx-background-color: #EFF0F6;
+    -fx-pref-width: 520px;
+    -fx-pref-height: 170px;
+}
+
+.scroll-bar:vertical .track{
+    -fx-background-color :transparent;
+    -fx-border-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-border-radius :2.0em;
+}
+
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 10.0 0.0 0.0;
+
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow{
+    -fx-shape : " ";    
+    -fx-padding :0.15em 0.0;
+}
+
+ .scroll-bar:vertical .increment-arrow,
+ .scroll-bar:vertical .decrement-arrow{
+    -fx-shape : " ";    
+    -fx-padding :0.0 0.15em;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color :derive(black,90.0%);
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color :derive(#4D4C4F,10.0%);
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
+.btn-add {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14px;
+    -fx-border-color: #5F2EEA;
+    -fx-border-radius: 16px;
+    -fx-text-fill: #5F2EEA;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 30px;
+    -fx-pref-width: 80px;
+    -fx-background-insets: 0;
+}
+
+.btn-add:pressed {
+    -fx-pref-height: 29px;
+    -fx-pref-width: 79px;
+    -fx-background-insets: 0;
+}
+
+.btn-create-schedule {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14px;
+    -fx-border-color: #5F2EEA;
+    -fx-border-radius: 16px;
+    -fx-text-fill: #5F2EEA;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 30;
+    -fx-pref-width: 130;
+    -fx-background-insets: 0;
+}
+
+.btn-create-schedule:pressed {
+    -fx-pref-height: 29px;
+    -fx-pref-width: 129px;
+    -fx-background-insets: 0;
+}
+
+.btn-back {
+    -fx-border-radius: 30px;
+    -fx-border-color: white;
+    -fx-background-color: transparent;
+    -fx-pref-width: 45px;
+    -fx-pref-height: 45px;
+    -fx-text-fill: #FFFFFF;
+}
+
+.btn-back:pressed {
+    -fx-pref-height: 44px;
+    -fx-pref-width: 44px;
+    -fx-background-insets: 0;
+}
+
+.hbox-tour-date {
+    -fx-background-color: #D9DBE9;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+    -fx-pref-width: 480px;
+    -fx-pref-height: 100px;
+}
+
+.pane-cap {
+    -fx-pref-width: 110px;
+    -fx-pref-height: 50px;
+}
+
+.pane-date {
+    -fx-pref-width: 145px;
+    -fx-pref-height: 50px;
+}
+
+.lbl-cap-date {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
+
+.lbl-informations {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 15px;
+    font-weight: normal;
+    -fx-text-fill: black;
+}
+
+.btn-delete {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 13px;
+    -fx-border-color: #5F2EEA;
+    -fx-border-radius: 16px;
+    -fx-text-fill: #5F2EEA;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 35px;
+    -fx-pref-width: 90px;
+    -fx-background-insets: 0;
+}
+
+.date-picker {
+    -fx-background-insets: 0;
+}
+
+.text-field-time {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 16px;
+    -fx-background-color: #EFF0F6; 
+    -fx-background-radius: 16px;
+    -fx-pref-width: 210px;
+    -fx-pref-height: 50px;
+}

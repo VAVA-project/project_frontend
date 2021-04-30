@@ -1,0 +1,174 @@
+/*
+ VAVA Project
+
+*/
+/* 
+    Created on : 21. 4. 2021, 20:01:57
+    Author     : adamf
+*/
+
+.pane {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 32px;
+    -fx-pref-width: 900px;
+    -fx-pref-height: 600px;
+}
+
+.btn-back {
+    -fx-border-radius: 30px;
+    -fx-border-color: #5F2EEA;
+    -fx-background-color: transparent;
+    -fx-pref-width: 45px;
+    -fx-pref-height: 45px;
+    -fx-text-fill: #FFFFFF;
+}
+
+.btn-back:pressed {
+    -fx-pref-height: 44px;
+    -fx-pref-width: 44px;
+    -fx-background-insets: 0;
+}
+
+.pane-ticket {
+    -fx-background-color: #EFF0F6;
+    -fx-background-radius: 32px;
+    -fx-pref-width: 620px;
+    -fx-pref-height: 165px;
+}
+
+.pane-date {
+    -fx-background-color: #D9DBE9;
+    -fx-background-radius: 32px;
+    -fx-pref-width: 165px;
+    -fx-pref-height: 165px;
+}
+
+.pane-place {
+    -fx-background-color: #EFF0F6;
+    -fx-background-radius: 32px;
+    -fx-pref-width: 380px;
+    -fx-pref-height: 165px;
+}
+
+.pane-adding {
+    -fx-background-color: #EFF0F6;
+    -fx-background-radius: 32px;
+    -fx-pref-width: 70px;
+    -fx-pref-height: 165px;
+}
+
+.btn-register {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14px;
+    -fx-border-color: #5F2EEA;
+    -fx-border-radius: 16px;
+    -fx-text-fill: #5F2EEA;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 40px;
+    -fx-pref-width: 130px;
+    -fx-background-insets: 0;
+}
+
+.btn-register:pressed {
+    -fx-pref-height: 39px;
+    -fx-pref-width: 129px;
+    -fx-background-insets: 0;
+}
+
+.text-area {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 16px;
+    font-weight: normal;
+    -fx-text-fill: black;
+    -fx-background-insets: 0;
+    -fx-background-color: white;
+}
+
+.btn-adding {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14px;
+    -fx-border-color: #5F2EEA;
+    -fx-border-radius: 16px;
+    -fx-text-fill: #5F2EEA;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 30px;
+    -fx-pref-width: 30px;
+    -fx-background-insets: 0;
+}
+
+.btn-back:pressed {
+    -fx-pref-height: 29px;
+    -fx-pref-width: 29px;
+    -fx-background-insets: 0;
+}
+
+.lbl-start-date {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
+
+.lbl-info {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
+
+.lbl-place {
+    -fx-pref-width: 200px;
+    -fx-pref-height: 20px;
+    -fx-font-family: "Roboto";
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
+
+.lbl-info2 {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 17px;
+    -fx-font-weight: normal;
+    -fx-text-fill: black;
+}
+
+.scroll-bar:vertical .track{
+    -fx-background-color :transparent;
+    -fx-border-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-border-radius :2.0em;
+}
+
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 10.0 0.0 0.0;
+
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow{
+    -fx-shape : " ";    
+    -fx-padding :0.15em 0.0;
+}
+
+ .scroll-bar:vertical .increment-arrow,
+ .scroll-bar:vertical .decrement-arrow{
+    -fx-shape : " ";    
+    -fx-padding :0.0 0.15em;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color :derive(black,90.0%);
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color :derive(#4D4C4F,10.0%);
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}

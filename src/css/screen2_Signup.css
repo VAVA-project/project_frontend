@@ -3,7 +3,7 @@
     Author     : adamf
 */
 .border-pane {
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: transparent;
     -fx-background-radius: 32px;
     -fx-pref-width: 900px;
     -fx-pref-height: 600px;
@@ -27,10 +27,15 @@
     -fx-border-radius: 30px;
     -fx-border-color: #FFFFFF;
     -fx-background-color: transparent;
-    -fx-font-family: "Tw Cen MT Condensed";
     -fx-pref-width: 45px;
     -fx-pref-height: 45px;
     -fx-text-fill: #FFFFFF;
+}
+
+.btn-back:pressed {
+    -fx-pref-height: 44px;
+    -fx-pref-width: 44px;
+    -fx-background-insets: 0;
 }
 
 .lbl-customer {
@@ -51,16 +56,12 @@
     -fx-font-family: "Roboto";
     -fx-font-size: 24px;
     -fx-text-fill: #FFFFFF;
-    -fx-pref-width: 385px;
-    -fx-pref-height: 40px;
 }
 
 .txt-guide {
     -fx-font-family: "Roboto";
     -fx-font-size: 24px;
     -fx-text-fill: black;
-    -fx-pref-width: 385px;
-    -fx-pref-height: 40px;
 }
 
 .btn-customer {
@@ -70,8 +71,15 @@
     -fx-border-radius: 16px;
     -fx-text-fill: #FFFFFF;
     -fx-background-color: #5F2EEA;
+    -fx-background-radius: 16px;
     -fx-pref-height: 55px;
-    -fx-pref-width: 185px;
+    -fx-pref-width: 170px;
+}
+
+.btn-customer:pressed {
+    -fx-pref-height: 54px;
+    -fx-pref-width: 169px;
+    -fx-background-insets: 0;
 }
 
 .btn-guide {
@@ -82,7 +90,13 @@
     -fx-text-fill: #5F2EEA;
     -fx-background-color: transparent;
     -fx-pref-height: 55px;
-    -fx-pref-width: 185px;
+    -fx-pref-width: 170px;
+}
+
+.btn-guide:pressed {
+    -fx-pref-height: 54px;
+    -fx-pref-width: 169px;
+    -fx-background-insets: 0;
 }
 
 .pane-signup-left {
@@ -106,6 +120,7 @@
     -fx-background-radius: 16px;
     -fx-pref-height: 60px;
     -fx-pref-width: 340px;
+    
 }
 
 .btn-next {
@@ -118,6 +133,12 @@
     -fx-background-radius: 16px;
     -fx-pref-height: 45px;
     -fx-pref-width: 170px;
+    -fx-background-insets: 0;
+}
+
+.btn-next:pressed {
+    -fx-pref-height: 44px;
+    -fx-pref-width: 169px;
     -fx-background-insets: 0;
 }
 

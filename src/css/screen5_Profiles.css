@@ -1,0 +1,233 @@
+/*
+ VAVA Project
+
+*/
+/* 
+    Created on : 15. 4. 2021, 0:38:10
+    Author     : adamf
+*/
+
+.border-pane {
+    -fx-background-color: transparent;
+    -fx-background-radius: 32px;
+    -fx-pref-width: 900px;
+    -fx-pref-height: 600px;
+}
+
+.left-pane {
+    -fx-background-color: #5F2EEA;
+    -fx-background-radius: 32px;
+    -fx-pref-width: 300px;
+    -fx-pref-height: 600px;
+}
+
+.center-pane {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 32px;
+    -fx-pref-width: 600px;
+    -fx-pref-height: 600px;
+}
+
+.lbl-name {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 20px;
+    font-weight: bolder;
+    -fx-text-fill: #FFFFFF;
+}
+
+.btn-edit-informations {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14px;
+    -fx-border-color: #FFFFFF;
+    -fx-border-radius: 16px;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #5F2EEA;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 35px;
+    -fx-pref-width: 150px;
+}
+
+.btn-edit-informations:pressed {
+    -fx-pref-height: 34px;
+    -fx-pref-width: 149px;
+    -fx-background-insets: 0;
+}
+
+.btn-back {
+    -fx-border-radius: 30px;
+    -fx-border-color: white;
+    -fx-background-color: transparent;
+    -fx-pref-width: 45px;
+    -fx-pref-height: 45px;
+    -fx-text-fill: #FFFFFF;
+}
+
+.btn-back:pressed {
+    -fx-pref-height: 44px;
+    -fx-pref-width: 44px;
+    -fx-background-insets: 0;
+}
+
+.lbl-profile {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+}
+
+.offers-pane-background {
+    -fx-background-radius: 16px;
+    -fx-background-color: #EFF0F7;
+}
+/*
+.btn-page {
+    -fx-background-color: transparent;
+    -fx-border-color: #5F2EEA;
+    -fx-border-width: 2px;
+    -fx-border-radius: 40px;
+    -fx-label-padding: 0.75px;
+    -fx-text-fill: #5F2EEA;
+    -fx-font-weight: bold;
+}
+
+.btn-page:pressed {
+    -fx-pref-height: 34px;
+    -fx-pref-width: 149px;
+    -fx-background-insets: 0;
+}
+*/
+.pane-wrap {
+    -fx-background-radius: 16px;
+    -fx-background-insets: 0;
+    -fx-background-color: #EFF0F6;
+    -fx-pref-width: 500px;
+    -fx-pref-height: 450px;
+}
+
+.scroll-vbox-tours {
+    -fx-background-radius: 16px;
+    -fx-background-insets: 0;
+    -fx-background-color: #EFF0F6;
+    -fx-pref-width: 500px;
+    -fx-pref-height: 330px;
+}
+
+.pane-tours2 {
+    -fx-background-radius: 16px;
+    -fx-background-insets: 0;
+    -fx-background-color: #EFF0F6;
+    -fx-pref-width: 520px;
+    -fx-pref-height: 230px;
+}
+
+.scroll-vbox-tours2 {
+    -fx-background-radius: 16px;
+    -fx-background-insets: 0;
+    -fx-background-color: #EFF0F6;
+    -fx-pref-width: 520px;
+    -fx-pref-height: 180px;
+}
+
+.lbl-my-tours {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 20px;
+    font-weight: normal;
+    -fx-text-fill: #6E7191;
+}
+
+.pane-one-tour {
+    -fx-background-color: #D9DBE9;
+    -fx-background-radius: 16px;
+    -fx-pref-width: 450px;
+    -fx-pref-height: 115px;
+}
+
+.btn-edit {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14px;
+    -fx-border-color: #5F2EEA;
+    -fx-border-radius: 16px;
+    -fx-text-fill: #5F2EEA;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 35px;
+    -fx-pref-width: 80px;
+    -fx-background-insets: 0;
+}
+
+.btn-edit:pressed {
+    -fx-pref-height: 34px;
+    -fx-pref-width: 79px;
+    -fx-background-insets: 0;
+}
+
+.lbl-informations {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
+
+.lbl-informations2 {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 15px;
+    -fx-font-weight: normal;
+    -fx-text-fill: black;
+}
+
+.btn-load {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 14px;
+    -fx-border-color: #5F2EEA;
+    -fx-border-radius: 16px;
+    -fx-text-fill: #5F2EEA;
+    -fx-background-color: transparent;
+    -fx-background-radius: 16px;
+    -fx-pref-height: 35px;
+    -fx-pref-width: 100px;
+    -fx-background-insets: 0;
+}
+
+.btn-load:pressed {
+    -fx-pref-height: 34px;
+    -fx-pref-width: 99px;
+    -fx-background-insets: 0;
+}
+
+.scroll-bar:vertical .track{
+    -fx-background-color :transparent;
+    -fx-border-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-border-radius :2.0em;
+}
+
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 10.0 0.0 0.0;
+
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow{
+    -fx-shape : " ";    
+    -fx-padding :0.15em 0.0;
+}
+
+ .scroll-bar:vertical .increment-arrow,
+ .scroll-bar:vertical .decrement-arrow{
+    -fx-shape : " ";    
+    -fx-padding :0.0 0.15em;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color :derive(black,90.0%);
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color :derive(#4D4C4F,10.0%);
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}

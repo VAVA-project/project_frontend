@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#setOnMouseDragged" onMousePressed="#setOnMousePressed" prefHeight="400.0" prefWidth="600.0" styleClass="pane" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sk.stu.fiit.Main.PostCheckoutController">
+   <children>
+      <Button layoutX="250.0" layoutY="401.0" mnemonicParsing="false" onMouseReleased="#handleSearchDestination" prefHeight="73.0" prefWidth="229.0" styleClass="btn-search" text="%postCheckout.searchDestinationButton.text">
+         <effect>
+            <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
+         </effect></Button>
+      <HBox layoutX="840.0" layoutY="7.0" styleClass="hbox-control-buttons">
+         <children>
+            <Circle fx:id="btnMinimize" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-minimize">
+               <effect>
+                  <DropShadow color="#000000e5" />
+               </effect></Circle>
+            <Circle fx:id="btnExit" fill="DODGERBLUE" onMouseReleased="#handleMouseEvent" radius="8.0" stroke="BLACK" strokeType="INSIDE" styleClass="btn-exit">
+               <effect>
+                  <DropShadow color="#000000e5" />
+               </effect></Circle>
+         </children>
+      </HBox>
+      <Button layoutX="470.0" layoutY="401.0" mnemonicParsing="false" onMouseReleased="#handleBookedTours" prefHeight="73.0" prefWidth="229.0" styleClass="btn-search" text="%postCheckout.bookedToursButton.text">
+         <effect>
+            <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
+         </effect></Button>
+      <VBox alignment="CENTER" fillWidth="false" layoutX="60.0" layoutY="150.0" prefHeight="216.0" prefWidth="780.0" spacing="40.0">
+         <children>
+            <Label styleClass="label-welcome" text="%postCheckout.title">
+               <effect>
+                  <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+               </effect>
+            </Label>
+            <Label styleClass="label-success" text="%postCheckout.text">
+               <effect>
+                  <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
+               </effect>
+            </Label>
+         </children>
+      </VBox>
+   </children>
+   <stylesheets>
+      <URL value="@../../../../../css/buttons_control.css" />
+      <URL value="@../../../../../css/screen3_Welcome.css" />
+   </stylesheets>
+   <effect>
+      <InnerShadow choke="0.3" color="#0000000d" height="50.0" radius="24.5" width="50.0" />
+   </effect>
+</Pane>
