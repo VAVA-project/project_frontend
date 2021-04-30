@@ -14,6 +14,8 @@ import sk.stu.fiit.Main.Alerts;
  */
 public class TourOfferValidator {
     
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(TourOfferValidator.class);
+    
     /**
      * Validates the given text fields if they are empty and
      * if the price is of the double data type.
@@ -57,6 +59,8 @@ public class TourOfferValidator {
             Double.parseDouble(price.getText());
             return false;
         } catch (NumberFormatException e) {
+            LOGGER.error("Number format exception has raise while trying "
+                    + "to format input in price text field" + e.getMessage());
             return true;
         }
     }

@@ -10,8 +10,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Base64;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -75,12 +73,15 @@ public class TourBuyController implements Initializable {
     private Label lblstartPlace;
     @FXML
     private Rating ratingStars;
+    
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(TourBuyController.class);
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        LOGGER.setLevel(org.apache.log4j.Level.INFO);
         initializeScreenWithTour();
         initializeTourDates();
     }
@@ -148,6 +149,7 @@ public class TourBuyController implements Initializable {
             paneTourBuy.getChildren().remove(btnLoad);
         }
         if (Singleton.getInstance().getTourDates().isEmpty()) {
+            LOGGER.info("Tour does not offer any dates");
             Alerts.showAlert("TITLE_NONE_TOUR_DATES");
         } else {
             Singleton.getInstance().getTourDates().forEach(tourDate -> {
@@ -155,7 +157,7 @@ public class TourBuyController implements Initializable {
                     Node tourDateNode = this.loadTourDate(tourDate);
                     this.vbTourDates.getChildren().add(tourDateNode);
                 } catch (Exception e) {
-                    Logger.getLogger(TourBuyController.class.getName()).log(Level.SEVERE, null, e);
+                    LOGGER.error("Node was not loaded" + e.getMessage());
                 }
             });
         }
@@ -177,7 +179,7 @@ public class TourBuyController implements Initializable {
         try {
             return loader.load();
         } catch (IOException ex) {
-            Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
+           LOGGER.error("File not found" + ex.getMessage());
         }
         return null;
     }
@@ -211,13 +213,11 @@ public class TourBuyController implements Initializable {
             Singleton.getInstance().setTourDates(tourDatesResponse.getTourDates());
 
         } catch (IOException ex) {
-            Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("Server error" + ex.getMessage());
             Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
-            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
             Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
         } catch (APIValidationException ex) {
-            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

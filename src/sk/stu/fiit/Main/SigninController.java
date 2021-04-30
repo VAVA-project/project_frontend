@@ -187,10 +187,10 @@ public class SigninController implements Initializable {
             LOGGER.error("Server error" + e.getMessage());
             Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
-            LOGGER.error("Authentication error" + ex.getMessage());
+            LOGGER.error(ex.getMessage());
             Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
         } catch (APIValidationException ex) {
-            LOGGER.error("API validation exception has raised in delete cart response. Response has these errors:" + ex.extractAllErrors());
+            LOGGER.error("API validation exception has raised in delete cart response. Response has these errors: " + ex.extractAllErrors());
         }
 
         return null;

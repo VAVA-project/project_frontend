@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -70,12 +68,15 @@ public class ProfileCustomerController implements Initializable {
     private VBox vbBookedTours;
     @FXML
     private VBox vbCompletedTours;
+    
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(ProfileCustomerController.class);
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        LOGGER.setLevel(org.apache.log4j.Level.INFO);
         setProfileInformations();
         setBookedTours();
         setCompletedTours();
@@ -168,15 +169,11 @@ public class ProfileCustomerController implements Initializable {
             this.bookedTours = userBookingsResponse.getUserBookings();
 
         } catch (IOException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("Server error" + ex.getMessage());
             Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).
-                    log(Level.SEVERE, null, ex);
             Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
         } catch (APIValidationException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).
-                    log(Level.SEVERE, null, ex);
         }
     }
     
@@ -205,15 +202,11 @@ public class ProfileCustomerController implements Initializable {
                     parse(response);
             this.completedTours = userBookingsResponse.getUserBookings();
         } catch (IOException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("Server error" + ex.getMessage());
             Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).
-                    log(Level.SEVERE, null, ex);
             Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
         } catch (APIValidationException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).
-                    log(Level.SEVERE, null, ex);
         }
     }
     
@@ -246,8 +239,7 @@ public class ProfileCustomerController implements Initializable {
                                 getRating(), showUserRating);
                 tourList.getChildren().add(tourDateNode);
             } catch (Exception e) {
-                Logger.getLogger(TourBuyController.class.getName()).log(
-                        Level.SEVERE, null, e);
+                LOGGER.error("Node was not loaded" + e.getMessage());
             }
         });
     }
@@ -281,8 +273,7 @@ public class ProfileCustomerController implements Initializable {
         try {
             return loader.load();
         } catch (IOException ex) {
-            Logger.getLogger(BookedCompletedTourController.class.getName()).log(Level.SEVERE,
-                    null, ex);
+            LOGGER.error("File not found" + ex.getMessage());
         }
         return null;
     }

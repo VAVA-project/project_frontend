@@ -7,8 +7,6 @@ package sk.stu.fiit.Main;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -55,12 +53,15 @@ public class SearchController implements Initializable {
 
     private int pageNumber = 0;
     private int pageSize = 5;
-
+    
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(SearchController.class);
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        LOGGER.setLevel(org.apache.log4j.Level.INFO);
         Singleton.getInstance().clearTours();
         Singleton.getInstance().clearTourBuy();
     }
@@ -97,6 +98,7 @@ public class SearchController implements Initializable {
      */
     private void searchToursForDestination(Event event) {
         if (!this.validateInputs()) {
+            LOGGER.info("Not entered destination or start place");
             Alerts.showAlert("TITLE_EMPTY_DESTINATION");
             return;
         }
@@ -116,17 +118,13 @@ public class SearchController implements Initializable {
             ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Tours.fxml");
 
         } catch (IOException ex) {
-            Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("Server error" + ex.getMessage());
             Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
-            Logger.getLogger(SearchController.class.getName()).
-                    log(Level.SEVERE, null, ex);
             Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
             ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Signin.fxml");
         } catch (APIValidationException ex) {
             // possibly never happen
-            Logger.getLogger(SearchController.class.getName()).
-                    log(Level.SEVERE, null, ex);
         }
     }
 

@@ -14,8 +14,6 @@ import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -137,8 +135,8 @@ public class SignupController implements Initializable {
     @FXML
     private PasswordField tfPassword;
     
-    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(SigninController.class);
-    
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(SignupController.class);
+  
     @FXML
     private void handleMouseEvent(MouseEvent event) {
         if (event.getSource().equals(btnExit)) {
@@ -185,6 +183,7 @@ public class SignupController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        LOGGER.setLevel(org.apache.log4j.Level.INFO);
         this.setupBirthDayDatePicker();
     }
     
@@ -281,12 +280,15 @@ public class SignupController implements Initializable {
                     hboxControlButtonsPersonalInformations.getChildren().add(btnMinimize);
                     hboxControlButtonsPersonalInformations.getChildren().add(btnExit);
                 } else {
+                    LOGGER.info("Not valid password");
                     Alerts.showAlert("TITLE_PASSWORD_NOT_VALID", "CONTENT_PASSWORD_NOT_VALID");
                 }
             } else {
+                LOGGER.info("Invalid email");
                 Alerts.showAlert("TITLE_EMAIL_NOT_VALID", "CONTENT_EMAIL_NOT_VALID");
             }
         } else {
+            LOGGER.info("Any field is empty");
             Alerts.showAlert("TITLE_EMPTY_FIELDS");
         }
     }
@@ -335,13 +337,16 @@ public class SignupController implements Initializable {
                         paneSignupPhoto.getChildren().add(btnChangePhoto);
                     }
                 } else {
+                    LOGGER.info("Invalid email");
                     Alerts.showAlert("TITLE_DATE_OF_BIRTH");
                 }
             } else {
+                LOGGER.info("User is not 15 years old");
                 Alerts.showAlert("TITLE_EMPTY_DATE_OF_BIRTH");
             }
         } else {
-            Alerts.showAlert("TITLE_EMPTY_FIELDS");
+            LOGGER.info("User is not 15 years old");
+            Alerts.showAlert("Any field is empty");
         }
     }
     
@@ -399,13 +404,14 @@ public class SignupController implements Initializable {
                 paneSignupPhoto.getChildren().remove(lblSelectPhoto);
                 photoSet = true;
             } catch (FileNotFoundException ex) {
+                LOGGER.error("File not found" + ex.getMessage());
                 Alerts.showAlert("TITLE_FILE_NOT_FOUND");
             }
         } catch (NullPointerException e) {
             // User had opened fileChooser.showOpenDialog, but he doesn't choose his image
+            LOGGER.error("NullPointerException" + e.getMessage());
         } catch (IOException ex) {
-            Logger.getLogger(SignupController.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.error("I/O error has raised while loading the file" + ex.getMessage());
         }
     }
     
@@ -441,13 +447,14 @@ public class SignupController implements Initializable {
 
                 imageViewPhoto.setClip(clip);
             } catch (FileNotFoundException ex) {
+                LOGGER.error("File not found" + ex.getMessage());
                 Alerts.showAlert("TITLE_FILE_NOT_FOUND");
             }
         } catch (NullPointerException e) {
+            LOGGER.error("Null pointer exception" + e.getMessage());
             // User had opened fileChooser.showOpenDialog, but he doesn't choose a photo
         } catch (IOException ex) {
-            Logger.getLogger(SignupController.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.error("I/O error has raised while loading the file" + ex.getMessage());
         }
     }
     
@@ -484,14 +491,10 @@ public class SignupController implements Initializable {
 
             } catch (AuthTokenExpiredException ex) {
             } catch (APIValidationException ex) {
-                Logger.getLogger(SignupController.class.getName()).
-                        log(Level.SEVERE, null, ex);
             }
             ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Welcome.fxml");
-
         } catch (IOException e) {
-            Logger.getLogger(SignupController.class.getName()).
-                    log(Level.SEVERE, null, e);
+            LOGGER.error("Server error" + e.getMessage());
             Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         }
     }

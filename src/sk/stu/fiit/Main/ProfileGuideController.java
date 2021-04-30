@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -65,12 +63,15 @@ public class ProfileGuideController implements Initializable {
     private Button btnCreateTour;
     @FXML
     private Button btnPersonalProfile;
+    
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(ProfileGuideController.class);
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        LOGGER.setLevel(org.apache.log4j.Level.INFO);
         this.setProfileInformations();
         this.handleGetNextPage(null);
     }
@@ -170,16 +171,11 @@ public class ProfileGuideController implements Initializable {
                     ResponseFactory.ResponseFactoryType.USER_TOURS_RESPONSE).
                     parse(response);
         } catch (IOException ex) {
-            Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE,
-                    null, ex);
+            LOGGER.error("Server error" + ex.getMessage());
             Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
-            Logger.getLogger(ProfileGuideController.class.getName()).
-                    log(Level.SEVERE, null, ex);
             Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
         } catch (APIValidationException ex) {
-            Logger.getLogger(ProfileGuideController.class.getName()).
-                    log(Level.SEVERE, null, ex);
         }
 
         return null;
@@ -203,8 +199,7 @@ public class ProfileGuideController implements Initializable {
                 Node tourNode = this.loadGuideTourOfferItem(tour);
                 Platform.runLater(() -> this.vbTours.getChildren().add(tourNode));
             } catch (IOException ex) {
-                Logger.getLogger(ProfileGuideController.class.getName()).
-                        log(Level.SEVERE, null, ex);
+                LOGGER.error("File not found" + ex.getMessage());
             }
         });
         this.pageNumber++;
