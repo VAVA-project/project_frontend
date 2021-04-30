@@ -13,11 +13,18 @@ import sk.stu.fiit.parsers.Responses.V2.AbstractResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.Response;
 
 /**
+ * RatingResponseFactory is used to check type of the received response and call
+ * particular response processor
  *
  * @author Adam Bublavý
  */
 public class RatingResponseFactory implements AbstractResponseFactory<Response> {
 
+    /**
+     * {@inheritDoc }
+     *
+     * @see RatingResponseProcessor
+     */
     @Override
     public Response parse(CloseableHttpResponse response) throws
             AuthTokenExpiredException, APIValidationException {

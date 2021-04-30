@@ -10,11 +10,26 @@ import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 
 /**
+ * ResponseProcessor defines methods that every response processor must
+ * implement
  *
  * @author Adam Bublavý
  */
 public interface ResponseProcessor {
-    
-    public Response processResponse(CloseableHttpResponse response) throws AuthTokenExpiredException, APIValidationException;
-    
+
+    /**
+     * Processes received response
+     *
+     * @param response Received response
+     * @return Returns extracted data from the response
+     * @throws AuthTokenExpiredException
+     * @throws APIValidationException
+     *
+     * @see Response
+     * @see AuthTokenExpiredException
+     * @see APIValidationException
+     */
+    public Response processResponse(CloseableHttpResponse response) throws
+            AuthTokenExpiredException, APIValidationException;
+
 }

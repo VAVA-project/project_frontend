@@ -13,23 +13,34 @@ import sk.stu.fiit.parsers.Responses.V2.AbstractResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.Response;
 
 /**
+ * CreateTourDateResponseFactory is used to check type of the received response
+ * and call particular response processor
  *
  * @author adamf
  */
-public class CreateTourDateResponseFactory implements AbstractResponseFactory<Response> {
+public class CreateTourDateResponseFactory implements
+        AbstractResponseFactory<Response> {
+
+    /**
+     * {@inheritDoc }
+     *
+     * @see CreateTourDateResponseProcessor
+     */
     @Override
-    public Response parse(CloseableHttpResponse response) throws AuthTokenExpiredException, APIValidationException {
+    public Response parse(CloseableHttpResponse response) throws
+            AuthTokenExpiredException, APIValidationException {
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_FORBIDDEN) {
             throw new AuthTokenExpiredException();
         }
-        
+
         Header header = response.getFirstHeader("Content-Type");
 
         if (header.getValue().equals("application/xml;charset=UTF-8")) {
-            return new CreateTourDateResponseProcessor().processResponse(response);
+            return new CreateTourDateResponseProcessor().processResponse(
+                    response);
         }
 
         return null;
     }
-    
+
 }

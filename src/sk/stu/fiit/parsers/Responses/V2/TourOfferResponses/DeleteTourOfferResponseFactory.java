@@ -12,17 +12,25 @@ import sk.stu.fiit.parsers.Responses.V2.AbstractResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.Response;
 
 /**
+ * DeleteTourOfferResponseFactory is used to check type of the received response
+ * and call particular response processor
  *
  * @author Adam Bublavý
  */
-public class DeleteTourOfferResponseFactory implements AbstractResponseFactory<Response> {
+public class DeleteTourOfferResponseFactory implements
+        AbstractResponseFactory<Response> {
 
+    /**
+     * {@inheritDoc }
+     *
+     * @see DeleteTourOfferResponse
+     */
     @Override
     public Response parse(CloseableHttpResponse response) throws
-            AuthTokenExpiredException, APIValidationException {        
+            AuthTokenExpiredException, APIValidationException {
         int statusCode = response.getStatusLine().getStatusCode();
-        
-        switch(statusCode) {
+
+        switch (statusCode) {
             case HttpStatus.SC_FORBIDDEN: {
                 throw new AuthTokenExpiredException();
             }
@@ -33,11 +41,11 @@ public class DeleteTourOfferResponseFactory implements AbstractResponseFactory<R
                 return new DeleteTourOfferResponse(false);
             }
             case HttpStatus.SC_BAD_REQUEST: {
-                return new DeleteTourOfferResponse(false); 
+                return new DeleteTourOfferResponse(false);
             }
         }
-        
+
         return null;
     }
-    
+
 }

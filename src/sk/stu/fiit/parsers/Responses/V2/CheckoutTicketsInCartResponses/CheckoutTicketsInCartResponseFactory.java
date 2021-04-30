@@ -13,20 +13,32 @@ import sk.stu.fiit.parsers.Responses.V2.AbstractResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.Response;
 
 /**
+ * CheckoutTicketsInCartResponseFactory is used to check type of the received
+ * response and call particular response processor
  *
  * @author adamf
  */
-public class CheckoutTicketsInCartResponseFactory implements AbstractResponseFactory<Response> {
-    
+public class CheckoutTicketsInCartResponseFactory implements
+        AbstractResponseFactory<Response> {
+
     private CheckoutTicketsInCartResponseFactory() {
     }
-    
+
+    /**
+     * @return new instance of CheckoutTicketsInCartResponseFactory
+     */
     public static CheckoutTicketsInCartResponseFactory getInstance() {
         return new CheckoutTicketsInCartResponseFactory();
     }
-    
+
+    /**
+     * {@inheritDoc }
+     * 
+     * @see CheckoutTicketsInCartResponseProcessor
+     */
     @Override
-    public Response parse(CloseableHttpResponse response) throws AuthTokenExpiredException, APIValidationException {
+    public Response parse(CloseableHttpResponse response) throws
+            AuthTokenExpiredException, APIValidationException {
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_FORBIDDEN) {
             throw new AuthTokenExpiredException();
         }
@@ -34,7 +46,8 @@ public class CheckoutTicketsInCartResponseFactory implements AbstractResponseFac
         Header header = response.getFirstHeader("Content-Type");
 
         if (header.getValue().equals("application/xml;charset=UTF-8")) {
-            return new CheckoutTicketsInCartResponseProcessor().processResponse(response);
+            return new CheckoutTicketsInCartResponseProcessor().processResponse(
+                    response);
         }
 
         return null;

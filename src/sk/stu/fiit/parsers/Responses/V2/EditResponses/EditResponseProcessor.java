@@ -18,6 +18,8 @@ import sk.stu.fiit.parsers.Responses.V2.Response;
 import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
 
 /**
+ * EditResponseProcessor is used to process XML response of editing user's
+ * profile
  *
  * @author Adam Bublavý
  */
@@ -27,6 +29,13 @@ public class EditResponseProcessor extends XMLProcessor {
             = Arrays.asList("errors", "password", "firstName", "lastName",
                     "dateOfBirth", "photo");
 
+    /**
+     * {@inheritDoc }
+     *
+     * @return Returns parsed data mapped into EditResponse
+     *
+     * @see EditResponse
+     */
     @Override
     public Response parseOK(Document document) {
         try {
@@ -44,10 +53,13 @@ public class EditResponseProcessor extends XMLProcessor {
             Logger.getLogger(LoginResponseProcessor.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
-        
+
         return null;
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public List<String> getPossibleValidationErrors() {
         return possibleValidationErrors;

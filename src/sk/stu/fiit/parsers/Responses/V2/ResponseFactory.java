@@ -28,6 +28,8 @@ import sk.stu.fiit.parsers.Responses.V2.UserResponses.UserResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponseFactory;
 
 /**
+ * ResponseFactory represents main factory that is used to call particular
+ * subfactories which are used to parse response
  *
  * @author Adam Bublavý
  */
@@ -107,6 +109,14 @@ public class ResponseFactory {
                 RatingResponseFactory.class);
     }
 
+    /**
+     * Creates new instance of given factory
+     *
+     * @param type Factory type that will be created
+     * @return Returns newly created factory
+     *
+     * @see AbstractResponseFactory
+     */
     public static AbstractResponseFactory getFactory(ResponseFactoryType type) {
         Class<?> registeredClass = registeredFactoryTypes.get(type);
 

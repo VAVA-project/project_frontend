@@ -6,9 +6,10 @@
 package sk.stu.fiit.parsers.Responses.V2;
 
 /**
+ * Response is abstract class that is superclass for every request
  *
  * @author Adam Bublavý
  */
 public abstract class Response {
-    
+
 }

@@ -13,18 +13,29 @@ import sk.stu.fiit.parsers.Responses.V2.AbstractResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.Response;
 
 /**
+ * RegisterResponseFactory is used to check type of the received response and
+ * call particular response processor
  *
  * @author Adam Bublavý
  */
-public class RegisterResponseFactory implements AbstractResponseFactory<Response>{
+public class RegisterResponseFactory implements
+        AbstractResponseFactory<Response> {
 
     private RegisterResponseFactory() {
     }
 
+    /**
+     * @return Returns new instance of RegisterResponseFactory
+     */
     public static RegisterResponseFactory getInstance() {
         return new RegisterResponseFactory();
     }
 
+    /**
+     * {@inheritDoc }
+     * 
+     * @see RegisterResponseProcessor
+     */
     @Override
     public Response parse(CloseableHttpResponse response) throws
             AuthTokenExpiredException, APIValidationException {

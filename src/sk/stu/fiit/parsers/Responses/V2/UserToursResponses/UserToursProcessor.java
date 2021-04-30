@@ -22,6 +22,8 @@ import sk.stu.fiit.parsers.Responses.V2.Response;
 import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
 
 /**
+ * UserToursProcessor is used to process XML response of fetching created tours
+ * of specific user
  *
  * @author Adam Bublavý
  */
@@ -30,11 +32,21 @@ public class UserToursProcessor extends XMLProcessor {
     private static final List<String> possibleValidationErrors
             = Arrays.asList("errors");
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public List<String> getPossibleValidationErrors() {
         return possibleValidationErrors;
     }
 
+    /**
+     * {@inheritDoc }
+     *
+     * @return Returns parsed data mapped into UserToursResponse
+     *
+     * @see UserToursResponse
+     */
     @Override
     public Response parseOK(Document document) {
         try {
@@ -82,7 +94,7 @@ public class UserToursProcessor extends XMLProcessor {
             Logger.getLogger(UserToursProcessor.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
-        
+
         return null;
     }
 }
