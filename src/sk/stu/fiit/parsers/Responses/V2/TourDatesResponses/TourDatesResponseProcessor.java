@@ -9,12 +9,11 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -31,6 +30,9 @@ import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
  * @author adamf
  */
 public class TourDatesResponseProcessor extends XMLProcessor {
+
+    private static final Logger LOGGER = Logger.getLogger(
+            TourDatesResponseProcessor.class);
 
     private static final List<String> possibleValidationErrors
             = Arrays.asList("errors", "sortBy", "sortDirection", "pageNumber",
@@ -102,12 +104,10 @@ public class TourDatesResponseProcessor extends XMLProcessor {
 
             }
             return tourDatesResponse;
-        } catch (XPathExpressionException ex) {
-            Logger.getLogger(TourDatesResponseProcessor.class.getName()).log(
-                    Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
-            Logger.getLogger(TourDatesResponseProcessor.class.getName()).log(
-                    Level.SEVERE, null, ex);
+        } catch (XPathExpressionException | ParseException ex) {
+            LOGGER.warn(
+                    "Exception has been thrown while processing TourDatesResponse. Error message: " + ex.
+                            getMessage());
         }
         return null;
     }

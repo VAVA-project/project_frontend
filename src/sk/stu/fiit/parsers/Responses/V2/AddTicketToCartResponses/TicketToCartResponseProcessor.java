@@ -6,12 +6,11 @@ package sk.stu.fiit.parsers.Responses.V2.AddTicketToCartResponses;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import sk.stu.fiit.parsers.Responses.V2.Response;
 import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
@@ -23,7 +22,10 @@ import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
  * @author adamf
  */
 public class TicketToCartResponseProcessor extends XMLProcessor {
-
+    
+    private static final Logger LOGGER = Logger.getLogger(
+            TicketToCartResponseProcessor.class);
+    
     private static final List<String> possibleValidationErrors = Arrays.asList(
             "errors");
 
@@ -37,29 +39,30 @@ public class TicketToCartResponseProcessor extends XMLProcessor {
 
     /**
      * {@inheritDoc }
-     * 
+     *
      * @return Returns parsed data mapped into TicketToCartResponse
-     * 
+     *
      * @see TicketToCartResponse
      */
     @Override
     public Response parseOK(Document document) {
         try {
             XPath xPath = XPathFactory.newInstance().newXPath();
-
+            
             String isTicketAddedToCart = (String) xPath.compile(
                     "//Boolean/text()").
                     evaluate(document, XPathConstants.STRING);
-
+            
             return new TicketToCartResponse(Boolean.parseBoolean(
                     isTicketAddedToCart));
-
+            
         } catch (UnsupportedOperationException | XPathExpressionException ex) {
-            Logger.getLogger(TicketToCartResponseProcessor.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.warn(
+                    "Exception has been thrown while processing TicketToCartResponse. Error message: " + ex.
+                            getMessage());
         }
-
+        
         return null;
     }
-
+    
 }

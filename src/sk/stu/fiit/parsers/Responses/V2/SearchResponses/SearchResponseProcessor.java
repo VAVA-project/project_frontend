@@ -6,12 +6,11 @@ package sk.stu.fiit.parsers.Responses.V2.SearchResponses;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -28,6 +27,9 @@ import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
  * @author Adam Bublavý
  */
 public class SearchResponseProcessor extends XMLProcessor {
+
+    private static final Logger LOGGER = Logger.getLogger(
+            SearchResponseProcessor.class);
 
     private static final List<String> possibleValidationErrors
             = Arrays.asList("errors");
@@ -101,8 +103,9 @@ public class SearchResponseProcessor extends XMLProcessor {
 
             return searchResponse;
         } catch (XPathExpressionException ex) {
-            Logger.getLogger(SearchResponseProcessor.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.warn(
+                    "Exception has been thrown while processing SearchResponse. Error message: " + ex.
+                            getMessage());
         }
 
         return null;

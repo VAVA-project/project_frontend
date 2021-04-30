@@ -9,12 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -22,7 +21,6 @@ import org.w3c.dom.NodeList;
 import sk.stu.fiit.Main.Tour;
 import sk.stu.fiit.Main.TourDate;
 import sk.stu.fiit.parsers.Responses.V2.Response;
-import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.TourOfferResponseProcessor;
 import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
 
 /**
@@ -32,6 +30,9 @@ import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
  * @author Adam Bublavý
  */
 public class UserBookingsResponseProcessor extends XMLProcessor {
+
+    private static final Logger LOGGER = Logger.getLogger(
+            UserBookingsResponseProcessor.class);
 
     /**
      * {@inheritDoc }
@@ -90,8 +91,9 @@ public class UserBookingsResponseProcessor extends XMLProcessor {
 
             return new UserBookingsResponse(userBookings);
         } catch (XPathExpressionException ex) {
-            Logger.getLogger(TourOfferResponseProcessor.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.warn(
+                    "XPathExpressionException has been thrown while processing UserBookingsResponse. Error message: " + ex.
+                            getMessage());
         }
 
         return null;
@@ -107,6 +109,7 @@ public class UserBookingsResponseProcessor extends XMLProcessor {
      */
     private List<OrderedTicket> parseOrderedTickets(NodeList orderedTicketsList,
             Map<String, TourDate> tourDates, Map<String, Tour> tourOffers) {
+        LOGGER.info("Parsing of ordered tickets has started");
 
         List<OrderedTicket> orderedTickets = new ArrayList<>();
 
@@ -135,6 +138,8 @@ public class UserBookingsResponseProcessor extends XMLProcessor {
             ));
         }
 
+        LOGGER.info("Parsing of ordered tickets has finished");
+
         return orderedTickets;
     }
 
@@ -146,6 +151,8 @@ public class UserBookingsResponseProcessor extends XMLProcessor {
      * value is tour date
      */
     private Map<String, TourDate> parseTourDates(Document document) {
+        LOGGER.info("Parsing of tour dates has started");
+
         Map<String, TourDate> tourDates = new HashMap<>();
 
         try {
@@ -173,9 +180,12 @@ public class UserBookingsResponseProcessor extends XMLProcessor {
             }
 
         } catch (XPathExpressionException ex) {
-            Logger.getLogger(UserBookingsResponseProcessor.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.warn(
+                    "XPathExpressionException has been thrown while processing tour dates in UserBookingsResponse. Error message: " + ex.
+                            getMessage());
         }
+
+        LOGGER.info("Parsing of tour dates has finished");
 
         return tourDates;
     }
@@ -188,6 +198,8 @@ public class UserBookingsResponseProcessor extends XMLProcessor {
      * value is tour offer
      */
     private Map<String, Tour> parseTourOffers(Document document) {
+        LOGGER.info("Parsing of tour offers has started");
+
         Map<String, Tour> tourOffers = new HashMap<>();
         try {
             XPath xPath = XPathFactory.newInstance().newXPath();
@@ -228,9 +240,12 @@ public class UserBookingsResponseProcessor extends XMLProcessor {
             }
 
         } catch (XPathExpressionException ex) {
-            Logger.getLogger(UserBookingsResponseProcessor.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.warn(
+                    "XPathExpressionException has been thrown while processing tour offers in UserBookingsResponse. Error message: " + ex.
+                            getMessage());
         }
+
+        LOGGER.info("Parsing of tour offers has finished");
 
         return tourOffers;
     }

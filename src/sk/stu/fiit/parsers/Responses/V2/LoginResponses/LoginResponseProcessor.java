@@ -7,12 +7,11 @@ package sk.stu.fiit.parsers.Responses.V2.LoginResponses;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import sk.stu.fiit.User.User;
 import sk.stu.fiit.User.UserType;
@@ -25,6 +24,9 @@ import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
  * @author Adam Bublavý
  */
 public class LoginResponseProcessor extends XMLProcessor {
+    
+    private static final Logger LOGGER = Logger.getLogger(
+            LoginResponseProcessor.class);
 
     private static final List<String> possibleValidationErrors = Arrays.asList(
             "errors", "email", "password");
@@ -61,8 +63,9 @@ public class LoginResponseProcessor extends XMLProcessor {
             return new LoginResponse(token, new User(UserType.valueOf(
                     type), email, firstName, lastName, photo, dateOfBirth));
         } catch (UnsupportedOperationException | XPathExpressionException ex) {
-            Logger.getLogger(LoginResponseProcessor.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.warn(
+                    "Exception has been thrown while processing LoginResponse. Error message: " + ex.
+                            getMessage());
         }
 
         return null;
