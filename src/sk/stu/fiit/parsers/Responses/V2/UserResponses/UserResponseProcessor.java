@@ -18,6 +18,7 @@ import sk.stu.fiit.parsers.Responses.V2.Response;
 import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
 
 /**
+ * UserResponseProcessor is used to process XML response of fetched user data
  *
  * @author Adam Bublavý
  */
@@ -26,16 +27,26 @@ public class UserResponseProcessor extends XMLProcessor {
     private static final List<String> possibleValidationErrors
             = Arrays.asList("errors");
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public List<String> getPossibleValidationErrors() {
         return possibleValidationErrors;
     }
 
+    /**
+     * {@inheritDoc }
+     *
+     * @return Returns parsed data mapped into UserResponse
+     *
+     * @see UserResponse
+     */
     @Override
     public Response parseOK(Document document) {
         try {
             XPath xPath = XPathFactory.newInstance().newXPath();
-            
+
             String firstName = (String) xPath.compile("//firstName/text()").
                     evaluate(document, XPathConstants.STRING);
             String id = (String) xPath.compile("//id/text()").
@@ -44,14 +55,14 @@ public class UserResponseProcessor extends XMLProcessor {
                     evaluate(document, XPathConstants.STRING);
             String photo = (String) xPath.compile("//photo/text()").
                     evaluate(document, XPathConstants.STRING);
-            
+
             return new UserResponse(
                     new TourGuide(firstName, id, lastName, photo));
         } catch (XPathExpressionException ex) {
             Logger.getLogger(UserResponseProcessor.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
-        
+
         return null;
     }
 
