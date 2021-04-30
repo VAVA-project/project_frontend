@@ -90,15 +90,15 @@
                      <effect>
                         <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                      </effect></Label>
-                  <Label layoutX="130.0" layoutY="170.0" prefHeight="90.0" prefWidth="180.0" styleClass="txt-customer" text="%signup.chooseAccount.customer.description_1" wrapText="true">
+                  <Label layoutX="130.0" layoutY="170.0" prefHeight="90.0" prefWidth="204.0" styleClass="txt-customer" text="%signup.chooseAccount.customer.description_1" wrapText="true">
                      <effect>
                         <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                      </effect></Label>
-                  <Label layoutX="130.0" layoutY="255.0" prefHeight="90.0" prefWidth="200.0" styleClass="txt-customer" text="%signup.chooseAccount.customer.description_2" wrapText="true">
+                  <Label layoutX="130.0" layoutY="255.0" prefHeight="90.0" prefWidth="220.0" styleClass="txt-customer" text="%signup.chooseAccount.customer.description_2" wrapText="true">
                      <effect>
                         <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                      </effect></Label>
-                  <Label layoutX="130.0" layoutY="340.0" prefHeight="90.0" prefWidth="200.0" styleClass="txt-customer" text="%signup.chooseAccount.customer.description_3" wrapText="true">
+                  <Label layoutX="130.0" layoutY="340.0" prefHeight="106.0" prefWidth="228.0" styleClass="txt-customer" text="%signup.chooseAccount.customer.description_3" wrapText="true">
                      <effect>
                         <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                      </effect></Label>
@@ -218,7 +218,7 @@
             </Pane>
             <Pane fx:id="paneSignupGuideAccount" prefHeight="200.0" prefWidth="200.0" styleClass="pane-signup-guide-account">
                <children>
-                  <Label contentDisplay="CENTER" layoutX="142.0" layoutY="59.0" prefHeight="96.0" prefWidth="167.0" styleClass="lbl-guide" text="%signup.chooseAccount.guide.title" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" wrapText="true">
+                  <Label contentDisplay="CENTER" layoutX="142.0" layoutY="59.0" prefHeight="96.0" prefWidth="194.0" styleClass="lbl-guide" text="%signup.chooseAccount.guide.title" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" wrapText="true">
                      <effect>
                         <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                      </effect></Label>

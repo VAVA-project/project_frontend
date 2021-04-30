@@ -5,6 +5,7 @@
 package sk.stu.fiit.parsers.Requests.dto;
 
 import sk.stu.fiit.parsers.Requests.IRequestVisitor;
+import sk.stu.fiit.Main.Tour;
 
 /**
  * CreateTourOfferRequest request is used to create new tour offer

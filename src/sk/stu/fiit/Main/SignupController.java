@@ -40,6 +40,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
+import sk.stu.fiit.Internationalisation.I18n;
 import sk.stu.fiit.User.User;
 import sk.stu.fiit.User.UserType;
 import sk.stu.fiit.Validators.UserRegistrationValidator;
@@ -203,8 +204,9 @@ public class SignupController implements Initializable {
 
         hboxControlButtonsAccountInformations.getChildren().add(btnMinimize);
         hboxControlButtonsAccountInformations.getChildren().add(btnExit);
-
-        lblUserType.setText("Customer");
+        
+        
+        lblUserType.setText(I18n.getMessage("signup.userType.normalUser"));
         userType = UserType.NORMAL_USER;
     }
     
@@ -225,7 +227,7 @@ public class SignupController implements Initializable {
         hboxControlButtonsAccountInformations.getChildren().add(btnMinimize);
         hboxControlButtonsAccountInformations.getChildren().add(btnExit);
 
-        lblUserType.setText("Guide");
+        lblUserType.setText(I18n.getMessage("signup.userType.guide"));
         userType = UserType.GUIDE;
     }
     

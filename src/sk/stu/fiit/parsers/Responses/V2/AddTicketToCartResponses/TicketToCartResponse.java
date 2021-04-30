@@ -5,6 +5,8 @@
 package sk.stu.fiit.parsers.Responses.V2.AddTicketToCartResponses;
 
 import sk.stu.fiit.parsers.Responses.V2.Response;
+import sk.stu.fiit.parsers.Requests.dto.DeleteTicketFromCartRequest;
+import sk.stu.fiit.parsers.Requests.dto.AddTicketToCartRequest;
 
 /**
  * TicketToCartResponse response is used to hold data which are extracted from

@@ -81,7 +81,6 @@ public class SigninController implements Initializable {
         }
         HttpPost httpPost = this.createLoginRequest();
         CompletableFuture.runAsync(() -> this.sendAndProcessLoginRequest(httpPost, event));
-        LOGGER.info("User is signed in");
     }
 
     private boolean validateInputs() {
@@ -137,9 +136,10 @@ public class SigninController implements Initializable {
 
             Singleton.getInstance().setJwtToken(loginResponse.getJwtToken());
             Singleton.getInstance().setUser(loginResponse.getUser());
-
+            
+            LOGGER.info("User is signed in");
+            
             this.clearCart();
-
             this.gotToSearch(event);
         } catch (AuthTokenExpiredException ex) {
         } catch (APIValidationException ex) {
@@ -249,6 +249,13 @@ public class SigninController implements Initializable {
         }
     }
     
+    /**
+     * Sets a new position of stage depending on the variables stored from
+     * setOnMousePressed method when mouse is dragged.
+     *
+     * @param event
+     * @see setOnMousePressed
+     */
     @FXML
     private void setOnMouseDragged(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -256,6 +263,11 @@ public class SigninController implements Initializable {
         stage.setY(event.getScreenY() - yOffset);
     }
 
+    /**
+     * Saves the axis values of the scene when mouse is pressed.
+     *
+     * @param event
+     */
     @FXML
     private void setOnMousePressed(MouseEvent event) {
         xOffset = event.getSceneX();

@@ -25,7 +25,7 @@ public class UserRegistrationValidator {
      * firstname, lastname).
      */
     public static BiPredicate<TextField, TextField> areEmpty = (tf1, tf2) -> {
-        return !(tf1.getText().isEmpty() || tf2.getText().isEmpty());
+        return !(tf1.getText().trim().isEmpty() || tf2.getText().trim().isEmpty());
     };
     
     /**

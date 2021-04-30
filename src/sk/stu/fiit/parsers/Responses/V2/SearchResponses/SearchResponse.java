@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import sk.stu.fiit.Main.Tour;
 import sk.stu.fiit.parsers.Responses.V2.Response;
+import sk.stu.fiit.parsers.Requests.dto.SearchRequest;
 
 /**
  * SearchResponse response is used to hold data which are extracted from search

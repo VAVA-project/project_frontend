@@ -27,22 +27,25 @@ public class TourOfferValidator {
      * @return 
      */
     public static boolean validateTextInputs(TextField startPlace, TextField destinationPlace, TextField price, TextArea description) {
-        if (startPlace.getText().isEmpty()) {
+        if (startPlace.getText().trim().isEmpty()) {
             Alerts.showAlert("TITLE_EMPTY_START_PLACE");
             return false;
-        } else if (destinationPlace.getText().isEmpty()) {
+        } else if (destinationPlace.getText().trim().isEmpty()) {
             Alerts.showAlert("TITLE_EMPTY_DESTINATION_PLACE");
             return false;
         }
-        else if (price.getText().isEmpty()) {
+        else if (price.getText().trim().isEmpty()) {
             Alerts.showAlert("TITLE_EMPTY_PRICE");
             return false;
         }
-        else if (description.getText().isEmpty()) {
+        else if (description.getText().trim().isEmpty()) {
             Alerts.showAlert("TITLE_EMPTY_DESCRIPTION");
             return false;
         } else if (isDouble(price)) {
             Alerts.showAlert("TITLE_PRICE_NOT_NUMBER");
+            return false;
+        } else if (Double.parseDouble(price.getText()) < 0) {
+            Alerts.showAlert("TITLE_PRICE_NOT_POSITIVE");
             return false;
         }
         return true;

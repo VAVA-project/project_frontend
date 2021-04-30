@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.User.UserType;
+import sk.stu.fiit.Validators.UserRegistrationValidator;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.EditRequest;
 import sk.stu.fiit.parsers.Responses.V2.EditResponses.EditResponse;
@@ -89,11 +90,19 @@ public class EditAccountController implements Initializable {
         }
         if (event.getSource().equals(btnEdit)) {
             editUserInformations(event);
-            LOGGER.info("Account information has been edited");
-            Alerts.showAlert("TITLE_EDITED_ACCOUNT");
         }
     }
-
+    
+    /**
+     * Creates EditRequest. Then sends this request to the server as
+     * HttpPut and processes the response from the server. Data in the response
+     * contains updated data about the user.
+     * 
+     * @param event
+     * @see EditRequest
+     * @see EditResponse
+     * @see Singleton
+     */
     private void editUserInformations(MouseEvent event) {
         if (!this.validateInputs()) {
             return;
@@ -111,13 +120,15 @@ public class EditAccountController implements Initializable {
             EditResponse editResponse = (EditResponse) ResponseFactory.
                     getFactory(
                             ResponseFactory.ResponseFactoryType.EDIT_RESPONSE).
-                    parse(
-                            response);
+                    parse(response);
 
             Singleton.getInstance().getUser().setFirstName(editResponse.
                     getFirstName());
             Singleton.getInstance().getUser().setLastName(editResponse.
                     getLastName());
+            
+            LOGGER.info("Account information has been edited");
+            Alerts.showAlert("TITLE_EDITED_ACCOUNT");
 
             if (Singleton.getInstance().getUser().getUserType() == UserType.NORMAL_USER) {
                 ScreenSwitcher.getScreenSwitcher().switchToScreen(
@@ -136,7 +147,11 @@ public class EditAccountController implements Initializable {
         } catch (APIValidationException ex) {
         }
     }
-
+    
+    /**
+     * Validates inputs.
+     * @return boolean
+     */
     private boolean validateInputs() {
         if (this.tfFirstname.getText().isEmpty()) {
             LOGGER.info("First name field is empty");
@@ -155,10 +170,17 @@ public class EditAccountController implements Initializable {
             Alerts.showAlert("TITLE_EMPTY_DATE_OF_BIRTH");
             return false;
         }
-
+        if (!UserRegistrationValidator.isDateValid.test(this.dpDateOfBirth.getValue())){
+            LOGGER.info("Invalid email");
+            Alerts.showAlert("TITLE_DATE_OF_BIRTH");
+            return false;
+        }
         return true;
     }
-
+    
+    /**
+     * Fills data about the user to the labels.
+     */
     private void fillData() {
         this.tfFirstname.setText(Singleton.getInstance().getUser().
                 getFirstName());
@@ -166,7 +188,11 @@ public class EditAccountController implements Initializable {
         this.dpDateOfBirth.setValue(Singleton.getInstance().getUser().
                 getDateOfBirth());
     }
-
+    
+    /**
+     * Sets date in date picker less than the current date to prevent the user
+     * from registering in the future.
+     */
     private void setupDateOfBirthDatePicker() {
         this.dpDateOfBirth.setDayCellFactory(
                 (final DatePicker param) -> new DateCell() {
@@ -181,6 +207,13 @@ public class EditAccountController implements Initializable {
         });
     }
 
+    /**
+     * Sets a new position of stage depending on the variables stored from
+     * setOnMousePressed method when mouse is dragged.
+     *
+     * @param event
+     * @see setOnMousePressed
+     */
     @FXML
     private void setOnMouseDragged(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -188,6 +221,11 @@ public class EditAccountController implements Initializable {
         stage.setY(event.getScreenY() - yOffset);
     }
 
+    /**
+     * Saves the axis values of the scene when mouse is pressed.
+     *
+     * @param event
+     */
     @FXML
     private void setOnMousePressed(MouseEvent event) {
         xOffset = event.getSceneX();

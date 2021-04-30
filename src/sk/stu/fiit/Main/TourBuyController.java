@@ -119,7 +119,7 @@ public class TourBuyController implements Initializable {
         this.lblName.setText(Singleton.getInstance().getTourBuy().getGuideName());
         this.lblstartPlace.setText(Singleton.getInstance().getTourBuy().getStartPlace());
         this.lblDestination.setText(Singleton.getInstance().getTourBuy().getDestinationPlace());
-        this.lblPrice.setText(Singleton.getInstance().getTourBuy().getPricePerPerson());
+        this.lblPrice.setText(Singleton.getInstance().getTourBuy().getPricePerPerson() + " €");
         this.taDescription.setText(Singleton.getInstance().getTourBuy().getDescription());
 
         this.ratingStars.setRating(Double.parseDouble(Singleton.getInstance().getTourBuy().getRating()));

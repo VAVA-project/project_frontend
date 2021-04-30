@@ -6,6 +6,7 @@ package sk.stu.fiit.parsers.Responses.V2.LoginResponses;
 
 import sk.stu.fiit.User.User;
 import sk.stu.fiit.parsers.Responses.V2.Response;
+import sk.stu.fiit.parsers.Requests.dto.LoginRequest;
 
 /**
  * LoginResponse response is used to hold data which are extracted from login

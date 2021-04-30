@@ -36,7 +36,7 @@ public class TourScheduleValidator {
      */
     public static boolean validate(TextField tfCapacity, DatePicker dpStartDate, 
             DatePicker dpEndDate, TextField tfStartTime, TextField tfEndTime) {
-        if (tfCapacity.getText().isEmpty()) {
+        if (tfCapacity.getText().trim().isEmpty()) {
             Alerts.showAlert("TITLE_EMPTY_CAPACITY");
             return false;
         }
@@ -48,11 +48,11 @@ public class TourScheduleValidator {
             Alerts.showAlert("TITLE_EMPTY_END_DATE");
             return false;
         }
-        if (tfStartTime.getText().isEmpty()) {
+        if (tfStartTime.getText().trim().isEmpty()) {
             Alerts.showAlert("TITLE_EMPTY_START_TIME");
             return false;
         }
-        if (tfEndTime.getText().isEmpty()) {
+        if (tfEndTime.getText().trim().isEmpty()) {
             Alerts.showAlert("TITLE_EMPTY_END_TIME");
             return false;
         }
@@ -70,6 +70,10 @@ public class TourScheduleValidator {
         }
         if (validateDateRange(dpStartDate, dpEndDate)) {
             Alerts.showAlert("TITLE_DATE_RANGE");
+            return false;
+        }
+        if (Integer.parseInt(tfCapacity.getText()) <= 0) {
+            Alerts.showAlert("TITLE_CAPACITY_IS_NEGATIVE");
             return false;
         }
         return true;

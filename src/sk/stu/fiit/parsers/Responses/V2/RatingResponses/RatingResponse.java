@@ -5,6 +5,7 @@
 package sk.stu.fiit.parsers.Responses.V2.RatingResponses;
 
 import sk.stu.fiit.parsers.Responses.V2.Response;
+import sk.stu.fiit.parsers.Requests.dto.RatingRequest;
 
 /**
  * RatingResponse response is used to hold data which are extracted from rating

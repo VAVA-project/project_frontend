@@ -9,8 +9,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -109,7 +107,7 @@ public class ToursController implements Initializable {
         if (Singleton.getInstance().getTours().isEmpty()) {
             LOGGER.info("Tours not founded");
             Alerts.showAlert("TITLE_NO_TOURS", "CONTENT_NO_TOURS");
-            return;
+            //return;
         }
         vbTours.getChildren().clear();
         initializeButtons();
@@ -306,9 +304,11 @@ public class ToursController implements Initializable {
 
         if (Singleton.getInstance().getActualPageNumber()
                 != Singleton.getInstance().getLastPageNumber()) {
+            System.out.println("Singleton.getInstance().getActualPageNumber() = " + Singleton.getInstance().getActualPageNumber());
             paneMain.getChildren().add(btnNext);
         }
         if (Singleton.getInstance().getActualPageNumber() != 1) {
+            System.out.println("getActualPageNumber() = " + Singleton.getInstance().getActualPageNumber() );
             paneMain.getChildren().add(btnPrevious);
         }
     }

@@ -5,6 +5,7 @@
 package sk.stu.fiit.parsers.Responses.V2.CheckoutTicketsInCartResponses;
 
 import sk.stu.fiit.parsers.Responses.V2.Response;
+import sk.stu.fiit.parsers.Requests.dto.CheckoutTicketsInCartRequest;
 
 /**
  * CheckoutTicketsInCartResponse is used to hold data which are extracted from

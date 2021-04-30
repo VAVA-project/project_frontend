@@ -153,7 +153,7 @@ public class TourTicketsController implements Initializable {
         lblGuideName.
                 setText(Singleton.getInstance().getTourBuy().getGuideName());
         lblPrice.setText(Singleton.getInstance().getTourBuy().
-                getPricePerPerson());
+                getPricePerPerson() + " €");
     }
 
     /**

@@ -6,6 +6,8 @@ package sk.stu.fiit.parsers.Requests.dto;
 
 import java.time.LocalDateTime;
 import sk.stu.fiit.parsers.Requests.IRequestVisitor;
+import sk.stu.fiit.Main.Tour;
+import sk.stu.fiit.Main.TourDate;
 
 /**
  * CreateTourDateRequest request is used to create new tour date for specific
