@@ -18,6 +18,8 @@ import sk.stu.fiit.parsers.Responses.V2.Response;
 import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
 
 /**
+ * TourOfferResponseProcessor is used to process XML response which contains
+ * tour offers
  *
  * @author Adam Bublavý
  */
@@ -27,11 +29,21 @@ public class TourOfferResponseProcessor extends XMLProcessor {
             = Arrays.asList("errors", "startPlace", "destinationPlace",
                     "description", "pricePerPerson");
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public List<String> getPossibleValidationErrors() {
         return possibleValidationErrors;
     }
 
+    /**
+     * {@inheritDoc }
+     *
+     * @return Returns parsed data mapped into TourOfferResponse
+     *
+     * @see TourOfferResponse
+     */
     @Override
     public Response parseOK(Document document) {
         try {
@@ -58,7 +70,7 @@ public class TourOfferResponseProcessor extends XMLProcessor {
             LocalDateTime createdAt = LocalDateTime.parse((String) xPath.
                     compile("//createdAt/text()").
                     evaluate(document, XPathConstants.STRING));
-            
+
             return new TourOfferResponse(id, creatorId, startPlace,
                     destinationPlace, description, pricePerPerson, rating,
                     createdAt);
