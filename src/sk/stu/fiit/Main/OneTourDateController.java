@@ -7,8 +7,6 @@ package sk.stu.fiit.Main;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -39,6 +37,8 @@ public class OneTourDateController implements Initializable {
     private Label lblStartDate;
     @FXML
     private Label lblEndDate;
+    
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(OneTourDateController.class);
 
     public OneTourDateController() {
     }
@@ -52,6 +52,7 @@ public class OneTourDateController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        LOGGER.setLevel(org.apache.log4j.Level.INFO);
         setElements();
     }
     
@@ -73,8 +74,7 @@ public class OneTourDateController implements Initializable {
             stage.setScene(scene);
             stage.show();
         } catch (IOException ex) {
-            Logger.getLogger(OneTourDateController.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.error("File not found" + ex.getMessage());
         }
     }
     

@@ -14,10 +14,13 @@ import java.util.List;
 public class APIValidationException extends APIException {
     
     private List<APIValidationError> validationErrors;
-
+    
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(APIValidationException.class);
+    
     public APIValidationException(List<APIValidationError> validationErrors) {
         super();
         this.validationErrors = validationErrors;
+        LOGGER.error("API validation exception");
     }
 
     public List<APIValidationError> getValidationErrors() {

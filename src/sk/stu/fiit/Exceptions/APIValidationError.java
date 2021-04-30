@@ -13,8 +13,11 @@ public class APIValidationError {
     
     private String fieldName;
     private String errorMessage;
+    
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(APIValidationError.class);
 
     public APIValidationError(String fieldName, String errorMessage) {
+        LOGGER.error("API validation error");
         this.fieldName = fieldName;
         this.errorMessage = errorMessage;
     }

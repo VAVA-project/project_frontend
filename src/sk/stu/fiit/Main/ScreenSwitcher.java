@@ -5,8 +5,6 @@
 package sk.stu.fiit.Main;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -23,6 +21,7 @@ import sk.stu.fiit.Internationalisation.I18n;
 public class ScreenSwitcher {
 
     private static ScreenSwitcher screenSwitcher = null;
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(ToursController.class);
 
     private ScreenSwitcher() {
     }
@@ -49,7 +48,7 @@ public class ScreenSwitcher {
             stage.setScene(scene);
             stage.show();
         } catch (IOException ex) {
-            Logger.getLogger(ScreenSwitcher.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("File not found" + ex.getMessage());
         }
     }
     
@@ -69,7 +68,7 @@ public class ScreenSwitcher {
             stage.setScene(scene);
             stage.show();
         } catch (IOException ex) {
-            Logger.getLogger(ScreenSwitcher.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("File not found" + ex.getMessage());
         }
     }
 

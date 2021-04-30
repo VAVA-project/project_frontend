@@ -10,9 +10,12 @@ package sk.stu.fiit.Exceptions;
  * @author Adam Bublavý
  */
 public class AuthTokenExpiredException extends APIException {
-
+    
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(AuthTokenExpiredException.class);
+    
     public AuthTokenExpiredException() {
         super("Authorization JWT token has expired");
+        LOGGER.error("Authorization JWT token has expired");
     }
     
 }

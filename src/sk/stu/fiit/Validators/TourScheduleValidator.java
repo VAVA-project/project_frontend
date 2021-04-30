@@ -7,8 +7,6 @@ package sk.stu.fiit.Validators;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -21,6 +19,7 @@ import sk.stu.fiit.Main.Alerts;
 public class TourScheduleValidator {
     
     private static Pattern timePattern = Pattern.compile("^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$");
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(TourScheduleValidator.class);
     
     /**
      * Validates the given text fields if they are empty, if date pickers
@@ -91,7 +90,7 @@ public class TourScheduleValidator {
                 return false;
             }
         } catch (ParseException ex) {
-            Logger.getLogger(TourScheduleValidator.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("Parse exception has raised while parsing tour date" + ex.getMessage());
         }
         return true;
     }
@@ -118,6 +117,8 @@ public class TourScheduleValidator {
             Integer.parseInt(tfCapacity.getText());
             return false;
         } catch (NumberFormatException e) {
+            LOGGER.error("Number format exception has raise while trying "
+                    + "to format input in capacity text field" + e.getMessage());
             return true;
         }
     }

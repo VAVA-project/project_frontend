@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -49,6 +47,8 @@ public class OneTourDateScheduleController implements Initializable {
     private Label lblStartDate;
     @FXML
     private Label lblEndDate;
+    
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(OneTourDateScheduleController.class);
 
     public OneTourDateScheduleController() {
     }
@@ -71,6 +71,7 @@ public class OneTourDateScheduleController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        LOGGER.setLevel(org.apache.log4j.Level.INFO);
         if (this.tourDate == null) {
             initializeTourDateCreate();
         } else {
@@ -155,16 +156,17 @@ public class OneTourDateScheduleController implements Initializable {
             if (deleteTourDateResponse.isDeleted()) {
                 deleteTourDateFromScreen();
                 Singleton.getInstance().setTourDateDeleted(true);
+                LOGGER.info("Date of tour has been deleted");
                 Alerts.showAlert("TITLE_DELETED_TOUR_DATE");
             } else {
+                LOGGER.info("Date of tour hasn't been deleted");
                 Alerts.showAlert("TITLE_NOT_DELETED_TOUR_DATE", "CONTENT_NOT_DELETED_TOUR_DATE");
             }
         } catch (IOException ex) {
-            Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("Server error" + ex.getMessage());
+            Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
-            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (APIValidationException ex) {
-            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
