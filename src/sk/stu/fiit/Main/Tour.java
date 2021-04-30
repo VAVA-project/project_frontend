@@ -5,7 +5,8 @@
 package sk.stu.fiit.Main;
 
 /**
- *
+ * Stores data about the tour.
+ * This class is used when a tour is loaded from the database.
  * @author adamf
  */
 public class Tour {
@@ -21,7 +22,18 @@ public class Tour {
     private String createdAt;
     private String rating;
     private String userRating;
-
+    
+    /**
+     * @param id attribute that stores tour id
+     * @param creatorId attribute that stores creator id
+     * @param startPlace attribute that stores start place
+     * @param destinationPlace attribute that stores destination place
+     * @param description attribute that stores description
+     * @param pricePerPerson attribute that stores price per person
+     * @param createdAt attribute that stores date in string format and tells,
+     * when the tour has been created
+     * @param rating attribute that stores rating
+     */
     public Tour(String id, String creatorId, String startPlace, String destinationPlace, String description, String pricePerPerson, String createdAt, String rating) {
         this.id = id;
         this.creatorId = creatorId;
@@ -32,7 +44,11 @@ public class Tour {
         this.createdAt = createdAt;
         this.rating = rating;
     }
-
+    
+    /**
+     * Creates copy of the given tour object.
+     * @param tour 
+     */
     public Tour(Tour tour) {
         this.guidePhoto = tour.getGuidePhoto();
         this.guideName = tour.getGuideName();
@@ -102,5 +118,4 @@ public class Tour {
         this.userRating = userRating;
     }
     
-
 }

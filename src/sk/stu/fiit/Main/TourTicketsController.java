@@ -51,15 +51,14 @@ import sk.stu.fiit.parsers.Responses.V2.TourTicketsResponses.TourTicketsResponse
  * @author adamf
  */
 public class TourTicketsController implements Initializable {
-    
+
     private double xOffset = 0;
     private double yOffset = 0;
-    
+
     private TourDate tourDate;
 
     private Set<TourTicket> ticketsInCart;
     private Set<TourTicket> availableTickets;
-
 
     @FXML
     private Button btnBack;
@@ -131,6 +130,10 @@ public class TourTicketsController implements Initializable {
         }
     }
 
+    /**
+     * Fills labels on this screen with data about a certain tour and tour
+     * guide.
+     */
     private void fillLabelsWithData() {
         lblDestination.setText(Singleton.getInstance().getTourBuy().
                 getDestinationPlace());
@@ -152,23 +155,40 @@ public class TourTicketsController implements Initializable {
                 getPricePerPerson());
     }
 
+    /**
+     * Calls methods fetchAvailableTickets and processFetchedAvailableTickets.
+     *
+     * @param callback
+     */
     private void getFreeTickets(Consumer<? super Void> callback) {
         CompletableFuture.supplyAsync(this::fetchAvailableTickets).thenAccept(
                 this::processFetchedAvailableTickets).thenAccept(callback);
     }
 
+    /**
+     * Creates TicketsRequest for the selected tour date. Then sends this
+     * request to the server as HttpGet and returns the response from the
+     * server. Data in the response contains list of tickets for certain tour
+     * date.
+     *
+     * @param event
+     * @see TicketsRequest
+     * @see TourTicketsResponse
+     * @see TourTicket
+     *
+     * @return TourTicketsResponse
+     */
     private TourTicketsResponse fetchAvailableTickets() {
         TicketsRequest ticketsRequest = new TicketsRequest(this.tourDate.getId());
         ticketsRequest.accept(new XMLRequestParser());
 
         HttpGet request = (HttpGet) ticketsRequest.getRequest();
 
-        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
-                 CloseableHttpResponse response = httpClient.execute(request)) {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
 
             return (TourTicketsResponse) ResponseFactory.
-                    getFactory(
-                            ResponseFactory.ResponseFactoryType.TOUR_TICKETS_RESPONSE).
+                    getFactory(ResponseFactory.ResponseFactoryType.TOUR_TICKETS_RESPONSE).
                     parse(response);
 
         } catch (IOException ex) {
@@ -189,6 +209,13 @@ public class TourTicketsController implements Initializable {
         return null;
     }
 
+    /**
+     * Processes the response, respectively stores the tickets from the
+     * response.
+     *
+     * @param response
+     * @see TourTicket
+     */
     private void processFetchedAvailableTickets(TourTicketsResponse response) {
         if (response == null) {
             return;
@@ -201,48 +228,65 @@ public class TourTicketsController implements Initializable {
             this.blockPlusButton();
             return;
         }
-
         this.availableTickets.addAll(fetchedTickets);
     }
 
+    /**
+     * Adds ticket to the cart.
+     *
+     * @param event
+     */
     @FXML
     private void handlePlusButton(MouseEvent event) {
         if (this.availableTickets.isEmpty()) {
             this.getFreeTickets((response) -> {
                 addTicketToCart(event);
             });
-            
+
             this.unblockMinusButtons();
 
             return;
         }
-        
+
         this.unblockMinusButtons();
 
         addTicketToCart(event);
     }
 
+    /**
+     * Sends request to the server and updates label with count of reserved
+     * tickets.
+     *
+     * @param event
+     */
     private void addTicketToCart(MouseEvent event) {
         CompletableFuture.supplyAsync(() -> this.sendAddTicketToCartRequest(
                 this.availableTickets.iterator().next())).thenAccept(
                 (result) -> {
+                    TourTicket lockedTicket = this.availableTickets.iterator().
+                            next();
+                    this.availableTickets.remove(lockedTicket);
                     if (!result) {
+                        Platform.runLater(() -> {
+                            handlePlusButton(event);
+                        });
                         return;
                     }
 
                     System.out.println(
-                            "Available tickets size: " + this.availableTickets.
-                                    size());
+                            "Available tickets size: " + this.availableTickets.size());
+                    synchronized (this) {
+                        this.ticketsInCart.add(lockedTicket);
+                        updateTicketCountLabel();
+                    }
 
-                    TourTicket lockedTicket = this.availableTickets.iterator().
-                            next();
-                    this.availableTickets.remove(lockedTicket);
-                    this.ticketsInCart.add(lockedTicket);
-
-                    updateTicketCountLabel();
                 });
     }
-
+    
+    /**
+     * Deletes ticket from the cart.
+     * @param event 
+     */
     @FXML
     private void handleMinusButton(MouseEvent event) {
         if (this.ticketsInCart.isEmpty()) {
@@ -264,10 +308,13 @@ public class TourTicketsController implements Initializable {
 
                     updateTicketCountLabel();
                 });
-        
+
         this.unblockPlusButtons();
     }
-
+    
+    /**
+     * Updates ticket count label.
+     */
     private void updateTicketCountLabel() {
         Platform.runLater(() -> this.lblNumberOfTickets.setText(
                 String.valueOf(this.ticketsInCart.size())));
@@ -296,15 +343,26 @@ public class TourTicketsController implements Initializable {
             this.btnMinus.setDisable(false);
         });
     }
-
+    
+    /**
+     * Sends CheckoutTicketsInCartRequest to the server and
+     * processes the response from the server.
+     * 
+     * @param event
+     * 
+     * @see CheckoutTicketsInCartRequest
+     * @see CheckoutTicketsInCartResponse
+     */
     @FXML
-    private void handleRagisterButton(MouseEvent event) {
+    private void handleRegisterButton(MouseEvent event) {
         if (this.ticketsInCart.isEmpty()) {
             Alerts.showAlert("TITLE_EMPTY_CART");
             return;
         }
 
-        if (checkoutTicketsInCart().isSuccess()) {
+        CheckoutTicketsInCartResponse response = this.checkoutTicketsInCart();
+
+        if (response != null && response.isSuccess()) {
             ScreenSwitcher.getScreenSwitcher().switchToScreen(event,
                     "Views/PostCheckout.fxml");
         } else {
@@ -312,6 +370,18 @@ public class TourTicketsController implements Initializable {
         }
     }
 
+    /**
+     * Creates AddTicketToCartRequest for one availableTicket. Then sends this
+     * request to the server as HttpPost and returns the response from the
+     * server. Data in the response contains boolean value.
+     *
+     * @param availableTicket
+     * @return boolean
+     *
+     * @see AddTicketToCartRequest
+     * @see TicketToCartResponse
+     * @see TourTicket
+     */
     private boolean sendAddTicketToCartRequest(TourTicket availableTicket) {
         if (availableTicket == null) {
             return false;
@@ -323,20 +393,18 @@ public class TourTicketsController implements Initializable {
 
         HttpPost request = (HttpPost) addTicketToCartRequest.getRequest();
 
-        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
-                 CloseableHttpResponse response = httpClient.execute(request)) {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
 
             TicketToCartResponse addTicketToCartResponse = (TicketToCartResponse) ResponseFactory.
-                    getFactory(
-                            ResponseFactory.ResponseFactoryType.ADD_TICKET_TO_CART_RESPONSE).
+                    getFactory(ResponseFactory.ResponseFactoryType.ADD_TICKET_TO_CART_RESPONSE).
                     parse(response);
 
             return addTicketToCartResponse.isIsTicketAddedToCart();
         } catch (IOException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).log(
                     Level.SEVERE, null, ex);
-            Alerts.showAlert("TITLE_SERVER_ERROR",
-                    "CONTENT_SERVER_NOT_RESPONDING");
+            Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
@@ -349,7 +417,19 @@ public class TourTicketsController implements Initializable {
 
         return false;
     }
-
+    
+    /**
+     * Creates DeleteTicketFromCartRequest for one ticket. Then sends this
+     * request to the server as HttpDelete and returns the response from the
+     * server. Data in the response contains boolean value.
+     * 
+     * @param tourTicket
+     * @return boolean
+     * 
+     * @see DeleteTicketFromCartRequest
+     * @see TicketToCartResponse
+     * @see TourTicket
+     */
     private boolean sendDeleteTicketFromCartRequest(TourTicket tourTicket) {
         if (tourTicket == null) {
             return false;
@@ -362,8 +442,8 @@ public class TourTicketsController implements Initializable {
         HttpDelete request = (HttpDelete) deleteTicketFromCartRequest.
                 getRequest();
 
-        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
-                 CloseableHttpResponse response = httpClient.execute(request)) {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
 
             TicketToCartResponse deleteTicketFromCartResponse = (TicketToCartResponse) ResponseFactory.
                     getFactory(
@@ -388,7 +468,11 @@ public class TourTicketsController implements Initializable {
         }
         return false;
     }
-
+    
+    /**
+     * Sends sendDeleteCartRequest to the server and processes
+     * the response from the server.
+     */
     private void clearCart() {
         CompletableFuture.supplyAsync(this::sendDeleteCartRequest)
                 .thenAccept((response) -> {
@@ -397,15 +481,25 @@ public class TourTicketsController implements Initializable {
                     }
                 });
     }
-
+    
+    /**
+     * Creates DeleteCartRequest. Then sends this request to the server as
+     * HttpDelete and returns the response from the server. Data in the
+     * response contains boolean value.
+     * 
+     * @return DeleteCartResponse
+     * 
+     * @see DeleteCartRequest
+     * @see DeleteCartResponse
+     */
     private DeleteCartResponse sendDeleteCartRequest() {
         DeleteCartRequest request = new DeleteCartRequest();
         request.accept(new XMLRequestParser());
 
         HttpDelete deleteRequest = (HttpDelete) request.getRequest();
 
-        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
-                 CloseableHttpResponse response = httpClient.execute(
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(
                         deleteRequest)) {
             return (DeleteCartResponse) ResponseFactory.getFactory(
                     ResponseFactory.ResponseFactoryType.DELETE_CART_RESPONSE).
@@ -427,7 +521,18 @@ public class TourTicketsController implements Initializable {
 
         return null;
     }
-
+    
+    /**
+     * Creates CheckoutTicketsInCartRequest for tickets in the cart. Then sends 
+     * this request to the server as HttpPost and returns the response from the
+     * server. Data in the response contains boolean value.
+     * 
+     * 
+     * @return CheckoutTicketsInCartResponse
+     * 
+     * @see CheckoutTicketsInCartRequest
+     * @see CheckoutTicketsInCartResponse
+     */
     private CheckoutTicketsInCartResponse checkoutTicketsInCart() {
         CheckoutTicketsInCartRequest checkoutTicketsInCartRequest = new CheckoutTicketsInCartRequest(
                 taComment.getText());
@@ -435,8 +540,8 @@ public class TourTicketsController implements Initializable {
 
         HttpPost request = (HttpPost) checkoutTicketsInCartRequest.getRequest();
 
-        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
-                 CloseableHttpResponse response = httpClient.execute(request)) {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
 
             return (CheckoutTicketsInCartResponse) ResponseFactory.getFactory(
                     ResponseFactory.ResponseFactoryType.CHECKOUT_CART_RESPONSE).
@@ -459,7 +564,11 @@ public class TourTicketsController implements Initializable {
 
         return null;
     }
-
+    
+    /**
+     * Handles expired tickets error.
+     * @param e 
+     */
     private void handleExpiredTicketsError(APIValidationException e) {
         List<APIValidationError> errors = e.getValidationErrors();
 
@@ -470,7 +579,14 @@ public class TourTicketsController implements Initializable {
 
         this.updateTicketCountLabel();
     }
-    
+
+    /**
+     * Sets a new position of stage depending on the variables stored from
+     * setOnMousePressed method when mouse is dragged.
+     *
+     * @param event
+     * @see setOnMousePressed
+     */
     @FXML
     private void setOnMouseDragged(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -478,10 +594,15 @@ public class TourTicketsController implements Initializable {
         stage.setY(event.getScreenY() - yOffset);
     }
 
+    /**
+     * Saves the axis values of the scene when mouse is pressed.
+     *
+     * @param event
+     */
     @FXML
     private void setOnMousePressed(MouseEvent event) {
         xOffset = event.getSceneX();
         yOffset = event.getSceneY();
     }
-    
+
 }

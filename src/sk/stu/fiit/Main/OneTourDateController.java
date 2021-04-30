@@ -54,15 +54,20 @@ public class OneTourDateController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         setElements();
     }
-
+    
+    /**
+     * Switches to the TourTickets screen and sends tourDate object to this
+     * screen.
+     * 
+     * @param event
+     * @see TourTicketsController
+     */
     @FXML
     private void handleBuyButton(MouseEvent event) {
         try {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/TourTickets.fxml"), I18n.getBundle());
             loader.setControllerFactory(c -> new TourTicketsController(this.tourDate));
-            
             Scene scene = new Scene((Parent) loader.load());
             scene.setFill(Color.TRANSPARENT);
             stage.setScene(scene);
@@ -72,12 +77,14 @@ public class OneTourDateController implements Initializable {
                     log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    /**
+     * Initializes element with data of tourDate object.
+     */
     private void setElements() {
         if(this.tourDate == null) {
             return;
         }
-        
         this.lblCapacity.setText(this.tourDate.getNumberOfSoldTickets() + "/" + this.tourDate.getNumberOfTickets());
         this.lblStartDate.setText(tourDate.getStartDate());
         this.lblEndDate.setText(tourDate.getEndDate());

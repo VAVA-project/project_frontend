@@ -34,13 +34,8 @@ public class PostCheckoutController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-    }    
-
-    @FXML
-    private void handleSearchDestination(MouseEvent event) {
-        ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Search.fxml");
     }
-
+    
     @FXML
     private void handleMouseEvent(MouseEvent event) {
         if (event.getSource().equals(btnExit)) {
@@ -52,12 +47,34 @@ public class PostCheckoutController implements Initializable {
             actual_stage.setIconified(true);
         }
     }
-
+    
+    /**
+     * Switches to the Search screen.
+     * 
+     * @param event 
+     */
+    @FXML
+    private void handleSearchDestination(MouseEvent event) {
+        ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Search.fxml");
+    }
+    
+    /**
+     * Switches to the ProfileCustomer screen.
+     * 
+     * @param event 
+     */
     @FXML
     private void handleBookedTours(MouseEvent event) {
         ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileCustomer.fxml");
     }
     
+    /**
+     * Sets a new position of stage depending on the variables stored from
+     * setOnMousePressed method when mouse is dragged.
+     *
+     * @param event
+     * @see setOnMousePressed
+     */
     @FXML
     private void setOnMouseDragged(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -65,6 +82,11 @@ public class PostCheckoutController implements Initializable {
         stage.setY(event.getScreenY() - yOffset);
     }
 
+    /**
+     * Saves the axis values of the scene when mouse is pressed.
+     *
+     * @param event
+     */
     @FXML
     private void setOnMousePressed(MouseEvent event) {
         xOffset = event.getSceneX();

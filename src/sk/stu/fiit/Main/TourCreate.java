@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Stores data about the tour.
+ * This class is used when a new tour is created.
  * @author adamf
  */
 public class TourCreate {
@@ -20,7 +21,14 @@ public class TourCreate {
     private double pricePerPerson;
     private String description;
     private List<TourDateCreate> tourDates;
-
+    
+    /**
+     * 
+     * @param startPlace attribute that stores start place
+     * @param destinationPlace attribute that stores destination place
+     * @param pricePerPerson attribute that stores price per person
+     * @param description attribute that stores description
+     */
     public TourCreate(String startPlace, String destinationPlace, double pricePerPerson, String description) {
         this.startPlace = startPlace;
         this.destinationPlace = destinationPlace;

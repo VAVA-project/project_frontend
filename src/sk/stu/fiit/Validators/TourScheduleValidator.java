@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import sk.stu.fiit.Main.Alerts;
@@ -19,9 +20,23 @@ import sk.stu.fiit.Main.Alerts;
  */
 public class TourScheduleValidator {
     
+    private static Pattern timePattern = Pattern.compile("^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$");
+    
+    /**
+     * Validates the given text fields if they are empty, if date pickers
+     * have the value set, if capacity is of the Integer data type, if 
+     * times matches regex in the timePattern (HH:MM) and whether 
+     * the end date is not less than the start date.
+     * 
+     * @param tfCapacity
+     * @param dpStartDate
+     * @param dpEndDate
+     * @param tfStartTime
+     * @param tfEndTime
+     * @return 
+     */
     public static boolean validate(TextField tfCapacity, DatePicker dpStartDate, 
             DatePicker dpEndDate, TextField tfStartTime, TextField tfEndTime) {
-        
         if (tfCapacity.getText().isEmpty()) {
             Alerts.showAlert("TITLE_EMPTY_CAPACITY");
             return false;
@@ -46,11 +61,11 @@ public class TourScheduleValidator {
             Alerts.showAlert("TITLE_CAPACITY_NOT_NUMBER");
             return false;
         }
-        if (!tfStartTime.getText().matches("^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$")) {
+        if (!timePattern.matcher(tfStartTime.getText()).find()) {
             Alerts.showAlert("TITLE_START_TIME");
             return false;
         }
-        if (!tfEndTime.getText().matches("^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$")) {
+        if (!timePattern.matcher(tfEndTime.getText()).find()) {
             Alerts.showAlert("TITLE_END_TIME");
             return false;
         }
@@ -61,6 +76,13 @@ public class TourScheduleValidator {
         return true;
     }
     
+    /**
+     * Validates whether the end date is not less than the start date.
+     * 
+     * @param dpStartDate
+     * @param dpEndDate
+     * @return boolean
+     */
     static boolean validateDateRange(DatePicker dpStartDate, DatePicker dpEndDate) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -74,10 +96,23 @@ public class TourScheduleValidator {
         return true;
     }
     
+    /**
+     * Counts days between two given dates.
+     * 
+     * @param d1
+     * @param d2
+     * @return Integer
+     */
     static int countDaysBetweenDates(Date d1, Date d2) {
         return (int) ((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
     }
     
+    /**
+     * Validates if the capacity is of the Integer data type.
+     * 
+     * @param tfCapacity
+     * @return boolean
+     */
     public static boolean isInteger(TextField tfCapacity) {
         try {
             Integer.parseInt(tfCapacity.getText());

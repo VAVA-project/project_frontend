@@ -12,7 +12,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import sk.stu.fiit.Internationalisation.I18n;
@@ -34,7 +33,13 @@ public class ScreenSwitcher {
         }
         return screenSwitcher;
     }
-
+    
+    /**
+     * Loads the given fxml screen.
+     * 
+     * @param event
+     * @param screen 
+     */
     public void switchToScreen(Event event, String screen) {
         try {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -47,7 +52,14 @@ public class ScreenSwitcher {
             Logger.getLogger(ScreenSwitcher.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    /**
+     * Loads the given fxml screen with the given loader, which contains
+     * data to construct the screen with these data.
+     * 
+     * @param event
+     * @param loader 
+     */
     public void switchToScreenConstructor(Event event, FXMLLoader loader) {
         try {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

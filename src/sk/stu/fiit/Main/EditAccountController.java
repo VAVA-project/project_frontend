@@ -84,6 +84,7 @@ public class EditAccountController implements Initializable {
         }
         if (event.getSource().equals(btnEdit)) {
             editUserInformations(event);
+            Alerts.showAlert("TITLE_EDITED_ACCOUNT");
         }
     }
 

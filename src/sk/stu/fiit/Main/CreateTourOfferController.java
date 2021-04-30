@@ -72,7 +72,13 @@ public class CreateTourOfferController implements Initializable {
     private void handleGoToCreateScheduleScreen(MouseEvent event) {
         loadCreateScheduleScreen(event);
     }
-
+    
+    /**
+     * Switches to the CreateSchedule screen and stores instance of TourCreate
+     * class in the Singleton class.
+     *
+     * @param event
+     */
     private void loadCreateScheduleScreen(MouseEvent event) {
         if (TourOfferValidator.validateTextInputs(tfStartPlace, tfDestinationPlace, tfPrice, taDescription)) {
             Singleton.getInstance().setTourCreate(new TourCreate(tfStartPlace.getText(),
@@ -83,6 +89,13 @@ public class CreateTourOfferController implements Initializable {
         }
     }
     
+    /**
+     * Sets a new position of stage depending on the variables stored from
+     * setOnMousePressed method when mouse is dragged.
+     *
+     * @param event
+     * @see setOnMousePressed
+     */
     @FXML
     private void setOnMouseDragged(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -90,6 +103,11 @@ public class CreateTourOfferController implements Initializable {
         stage.setY(event.getScreenY() - yOffset);
     }
 
+    /**
+     * Saves the axis values of the scene when mouse is pressed.
+     *
+     * @param event
+     */
     @FXML
     private void setOnMousePressed(MouseEvent event) {
         xOffset = event.getSceneX();

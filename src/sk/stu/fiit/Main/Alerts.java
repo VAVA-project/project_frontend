@@ -21,8 +21,13 @@ import sk.stu.fiit.Internationalisation.I18n;
  * @author adamf
  */
 public class Alerts {
-
-
+    
+    /**
+     * Shows custom Alert in the new window with the given title.
+     * 
+     * @param title
+     * @see AlertController
+     */
     public static void showAlert(String title) {
         Platform.runLater(() -> {
             try {
@@ -41,7 +46,14 @@ public class Alerts {
             }
         });
     }
-
+    
+    /**
+     * Shows custom Alert in the new window with the given title and content.
+     * 
+     * @param title
+     * @param content 
+     * @see AlertController
+     */
     public static void showAlert(String title, String content) {
         Platform.runLater(() -> {
             try {

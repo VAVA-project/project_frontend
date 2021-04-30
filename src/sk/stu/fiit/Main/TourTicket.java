@@ -7,7 +7,7 @@ package sk.stu.fiit.Main;
 import java.util.Objects;
 
 /**
- *
+ * Stores data about the tour ticket.
  * @author adamf
  */
 public class TourTicket {
@@ -15,13 +15,26 @@ public class TourTicket {
     private String id;
     private String createdAt;
     private String updatedAt;
-
+    
+    /**
+     * 
+     * @param id attribute that stores tour ticket id
+     * @param createdAt attribute that stores date in string format and tells,
+     * when the ticket has been created
+     * @param updatedAt attribute that stores date in string format and tells,
+     * when the ticket has been updated
+     */
     public TourTicket(String id, String createdAt, String updatedAt) {
         this.id = id;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
-
+    
+    /**
+     * Creates copy of the given tourTicket object.
+     * 
+     * @param tourTicket 
+     */
     public TourTicket(TourTicket tourTicket) {
         this.id = tourTicket.getId();
         this.createdAt = tourTicket.getCreatedAt();
@@ -51,8 +64,6 @@ public class TourTicket {
         final TourTicket other = (TourTicket) obj;
         return true;
     }
-    
-    
     
     public String getId() {
         return id;

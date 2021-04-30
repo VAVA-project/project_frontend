@@ -13,29 +13,45 @@ import sk.stu.fiit.Main.Alerts;
  * @author adamf
  */
 public class TourOfferValidator {
-
-    public static boolean validateTextInputs(TextField tf1, TextField tf2, TextField tf3, TextArea ta) {
-        if (tf1.getText().isEmpty()) {
+    
+    /**
+     * Validates the given text fields if they are empty and
+     * if the price is of the double data type.
+     * 
+     * @param startPlace
+     * @param destinationPlace
+     * @param price
+     * @param description
+     * @return 
+     */
+    public static boolean validateTextInputs(TextField startPlace, TextField destinationPlace, TextField price, TextArea description) {
+        if (startPlace.getText().isEmpty()) {
             Alerts.showAlert("TITLE_EMPTY_START_PLACE");
             return false;
-        } else if (tf2.getText().isEmpty()) {
+        } else if (destinationPlace.getText().isEmpty()) {
             Alerts.showAlert("TITLE_EMPTY_DESTINATION_PLACE");
             return false;
         }
-        else if (tf3.getText().isEmpty()) {
+        else if (price.getText().isEmpty()) {
             Alerts.showAlert("TITLE_EMPTY_PRICE");
             return false;
         }
-        else if (ta.getText().isEmpty()) {
+        else if (description.getText().isEmpty()) {
             Alerts.showAlert("TITLE_EMPTY_DESCRIPTION");
             return false;
-        } else if (isDouble(tf3)) {
+        } else if (isDouble(price)) {
             Alerts.showAlert("TITLE_PRICE_NOT_NUMBER");
             return false;
         }
         return true;
     }
     
+    /**
+     * Validates if the price is of the double data type.
+     * 
+     * @param price
+     * @return boolean
+     */
     public static boolean isDouble(TextField price) {
         try {
             Double.parseDouble(price.getText());
@@ -45,46 +61,3 @@ public class TourOfferValidator {
         }
     }
 }
-
-
-/*
-public interface TourOfferValidator 
-        extends Function<TourCreate, ValidationResult> {
-    
-    static TourOfferValidator isStartPlaceEmpty() {
-        return tourCreate -> tourCreate.getStartPlace().isEmpty() ? 
-                START_PLACE_IS_EMPTY : SUCCESS;
-    }
-    
-    static TourOfferValidator isDestinationPlaceEmpty() {
-        return tourCreate -> tourCreate.getDestinationPlace().isEmpty() ? 
-                DESTINATION_PLACE_IS_EMPTY : SUCCESS;
-    }
-    
-    static TourOfferValidator isPricePerPersonEmpty() {
-        return tourCreate -> tourCreate.getPricePerPerson() == 0.0 ? 
-                PRICE_PER_PERSON_IS_EMPTY : SUCCESS;
-    }
-    
-    static TourOfferValidator isDescriptionEmpty() {
-        return tourCreate -> tourCreate.getDescription().isEmpty() ? 
-                DESCRIPTION_IS_EMPTY : SUCCESS;
-    }
-    
-    default TourOfferValidator and (TourOfferValidator other) {
-        return tourCreate -> {
-            ValidationResult result = this.apply(tourCreate);
-            return result.equals(SUCCESS) ? other.apply(tourCreate) : result;
-        };
-    }
-    
-    enum ValidationResult {
-        SUCCESS,
-        START_PLACE_IS_EMPTY,
-        DESTINATION_PLACE_IS_EMPTY,
-        PRICE_PER_PERSON_IS_EMPTY,
-        DESCRIPTION_IS_EMPTY
-    }
-    
-}
-*/

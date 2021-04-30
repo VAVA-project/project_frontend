@@ -52,7 +52,7 @@
                </effect></Circle>
          </children>
       </HBox>
-      <Label fx:id="lblPageNumber" layoutX="448.0" layoutY="533.0" styleClass="lbl-tour" text="pageNumber">
+      <Label fx:id="lblPageNumber" layoutX="448.0" layoutY="533.0" styleClass="lbl-tour" text="0">
          <effect>
             <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
          </effect></Label>

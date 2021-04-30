@@ -45,10 +45,10 @@ import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.TourDatesResponse;
  * @author adamf
  */
 public class TourBuyController implements Initializable {
-    
+
     private double xOffset = 0;
     private double yOffset = 0;
-    
+
     @FXML
     private Button btnBack;
     @FXML
@@ -99,6 +99,10 @@ public class TourBuyController implements Initializable {
         }
     }
 
+    /**
+     * Fills labels and image view on this screen with data about a certain
+     * tour and tour guide.
+     */
     private void initializeScreenWithTour() {
         String photo = Singleton.getInstance().getTourBuy().getGuidePhoto();
         byte[] byteArray = Base64.getDecoder().decode(photo.replaceAll("\n", ""));
@@ -116,11 +120,19 @@ public class TourBuyController implements Initializable {
         this.lblDestination.setText(Singleton.getInstance().getTourBuy().getDestinationPlace());
         this.lblPrice.setText(Singleton.getInstance().getTourBuy().getPricePerPerson());
         this.taDescription.setText(Singleton.getInstance().getTourBuy().getDescription());
-        
+
         this.ratingStars.setRating(Double.parseDouble(Singleton.getInstance().getTourBuy().getRating()));
         this.ratingStars.setDisable(true);
     }
 
+    /**
+     * Calls methods getTourDates and initializeTourDates.
+     *
+     * @param event
+     *
+     * @see getTourDates
+     * @see initializeTourDates
+     */
     @FXML
     private void handleLoadButton(MouseEvent event) {
         Singleton.getInstance().getTourDates().clear();
@@ -128,20 +140,37 @@ public class TourBuyController implements Initializable {
         initializeTourDates();
     }
 
+    /**
+     * Initializes loaded tour dates to the screen.
+     */
     private void initializeTourDates() {
         if (Singleton.getInstance().isAreAllTourDatesLoaded()) {
             paneTourBuy.getChildren().remove(btnLoad);
         }
-        Singleton.getInstance().getTourDates().forEach(tourDate -> {
-            try {
-                Node tourDateNode = this.loadTourDate(tourDate);
-                this.vbTourDates.getChildren().add(tourDateNode);
-            } catch (Exception e) {
-                Logger.getLogger(TourBuyController.class.getName()).log(Level.SEVERE, null, e);
-            }
-        });
+        if (Singleton.getInstance().getTourDates().isEmpty()) {
+            Alerts.showAlert("TITLE_NONE_TOUR_DATES");
+        } else {
+            Singleton.getInstance().getTourDates().forEach(tourDate -> {
+                try {
+                    Node tourDateNode = this.loadTourDate(tourDate);
+                    this.vbTourDates.getChildren().add(tourDateNode);
+                } catch (Exception e) {
+                    Logger.getLogger(TourBuyController.class.getName()).log(Level.SEVERE, null, e);
+                }
+            });
+        }
+
     }
 
+    /**
+     * Loads fxml elements of tour date and displays this element on the screen.
+     *
+     * @param tourDate
+     * @return Node
+     *
+     * @see OneTourDateController
+     * @see TourDate
+     */
     private Node loadTourDate(TourDate tourDate) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/OneTourDate.fxml"), I18n.getBundle());
         loader.setControllerFactory(c -> new OneTourDateController(tourDate));
@@ -152,23 +181,35 @@ public class TourBuyController implements Initializable {
         }
         return null;
     }
-    
+
+    /**
+     * Creates TourDatesRequest for the selected tour. Then sends this request
+     * to the server as HttpGet and processes the response from the server. Data
+     * in the response contains list of tour dates of certain tour, which is
+     * stored in the Singleton class.
+     *
+     * @param event
+     * @return TourTicketsResponse
+     *
+     * @see TourDatesRequest
+     * @see TourDatesResponse
+     * @see TourDate
+     * @see Singleton
+     */
     private void getTourDates() {
-        
+
         TourDatesRequest tourDatesRequest = new TourDatesRequest(Singleton.getInstance().getTourBuy().getId(), Singleton.getInstance().getPageNumberToLoad());
         tourDatesRequest.accept(new XMLRequestParser());
-        
+
         HttpGet request = (HttpGet) tourDatesRequest.getRequest();
-        
+
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(request)) {
 
-            // Ulozenie si prave nacitanych tur, pre ich zobrazenie
-            //Singleton.getInstance().setTours(responseParser.parseSearchData(response).getTours());
-            //Singleton.getInstance().setActualDestination(tfDestination.getText());
+            // Storing just loaded tours to display them
             TourDatesResponse tourDatesResponse = (TourDatesResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.TOUR_DATES_RESPONSE).parse(response);
             Singleton.getInstance().setTourDates(tourDatesResponse.getTourDates());
-            
+
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
             Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
@@ -179,7 +220,14 @@ public class TourBuyController implements Initializable {
             Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
+    /**
+     * Sets a new position of stage depending on the variables stored from
+     * setOnMousePressed method when mouse is dragged.
+     *
+     * @param event
+     * @see setOnMousePressed
+     */
     @FXML
     private void setOnMouseDragged(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -187,10 +235,15 @@ public class TourBuyController implements Initializable {
         stage.setY(event.getScreenY() - yOffset);
     }
 
+    /**
+     * Saves the axis values of the scene when mouse is pressed.
+     *
+     * @param event
+     */
     @FXML
     private void setOnMousePressed(MouseEvent event) {
         xOffset = event.getSceneX();
         yOffset = event.getSceneY();
     }
-    
+
 }

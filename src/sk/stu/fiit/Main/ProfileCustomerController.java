@@ -100,7 +100,11 @@ public class ProfileCustomerController implements Initializable {
                     switchToScreen((MouseEvent) event, "Views/EditAccount.fxml");
         }
     }
-
+    
+    /**
+     * Fills label and image view on this screen with data of
+     * a certain tour guide.
+     */
     private void setProfileInformations() {
         // Setting profile photo
         String photo = Singleton.getInstance().getUser().getPhoto();
@@ -121,17 +125,33 @@ public class ProfileCustomerController implements Initializable {
                 Singleton.getInstance().getUser().getFirstName() + " " + Singleton.
                 getInstance().getUser().getLastName());
     }
-
+    
+    /**
+     * Calls method sendUserBookingsRequest and initializeTours.
+     */
     private void setBookedTours() {
         sendUserBookingsRequest();
         initializeTours(this.bookedTours, vbBookedTours, false);
     }
-
+    
+    /**
+     * Calls method sendUserCompletedBookingsRequest and initializeTours.
+     */
     private void setCompletedTours() {
         sendUserCompletedBookingsRequest();
         initializeTours(this.completedTours, vbCompletedTours, true);
     }
-
+    
+    /**
+     * Creates UserBookingsRequest. Then sends this request to the server
+     * as HttpGet and processes the response from the server. Data in the 
+     * response contains list of UserBooking objects. This list is stored
+     * in this class.
+     * 
+     * @see UserBookingsRequest
+     * @see UserBookingsResponse
+     * @see UserBooking
+     */
     private void sendUserBookingsRequest() {
         UserBookingsRequest userBookingsRequest = new UserBookingsRequest();
         userBookingsRequest.accept(new XMLRequestParser());
@@ -147,20 +167,6 @@ public class ProfileCustomerController implements Initializable {
                     parse(response);
             this.bookedTours = userBookingsResponse.getUserBookings();
 
-            this.bookedTours.stream().forEach((bookedTour) -> {
-                System.out.println("*totalTickets = " + bookedTour.
-                        getOrderedTickets().size());
-                bookedTour.getOrderedTickets().stream().forEach(
-                        (orderedTicket) -> {
-                            System.out.println("*startPlace = " + orderedTicket.
-                                    getTour().getStartPlace());
-                            System.out.println(
-                                    "*destinationPlace = " + orderedTicket.
-                                            getTour().getDestinationPlace());
-                            System.out.println("*guideName = " + orderedTicket.
-                                    getTour().getGuideName());
-                        });
-            });
         } catch (IOException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).log(Level.SEVERE, null, ex);
             Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
@@ -174,7 +180,17 @@ public class ProfileCustomerController implements Initializable {
             ex.getValidationErrors().forEach(System.out::println);
         }
     }
-
+    
+    /**
+     * Creates UserCompletedBookingsRequest. Then sends this request to the server
+     * as HttpGet and processes the response from the server. Data in the 
+     * response contains list of UserBooking objects. This list is stored
+     * in this class.
+     * 
+     * @see UserCompletedBookingsRequest
+     * @see UserBookingsResponse
+     * @see UserBooking
+     */
     private void sendUserCompletedBookingsRequest() {
         UserCompletedBookingsRequest userCompletedBookingsRequest = new UserCompletedBookingsRequest();
         userCompletedBookingsRequest.accept(new XMLRequestParser());
@@ -202,7 +218,16 @@ public class ProfileCustomerController implements Initializable {
             ex.getValidationErrors().forEach(System.out::println);
         }
     }
-
+    
+    /**
+     * Initializes tours on the screen. Loads a fxml element for every
+     * loaded UserBooking object from the list. When the fxml element
+     * is loaded, it is displayed.
+     * 
+     * @param tours
+     * @param tourList
+     * @param showUserRating 
+     */
     private void initializeTours(List<UserBooking> tours, VBox tourList, boolean showUserRating) {
         tours.stream().forEach((bookedTour) -> {
             try {
@@ -228,7 +253,24 @@ public class ProfileCustomerController implements Initializable {
             }
         });
     }
-
+    
+    /**
+     * Loads one fxml element with the given data.
+     * 
+     * @param tourOfferId
+     * @param startPlace
+     * @param startDate
+     * @param endDate
+     * @param totalTickets
+     * @param totalPrice
+     * @param orderTime
+     * @param userRating
+     * @param rating
+     * @param showUserRating
+     * @return Node
+     * 
+     * @see BookedCompletedTourController
+     */
     private Node loadTour(String tourOfferId, String startPlace,
             String startDate, String endDate, int totalTickets,
             double totalPrice, LocalDateTime orderTime, String userRating,
@@ -241,12 +283,19 @@ public class ProfileCustomerController implements Initializable {
         try {
             return loader.load();
         } catch (IOException ex) {
-            Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE,
+            Logger.getLogger(BookedCompletedTourController.class.getName()).log(Level.SEVERE,
                     null, ex);
         }
         return null;
     }
     
+    /**
+     * Sets a new position of stage depending on the variables stored from
+     * setOnMousePressed method when mouse is dragged.
+     *
+     * @param event
+     * @see setOnMousePressed
+     */
     @FXML
     private void setOnMouseDragged(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -254,11 +303,15 @@ public class ProfileCustomerController implements Initializable {
         stage.setY(event.getScreenY() - yOffset);
     }
 
+    /**
+     * Saves the axis values of the scene when mouse is pressed.
+     *
+     * @param event
+     */
     @FXML
     private void setOnMousePressed(MouseEvent event) {
         xOffset = event.getSceneX();
         yOffset = event.getSceneY();
     }
     
-
 }
