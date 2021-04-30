@@ -57,8 +57,6 @@ public class SearchResponseProcessor extends XMLProcessor {
             NodeList contentList = (NodeList) xPath.compile(
                     "//PageImpl/content/content").evaluate(document,
                             XPathConstants.NODESET);
-            System.out.println("contentList = " + contentList.getLength());
-
             String pageNumber = (String) xPath.compile(
                     "//PageImpl/number/text()").
                     evaluate(document, XPathConstants.STRING);

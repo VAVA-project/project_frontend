@@ -85,9 +85,6 @@ public class TourDatesResponseProcessor extends XMLProcessor {
                         getTextContent();
                 Date StartDate = format1.parse(element.getElementsByTagName(
                         "startDate").item(0).getTextContent());
-                System.out.println("startDate = " + element.
-                        getElementsByTagName(
-                                "startDate").item(0).getTextContent());
                 Date endDate = format1.parse(element.getElementsByTagName(
                         "endDate").item(0).getTextContent());
                 String createdAt = element.getElementsByTagName("createdAt").

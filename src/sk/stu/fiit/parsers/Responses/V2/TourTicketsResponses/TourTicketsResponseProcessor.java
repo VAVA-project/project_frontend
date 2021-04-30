@@ -81,9 +81,6 @@ public class TourTicketsResponseProcessor extends XMLProcessor {
 
             }
 
-            System.out.println("Parsed " + tourTicketsResponse.getTourTickets().
-                    size() + " tickets");
-
             return tourTicketsResponse;
         } catch (XPathExpressionException ex) {
             Logger.getLogger(TourDatesResponseProcessor.class.getName()).log(

@@ -139,7 +139,6 @@ public abstract class XMLProcessor implements ResponseProcessor {
                 }
             }
         } catch (XPathExpressionException ex) {
-            System.out.println("XPathExpressionException: " + ex.getMessage());
         }
 
         return validationErrors;

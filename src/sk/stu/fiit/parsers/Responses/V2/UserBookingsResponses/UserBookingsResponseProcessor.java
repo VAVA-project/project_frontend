@@ -61,10 +61,6 @@ public class UserBookingsResponseProcessor extends XMLProcessor {
             NodeList bookedToursList = (NodeList) xPath.compile(
                     "//bookedTours/bookedTours").evaluate(document,
                             XPathConstants.NODESET);
-
-            System.out.println(
-                    "Found: " + bookedToursList.getLength() + " bookedTours");
-
             for (int index = 0; index < bookedToursList.getLength(); index++) {
                 Node bookedTourNode = (Node) bookedToursList.item(index);
                 Element bookedToursElement = (Element) bookedTourNode;
