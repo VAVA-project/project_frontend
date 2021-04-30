@@ -50,6 +50,9 @@ public class GuideTourOfferItemController implements Initializable {
         this.fillLabelsWithData();
     }
     
+    /**
+     * Initializes element with data of tour object.
+     */
     private void fillLabelsWithData() {
         if(tour == null) {
             return;
@@ -66,7 +69,14 @@ public class GuideTourOfferItemController implements Initializable {
     private void handleEditButton(MouseEvent event) {
         loadEditTourOfferScreen(event);
     }
-
+    
+    /**
+     * Switches to the EditTourOffer screen and sends Tour object to this
+     * screen.
+     * 
+     * @param event 
+     * @see EditTourOfferController
+     */
     private void loadEditTourOfferScreen(MouseEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/EditTourOffer.fxml"), I18n.getBundle());
         loader.setControllerFactory(c -> new EditTourOfferController(this.tour));

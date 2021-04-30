@@ -111,7 +111,15 @@ public class CreateScheduleController implements Initializable {
         Alerts.showAlert("TITLE_NEW_TOUR");
         ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileGuide.fxml");
     }
-
+    
+    /**
+     * Creates new object of TourDateCreate class with entered data
+     * and stores this object in the Singleton class. Then initializes
+     * this tour date on the screen.
+     * 
+     * @see TourDateCreate
+     * @see Singleton
+     */
     private void createTourDateCreate() {
         LocalDateTime startDate = LocalDateTime.of(dpStartDate.getValue(), LocalTime.parse(tfStartTime.getText()));
         LocalDateTime endDate = LocalDateTime.of(dpEndDate.getValue(), LocalTime.parse(tfEndTime.getText()));
@@ -121,7 +129,15 @@ public class CreateScheduleController implements Initializable {
         Singleton.getInstance().getTourCreate().getTourDates().add(tourDateCreate);
         initializeTourDate(tourDateCreate);
     }
-
+    
+    /**
+     * Calls method for loading a fxml element.
+     * When the fxml element is loaded, it is displayed.
+     * 
+     * @param tourDateCreate 
+     * 
+     * @see TourDateCreate
+     */
     private void initializeTourDate(TourDateCreate tourDateCreate) {
         try {
             Node tourDateNode = this.loadTourDate(tourDateCreate);
@@ -130,7 +146,15 @@ public class CreateScheduleController implements Initializable {
             Logger.getLogger(TourBuyController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-
+    
+    /**
+     * Loads one fxml element with the given tourDateCreate.
+     * 
+     * @param tourDateCreate
+     * @return Node
+     * 
+     * @see OneTourDateScheduleController
+     */
     private Node loadTourDate(TourDateCreate tourDateCreate) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/OneTourDateSchedule.fxml"), I18n.getBundle());
         loader.setControllerFactory(c -> new OneTourDateScheduleController(tourDateCreate, vbTourDates));
@@ -141,7 +165,17 @@ public class CreateScheduleController implements Initializable {
         }
         return null;
     }
-
+    
+    /**
+     * Creates CreateTourOfferRequest with data stored in the Singleton class.
+     * Then sends this request to the server as HttpPost and processes
+     * the response from the server. Data in the response contains informations
+     * about the created tour. Then the id of tour is stored in the Singleton class.
+     *
+     * @see CreateTourOfferRequest
+     * @see TourOfferResponse
+     * @see Singleton
+     */
     private void sendCreateTourOfferRequest() {
         CreateTourOfferRequest createTourOfferRequest = new CreateTourOfferRequest(
                 Singleton.getInstance().getTourCreate().getStartPlace(),
@@ -172,13 +206,27 @@ public class CreateScheduleController implements Initializable {
                     log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    /**
+     * Calls sendCreateTourDateRequest method for every tourDateCreate of tour
+     * which are stored in the Singleton class.
+     */
     private void sendCreateTourDatesRequests() {
         Singleton.getInstance().getTourCreate().getTourDates().stream().forEach((tourDateCreate) -> {
             sendCreateTourDateRequest(tourDateCreate);
         });
     }
-
+    
+    /**
+     * Creates CreateTourDateRequest with id of tour stored in the Singleton class. 
+     * Then sends this request to the server as HttpPost and processes
+     * the response from the server.
+     * 
+     * @param tourDateCreate 
+     * 
+     * @see CreateTourDateRequest
+     * @see CreateTourDateResponse
+     */
     private void sendCreateTourDateRequest(TourDateCreate tourDateCreate) {
         CreateTourDateRequest createTourDateRequest = new CreateTourDateRequest(
                 Singleton.getInstance().getTourCreate().getId(), 
@@ -207,7 +255,11 @@ public class CreateScheduleController implements Initializable {
             ex.getValidationErrors().forEach(System.out::println);
         }
     }
-
+    
+    /**
+     * Sets a date in the date pickers greater than the current date to prevent 
+     * that the date for tour will not be created in the past.
+     */
     private void setupDatePickers() {
         this.dpStartDate.setDayCellFactory(
                 (final DatePicker param) -> new DateCell() {
@@ -234,6 +286,13 @@ public class CreateScheduleController implements Initializable {
         });
     }
     
+    /**
+     * Sets a new position of stage depending on the variables stored from
+     * setOnMousePressed method when mouse is dragged.
+     *
+     * @param event
+     * @see setOnMousePressed
+     */
     @FXML
     private void setOnMouseDragged(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -241,6 +300,11 @@ public class CreateScheduleController implements Initializable {
         stage.setY(event.getScreenY() - yOffset);
     }
 
+    /**
+     * Saves the axis values of the scene when mouse is pressed.
+     *
+     * @param event
+     */
     @FXML
     private void setOnMousePressed(MouseEvent event) {
         xOffset = event.getSceneX();

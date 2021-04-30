@@ -130,6 +130,18 @@ public class BookedCompletedTourController implements Initializable {
         }
     }
     
+    /**
+     * Creates RatingRequest with id of stored tour in this class. 
+     * Then sends this request to the server as HttpPost and processes
+     * the response from the server. Data in the response contains
+     * boolean value.
+     * 
+     * @param rating
+     * @return RatingResponse
+     * 
+     * @see RatingRequest
+     * @see RatingResponse
+     */
     private RatingResponse sendRating(Integer rating) {
         RatingRequest ratingRequest = new RatingRequest(this.tourOfferId, rating);
         ratingRequest.accept(new XMLRequestParser());

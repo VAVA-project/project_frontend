@@ -12,7 +12,7 @@ import java.util.Base64;
 import javafx.scene.image.Image;
 
 /**
- *
+ * Stores data about the user.
  * @author Adam Bublavý
  */
 public class User {
@@ -23,7 +23,17 @@ public class User {
     private String lastName;
     private String photo;
     private LocalDate dateOfBirth;
-
+    
+    /**
+     * @param userType attribute that stores user's type (GUIDE, NORMAL_USER)
+     * @param email attribute that stores user's email
+     * @param firstName attribute that stores user's firstname
+     * @param lastName attribute that stores user's lastname
+     * @param photo attribute that stores user's photo
+     * @param dateOfBirth attribute that stores user's date of birth
+     * 
+     * @see UserType
+     */
     public User(UserType userType, String email, String firstName, String lastName, String photo, LocalDate dateOfBirth) {
         this.userType = userType;
         this.email = email;
@@ -32,12 +42,15 @@ public class User {
         this.photo = photo;
         this.dateOfBirth = dateOfBirth;
     }
-
+    
+    /**
+     * Decodes string to the byte array.
+     * @return Image
+     */
     public Image getProfilePhoto() {
         if (photo == null) {
             return null;
         }
-
         byte[] byteArray = Base64.getDecoder().
                 decode(photo.replaceAll("\n", ""));
         InputStream inputStream = new ByteArrayInputStream(byteArray);

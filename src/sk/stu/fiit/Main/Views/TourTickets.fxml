@@ -129,7 +129,7 @@
          </effect>
       </HBox>
       <TextArea fx:id="taComment" layoutX="140.0" layoutY="290.0" prefHeight="102.0" prefWidth="614.0" promptText="%tourTickets.commentTextArea.prompt" />
-      <Button fx:id="btnRegister" layoutX="385.0" layoutY="413.0" mnemonicParsing="false" onMouseReleased="#handleRagisterButton" styleClass="btn-register" text="%tourTickets.registerButton.text">
+      <Button fx:id="btnRegister" layoutX="385.0" layoutY="413.0" mnemonicParsing="false" onMouseReleased="#handleRegisterButton" styleClass="btn-register" text="%tourTickets.registerButton.text">
          <effect>
             <DropShadow color="#00000026" height="30.0" offsetY="2.0" radius="14.5" spread="0.3" width="30.0" />
          </effect></Button>

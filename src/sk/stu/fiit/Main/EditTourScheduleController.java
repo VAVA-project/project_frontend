@@ -49,7 +49,7 @@ import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.TourDatesResponse;
  * @author adamf
  */
 public class EditTourScheduleController implements Initializable {
-    
+
     private double xOffset = 0;
     private double yOffset = 0;
     private Tour tourToEdit;
@@ -110,6 +110,11 @@ public class EditTourScheduleController implements Initializable {
         }
     }
 
+    /**
+     * Switches to the EditTourOffer screen.
+     *
+     * @param event
+     */
     @FXML
     private void handleGoToEditTourOfferScreen(MouseEvent event) {
         Singleton.getInstance().getTourDatesOnScreen().clear();
@@ -132,6 +137,20 @@ public class EditTourScheduleController implements Initializable {
         initializeTourDates();
     }
 
+    /**
+     * Creates TourDatesRequest for the tour. Then sends this request to the
+     * server as HttpGet and processes the response from the server. Data in the
+     * response contains list of tour dates of certain tour. Then stores these
+     * tour dates in this class.
+     *
+     * @param event
+     * @return TourTicketsResponse
+     *
+     * @see TourDatesRequest
+     * @see TourDatesResponse
+     * @see TourDate
+     * @see Singleton
+     */
     private void getTourDates() {
         TourDatesRequest tourDatesRequest;
         if (firstPageLoaded && !Singleton.getInstance().isTourDateDeleted()) {
@@ -151,10 +170,12 @@ public class EditTourScheduleController implements Initializable {
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(request)) {
 
-            // Ulozenie si prave nacitanych tur, pre ich zobrazenie
+            // Stores just loaded tours to display them
             TourDatesResponse tourDatesResponse = (TourDatesResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.TOUR_DATES_RESPONSE).parse(response);
             this.tourDates = tourDatesResponse.getTourDates();
 
+            // If the currently loaded tours are already displayed this
+            // step removes them and don't displays them again
             if (!Singleton.getInstance().getTourDatesOnScreen().isEmpty()) {
                 for (int i = 0; i < Singleton.getInstance().getTourDatesOnScreen().size(); i++) {
                     for (int j = 0; j < this.tourDates.size(); j++) {
@@ -166,7 +187,6 @@ public class EditTourScheduleController implements Initializable {
                     }
                 }
             }
-            
             Singleton.getInstance().getTourDatesOnScreen().addAll(this.tourDates);
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
@@ -177,6 +197,9 @@ public class EditTourScheduleController implements Initializable {
         }
     }
 
+    /**
+     * Initializes loaded tour dates to the screen.
+     */
     private void initializeTourDates() {
         if (Singleton.getInstance().isAreAllTourDatesLoaded()) {
             paneEditSchedule.getChildren().remove(btnLoadMore);
@@ -192,6 +215,15 @@ public class EditTourScheduleController implements Initializable {
         });
     }
 
+    /**
+     * Loads fxml elements of tour date and displays this element on the screen.
+     *
+     * @param tourDate
+     * @return Node
+     *
+     * @see OneTourDateController
+     * @see TourDate
+     */
     private Node loadTourDate(TourDate tourDate) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/OneTourDateSchedule.fxml"), I18n.getBundle());
         loader.setControllerFactory(c -> new OneTourDateScheduleController(tourDate, tourToEdit, vbTourDates));
@@ -203,6 +235,12 @@ public class EditTourScheduleController implements Initializable {
         return null;
     }
 
+    /**
+     * Creates new object of TourDateCreate class with entered data. Then
+     * initializes this tour date on the screen.
+     *
+     * @see TourDateCreate
+     */
     private void createTourDateCreate() {
         LocalDateTime startDate = LocalDateTime.of(dpStartDate.getValue(), LocalTime.parse(tfStartTime.getText()));
         LocalDateTime endDate = LocalDateTime.of(dpEndDate.getValue(), LocalTime.parse(tfEndTime.getText()));
@@ -212,6 +250,15 @@ public class EditTourScheduleController implements Initializable {
         initializeTourDate(tourDateCreate, tourDateCreateId);
     }
 
+    /**
+     * Calls method for loading a fxml element. When the fxml element is loaded,
+     * it is displayed.
+     *
+     * @param tourDateCreate
+     * @param tourDateCreateId
+     *
+     * @see TourDateCreate
+     */
     private void initializeTourDate(TourDateCreate tourDateCreate, String tourDateCreateId) {
         try {
             Node tourDateNode = this.loadTourDate(tourDateCreate, tourDateCreateId);
@@ -221,6 +268,17 @@ public class EditTourScheduleController implements Initializable {
         }
     }
 
+    /**
+     * Loads one fxml element with the given tourDateCreate and stores this tour
+     * date in the Singleton class.
+     *
+     * @param tourDateCreate
+     * @param tourDateCreateId
+     * @return Node
+     *
+     * @see OneTourDateScheduleController
+     * @see Singleton
+     */
     private Node loadTourDate(TourDateCreate tourDateCreate, String tourDateCreateId) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
@@ -241,6 +299,18 @@ public class EditTourScheduleController implements Initializable {
         return null;
     }
 
+    /**
+     * Creates CreateTourDateRequest with id of tour which is stored in this
+     * class. Then sends this request to the server as HttpPost and processes
+     * the response from the server. Response contains id of tour date, which is
+     * returned.
+     *
+     * @param tourDateCreate
+     * @return String
+     *
+     * @see CreateTourDateRequest
+     * @see CreateTourDateResponse
+     */
     private String sendCreateTourDateRequest(TourDateCreate tourDateCreate) {
         CreateTourDateRequest createTourDateRequest = new CreateTourDateRequest(
                 this.tourToEdit.getId(),
@@ -270,6 +340,10 @@ public class EditTourScheduleController implements Initializable {
         return null;
     }
     
+    /**
+     * Sets a date in the date pickers greater than the current date to prevent 
+     * that the date for tour will not be created in the past.
+     */
     private void setupDatePickers() {
         this.dpStartDate.setDayCellFactory(
                 (final DatePicker param) -> new DateCell() {
@@ -278,11 +352,11 @@ public class EditTourScheduleController implements Initializable {
                 super.updateItem(item, empty);
 
                 LocalDate today = LocalDate.now();
-                
+
                 setDisable(empty || item.compareTo(today) <= 0);
             }
         });
-        
+
         this.dpEndDate.setDayCellFactory(
                 (final DatePicker param) -> new DateCell() {
             @Override
@@ -290,12 +364,19 @@ public class EditTourScheduleController implements Initializable {
                 super.updateItem(item, empty);
 
                 LocalDate today = LocalDate.now();
-                        
+
                 setDisable(empty || item.compareTo(today) <= 0);
             }
         });
     }
-    
+
+    /**
+     * Sets a new position of stage depending on the variables stored from
+     * setOnMousePressed method when mouse is dragged.
+     *
+     * @param event
+     * @see setOnMousePressed
+     */
     @FXML
     private void setOnMouseDragged(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -303,10 +384,15 @@ public class EditTourScheduleController implements Initializable {
         stage.setY(event.getScreenY() - yOffset);
     }
 
+    /**
+     * Saves the axis values of the scene when mouse is pressed.
+     *
+     * @param event
+     */
     @FXML
     private void setOnMousePressed(MouseEvent event) {
         xOffset = event.getSceneX();
         yOffset = event.getSceneY();
     }
-    
+
 }

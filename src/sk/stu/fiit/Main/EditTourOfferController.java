@@ -113,14 +113,25 @@ public class EditTourOfferController implements Initializable {
     private void handleDeleteTourButton(MouseEvent event) {
         sendDeleteTourOfferRequest();
     }
-
+    
+    /**
+     * Fills text fields and text area with data about the certain tour.
+     */
     private void initializeTextFieldsWithTour() {
         this.tfStartPlace.setText(this.tour.getStartPlace());
         this.tfDestinationPlace.setText(this.tour.getDestinationPlace());
         this.tfPrice.setText(this.tour.getPricePerPerson());
         this.taDescription.setText(this.tour.getDescription());
     }
-
+    
+    /**
+     * Loads the EditTourSchedule screen to which sends a tour.
+     * 
+     * @param event
+     * 
+     * @see EditTourScheduleController
+     * @see Tour
+     */
     private void loadEditTourScheduleScreen(MouseEvent event) {
         if (TourOfferValidator.validateTextInputs(tfStartPlace, tfDestinationPlace, tfPrice, taDescription)) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/EditTourSchedule.fxml"), I18n.getBundle());
@@ -128,7 +139,16 @@ public class EditTourOfferController implements Initializable {
             ScreenSwitcher.getScreenSwitcher().switchToScreenConstructor(event, loader);
         }
     }
-
+    
+    /**
+     * Creates EditTourOfferRequest. Then sends this request to the server
+     * as HttpPut and processes the response from the server. Data in the 
+     * response contains updated data about the tour. Then fills text fields 
+     * and text area with updated data.
+     * 
+     * @see EditTourOfferRequest
+     * @see TourOfferResponse
+     */
     private void sendUpdateTourOfferRequest() {
         if (TourOfferValidator.validateTextInputs(tfStartPlace, tfDestinationPlace, tfPrice, taDescription)) {
             EditTourOfferRequest editTourOfferRequest = new EditTourOfferRequest(
@@ -159,7 +179,17 @@ public class EditTourOfferController implements Initializable {
             }
         }
     }
-
+    
+    /**
+     * Creates DeleteTourOfferRequest. Then sends this request to the server
+     * as HttpDelete and processes the response from the server. Data in the 
+     * response contains boolean value. If the boolean value is true shows
+     * alert about successful deletion of tour. If the boolean value is false shows
+     * alert about not successful deletion of tour.
+     *
+     * @see DeleteTourOfferRequest
+     * @see DeleteTourOfferResponse
+     */
     private void sendDeleteTourOfferRequest() {
         DeleteTourOfferRequest deleteTourOfferRequest = new DeleteTourOfferRequest(this.tour.getId());
         deleteTourOfferRequest.accept(new XMLRequestParser());
@@ -186,6 +216,13 @@ public class EditTourOfferController implements Initializable {
         }
     }
     
+    /**
+     * Sets a new position of stage depending on the variables stored from
+     * setOnMousePressed method when mouse is dragged.
+     *
+     * @param event
+     * @see setOnMousePressed
+     */
     @FXML
     private void setOnMouseDragged(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -193,6 +230,11 @@ public class EditTourOfferController implements Initializable {
         stage.setY(event.getScreenY() - yOffset);
     }
 
+    /**
+     * Saves the axis values of the scene when mouse is pressed.
+     *
+     * @param event
+     */
     @FXML
     private void setOnMousePressed(MouseEvent event) {
         xOffset = event.getSceneX();

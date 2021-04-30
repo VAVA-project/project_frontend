@@ -52,7 +52,6 @@ public class ToursController implements Initializable {
 
     private final int numOfToursPerPage = 5;
     private List<HBox> toursOnScreen;
-    private List<GUITourElements> guiTourElements;
 
     @FXML
     private Button btnBack;
@@ -93,41 +92,40 @@ public class ToursController implements Initializable {
             actual_stage.setIconified(true);
         }
         if (event.getSource().equals(btnBack)) {
-            Singleton.getInstance().setLastPageNumber(-1);
-            Singleton.getInstance().getTours().clear();
-            Singleton.getInstance().getTourGuides().clear();
-            Singleton.getInstance().getAllPages().clear();
-            ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/Search.fxml");
-        }
-        if (event.getSource().equals(btnNext)) {
-            //tours.getChildren().remove(tour5);
+            handleBackButton(event);
         }
     }
 
+    /**
+     * Initializes stored tours in Singleton class on the screen if any tours
+     * are stored.
+     *
+     * @param setTourGuides
+     */
     private void initializeTours(boolean setTourGuides) {
-//        if (Singleton.getInstance().getTours().isEmpty()) {
-//            return;
-//        }
+        if (Singleton.getInstance().getTours().isEmpty()) {
+            Alerts.showAlert("TITLE_NO_TOURS", "CONTENT_NO_TOURS");
+            return;
+        }
         vbTours.getChildren().clear();
         initializeButtons();
 
-        // Nastavenie cisla stranky
+        // Sets the page number
         lblPageNumber.setText(String.valueOf(Singleton.getInstance().getActualPageNumber()));
 
-        // Nastavenie fotiek a mien sprievodcov tur pre tury, ak este neboli nastavene
         if (setTourGuides) {
             setTourGuidesForTours();
         }
 
-        // Ak takato prave nacitana stranka tur uz bola nacitana, tak sa nevlozi do
-        // HashMapy vsetkych stranok
+        // If the tour page just loaded has already been loaded, it will not be inserted into
+        // HashMaps of all tour pages
         if (!Singleton.getInstance().getAllPages().containsKey(Singleton.getInstance().getActualPageNumber())) {
             Singleton.getInstance().insertPageIntoAllPages();
         }
 
-        // Vyber z HashMapy vsetkych stranok stranku, ktora ma byt prave teraz zobrazena
-        // a vykresli ju na obrazovku. Respektive zober vsetky tury jednej stranky
-        // a vsetky ich vykresli na obrazovku
+        // Select from the HashMap of all tour pages the page to be displayed right now
+        // and display it on the screen. Respectively take all the tours of one page
+        // and display them all on the screen
         Singleton.getInstance().getAllPages().get(Singleton.getInstance().getActualPageNumber()).forEach(tour -> {
             try {
                 Node tourOfferNode = this.loadTourOffer(tour);
@@ -138,7 +136,12 @@ public class ToursController implements Initializable {
         });
     }
 
-    // Vytvorenie a inicializovanie fxml elementu jednej tury
+    /**
+     * Creates and initializes an fxml element of one tour.
+     *
+     * @param tour
+     * @return Node
+     */
     private Node loadTourOffer(Tour tour) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/TourOffer.fxml"), I18n.getBundle());
         loader.setControllerFactory(c -> new TourOfferController(tour));
@@ -150,14 +153,18 @@ public class ToursController implements Initializable {
         return null;
     }
 
-    // Metoda pre nastavenie fotiek a mien sprievodcov pre nacitane tury z DB
+    /**
+     * Sets photos and names of tour guides for the stored tours in the
+     * Singleton class, but only if they have not yet been set.
+     */
     private void setTourGuidesForTours() {
         for (Tour tour : Singleton.getInstance().getTours()) {
             boolean setGuide = true;
             if (Singleton.getInstance().getTourGuides().size() > 0) {
                 for (TourGuide tourGuide : Singleton.getInstance().getTourGuides()) {
-                    // Nasiel sa Guide, ktory uz ma niektoru zo zobrazovanych tur
-                    // tak sa vyuzije jeho meno a fotka, aby sa nemusela znova nacitavat z DB
+                    // Found a tour guide, which is already displayed on the screen
+                    // so for this tour guide the photo and name will not be loaded 
+                    // from the database
                     if (tourGuide.getId().equals(tour.getCreatorId())) {
                         tour.setGuideName(tourGuide.getFirstName() + " " + tourGuide.getLastName());
                         tour.setGuidePhoto(tourGuide.getPhoto());
@@ -172,6 +179,21 @@ public class ToursController implements Initializable {
         }
     }
 
+    /**
+     * Creates UserRequest with the id of the tour creator, to get photo and the
+     * name of the creator. Then sends this request to the server as HttpGet and
+     * process data (TourGuide) from the response, which are stored in the
+     * Singleton class in the tourGuides list. Then assigns a photo and the name
+     * of the tour guide from the repsonse to the tour.
+     *
+     * @param creatorId
+     * @param tour
+     * @see UserRequest
+     * @see UserResponse
+     * @see Singleton
+     * @see TourGuide
+     * @see Tour
+     */
     private void getUserRequest(String creatorId, Tour tour) {
         UserRequest userRequest = new UserRequest(creatorId);
         userRequest.accept(new XMLRequestParser());
@@ -203,26 +225,42 @@ public class ToursController implements Initializable {
         }
     }
 
+    /**
+     * Loads pages of tours. If they have already been loaded, it loads them
+     * from the Hashmap. If they haven't been loaded yet, then Creates
+     * SearchRequest with destination or start place which is stored in the
+     * Singleton class. Then sends this request to the server as HttpGet and
+     * process data from the response from server. Data in the response contains
+     * list of tours which is stored in the Singleton class to display on Tours
+     * screen.
+     *
+     * @param event
+     * @see SearchRequest
+     * @see SearchResponse
+     * @see Singleton
+     */
     @FXML
     private void handleNextPageButton(MouseEvent event) {
 
-        // Ak uz dana stranka je nacitana, tak ju znova nenacitavaj, ale zober ju z
-        // HashMapy uz nacitanych stranok
+        // If the page of tours is already loaded, do not reload it 
+        // again from database, but load this page from HashMap of
+        // already loaded pages
         if (Singleton.getInstance().getAllPages().containsKey(Singleton.getInstance().getActualPageNumber() + 1)) {
 
-            // Nastavenie aktualnej stranky v Singletone zabezpeci nacitanie tej spravnej
-            // stranky tur z HashMapy stranok
+            // Setting the current page number in Singleton will 
+            // ensure that the correct page of tours is read
+            // from pages of tours in HashMap
             Singleton.getInstance().setActualPageNumber(Singleton.getInstance().getActualPageNumber() + 1);
 
-            // Kedze dana stranka sa uz nachadza medzi nacitanimi strankami, tak
-            // nie je potrebne pre jej tury nastavovat fotky a mena sprievodcov
-            // jednotlivych tur, preto je argument setTourGuides nastaveny na false
+            // Since the page is already in the loaded pages, so
+            // it is not necessary to set photos and guide names 
+            // for tours of this page. So the setTourGuides argument
+            // is set to false
             initializeTours(false);
         } else {
-            // pageNumber nemoze byt +1, pretoze uz sa zvysil pri nastavovani
-            // actualPageNumber pri parsovani response. Teda pageNumber
-            // uz ma pozadovanu hodnotu (o 1 vacsiu)
-
+            // pageNumber cannot be +1 because it has already increased during setup
+            // actualPageNumber when parsing response. So pageNumber
+            // already has the required value (1 larger)
             SearchRequest searchRequest = new SearchRequest(Singleton.getInstance().getActualDestination(),
                     Singleton.getInstance().getActualPageNumber(), 5);
             searchRequest.accept(new XMLRequestParser());
@@ -233,17 +271,12 @@ public class ToursController implements Initializable {
 
                 SearchResponse searchResponse = (SearchResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.SEACH_RESPONSE).parse(response);
 
-                // Ulozenie si prave nacitanych tur, pre ich zobrazenie
+                // Storing the currently loaded tours for display
                 Singleton.getInstance().setTours(searchResponse.getTours());
 
-                // Vlozenie prave nacitanych tur (stranky tur) do HashMapy 
-                // vsetkych stranok tur
-                //Singleton.getInstance().insertPageIntoAllPages();
+                // Inserting actually loaded tours to the HashMap of all tour pages
                 initializeTours(true);
 
-                Singleton.getInstance().getAllPages().entrySet().forEach(entry -> {
-                    System.out.println(entry.getKey() + " " + entry.getValue());
-                });
             } catch (IOException ex) {
                 Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
                 Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
@@ -254,9 +287,14 @@ public class ToursController implements Initializable {
                 Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
     }
 
+    /**
+     * Loads page from the Hashmap.
+     *
+     * @param event
+     * @see Singleton
+     */
     @FXML
     private void handlePreviousPageButton(MouseEvent event) {
         Singleton.getInstance().setActualPageNumber(Singleton.getInstance().getActualPageNumber() - 1);
@@ -277,13 +315,17 @@ public class ToursController implements Initializable {
         }
     }
 
+    /**
+     * Searches tours for the entered destination or start place.
+     *
+     * @param event
+     */
     @FXML
     private void handleSearchButton(MouseEvent event) {
         if (this.tfDestination.getText().isEmpty()) {
             Alerts.showAlert("TITLE_EMPTY_DESTINATION");
             return;
         }
-
         searchToursForDestination();
     }
 
@@ -294,6 +336,18 @@ public class ToursController implements Initializable {
         }
     }
 
+    /**
+     * Creates SearchRequest with entered start or destination place. Then sends
+     * this request to the server as HttpGet and process data from the response
+     * from server. Data in the response contains list of tours which is stored
+     * in the Singleton class to display on Tours screen.
+     *
+     * @param event
+     * @see SearchRequest
+     * @see SearchResponse
+     * @see Tour
+     * @see Singleton
+     */
     private void searchToursForDestination() {
         Singleton.getInstance().setLastPageNumber(-1);
         Singleton.getInstance().getTours().clear();
@@ -310,15 +364,12 @@ public class ToursController implements Initializable {
 
             SearchResponse searchResponse = (SearchResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.SEACH_RESPONSE).parse(response);
 
-            // Ulozenie si prave nacitanych tur, pre ich zobrazenie
+            // Storing the currently loaded turs for display
             Singleton.getInstance().setTours(searchResponse.getTours());
             Singleton.getInstance().setActualDestination(tfDestination.getText());
 
-            Singleton.getInstance().getAllPages().entrySet().forEach(entry -> {
-                System.out.println(entry.getKey() + " " + entry.getValue().get(0).getDestinationPlace());
-            });
-
             initializeTours(true);
+
         } catch (IOException ex) {
             Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
             Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
@@ -330,6 +381,13 @@ public class ToursController implements Initializable {
         }
     }
 
+    /**
+     * Sets a new position of stage depending on the variables stored from
+     * setOnMousePressed method when mouse is dragged.
+     *
+     * @param event
+     * @see setOnMousePressed
+     */
     @FXML
     private void setOnMouseDragged(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -337,10 +395,29 @@ public class ToursController implements Initializable {
         stage.setY(event.getScreenY() - yOffset);
     }
 
+    /**
+     * Saves the axis values of the scene when mouse is pressed.
+     *
+     * @param event
+     */
     @FXML
     private void setOnMousePressed(MouseEvent event) {
         xOffset = event.getSceneX();
         yOffset = event.getSceneY();
+    }
+
+    /**
+     * Switches back to the Search screen and clears data from the Singleton
+     * class.
+     *
+     * @param event
+     */
+    private void handleBackButton(MouseEvent event) {
+        Singleton.getInstance().setLastPageNumber(-1);
+        Singleton.getInstance().getTours().clear();
+        Singleton.getInstance().getTourGuides().clear();
+        Singleton.getInstance().getAllPages().clear();
+        ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/Search.fxml");
     }
 
 }

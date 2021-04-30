@@ -85,7 +85,11 @@ public class ProfileGuideController implements Initializable {
             actual_stage.setIconified(true);
         }
     }
-
+    
+    /**
+     * Fills label and image view on this screen with data about
+     * a certain tour guide.
+     */
     private void setProfileInformations() {
         lblName.setText(
                 Singleton.getInstance().getUser().getFirstName() + " " + Singleton.
@@ -126,13 +130,33 @@ public class ProfileGuideController implements Initializable {
     private void handleGoToEditInformationsScreen(MouseEvent event) {
         ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/EditAccount.fxml");
     }
-
+    
+    /**
+     * Calls method fetchUserTours and processUsersTours
+     * @param event
+     * @see fetchUserTours
+     * @see processUsersTours
+     */
     @FXML
     private void handleGetNextPage(MouseEvent event) {
         CompletableFuture.supplyAsync(() -> this.fetchUserTours(pageNumber,
                 pageSize)).thenAccept(this::processUsersTours);
     }
-
+    
+    /**
+     * Creates GuideToursRequest. Then sends this request to the server
+     * as HttpGet and returns the response from the server. Data in the 
+     * response contains list of tours and boolean value.
+     * 
+     * 
+     * @param pageNumber
+     * @param pageSize
+     * @return UserToursResponse
+     * 
+     * @see GuideToursRequest
+     * @see UserToursResponse
+     * @see Tour
+     */
     private UserToursResponse fetchUserTours(int pageNumber, int pageSize) {
         GuideToursRequest request = new GuideToursRequest(pageNumber, pageSize);
         request.accept(new XMLRequestParser());
@@ -160,7 +184,16 @@ public class ProfileGuideController implements Initializable {
 
         return null;
     }
-
+    
+    /**
+     * Processes the UserToursResponse and calls method for loading 
+     * a fxml element for every loaded tour from the list.
+     * When the fxml element is loaded, it is displayed.
+     * 
+     * @param response
+     * @see UserToursResponse
+     * @see Tour
+     */
     private void processUsersTours(UserToursResponse response) {
         if (response == null) {
             return;
@@ -179,13 +212,30 @@ public class ProfileGuideController implements Initializable {
             loadMoreButton.setDisable(true);
         }
     }
-
+    
+    /**
+     * 
+     * Loads one fxml element with the given tour.
+     * 
+     * @param tour
+     * @return Node
+     * @throws IOException 
+     * 
+     * @see GuideTourOfferItemController
+     */
     private Node loadGuideTourOfferItem(Tour tour) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/GuideTourOfferItem.fxml"), I18n.getBundle());
         loader.setControllerFactory(c -> new GuideTourOfferItemController(tour));
         return loader.load();
     }
     
+    /**
+     * Sets a new position of stage depending on the variables stored from
+     * setOnMousePressed method when mouse is dragged.
+     *
+     * @param event
+     * @see setOnMousePressed
+     */
     @FXML
     private void setOnMouseDragged(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -193,6 +243,11 @@ public class ProfileGuideController implements Initializable {
         stage.setY(event.getScreenY() - yOffset);
     }
 
+    /**
+     * Saves the axis values of the scene when mouse is pressed.
+     *
+     * @param event
+     */
     @FXML
     private void setOnMousePressed(MouseEvent event) {
         xOffset = event.getSceneX();

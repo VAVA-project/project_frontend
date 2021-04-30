@@ -11,18 +11,18 @@ import java.util.Map;
 import sk.stu.fiit.User.User;
 
 /**
- *
+ * Stores all the necessary data.
  * @author adamf
  */
 public class Singleton {
 
     private static Singleton instance = null;
     
-    // Data o pouzivatelovi
+    // User's data
     private String jwtToken;
     private User user;
     
-    // Data pre Tours obrazovku, resp. pre zobrazovanie tur na obrazovke
+    // Data for the Tours screen, for displaying tours on the screen
     private String actualDestination;
     private int lastPageNumber;
     private int actualPageNumber;
@@ -30,13 +30,13 @@ public class Singleton {
     private List<TourGuide> tourGuides;
     private Map<Integer, ArrayList<Tour>> allPages;
     
-    // Data pre TourBuy obrazovku
+    // Data for the TourBuy screen
     private Tour tourBuy;
     private boolean areAllTourDatesLoaded;
     private int pageNumberToLoad;
     private List<TourDate> tourDates;
     
-    // Data pre obrazovku CreateTourOffer a CreateSchedule
+    // Data for the CreateTourOffer and CreateSchedule screen
     private TourCreate tourCreate;
     private List<TourDate> tourDatesOnScreen;
     private boolean tourDateDeleted;
@@ -189,9 +189,9 @@ public class Singleton {
         this.tourDateDeleted = tourDateDeleted;
     }
     
-    // Metoda ktora skopiruje aktualnu page (tury na stranke) a vlozi ju do 
-    // HashMapy uz navstivenych pages. Zabezpecenie toho, aby sa z DB 
-    // nenacitavali znova uz zobrazene tury, resp. page s turami
+    // A method that copies the current page and inserts it into
+    // the HashMap for already loaded pages. Ensuring that from the database
+    // did not reload the already displayed tours, respectively page with tours
     public void insertPageIntoAllPages(){
         ArrayList<Tour> newPage = new ArrayList<>();
         this.tours.forEach(tour -> {

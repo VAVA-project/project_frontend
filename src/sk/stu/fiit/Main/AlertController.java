@@ -55,18 +55,33 @@ public class AlertController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         setAlertTexts();
     }    
-
+    
+    /**
+     * Closes the window.
+     * 
+     * @param event 
+     */
     @FXML
     private void handleOkButton(MouseEvent event) {
         Stage stage = (Stage) btnOk.getScene().getWindow();
         stage.close();
     }
-
+    
+    /**
+     * Initializes title and content text in the Alert window.
+     */
     private void setAlertTexts() {
         this.lblAlertTitle.setText(this.title);
         this.lblAlertContent.setText(this.content);
     }
     
+    /**
+     * Sets a new position of stage depending on the variables stored from
+     * setOnMousePressed method when mouse is dragged.
+     *
+     * @param event
+     * @see setOnMousePressed
+     */
     @FXML
     private void setOnMouseDragged(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -74,6 +89,11 @@ public class AlertController implements Initializable {
         stage.setY(event.getScreenY() - yOffset);
     }
 
+    /**
+     * Saves the axis values of the scene when mouse is pressed.
+     *
+     * @param event
+     */
     @FXML
     private void setOnMousePressed(MouseEvent event) {
         xOffset = event.getSceneX();

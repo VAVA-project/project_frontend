@@ -78,6 +78,11 @@ public class OneTourDateScheduleController implements Initializable {
         }
     }
 
+    /**
+     * Calls deleteTourDateCreate or deleteTourDate method.
+     *
+     * @param event
+     */
     @FXML
     private void handleDeleteTourDateButton(MouseEvent event) {
         if (this.tourDate == null) {
@@ -87,36 +92,65 @@ public class OneTourDateScheduleController implements Initializable {
         }
     }
 
+    /**
+     * Initializes element with data of tourDateCreate object.
+     *
+     * @see tourDateCreate
+     */
     private void initializeTourDateCreate() {
         this.lblCapacity.setText(String.valueOf(this.tourDateCreate.getNumberOfTickets()));
         this.lblStartDate.setText(this.tourDateCreate.getStartDate().format(formatter));
         this.lblEndDate.setText(this.tourDateCreate.getEndDate().format(formatter));
     }
 
+    /**
+     * Initializes element with data of tourDate object.
+     *
+     * @see tourDate
+     */
     private void initializeTourDate() {
         this.lblCapacity.setText(String.valueOf(this.tourDate.getNumberOfTickets()));
         this.lblStartDate.setText(this.tourDate.getStartDate());
         this.lblEndDate.setText(this.tourDate.getEndDate());
     }
 
+    /**
+     * Deletes TourDateCreate object from the Singleton class and from the screen.
+     * 
+     * @see Singleton
+     */
     private void deleteTourDateCreate() {
         for (int i = 0; i < Singleton.getInstance().getTourCreate().getTourDates().size(); i++) {
-            if (Singleton.getInstance().getTourCreate().getTourDates().get(i).getNumberOfTourDate() == this.tourDateCreate.getNumberOfTourDate()) {
+            if (Singleton.getInstance().getTourCreate().getTourDates().get(i).getNumberOfTourDate()
+                    == this.tourDateCreate.getNumberOfTourDate()) {
                 Singleton.getInstance().getTourCreate().getTourDates().remove(i);
                 this.vbTourDates.getChildren().remove(i);
             }
         }
     }
-
+    
+    /**
+     * Creates DeleteTourDateRequest. Then sends this request to the server
+     * as HttpDelete and processes the response from the server. Data in the 
+     * response contains boolean value. If the boolean value is true shows
+     * alert about a successful deletion of tour date, calls 
+     * deleteTourDateFromScreen method and sets in the Singleton class
+     * that the tour has been deleted. If the boolean value is 
+     * false shows alert about not successful deletion of tour date. 
+     * 
+     * @see DeleteTourDateRequest
+     * @see DeleteTourDateResponse
+     * @see Singleton
+     */
     private void deleteTourDate() {
         DeleteTourDateRequest deleteTourDateRequest = new DeleteTourDateRequest(this.tourToEdit.getId(), this.tourDate.getId());
         deleteTourDateRequest.accept(new XMLRequestParser());
-        
+
         HttpDelete request = (HttpDelete) deleteTourDateRequest.getRequest();
-        
+
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(request)) {
-            
+
             DeleteTourDateResponse deleteTourDateResponse = (DeleteTourDateResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.DELETE_TOUR_DATE_RESPONSE).parse(response);
             if (deleteTourDateResponse.isDeleted()) {
                 deleteTourDateFromScreen();
@@ -132,9 +166,12 @@ public class OneTourDateScheduleController implements Initializable {
         } catch (APIValidationException ex) {
             Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-    }
 
+    }
+    
+    /**
+     * Deletes TourDate object from the Singleton class and from the screen.
+     */
     private void deleteTourDateFromScreen() {
         for (int i = 0; i < Singleton.getInstance().getTourDatesOnScreen().size(); i++) {
             if (Singleton.getInstance().getTourDatesOnScreen().get(i).getId().equals(this.tourDate.getId())) {

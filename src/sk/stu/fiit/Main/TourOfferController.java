@@ -74,14 +74,21 @@ public class TourOfferController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         setElements();
     }
-
+    
+    /**
+     * Calls getTourDates method and switches to the TourBuy screen.
+     * @param event 
+     */
     @FXML
     private void handleBtnInterested(MouseEvent event) {
         Singleton.getInstance().setTourBuy(this.tour);
         getTourDates();
         ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/TourBuy.fxml");
     }
-
+    
+    /**
+     * Fills labels and image view on this screen with data of tour.
+     */
     private void setElements() {
         String photo = tour.getGuidePhoto();
         byte[] byteArray = Base64.getDecoder().decode(photo.replaceAll("\n", ""));
@@ -102,7 +109,18 @@ public class TourOfferController implements Initializable {
         this.starsRating.setRating(Double.parseDouble(tour.getRating()));
         this.starsRating.setDisable(true);
     }
-
+    
+    /**
+     * Creates TourDatesRequest for the tour. Then sends this request to the
+     * server as HttpGet and processes the response from the server. Data in the
+     * response contains list of tour dates of certain tour. Then stores these
+     * tour dates in the Singleton class.
+     *
+     * @see TourDatesRequest
+     * @see TourDatesResponse
+     * @see TourDate
+     * @see Singleton
+     */
     private void getTourDates() {
         TourDatesRequest tourDatesRequest = new TourDatesRequest(this.tour.getId());
         tourDatesRequest.accept(new XMLRequestParser());
@@ -112,7 +130,6 @@ public class TourOfferController implements Initializable {
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(request)) {
 
-            // Ulozenie si prave nacitanych tur, pre ich zobrazenie
             TourDatesResponse tourDatesResponse = (TourDatesResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.TOUR_DATES_RESPONSE).parse(response);
             Singleton.getInstance().setTourDates(tourDatesResponse.getTourDates());
         } catch (IOException ex) {

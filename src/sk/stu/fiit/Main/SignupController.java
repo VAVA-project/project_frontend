@@ -143,8 +143,7 @@ public class SignupController implements Initializable {
             System.exit(0);
         }
         if (event.getSource().equals(btnMinimize)) {
-            Stage actual_stage = (Stage) ((Circle) event.getSource()).getScene().
-                    getWindow();
+            Stage actual_stage = (Stage) ((Circle) event.getSource()).getScene().getWindow();
             actual_stage.setIconified(true);
         }
         if (event.getSource().equals(btnBackCustomerAccount)) {
@@ -186,7 +185,11 @@ public class SignupController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         this.setupBirthDayDatePicker();
     }
-
+    
+    /**
+     * Sets on screen panel with controls for entering user email and password
+     * and sets the userType on NORMAL_USER.
+     */
     private void createCustomer() {
         stackPaneSignupLeft.getChildren().clear();
         stackPaneSignupLeft.getChildren().add(paneSignupLeft);
@@ -203,7 +206,11 @@ public class SignupController implements Initializable {
         lblUserType.setText("Customer");
         userType = UserType.NORMAL_USER;
     }
-
+    
+    /**
+     * Sets on screen panel with controls for entering user email and password
+     * and sets the userType on GUIDE.
+     */
     private void createGuide() {
         stackPaneSignupLeft.getChildren().clear();
         stackPaneSignupLeft.getChildren().add(paneSignupLeft);
@@ -220,7 +227,10 @@ public class SignupController implements Initializable {
         lblUserType.setText("Guide");
         userType = UserType.GUIDE;
     }
-
+    
+    /**
+     * Sets on screen panels with choice of type registration and clears all controls.
+     */
     private void handleBtnBackAccountInformations() {
         stackPaneSignupLeft.getChildren().clear();
         stackPaneSignupLeft.getChildren().add(paneSignupCustomerAccount);
@@ -245,7 +255,13 @@ public class SignupController implements Initializable {
             photoSet = false;
         }
     }
-
+    
+    /**
+     * Validates email and password and if these entered data are valid
+     * sets on screen panel with controls for entering user's first name,
+     * last name and date of birth. If the entered email or password 
+     * is not in correct format shows corresponding alert.
+     */
     private void handleBtnNextAccountInformations() {
         if (UserRegistrationValidator.areEmpty.test(tfEmail, tfPassword)) {
             if (UserRegistrationValidator.isEmailValid.test(tfEmail.getText())) {
@@ -272,7 +288,10 @@ public class SignupController implements Initializable {
             Alerts.showAlert("TITLE_EMPTY_FIELDS");
         }
     }
-
+    
+    /**
+     * Sets on screen panel with account informations (email, password).
+     */
     private void handleBtnBackPersonalInformations() {
         stackPaneSignupRight.getChildren().clear();
         stackPaneSignupRight.getChildren().add(paneSignupAccountInformations);
@@ -283,7 +302,13 @@ public class SignupController implements Initializable {
         hboxControlButtonsAccountInformations.getChildren().add(btnMinimize);
         hboxControlButtonsAccountInformations.getChildren().add(btnExit);
     }
-
+    
+    /**
+     * Validates first name and last name and if these data are entered and
+     * date of birth is valid sets on screen panel with control
+     * for entering user's photo. If the first name, last name or date of birth
+     * is not entered or date of birth is not valid shows corresponding alert.
+     */
     private void handleBtnNextPersonalInformations() {
         if (UserRegistrationValidator.areEmpty.test(tfFirstname, tfLastname)) {
             if (datePickerDateOfBirth.getValue() != null) {
@@ -317,7 +342,11 @@ public class SignupController implements Initializable {
             Alerts.showAlert("TITLE_EMPTY_FIELDS");
         }
     }
-
+    
+    /**
+     * Sets on screen panel with personal informations (first name, last name,
+     * date of birth).
+     */
     private void handleBtnBackPhoto() {
         stackPaneSignupRight.getChildren().clear();
         stackPaneSignupRight.getChildren().add(paneSignupPersonalInformations);
@@ -328,19 +357,22 @@ public class SignupController implements Initializable {
         hboxControlButtonsPersonalInformations.getChildren().add(btnMinimize);
         hboxControlButtonsPersonalInformations.getChildren().add(btnExit);
     }
-
+    
+    /**
+     * Chooses and sets user's photo.
+     */
     private void handleSelectPhoto() {
         try {
             FileChooser fileChooser = new FileChooser();
-
-            // Nastavenie filtra len na .jpg a .png subory
+            
+            // Sets up filter only for .jpg and .png files
             FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter(
                     "JPG files (*.jpg)", "*.JPG");
             FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter(
                     "PNG files (*.png)", "*.PNG");
             fileChooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
-
-            // Zobrazenie okna na vyberanie suborov
+            
+            // Displaying window for choosing photo file
             File file = fileChooser.showOpenDialog(null);
             String fileNamePath = file.getAbsolutePath();
 
@@ -374,7 +406,10 @@ public class SignupController implements Initializable {
                     log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    /**
+     * Chooses and sets user's photo.
+     */
     private void handleBtnChangePhoto() {
         try {
             FileChooser fileChooser = new FileChooser();
@@ -388,10 +423,8 @@ public class SignupController implements Initializable {
             File file = fileChooser.showOpenDialog(null);
             String fileNamePath = file.getAbsolutePath();
 
-            // Encode
             byte[] fileContent = Files.readAllBytes(file.toPath());
             photo = Base64.getEncoder().encodeToString(fileContent);
-            //photo = new String(fileContent);
 
             try {
                 InputStream inputStream = new FileInputStream(fileNamePath);
@@ -415,7 +448,20 @@ public class SignupController implements Initializable {
                     log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    /**
+     * Sends HttpPost request with user's entered data to the server 
+     * and process data from the response from the server. After processing
+     * the response stores user's token in Singleton class, creates instance
+     * of User class with entered data and stores this instance in Singleton
+     * class.
+     * 
+     * @param event 
+     * @see RegisterRequest
+     * @see RegisterResponse
+     * @see Singleton
+     * @see User
+     */
     private void registerUser(MouseEvent event) {
         RegisterRequest registerRequest = new RegisterRequest(email,
                 password, userType.name(), firstName, lastName, dateOfBirth, photo);
@@ -466,14 +512,26 @@ public class SignupController implements Initializable {
             }
         });
     }
-
+    
+    /**
+     * Sets a new position of stage depending on the variables stored 
+     * from setOnMousePressed method when mouse is dragged.
+     * 
+     * @param event
+     * @see setOnMousePressed
+     */
     @FXML
     private void setOnMouseDragged(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setX(event.getScreenX() - xOffset);
         stage.setY(event.getScreenY() - yOffset);
     }
-
+    
+    /**
+     * Saves the axis values of the scene when mouse is pressed.
+     * 
+     * @param event 
+     */
     @FXML
     private void setOnMousePressed(MouseEvent event) {
         xOffset = event.getSceneX();

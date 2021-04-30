@@ -38,10 +38,10 @@ import sk.stu.fiit.parsers.Responses.V2.SearchResponses.SearchResponse;
  * @author adamf
  */
 public class SearchController implements Initializable {
-    
+
     private double xOffset = 0;
     private double yOffset = 0;
-    
+
     @FXML
     private Button btnProfile;
     @FXML
@@ -52,7 +52,7 @@ public class SearchController implements Initializable {
     private Button btnSearch;
     @FXML
     private TextField tfDestination;
-    
+
     private int pageNumber = 0;
     private int pageSize = 5;
 
@@ -75,27 +75,35 @@ public class SearchController implements Initializable {
             actual_stage.setIconified(true);
         }
         if (event.getSource().equals(btnProfile)) {
-            if (Singleton.getInstance().getUser().getUserType() == UserType.NORMAL_USER) {
-                ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/ProfileCustomer.fxml");
-            } else {
-                ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/ProfileGuide.fxml");
-            }
+            handleGoToProfileScreen(event);
         }
         if (event.getSource().equals(btnSearch)) {
             searchToursForDestination(event);
         }
-
     }
 
+    /**
+     * Creates SearchRequest with entered start or destination place. Then sends
+     * this request to the server as HttpGet and process data from the response
+     * from the server. Data in the response contains list of tours which is stored
+     * in the Singleton class to display on Tours screen.
+     *
+     * @param event
+     * @see SearchRequest
+     * @see SearchResponse
+     * @see Tour
+     * @see Singleton
+     * @see ToursController
+     */
     private void searchToursForDestination(Event event) {
-        if(!this.validateInputs()) {
+        if (!this.validateInputs()) {
             Alerts.showAlert("TITLE_EMPTY_DESTINATION");
             return;
         }
-        
+
         SearchRequest request = new SearchRequest(tfDestination.getText(), pageNumber, pageSize);
         request.accept(new XMLRequestParser());
-        
+
         HttpGet getRequest = (HttpGet) request.getRequest();
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -103,7 +111,7 @@ public class SearchController implements Initializable {
 
             SearchResponse searchResponse = (SearchResponse) ResponseFactory.getFactory(
                     ResponseFactory.ResponseFactoryType.SEACH_RESPONSE).parse(response);
-            
+
             Singleton.getInstance().setTours(searchResponse.getTours());
             ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Tours.fxml");
 
@@ -121,7 +129,7 @@ public class SearchController implements Initializable {
                     log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private boolean validateInputs() {
         return !tfDestination.getText().isEmpty();
     }
@@ -132,7 +140,27 @@ public class SearchController implements Initializable {
             searchToursForDestination(event);
         }
     }
-    
+
+    /**
+     * Switches to the appropriate screen depending on the user type
+     *
+     * @param event
+     */
+    private void handleGoToProfileScreen(MouseEvent event) {
+        if (Singleton.getInstance().getUser().getUserType() == UserType.NORMAL_USER) {
+            ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/ProfileCustomer.fxml");
+        } else {
+            ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/ProfileGuide.fxml");
+        }
+    }
+
+    /**
+     * Sets a new position of stage depending on the variables stored from
+     * setOnMousePressed method when mouse is dragged.
+     *
+     * @param event
+     * @see setOnMousePressed
+     */
     @FXML
     private void setOnMouseDragged(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -140,6 +168,11 @@ public class SearchController implements Initializable {
         stage.setY(event.getScreenY() - yOffset);
     }
 
+    /**
+     * Saves the axis values of the scene when mouse is pressed.
+     *
+     * @param event
+     */
     @FXML
     private void setOnMousePressed(MouseEvent event) {
         xOffset = event.getSceneX();
