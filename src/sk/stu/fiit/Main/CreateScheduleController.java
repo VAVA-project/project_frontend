@@ -10,8 +10,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -28,6 +26,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.log4j.Logger;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.Internationalisation.I18n;
@@ -45,7 +44,10 @@ import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.TourOfferResponse;
  * @author adamf
  */
 public class CreateScheduleController implements Initializable {
-    
+
+    private static final Logger LOGGER = Logger.getLogger(
+            CreateScheduleController.class);
+
     private double xOffset = 0;
     private double yOffset = 0;
     private int numberOfTourDate = 0;
@@ -87,19 +89,22 @@ public class CreateScheduleController implements Initializable {
             System.exit(0);
         }
         if (event.getSource().equals(btnMinimize)) {
-            Stage actual_stage = (Stage) ((Circle) event.getSource()).getScene().getWindow();
+            Stage actual_stage = (Stage) ((Circle) event.getSource()).getScene().
+                    getWindow();
             actual_stage.setIconified(true);
         }
     }
 
     @FXML
     private void handleGoToCreateTourScreen(MouseEvent event) {
-        ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/CreateTourOffer.fxml");
+        ScreenSwitcher.getScreenSwitcher().switchToScreen(event,
+                "Views/CreateTourOffer.fxml");
     }
 
     @FXML
     private void handleAddTourDateButton(MouseEvent event) {
-        if (TourScheduleValidator.validate(tfCapacity, dpStartDate, dpEndDate, tfStartTime, tfEndTime)) {
+        if (TourScheduleValidator.validate(tfCapacity, dpStartDate, dpEndDate,
+                tfStartTime, tfEndTime)) {
             createTourDateCreate();
         }
     }
@@ -109,68 +114,74 @@ public class CreateScheduleController implements Initializable {
         sendCreateTourOfferRequest();
         sendCreateTourDatesRequests();
         Alerts.showAlert("TITLE_NEW_TOUR");
-        ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileGuide.fxml");
+        ScreenSwitcher.getScreenSwitcher().switchToScreen(event,
+                "Views/ProfileGuide.fxml");
     }
-    
+
     /**
-     * Creates new object of TourDateCreate class with entered data
-     * and stores this object in the Singleton class. Then initializes
-     * this tour date on the screen.
-     * 
+     * Creates new object of TourDateCreate class with entered data and stores
+     * this object in the Singleton class. Then initializes this tour date on
+     * the screen.
+     *
      * @see TourDateCreate
      * @see Singleton
      */
     private void createTourDateCreate() {
-        LocalDateTime startDate = LocalDateTime.of(dpStartDate.getValue(), LocalTime.parse(tfStartTime.getText()));
-        LocalDateTime endDate = LocalDateTime.of(dpEndDate.getValue(), LocalTime.parse(tfEndTime.getText()));
-        TourDateCreate tourDateCreate = new TourDateCreate(this.numberOfTourDate, Integer.parseInt(tfCapacity.getText()), startDate, endDate);
+        LocalDateTime startDate = LocalDateTime.of(dpStartDate.getValue(),
+                LocalTime.parse(tfStartTime.getText()));
+        LocalDateTime endDate = LocalDateTime.of(dpEndDate.getValue(),
+                LocalTime.parse(tfEndTime.getText()));
+        TourDateCreate tourDateCreate = new TourDateCreate(this.numberOfTourDate,
+                Integer.parseInt(tfCapacity.getText()), startDate, endDate);
         this.numberOfTourDate++;
-        
-        Singleton.getInstance().getTourCreate().getTourDates().add(tourDateCreate);
+
+        Singleton.getInstance().getTourCreate().getTourDates().add(
+                tourDateCreate);
         initializeTourDate(tourDateCreate);
     }
-    
+
     /**
-     * Calls method for loading a fxml element.
-     * When the fxml element is loaded, it is displayed.
-     * 
-     * @param tourDateCreate 
-     * 
+     * Calls method for loading a fxml element. When the fxml element is loaded,
+     * it is displayed.
+     *
+     * @param tourDateCreate
+     *
      * @see TourDateCreate
      */
     private void initializeTourDate(TourDateCreate tourDateCreate) {
-        try {
-            Node tourDateNode = this.loadTourDate(tourDateCreate);
-            this.vbTourDates.getChildren().add(tourDateNode);
-        } catch (Exception e) {
-            Logger.getLogger(TourBuyController.class.getName()).log(Level.SEVERE, null, e);
-        }
+        Node tourDateNode = this.loadTourDate(tourDateCreate);
+        this.vbTourDates.getChildren().add(tourDateNode);
     }
-    
+
     /**
      * Loads one fxml element with the given tourDateCreate.
-     * 
+     *
      * @param tourDateCreate
      * @return Node
-     * 
+     *
      * @see OneTourDateScheduleController
      */
     private Node loadTourDate(TourDateCreate tourDateCreate) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/OneTourDateSchedule.fxml"), I18n.getBundle());
-        loader.setControllerFactory(c -> new OneTourDateScheduleController(tourDateCreate, vbTourDates));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                "Views/OneTourDateSchedule.fxml"), I18n.getBundle());
+        loader.setControllerFactory(c -> new OneTourDateScheduleController(
+                tourDateCreate, vbTourDates));
         try {
             return loader.load();
         } catch (IOException ex) {
-            Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error(
+                    "IOException has been thrown while loading Views/OneTourDateSchedule.fxml. Error message: " + ex.
+                            getMessage());
         }
         return null;
     }
-    
+
     /**
      * Creates CreateTourOfferRequest with data stored in the Singleton class.
-     * Then sends this request to the server as HttpPost and processes
-     * the response from the server. Data in the response contains informations
-     * about the created tour. Then the id of tour is stored in the Singleton class.
+     * Then sends this request to the server as HttpPost and processes the
+     * response from the server. Data in the response contains informations
+     * about the created tour. Then the id of tour is stored in the Singleton
+     * class.
      *
      * @see CreateTourOfferRequest
      * @see TourOfferResponse
@@ -183,80 +194,77 @@ public class CreateScheduleController implements Initializable {
                 Singleton.getInstance().getTourCreate().getDescription(),
                 Singleton.getInstance().getTourCreate().getPricePerPerson());
         createTourOfferRequest.accept(new XMLRequestParser());
-        
+
         HttpPost request = (HttpPost) createTourOfferRequest.getRequest();
 
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                CloseableHttpResponse response = httpClient.execute(request)) {
+        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
+                 CloseableHttpResponse response = httpClient.execute(request)) {
 
-            TourOfferResponse tourOfferResponse = (TourOfferResponse) ResponseFactory.getFactory(
-                    ResponseFactory.ResponseFactoryType.CREATE_TOUR_OFFER_RESPONSE).parse(response);
-            
-            Singleton.getInstance().getTourCreate().setId(tourOfferResponse.getId());
-            
+            TourOfferResponse tourOfferResponse = (TourOfferResponse) ResponseFactory.
+                    getFactory(
+                            ResponseFactory.ResponseFactoryType.CREATE_TOUR_OFFER_RESPONSE).
+                    parse(response);
+
+            Singleton.getInstance().getTourCreate().setId(tourOfferResponse.
+                    getId());
+
         } catch (IOException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).log(Level.SEVERE, null, ex);
-            Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
-        } catch (AuthTokenExpiredException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).
-                    log(Level.SEVERE, null, ex);
-            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
-        } catch (APIValidationException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.error("Server error" + ex.getMessage());
+            Alerts.showAlert("TITLE_SERVER_ERROR",
+                    "CONTENT_SERVER_NOT_RESPONDING");
+        } catch (AuthTokenExpiredException | APIValidationException ex) {
         }
     }
-    
+
     /**
      * Calls sendCreateTourDateRequest method for every tourDateCreate of tour
      * which are stored in the Singleton class.
      */
     private void sendCreateTourDatesRequests() {
-        Singleton.getInstance().getTourCreate().getTourDates().stream().forEach((tourDateCreate) -> {
-            sendCreateTourDateRequest(tourDateCreate);
-        });
+        Singleton.getInstance().getTourCreate().getTourDates().stream().forEach(
+                (tourDateCreate) -> {
+                    sendCreateTourDateRequest(tourDateCreate);
+                });
     }
-    
+
     /**
-     * Creates CreateTourDateRequest with id of tour stored in the Singleton class. 
-     * Then sends this request to the server as HttpPost and processes
+     * Creates CreateTourDateRequest with id of tour stored in the Singleton
+     * class. Then sends this request to the server as HttpPost and processes
      * the response from the server.
-     * 
-     * @param tourDateCreate 
-     * 
+     *
+     * @param tourDateCreate
+     *
      * @see CreateTourDateRequest
      * @see CreateTourDateResponse
      */
     private void sendCreateTourDateRequest(TourDateCreate tourDateCreate) {
         CreateTourDateRequest createTourDateRequest = new CreateTourDateRequest(
-                Singleton.getInstance().getTourCreate().getId(), 
-                tourDateCreate.getStartDate(), 
-                tourDateCreate.getEndDate(), 
+                Singleton.getInstance().getTourCreate().getId(),
+                tourDateCreate.getStartDate(),
+                tourDateCreate.getEndDate(),
                 tourDateCreate.getNumberOfTickets());
         createTourDateRequest.accept(new XMLRequestParser());
-        
+
         HttpPost request = (HttpPost) createTourDateRequest.getRequest();
-        
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                CloseableHttpResponse response = httpClient.execute(request)) {
-            
-            CreateTourDateResponse createTourDateResponse = (CreateTourDateResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.CREATE_TOUR_DATE_RESPONSE).parse(response);
-            
+
+        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
+                 CloseableHttpResponse response = httpClient.execute(request)) {
+
+            CreateTourDateResponse createTourDateResponse = (CreateTourDateResponse) ResponseFactory.
+                    getFactory(
+                            ResponseFactory.ResponseFactoryType.CREATE_TOUR_DATE_RESPONSE).
+                    parse(response);
+
         } catch (IOException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).log(Level.SEVERE, null, ex);
-            Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
-        } catch (AuthTokenExpiredException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).
-                    log(Level.SEVERE, null, ex);
-            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
-        } catch (APIValidationException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.error("Server error" + ex.getMessage());
+            Alerts.showAlert("TITLE_SERVER_ERROR",
+                    "CONTENT_SERVER_NOT_RESPONDING");
+        } catch (AuthTokenExpiredException | APIValidationException ex) {
         }
     }
-    
+
     /**
-     * Sets a date in the date pickers greater than the current date to prevent 
+     * Sets a date in the date pickers greater than the current date to prevent
      * that the date for tour will not be created in the past.
      */
     private void setupDatePickers() {
@@ -267,11 +275,11 @@ public class CreateScheduleController implements Initializable {
                 super.updateItem(item, empty);
 
                 LocalDate today = LocalDate.now();
-                
+
                 setDisable(empty || item.compareTo(today) <= 0);
             }
         });
-        
+
         this.dpEndDate.setDayCellFactory(
                 (final DatePicker param) -> new DateCell() {
             @Override
@@ -279,12 +287,12 @@ public class CreateScheduleController implements Initializable {
                 super.updateItem(item, empty);
 
                 LocalDate today = LocalDate.now();
-                        
+
                 setDisable(empty || item.compareTo(today) <= 0);
             }
         });
     }
-    
+
     /**
      * Sets a new position of stage depending on the variables stored from
      * setOnMousePressed method when mouse is dragged.
@@ -309,5 +317,5 @@ public class CreateScheduleController implements Initializable {
         xOffset = event.getSceneX();
         yOffset = event.getSceneY();
     }
-    
+
 }
