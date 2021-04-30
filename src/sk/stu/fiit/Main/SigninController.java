@@ -1,13 +1,14 @@
 package sk.stu.fiit.Main;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -37,7 +38,7 @@ import sk.stu.fiit.parsers.Responses.V2.ResponseFactory;
  *
  * @author adamf
  */
-public class SigninController {
+public class SigninController implements Initializable {
     
     private double xOffset = 0;
     private double yOffset = 0;
@@ -50,7 +51,14 @@ public class SigninController {
     private TextField tfEmail;
     @FXML
     private PasswordField pfPassword;
-
+    
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(SigninController.class);
+    
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        LOGGER.setLevel(org.apache.log4j.Level.INFO);
+    }
+    
     @FXML
     private void handleMouseEvent(MouseEvent event) throws IOException {
         if (event.getSource().equals(btnExit)) {
@@ -73,16 +81,19 @@ public class SigninController {
         }
         HttpPost httpPost = this.createLoginRequest();
         CompletableFuture.runAsync(() -> this.sendAndProcessLoginRequest(httpPost, event));
+        LOGGER.info("User is signed in");
     }
 
     private boolean validateInputs() {
         if (!UserRegistrationValidator.isEmailValid.test(tfEmail.getText())) {
             Alerts.showAlert("TITLE_INVALID_EMAIL");
+            LOGGER.info("Invalid email");
             return false;
         }
         if (!UserRegistrationValidator.isPasswordValid.
                 test(pfPassword.getText())) {
-            Alerts.showAlert("CONTENT_PASSWORD_NOT_VALID");
+            Alerts.showAlert("TITLE_PASSWORD_NOT_VALID", "CONTENT_PASSWORD_NOT_VALID");
+            LOGGER.info("Not valid password");
             return false;
         }
         return true;
@@ -155,6 +166,7 @@ public class SigninController {
                 .thenAccept((response) -> {
                     if (!response.isSuccess()) {
                         Alerts.showAlert("TITLE_CART_CLEARED");
+                        LOGGER.info("Cart was not successfully cleared");
                     }
                 });
     }
@@ -172,30 +184,25 @@ public class SigninController {
                     ResponseFactory.ResponseFactoryType.DELETE_CART_RESPONSE).
                     parse(response);
         } catch (IOException e) {
-            Logger.getLogger(TourTicketsController.class.getName()).log(
-                    Level.SEVERE, null, e);
-            Alerts.showAlert("TITLE_SERVER_ERROR",
-                    "CONTENT_SERVER_NOT_RESPONDING");
+            LOGGER.error("Server error" + e.getMessage());
+            Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).
-                    log(Level.SEVERE, null, ex);
-            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR",
-                    "CONTENT_AUTHENTICATION_ERROR");
+            LOGGER.error("Authentication error" + ex.getMessage());
+            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR", "CONTENT_AUTHENTICATION_ERROR");
         } catch (APIValidationException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.error("API validation exception has raised in delete cart response. Response has these errors:" + ex.extractAllErrors());
         }
 
         return null;
     }
 
     private void handleIOException(IOException ex) {
-        Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+        LOGGER.error("Server error" + ex.getMessage());
         Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
     }
 
     private void handleAPIValidationException(APIValidationException ex) {
-        Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+        LOGGER.error("Sign in error" + ex.getMessage());
         Alerts.showAlert("TITLE_SIGN_IN_ERROR");
     }
 
@@ -233,9 +240,11 @@ public class SigninController {
     private void handleInternationalization(MouseEvent event) {
         if (Locale.getDefault() == Languages.US.getLocale()) {
             I18n.setLocale(Languages.SK.getLocale());
+            LOGGER.info("Switched to SK Locale");
             ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Signin.fxml");
         } else {
             I18n.setLocale(Languages.US.getLocale());
+            LOGGER.info("Switched to US Locale");
             ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Signin.fxml");
         }
     }
@@ -252,5 +261,5 @@ public class SigninController {
         xOffset = event.getSceneX();
         yOffset = event.getSceneY();
     }
-    
+
 }

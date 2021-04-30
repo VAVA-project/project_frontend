@@ -136,7 +136,9 @@ public class SignupController implements Initializable {
     private Button btnChangePhoto;
     @FXML
     private PasswordField tfPassword;
-
+    
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(SigninController.class);
+    
     @FXML
     private void handleMouseEvent(MouseEvent event) {
         if (event.getSource().equals(btnExit)) {
