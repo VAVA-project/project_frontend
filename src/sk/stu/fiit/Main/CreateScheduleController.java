@@ -44,14 +44,14 @@ import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.TourOfferResponse;
  * @author adamf
  */
 public class CreateScheduleController implements Initializable {
-
+    
     private static final Logger LOGGER = Logger.getLogger(
             CreateScheduleController.class);
-
+    
     private double xOffset = 0;
     private double yOffset = 0;
     private int numberOfTourDate = 0;
-
+    
     @FXML
     private Button btnBack;
     @FXML
@@ -82,7 +82,7 @@ public class CreateScheduleController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.setupDatePickers();
     }
-
+    
     @FXML
     private void handleMouseEvent(MouseEvent event) {
         if (event.getSource().equals(btnExit)) {
@@ -94,13 +94,13 @@ public class CreateScheduleController implements Initializable {
             actual_stage.setIconified(true);
         }
     }
-
+    
     @FXML
     private void handleGoToCreateTourScreen(MouseEvent event) {
         ScreenSwitcher.getScreenSwitcher().switchToScreen(event,
                 "Views/CreateTourOffer.fxml");
     }
-
+    
     @FXML
     private void handleAddTourDateButton(MouseEvent event) {
         if (TourScheduleValidator.validate(tfCapacity, dpStartDate, dpEndDate,
@@ -108,7 +108,7 @@ public class CreateScheduleController implements Initializable {
             createTourDateCreate();
         }
     }
-
+    
     @FXML
     private void handleCreateTourButton(MouseEvent event) {
         sendCreateTourOfferRequest();
@@ -135,7 +135,7 @@ public class CreateScheduleController implements Initializable {
         TourDateCreate tourDateCreate = new TourDateCreate(this.numberOfTourDate,
                 Integer.parseInt(tfCapacity.getText()), startDate, endDate);
         this.numberOfTourDate++;
-
+        
         Singleton.getInstance().getTourCreate().getTourDates().add(
                 tourDateCreate);
         initializeTourDate(tourDateCreate);
@@ -150,8 +150,13 @@ public class CreateScheduleController implements Initializable {
      * @see TourDateCreate
      */
     private void initializeTourDate(TourDateCreate tourDateCreate) {
-        Node tourDateNode = this.loadTourDate(tourDateCreate);
-        this.vbTourDates.getChildren().add(tourDateNode);
+        try {
+            Node tourDateNode = this.loadTourDate(tourDateCreate);
+            this.vbTourDates.getChildren().add(tourDateNode);
+        } catch (Exception e) {
+            LOGGER.warn("Exception has been thrown. Error message: " + e.
+                    getMessage());
+        }
     }
 
     /**
@@ -195,20 +200,20 @@ public class CreateScheduleController implements Initializable {
                 Singleton.getInstance().getTourCreate().getDescription(),
                 Singleton.getInstance().getTourCreate().getPricePerPerson());
         createTourOfferRequest.accept(new XMLRequestParser());
-
+        
         HttpPost request = (HttpPost) createTourOfferRequest.getRequest();
-
+        
         try ( CloseableHttpClient httpClient = HttpClients.createDefault();
                  CloseableHttpResponse response = httpClient.execute(request)) {
-
+            
             TourOfferResponse tourOfferResponse = (TourOfferResponse) ResponseFactory.
                     getFactory(
                             ResponseFactory.ResponseFactoryType.CREATE_TOUR_OFFER_RESPONSE).
                     parse(response);
-
+            
             Singleton.getInstance().getTourCreate().setId(tourOfferResponse.
                     getId());
-
+            
         } catch (IOException ex) {
             LOGGER.error("Server error" + ex.getMessage());
             Alerts.showAlert("TITLE_SERVER_ERROR",
@@ -248,17 +253,17 @@ public class CreateScheduleController implements Initializable {
                 tourDateCreate.getEndDate(),
                 tourDateCreate.getNumberOfTickets());
         createTourDateRequest.accept(new XMLRequestParser());
-
+        
         HttpPost request = (HttpPost) createTourDateRequest.getRequest();
-
+        
         try ( CloseableHttpClient httpClient = HttpClients.createDefault();
                  CloseableHttpResponse response = httpClient.execute(request)) {
-
+            
             CreateTourDateResponse createTourDateResponse = (CreateTourDateResponse) ResponseFactory.
                     getFactory(
                             ResponseFactory.ResponseFactoryType.CREATE_TOUR_DATE_RESPONSE).
                     parse(response);
-
+            
         } catch (IOException ex) {
             LOGGER.error("Server error" + ex.getMessage());
             Alerts.showAlert("TITLE_SERVER_ERROR",
@@ -280,21 +285,21 @@ public class CreateScheduleController implements Initializable {
             @Override
             public void updateItem(LocalDate item, boolean empty) {
                 super.updateItem(item, empty);
-
+                
                 LocalDate today = LocalDate.now();
-
+                
                 setDisable(empty || item.compareTo(today) <= 0);
             }
         });
-
+        
         this.dpEndDate.setDayCellFactory(
                 (final DatePicker param) -> new DateCell() {
             @Override
             public void updateItem(LocalDate item, boolean empty) {
                 super.updateItem(item, empty);
-
+                
                 LocalDate today = LocalDate.now();
-
+                
                 setDisable(empty || item.compareTo(today) <= 0);
             }
         });
@@ -324,5 +329,5 @@ public class CreateScheduleController implements Initializable {
         xOffset = event.getSceneX();
         yOffset = event.getSceneY();
     }
-
+    
 }
