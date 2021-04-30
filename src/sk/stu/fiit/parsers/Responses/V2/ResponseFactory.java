@@ -7,8 +7,7 @@ package sk.stu.fiit.parsers.Responses.V2;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import sk.stu.fiit.parsers.Responses.V2.AddTicketToCartResponses.TicketToCartResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.CheckoutTicketsInCartResponses.CheckoutTicketsInCartResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.DeleteCartResponses.DeleteCartResponseFactory;
@@ -34,7 +33,9 @@ import sk.stu.fiit.parsers.Responses.V2.UserToursResponses.UserToursResponseFact
  * @author Adam Bublavý
  */
 public class ResponseFactory {
-
+    
+    private static final Logger LOGGER = Logger.getLogger(ResponseFactory.class);
+    
     public static enum ResponseFactoryType {
         EDIT_RESPONSE,
         LOGIN_RESPONSE,
@@ -57,9 +58,9 @@ public class ResponseFactory {
         COMPLETED_TOURS_RESPONSE,
         RATING_RESPONSE
     }
-
+    
     private static final Map<ResponseFactoryType, Class<? extends AbstractResponseFactory>> registeredFactoryTypes = new HashMap<>();
-
+    
     static {
         registeredFactoryTypes.put(ResponseFactoryType.EDIT_RESPONSE,
                 EditResponseFactory.class);
@@ -118,8 +119,10 @@ public class ResponseFactory {
      * @see AbstractResponseFactory
      */
     public static AbstractResponseFactory getFactory(ResponseFactoryType type) {
+        LOGGER.info("Creating new " + type.toString() + " factory");
+        
         Class<?> registeredClass = registeredFactoryTypes.get(type);
-
+        
         try {
             return (AbstractResponseFactory) registeredClass.newInstance();
         } catch (InstantiationException | IllegalAccessException ex) {
@@ -130,12 +133,13 @@ public class ResponseFactory {
             } catch (NoSuchMethodException | SecurityException
                     | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException ex1) {
-                Logger.getLogger(ResponseFactory.class.getName()).
-                        log(Level.SEVERE, null, ex1);
+                LOGGER.error(
+                        "Exception has been thrown when creating new instance of " + type.
+                                toString() + " factory. Default constructor or getInstance method was not found");
             }
         }
-
+        
         return null;
     }
-
+    
 }

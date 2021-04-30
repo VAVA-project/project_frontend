@@ -7,12 +7,11 @@ package sk.stu.fiit.parsers.Responses.V2.UserToursResponses;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -28,6 +27,9 @@ import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
  * @author Adam Bublavý
  */
 public class UserToursProcessor extends XMLProcessor {
+
+    private static final Logger LOGGER = Logger.getLogger(
+            UserToursProcessor.class);
 
     private static final List<String> possibleValidationErrors
             = Arrays.asList("errors");
@@ -91,8 +93,9 @@ public class UserToursProcessor extends XMLProcessor {
 
             return new UserToursResponse(parsedTours, Boolean.valueOf(lastText));
         } catch (XPathExpressionException ex) {
-            Logger.getLogger(UserToursProcessor.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.warn(
+                    "XPathExpressionException has been thrown while processing UserToursResponse. Error message: " + ex.
+                            getMessage());
         }
 
         return null;

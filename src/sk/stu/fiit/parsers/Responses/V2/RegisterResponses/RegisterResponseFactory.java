@@ -7,6 +7,7 @@ package sk.stu.fiit.parsers.Responses.V2.RegisterResponses;
 
 import org.apache.http.Header;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.log4j.Logger;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.parsers.Responses.V2.AbstractResponseFactory;
@@ -21,6 +22,9 @@ import sk.stu.fiit.parsers.Responses.V2.Response;
 public class RegisterResponseFactory implements
         AbstractResponseFactory<Response> {
 
+    private static final Logger LOGGER = Logger.getLogger(
+            RegisterResponseFactory.class);
+
     private RegisterResponseFactory() {
     }
 
@@ -33,13 +37,16 @@ public class RegisterResponseFactory implements
 
     /**
      * {@inheritDoc }
-     * 
+     *
      * @see RegisterResponseProcessor
      */
     @Override
     public Response parse(CloseableHttpResponse response) throws
             AuthTokenExpiredException, APIValidationException {
         Header header = response.getFirstHeader("Content-Type");
+
+        LOGGER.info("Received response with header content type: " + header.
+                getValue());
 
         if (header.getValue().equals("application/xml;charset=UTF-8")) {
             return new RegisterResponseProcessor().processResponse(response);

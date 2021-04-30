@@ -11,8 +11,6 @@ import java.net.URISyntaxException;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -29,9 +27,9 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import sk.stu.fiit.Main.ProfileGuideController;
 import sk.stu.fiit.Main.Singleton;
 import sk.stu.fiit.parsers.Requests.dto.AddTicketToCartRequest;
 import sk.stu.fiit.parsers.Requests.dto.CheckoutTicketsInCartRequest;
@@ -59,6 +57,8 @@ import sk.stu.fiit.parsers.Requests.dto.UserRequest;
  * @author Adam Bublavý
  */
 public class XMLRequestParser implements IRequestVisitor {
+
+    private static Logger LOGGER = Logger.getLogger(XMLRequestParser.class);
 
     private static final String serverAddress = "https://vava-project.herokuapp.com/";
 
@@ -144,6 +144,8 @@ public class XMLRequestParser implements IRequestVisitor {
      */
     @Override
     public void constructRegisterRequest(RegisterRequest request) {
+        LOGGER.info("Constructing register request");
+
         HttpPost postRequest = new HttpPost(
                 serverAddress + "api/v1/register/");
         postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
@@ -163,9 +165,14 @@ public class XMLRequestParser implements IRequestVisitor {
                     "registerRequest", data), CHARSET));
         } catch (ParserConfigurationException
                 | TransformerConfigurationException ex) {
+            LOGGER.warn(
+                    "Exception has been thrown while constructing register request. Error message: " + ex.
+                            getMessage());
         }
 
         request.setRequest(postRequest);
+
+        LOGGER.info("Register request was constructed");
     }
 
     /**
@@ -173,6 +180,8 @@ public class XMLRequestParser implements IRequestVisitor {
      */
     @Override
     public void constructLoginRequest(LoginRequest request) {
+        LOGGER.info("Constructing login request");
+
         HttpPost postRequest = new HttpPost(serverAddress + "api/v1/login/");
         postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
 
@@ -185,9 +194,14 @@ public class XMLRequestParser implements IRequestVisitor {
                     "loginRequest", data), CHARSET));
         } catch (ParserConfigurationException
                 | TransformerConfigurationException ex) {
+            LOGGER.warn(
+                    "Exception has been thrown while constructing login request. Error message: " + ex.
+                            getMessage());
         }
 
         request.setRequest(postRequest);
+
+        LOGGER.info("Login request was constructed");
     }
 
     /**
@@ -195,6 +209,8 @@ public class XMLRequestParser implements IRequestVisitor {
      */
     @Override
     public void constructEditRequest(EditRequest request) {
+        LOGGER.info("Constructing edit request");
+
         HttpPut httpPut = new HttpPut(serverAddress + "api/v1/users/");
         httpPut.setHeader("Content-Type", "application/xml;charset=UTF-8");
         httpPut.setHeader("Authorization", "Bearer " + Singleton.getInstance().
@@ -211,9 +227,14 @@ public class XMLRequestParser implements IRequestVisitor {
                     "updateRequest", data), CHARSET));
         } catch (ParserConfigurationException
                 | TransformerConfigurationException ex) {
+            LOGGER.warn(
+                    "Exception has been thrown while constructing edit request. Error message: " + ex.
+                            getMessage());
         }
 
         request.setRequest(httpPut);
+
+        LOGGER.info("Edit request was constructed");
     }
 
     /**
@@ -221,6 +242,8 @@ public class XMLRequestParser implements IRequestVisitor {
      */
     @Override
     public void constructGuideToursRequest(GuideToursRequest request) {
+        LOGGER.info("Constructing guide tours request");
+
         HttpGet getRequest = new HttpGet(
                 serverAddress + "api/v1/users/tours/");
         getRequest.setHeader("Content-Type", "application/xml");
@@ -235,10 +258,13 @@ public class XMLRequestParser implements IRequestVisitor {
                             valueOf(request.getPageSize())).build();
             ((HttpRequestBase) getRequest).setURI(uri);
         } catch (URISyntaxException ex) {
-            Logger.getLogger(ProfileGuideController.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.warn(
+                    "URISyntaxException has been thrown while constructing guide tours request. Error message: " + ex.
+                            getMessage());
         }
         request.setRequest(getRequest);
+        
+        LOGGER.info("Guide tours request was constructed");
     }
 
     /**
@@ -246,6 +272,8 @@ public class XMLRequestParser implements IRequestVisitor {
      */
     @Override
     public void constructSearchRequest(SearchRequest request) {
+        LOGGER.info("Constructing search request");
+        
         HttpGet getRequest = new HttpGet(serverAddress + "api/v1/search/");
         getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         getRequest.setHeader("Authorization", "Bearer " + Singleton.
@@ -261,11 +289,14 @@ public class XMLRequestParser implements IRequestVisitor {
                     .build();
             ((HttpRequestBase) getRequest).setURI(uri);
         } catch (URISyntaxException ex) {
-            Logger.getLogger(ProfileGuideController.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.warn(
+                    "URISyntaxException has been thrown while constructing search request. Error message: " + ex.
+                            getMessage());
         }
 
         request.setRequest(getRequest);
+        
+        LOGGER.info("Search request was constructed");
     }
 
     /**
@@ -273,6 +304,8 @@ public class XMLRequestParser implements IRequestVisitor {
      */
     @Override
     public void constructTourDatesRequest(TourDatesRequest request) {
+        LOGGER.info("Constructing tour dates request");
+        
         HttpGet getRequest = new HttpGet(
                 serverAddress + "api/v1/tours/" + request.getTourId() + "/dates/");
         getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
@@ -290,10 +323,13 @@ public class XMLRequestParser implements IRequestVisitor {
                     .build();
             ((HttpRequestBase) getRequest).setURI(uri);
         } catch (URISyntaxException ex) {
-            Logger.getLogger(ProfileGuideController.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.warn(
+                    "URISyntaxException has been thrown while constructing tours date request. Error message: " + ex.
+                            getMessage());
         }
         request.setRequest(getRequest);
+        
+        LOGGER.info("Tour dates request was constructed");
     }
 
     /**
@@ -301,6 +337,8 @@ public class XMLRequestParser implements IRequestVisitor {
      */
     @Override
     public void constructCreateTourOfferRequest(CreateTourOfferRequest request) {
+        LOGGER.info("Constructing create tour offer request");
+        
         HttpPost httpPost = new HttpPost(serverAddress + "api/v1/tours/");
         httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
         httpPost.setHeader("Authorization", "Bearer " + Singleton.getInstance().
@@ -317,8 +355,13 @@ public class XMLRequestParser implements IRequestVisitor {
                     "CreateTourOfferRequest", data), CHARSET));
         } catch (ParserConfigurationException
                 | TransformerConfigurationException ex) {
+            LOGGER.warn(
+                    "Exception has been thrown while constructing create tour offer request. Error message: " + ex.
+                            getMessage());
         }
         request.setRequest(httpPost);
+        
+        LOGGER.info("Create tour offer request was constructed");
     }
 
     /**
@@ -326,6 +369,8 @@ public class XMLRequestParser implements IRequestVisitor {
      */
     @Override
     public void constructEditTourOfferRequest(EditTourOfferRequest request) {
+        LOGGER.info("Constructing edit tour offer request");
+        
         HttpPut httpPut = new HttpPut(
                 serverAddress + "api/v1/tours/" + request.getId() + "/");
         httpPut.setHeader("Content-Type", "application/xml;charset=UTF-8");
@@ -343,9 +388,14 @@ public class XMLRequestParser implements IRequestVisitor {
                     "UpdateTourOfferRequest", data), CHARSET));
         } catch (ParserConfigurationException
                 | TransformerConfigurationException ex) {
+            LOGGER.warn(
+                    "Exception has been thrown while constructing edit tour offer request. Error message: " + ex.
+                            getMessage());
         }
 
         request.setRequest(httpPut);
+        
+        LOGGER.info("Edit tour offer request was constructed");
     }
 
     /**
@@ -353,12 +403,16 @@ public class XMLRequestParser implements IRequestVisitor {
      */
     @Override
     public void constructDeleteTourOfferRequest(DeleteTourOfferRequest request) {
+        LOGGER.info("Constructing delete tour offer request");
+        
         HttpDelete deleteRequest = new HttpDelete(
                 serverAddress + "api/v1/tours/" + request.getId() + "/");
         deleteRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
         deleteRequest.setHeader("Authorization", "Bearer " + Singleton.
                 getInstance().getJwtToken());
         request.setRequest(deleteRequest);
+        
+        LOGGER.info("Delete tour offer request was constructed");
     }
 
     /**
@@ -366,6 +420,8 @@ public class XMLRequestParser implements IRequestVisitor {
      */
     @Override
     public void constructCreateTourDateRequest(CreateTourDateRequest request) {
+        LOGGER.info("Constructing create tour date request");
+        
         HttpPost httpPost = new HttpPost(
                 serverAddress + "api/v1/tours/" + request.getTourOfferId() + "/dates/");
         httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
@@ -383,9 +439,14 @@ public class XMLRequestParser implements IRequestVisitor {
                     "CreateTourDateRequest", data), CHARSET));
         } catch (ParserConfigurationException
                 | TransformerConfigurationException ex) {
+            LOGGER.warn(
+                    "Exception has been thrown while constructing create tour date request. Error message: " + ex.
+                            getMessage());
         }
 
         request.setRequest(httpPost);
+        
+        LOGGER.info("Create tour date request was constructed");
     }
 
     /**
@@ -394,6 +455,8 @@ public class XMLRequestParser implements IRequestVisitor {
     @Override
     public void constructCheckoutTicketsInCartRequest(
             CheckoutTicketsInCartRequest request) {
+        LOGGER.info("Constructing checkout tickets in cart request");
+        
         HttpPost postRequest = new HttpPost(
                 serverAddress + "api/v1/cart/checkout/");
         postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
@@ -408,9 +471,14 @@ public class XMLRequestParser implements IRequestVisitor {
                     "CheckoutRequest", data), CHARSET));
         } catch (ParserConfigurationException
                 | TransformerConfigurationException ex) {
+            LOGGER.warn(
+                    "Exception has been thrown while constructing checkout tickets in cart request. Error message: " + ex.
+                            getMessage());
         }
 
         request.setRequest(postRequest);
+        
+        LOGGER.info("Checkout tickets in cart request was constructed");
     }
 
     /**
@@ -418,6 +486,8 @@ public class XMLRequestParser implements IRequestVisitor {
      */
     @Override
     public void constructDeleteTourDateRequest(DeleteTourDateRequest request) {
+        LOGGER.info("Constructing delete tour date request");
+        
         HttpDelete deleteRequest = new HttpDelete(
                 serverAddress + "api/v1/tours/"
                 + request.getTourOfferId() + "/dates/"
@@ -428,6 +498,7 @@ public class XMLRequestParser implements IRequestVisitor {
 
         request.setRequest(deleteRequest);
 
+        LOGGER.info("Delete tour date request was constructed");
     }
 
     /**
@@ -435,6 +506,8 @@ public class XMLRequestParser implements IRequestVisitor {
      */
     @Override
     public void constructTourTicketsRequest(TicketsRequest request) {
+        LOGGER.info("Constructing tour tickets request");
+        
         HttpGet getRequest = new HttpGet(
                 serverAddress + "api/v1/tickets/" + request.
                         getTourDateId() + "/");
@@ -451,10 +524,13 @@ public class XMLRequestParser implements IRequestVisitor {
                     .build();
             ((HttpRequestBase) getRequest).setURI(uri);
         } catch (URISyntaxException ex) {
-            Logger.getLogger(ProfileGuideController.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.warn(
+                    "URISyntaxException has been thrown while constructing tour tickets request. Error message: " + ex.
+                            getMessage());
         }
         request.setRequest(getRequest);
+        
+        LOGGER.info("Tour tickets request was constructed");
     }
 
     /**
@@ -462,6 +538,8 @@ public class XMLRequestParser implements IRequestVisitor {
      */
     @Override
     public void constructAddTicketToCartRequest(AddTicketToCartRequest request) {
+        LOGGER.info("Constructing add ticket to cart request");
+        
         HttpPost postRequest = new HttpPost(
                 serverAddress + "api/v1/cart/ticket/" + request.getId() + "/");
         postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
@@ -469,6 +547,8 @@ public class XMLRequestParser implements IRequestVisitor {
                 getInstance().getJwtToken());
 
         request.setRequest(postRequest);
+        
+        LOGGER.info("Add ticket to cart request was constructed");
     }
 
     /**
@@ -477,6 +557,8 @@ public class XMLRequestParser implements IRequestVisitor {
     @Override
     public void constructDeleteTicketFromCartRequest(
             DeleteTicketFromCartRequest request) {
+        LOGGER.info("Constructing delete ticket from cart request");
+        
         HttpDelete deleteRequest = new HttpDelete(
                 serverAddress + "api/v1/cart/ticket/" + request.getId() + "/");
         deleteRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
@@ -484,6 +566,8 @@ public class XMLRequestParser implements IRequestVisitor {
                 getInstance().getJwtToken());
 
         request.setRequest(deleteRequest);
+        
+        LOGGER.info("Delete ticket from cart request was constructed");
     }
 
     /**
@@ -491,6 +575,8 @@ public class XMLRequestParser implements IRequestVisitor {
      */
     @Override
     public void constructDeleteCartRequest(DeleteCartRequest request) {
+        LOGGER.info("Constructing delete cart request");
+        
         HttpDelete deleteRequest = new HttpDelete(
                 serverAddress + "api/v1/cart/");
         deleteRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
@@ -498,6 +584,8 @@ public class XMLRequestParser implements IRequestVisitor {
                 getInstance().getJwtToken());
 
         request.setRequest(deleteRequest);
+        
+        LOGGER.info("Delete cart request was constructed");
     }
 
     /**
@@ -505,6 +593,8 @@ public class XMLRequestParser implements IRequestVisitor {
      */
     @Override
     public void constructUserBookingsRequest(UserBookingsRequest request) {
+        LOGGER.info("Constructing user bookings request");
+        
         HttpGet getRequest = new HttpGet(
                 serverAddress + "api/v1/users/orders/new/");
         getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
@@ -512,6 +602,8 @@ public class XMLRequestParser implements IRequestVisitor {
                 getInstance().getJwtToken());
 
         request.setRequest(getRequest);
+        
+        LOGGER.info("User bokings request was constructed");
     }
 
     /**
@@ -520,6 +612,8 @@ public class XMLRequestParser implements IRequestVisitor {
     @Override
     public void constructUserCompletedBookingsRequest(
             UserCompletedBookingsRequest request) {
+        LOGGER.info("Constructing user completed bookings request");
+        
         HttpGet getRequest = new HttpGet(
                 serverAddress + "api/v1/users/orders/past/");
         getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
@@ -527,6 +621,8 @@ public class XMLRequestParser implements IRequestVisitor {
                 getInstance().getJwtToken());
 
         request.setRequest(getRequest);
+        
+        LOGGER.info("User completed bookings request was constructed");
     }
 
     /**
@@ -534,6 +630,8 @@ public class XMLRequestParser implements IRequestVisitor {
      */
     @Override
     public void constructRatingRequest(RatingRequest request) {
+        LOGGER.info("Constructing rating request");
+        
         HttpPost postRequest = new HttpPost(
                 serverAddress + "api/v1/rating/" + request.getTourOfferId() + "/");
         postRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
@@ -548,9 +646,14 @@ public class XMLRequestParser implements IRequestVisitor {
                     "RatingRequest", data), CHARSET));
         } catch (ParserConfigurationException
                 | TransformerConfigurationException ex) {
+            LOGGER.warn(
+                    "Exception has been thrown while constructing rating request. Error message: " + ex.
+                            getMessage());
         }
 
         request.setRequest(postRequest);
+        
+        LOGGER.info("Rating request was constructed");
     }
 
     /**
@@ -558,6 +661,8 @@ public class XMLRequestParser implements IRequestVisitor {
      */
     @Override
     public void constructUserRequest(UserRequest request) {
+        LOGGER.info("Constructing user request");
+        
         HttpGet getRequest = new HttpGet(
                 serverAddress + "api/v1/users/" + request.getCreatorId() + "/");
         getRequest.setHeader("Authorization", "Bearer " + Singleton.
@@ -565,5 +670,7 @@ public class XMLRequestParser implements IRequestVisitor {
         getRequest.setHeader("Content-Type", "application/xml;charset=UTF-8");
 
         request.setRequest(getRequest);
+        
+        LOGGER.info("User request was constructed");
     }
 }

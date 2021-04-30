@@ -12,8 +12,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -32,6 +30,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.log4j.Logger;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.Internationalisation.I18n;
@@ -49,6 +48,9 @@ import sk.stu.fiit.parsers.Responses.V2.TourDatesResponses.TourDatesResponse;
  * @author adamf
  */
 public class EditTourScheduleController implements Initializable {
+
+    private static final Logger LOGGER = Logger.getLogger(
+            EditTourScheduleController.class);
 
     private double xOffset = 0;
     private double yOffset = 0;
@@ -105,7 +107,8 @@ public class EditTourScheduleController implements Initializable {
             System.exit(0);
         }
         if (event.getSource().equals(btnMinimize)) {
-            Stage actual_stage = (Stage) ((Circle) event.getSource()).getScene().getWindow();
+            Stage actual_stage = (Stage) ((Circle) event.getSource()).getScene().
+                    getWindow();
             actual_stage.setIconified(true);
         }
     }
@@ -118,14 +121,18 @@ public class EditTourScheduleController implements Initializable {
     @FXML
     private void handleGoToEditTourOfferScreen(MouseEvent event) {
         Singleton.getInstance().getTourDatesOnScreen().clear();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/EditTourOffer.fxml"), I18n.getBundle());
-        loader.setControllerFactory(c -> new EditTourOfferController(this.tourToEdit));
-        ScreenSwitcher.getScreenSwitcher().switchToScreenConstructor(event, loader);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                "Views/EditTourOffer.fxml"), I18n.getBundle());
+        loader.setControllerFactory(c -> new EditTourOfferController(
+                this.tourToEdit));
+        ScreenSwitcher.getScreenSwitcher().switchToScreenConstructor(event,
+                loader);
     }
 
     @FXML
     private void handleAddTourDateButton(MouseEvent event) {
-        if (TourScheduleValidator.validate(tfCapacity, dpStartDate, dpEndDate, tfStartTime, tfEndTime)) {
+        if (TourScheduleValidator.validate(tfCapacity, dpStartDate, dpEndDate,
+                tfStartTime, tfEndTime)) {
             createTourDateCreate();
         }
     }
@@ -167,19 +174,24 @@ public class EditTourScheduleController implements Initializable {
 
         HttpGet request = (HttpGet) tourDatesRequest.getRequest();
 
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                CloseableHttpResponse response = httpClient.execute(request)) {
+        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
+                 CloseableHttpResponse response = httpClient.execute(request)) {
 
             // Stores just loaded tours to display them
-            TourDatesResponse tourDatesResponse = (TourDatesResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.TOUR_DATES_RESPONSE).parse(response);
+            TourDatesResponse tourDatesResponse = (TourDatesResponse) ResponseFactory.
+                    getFactory(
+                            ResponseFactory.ResponseFactoryType.TOUR_DATES_RESPONSE).
+                    parse(response);
             this.tourDates = tourDatesResponse.getTourDates();
 
             // If the currently loaded tours are already displayed this
             // step removes them and don't displays them again
             if (!Singleton.getInstance().getTourDatesOnScreen().isEmpty()) {
-                for (int i = 0; i < Singleton.getInstance().getTourDatesOnScreen().size(); i++) {
+                for (int i = 0; i < Singleton.getInstance().
+                        getTourDatesOnScreen().size(); i++) {
                     for (int j = 0; j < this.tourDates.size(); j++) {
-                        if (Singleton.getInstance().getTourDatesOnScreen().get(i).getId().
+                        if (Singleton.getInstance().getTourDatesOnScreen().
+                                get(i).getId().
                                 equals(this.tourDates.get(j).getId())) {
                             this.tourDates.remove(j);
                             break;
@@ -187,13 +199,16 @@ public class EditTourScheduleController implements Initializable {
                     }
                 }
             }
-            Singleton.getInstance().getTourDatesOnScreen().addAll(this.tourDates);
+            Singleton.getInstance().getTourDatesOnScreen().
+                    addAll(this.tourDates);
         } catch (IOException ex) {
-            Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("Server error" + ex.getMessage());
+            Alerts.showAlert("TITLE_SERVER_ERROR",
+                    "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
-            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
+            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR",
+                    "CONTENT_AUTHENTICATION_ERROR");
         } catch (APIValidationException ex) {
-            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -210,7 +225,8 @@ public class EditTourScheduleController implements Initializable {
                 this.vbTourDates.getChildren().add(tourDateNode);
                 index++;
             } catch (Exception e) {
-                Logger.getLogger(TourBuyController.class.getName()).log(Level.SEVERE, null, e);
+                LOGGER.warn("Exception has been thrown. Error message: " + e.
+                        getMessage());
             }
         });
     }
@@ -225,12 +241,15 @@ public class EditTourScheduleController implements Initializable {
      * @see TourDate
      */
     private Node loadTourDate(TourDate tourDate) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/OneTourDateSchedule.fxml"), I18n.getBundle());
-        loader.setControllerFactory(c -> new OneTourDateScheduleController(tourDate, tourToEdit, vbTourDates));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                "Views/OneTourDateSchedule.fxml"), I18n.getBundle());
+        loader.setControllerFactory(c -> new OneTourDateScheduleController(
+                tourDate, tourToEdit, vbTourDates));
         try {
             return loader.load();
         } catch (IOException ex) {
-            Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.warn(
+                    "IOException has been thrown when tried to load Views/OneTourDateSchedule.fxml");
         }
         return null;
     }
@@ -242,9 +261,12 @@ public class EditTourScheduleController implements Initializable {
      * @see TourDateCreate
      */
     private void createTourDateCreate() {
-        LocalDateTime startDate = LocalDateTime.of(dpStartDate.getValue(), LocalTime.parse(tfStartTime.getText()));
-        LocalDateTime endDate = LocalDateTime.of(dpEndDate.getValue(), LocalTime.parse(tfEndTime.getText()));
-        TourDateCreate tourDateCreate = new TourDateCreate(Integer.parseInt(tfCapacity.getText()), startDate, endDate);
+        LocalDateTime startDate = LocalDateTime.of(dpStartDate.getValue(),
+                LocalTime.parse(tfStartTime.getText()));
+        LocalDateTime endDate = LocalDateTime.of(dpEndDate.getValue(),
+                LocalTime.parse(tfEndTime.getText()));
+        TourDateCreate tourDateCreate = new TourDateCreate(Integer.parseInt(
+                tfCapacity.getText()), startDate, endDate);
 
         String tourDateCreateId = sendCreateTourDateRequest(tourDateCreate);
         initializeTourDate(tourDateCreate, tourDateCreateId);
@@ -259,12 +281,15 @@ public class EditTourScheduleController implements Initializable {
      *
      * @see TourDateCreate
      */
-    private void initializeTourDate(TourDateCreate tourDateCreate, String tourDateCreateId) {
+    private void initializeTourDate(TourDateCreate tourDateCreate,
+            String tourDateCreateId) {
         try {
-            Node tourDateNode = this.loadTourDate(tourDateCreate, tourDateCreateId);
+            Node tourDateNode = this.loadTourDate(tourDateCreate,
+                    tourDateCreateId);
             this.vbTourDates.getChildren().add(tourDateNode);
         } catch (Exception e) {
-            Logger.getLogger(TourBuyController.class.getName()).log(Level.SEVERE, null, e);
+            LOGGER.warn("Exception has been thrown. Error message: " + e.
+                    getMessage());
         }
     }
 
@@ -279,22 +304,27 @@ public class EditTourScheduleController implements Initializable {
      * @see OneTourDateScheduleController
      * @see Singleton
      */
-    private Node loadTourDate(TourDateCreate tourDateCreate, String tourDateCreateId) {
+    private Node loadTourDate(TourDateCreate tourDateCreate,
+            String tourDateCreateId) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
         String startDate = tourDateCreate.getStartDate().format(formatter);
         String endDate = tourDateCreate.getEndDate().format(formatter);
 
-        TourDate tourDate = new TourDate(tourDateCreateId, startDate, endDate, tourDateCreate.getNumberOfTickets());
+        TourDate tourDate = new TourDate(tourDateCreateId, startDate, endDate,
+                tourDateCreate.getNumberOfTickets());
 
         Singleton.getInstance().getTourDatesOnScreen().add(tourDate);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/OneTourDateSchedule.fxml"), I18n.getBundle());
-        loader.setControllerFactory(c -> new OneTourDateScheduleController(tourDate, this.tourToEdit, this.vbTourDates));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                "Views/OneTourDateSchedule.fxml"), I18n.getBundle());
+        loader.setControllerFactory(c -> new OneTourDateScheduleController(
+                tourDate, this.tourToEdit, this.vbTourDates));
         try {
             return loader.load();
         } catch (IOException ex) {
-            Logger.getLogger(ToursController.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.warn(
+                    "IOException has been thrown when tried to load Views/OneTourDateSchedule.fxml");
         }
         return null;
     }
@@ -321,26 +351,30 @@ public class EditTourScheduleController implements Initializable {
 
         HttpPost request = (HttpPost) createTourDateRequest.getRequest();
 
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                CloseableHttpResponse response = httpClient.execute(request)) {
+        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
+                 CloseableHttpResponse response = httpClient.execute(request)) {
 
-            CreateTourDateResponse createTourDateResponse = (CreateTourDateResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.CREATE_TOUR_DATE_RESPONSE).parse(response);
+            CreateTourDateResponse createTourDateResponse = (CreateTourDateResponse) ResponseFactory.
+                    getFactory(
+                            ResponseFactory.ResponseFactoryType.CREATE_TOUR_DATE_RESPONSE).
+                    parse(response);
             return createTourDateResponse.getId();
 
         } catch (IOException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("Server error" + ex.getMessage());
+            Alerts.showAlert("TITLE_SERVER_ERROR",
+                    "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR",
+                    "CONTENT_AUTHENTICATION_ERROR");
         } catch (APIValidationException ex) {
-            Logger.getLogger(TourTicketsController.class.getName()).
-                    log(Level.SEVERE, null, ex);
         }
+        
         return null;
     }
-    
+
     /**
-     * Sets a date in the date pickers greater than the current date to prevent 
+     * Sets a date in the date pickers greater than the current date to prevent
      * that the date for tour will not be created in the past.
      */
     private void setupDatePickers() {

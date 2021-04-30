@@ -6,14 +6,12 @@ package sk.stu.fiit.parsers.Responses.V2.EditResponses;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
-import sk.stu.fiit.parsers.Responses.V2.LoginResponses.LoginResponseProcessor;
 import sk.stu.fiit.parsers.Responses.V2.Response;
 import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
 
@@ -24,6 +22,9 @@ import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
  * @author Adam Bublavý
  */
 public class EditResponseProcessor extends XMLProcessor {
+
+    private static final Logger LOGGER = Logger.getLogger(
+            EditResponseProcessor.class);
 
     private static final List<String> possibleValidationErrors
             = Arrays.asList("errors", "password", "firstName", "lastName",
@@ -50,8 +51,9 @@ public class EditResponseProcessor extends XMLProcessor {
 
             return new EditResponse(firstName, lastName, dateOfBirth);
         } catch (UnsupportedOperationException | XPathExpressionException ex) {
-            Logger.getLogger(LoginResponseProcessor.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.warn(
+                    "Exception has been thrown while processing EditResponse. Error message: " + ex.
+                            getMessage());
         }
 
         return null;

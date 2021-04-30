@@ -8,8 +8,6 @@ package sk.stu.fiit.parsers.Responses.V2;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
@@ -18,6 +16,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -26,7 +25,6 @@ import org.xml.sax.SAXException;
 import sk.stu.fiit.Exceptions.APIValidationError;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
-import sk.stu.fiit.parsers.Responses.V2.RegisterResponses.RegisterResponseProcessor;
 
 /**
  * XMLProcessor represents abstract response parser which parses XML data
@@ -34,6 +32,8 @@ import sk.stu.fiit.parsers.Responses.V2.RegisterResponses.RegisterResponseProces
  * @author Adam Bublavý
  */
 public abstract class XMLProcessor implements ResponseProcessor {
+
+    private static final Logger LOGGER = Logger.getLogger(XMLProcessor.class);
 
     /**
      * {@inheritDoc}
@@ -46,8 +46,11 @@ public abstract class XMLProcessor implements ResponseProcessor {
     @Override
     public Response processResponse(CloseableHttpResponse response) throws
             AuthTokenExpiredException, APIValidationException {
+        LOGGER.info("Processing of response has started");
 
         int statusCode = response.getStatusLine().getStatusCode();
+
+        LOGGER.info("Response status code is: " + statusCode);
 
         Document document = null;
 
@@ -57,19 +60,23 @@ public abstract class XMLProcessor implements ResponseProcessor {
                     parse(response.getEntity().getContent());
         } catch (IOException | UnsupportedOperationException | SAXException
                 | ParserConfigurationException ex) {
-            Logger.getLogger(RegisterResponseProcessor.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.warn(
+                    "Exception has benn thrown while processing response. Error message: " + ex.
+                            getMessage());
         }
 
         switch (statusCode) {
             case HttpStatus.SC_OK: {
+                LOGGER.info("Parsing of response has started");
                 return this.parseOK(document);
             }
             case HttpStatus.SC_BAD_REQUEST: {
+                LOGGER.info("Throwing APIValidationException");
                 throw new APIValidationException(this.parseValidationErrors(
                         document, getPossibleValidationErrors()));
             }
             case HttpStatus.SC_FORBIDDEN: {
+                LOGGER.info("Throwing AuthTokenExpiredException");
                 throw new AuthTokenExpiredException();
             }
         }
@@ -111,6 +118,7 @@ public abstract class XMLProcessor implements ResponseProcessor {
      */
     public List<APIValidationError> parseValidationErrors(Document document,
             List<String> possibleValidationErrors) {
+        LOGGER.info("Parsing of validation errors has started");
         XPath xPath = XPathFactory.newInstance().newXPath();
 
         List<APIValidationError> validationErrors = new ArrayList<>();
@@ -139,7 +147,12 @@ public abstract class XMLProcessor implements ResponseProcessor {
                 }
             }
         } catch (XPathExpressionException ex) {
+            LOGGER.warn(
+                    "XPathExpressionException has been thrown while parsing validation errors. Error message: " + ex.
+                            getMessage());
         }
+
+        LOGGER.info("Parsing of validation errors has finished");
 
         return validationErrors;
     }
@@ -156,6 +169,8 @@ public abstract class XMLProcessor implements ResponseProcessor {
      */
     private List<APIValidationError> parseNodeList(NodeList nodeList,
             List<String> possibleValidationErrors) {
+        LOGGER.info("Errors contains node list");
+        
         if (nodeList == null) {
             return null;
         }

@@ -7,8 +7,6 @@ package sk.stu.fiit.Main;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,6 +22,7 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.log4j.Logger;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.Internationalisation.I18n;
@@ -42,10 +41,13 @@ import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.TourOfferResponse;
  */
 public class EditTourOfferController implements Initializable {
     
+    private static final Logger LOGGER = Logger.getLogger(
+            EditTourOfferController.class);
+    
     private double xOffset = 0;
     private double yOffset = 0;
     private Tour tour;
-
+    
     @FXML
     private Button btnBack;
     @FXML
@@ -66,10 +68,10 @@ public class EditTourOfferController implements Initializable {
     private TextField tfPrice;
     @FXML
     private TextArea taDescription;
-
+    
     public EditTourOfferController() {
     }
-
+    
     public EditTourOfferController(Tour tour) {
         this.tour = tour;
     }
@@ -81,41 +83,45 @@ public class EditTourOfferController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         initializeTextFieldsWithTour();
     }
-
+    
     @FXML
     private void handleMouseEvent(MouseEvent event) {
         if (event.getSource().equals(btnExit)) {
             System.exit(0);
         }
         if (event.getSource().equals(btnMinimize)) {
-            Stage actual_stage = (Stage) ((Circle) event.getSource()).getScene().getWindow();
+            Stage actual_stage = (Stage) ((Circle) event.getSource()).getScene().
+                    getWindow();
             actual_stage.setIconified(true);
         }
     }
-
+    
     @FXML
     private void handleGoToProfileScreen(MouseEvent event) {
-        ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileGuide.fxml");
+        ScreenSwitcher.getScreenSwitcher().switchToScreen(event,
+                "Views/ProfileGuide.fxml");
     }
-
+    
     @FXML
     private void handleEditTourButton(MouseEvent event) {
         sendUpdateTourOfferRequest();
+        LOGGER.info("Tour has been edited");
         Alerts.showAlert("TITLE_EDITED_TOUR");
     }
-
+    
     @FXML
     private void handleGoToEditTourScheduleScreen(MouseEvent event) {
         loadEditTourScheduleScreen(event);
     }
-
+    
     @FXML
     private void handleDeleteTourButton(MouseEvent event) {
         sendDeleteTourOfferRequest();
-        ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileGuide.fxml");
+        ScreenSwitcher.getScreenSwitcher().switchToScreen(event,
+                "Views/ProfileGuide.fxml");
         
     }
-    
+
     /**
      * Fills text fields and text area with data about the certain tour.
      */
@@ -125,34 +131,39 @@ public class EditTourOfferController implements Initializable {
         this.tfPrice.setText(this.tour.getPricePerPerson());
         this.taDescription.setText(this.tour.getDescription());
     }
-    
+
     /**
      * Loads the EditTourSchedule screen to which sends a tour.
-     * 
+     *
      * @param event
-     * 
+     *
      * @see EditTourScheduleController
      * @see Tour
      */
     private void loadEditTourScheduleScreen(MouseEvent event) {
-        if (TourOfferValidator.validateTextInputs(tfStartPlace, tfDestinationPlace, tfPrice, taDescription)) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Views/EditTourSchedule.fxml"), I18n.getBundle());
-            loader.setControllerFactory(c -> new EditTourScheduleController(this.tour));
-            ScreenSwitcher.getScreenSwitcher().switchToScreenConstructor(event, loader);
+        if (TourOfferValidator.validateTextInputs(tfStartPlace,
+                tfDestinationPlace, tfPrice, taDescription)) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                    "Views/EditTourSchedule.fxml"), I18n.getBundle());
+            loader.setControllerFactory(c -> new EditTourScheduleController(
+                    this.tour));
+            ScreenSwitcher.getScreenSwitcher().switchToScreenConstructor(event,
+                    loader);
         }
     }
-    
+
     /**
-     * Creates EditTourOfferRequest. Then sends this request to the server
-     * as HttpPut and processes the response from the server. Data in the 
-     * response contains updated data about the tour. Then fills text fields 
-     * and text area with updated data.
-     * 
+     * Creates EditTourOfferRequest. Then sends this request to the server as
+     * HttpPut and processes the response from the server. Data in the response
+     * contains updated data about the tour. Then fills text fields and text
+     * area with updated data.
+     *
      * @see EditTourOfferRequest
      * @see TourOfferResponse
      */
     private void sendUpdateTourOfferRequest() {
-        if (TourOfferValidator.validateTextInputs(tfStartPlace, tfDestinationPlace, tfPrice, taDescription)) {
+        if (TourOfferValidator.validateTextInputs(tfStartPlace,
+                tfDestinationPlace, tfPrice, taDescription)) {
             EditTourOfferRequest editTourOfferRequest = new EditTourOfferRequest(
                     this.tour.getId(),
                     this.tfStartPlace.getText(),
@@ -160,64 +171,82 @@ public class EditTourOfferController implements Initializable {
                     this.taDescription.getText(),
                     Double.parseDouble(this.tfPrice.getText()));
             editTourOfferRequest.accept(new XMLRequestParser());
-
+            
             HttpPut request = (HttpPut) editTourOfferRequest.getRequest();
-
-            try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                    CloseableHttpResponse response = httpClient.execute(request)) {
-
-                TourOfferResponse tourOfferResponse = (TourOfferResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.EDIT_TOUR_OFFER_RESPONSE).parse(response);
+            
+            try ( CloseableHttpClient httpClient = HttpClients.createDefault();
+                     CloseableHttpResponse response = httpClient.
+                            execute(request)) {
+                
+                TourOfferResponse tourOfferResponse = (TourOfferResponse) ResponseFactory.
+                        getFactory(
+                                ResponseFactory.ResponseFactoryType.EDIT_TOUR_OFFER_RESPONSE).
+                        parse(response);
                 this.tfStartPlace.setText(tourOfferResponse.getStartPlace());
-                this.tfDestinationPlace.setText(tourOfferResponse.getDestinationPlace());
-                this.tfPrice.setText(String.valueOf(tourOfferResponse.getPricePerPerson()));
+                this.tfDestinationPlace.setText(tourOfferResponse.
+                        getDestinationPlace());
+                this.tfPrice.setText(String.valueOf(tourOfferResponse.
+                        getPricePerPerson()));
                 this.taDescription.setText(tourOfferResponse.getDescription());
-
+                
             } catch (IOException ex) {
-                Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+                LOGGER.error("Server error" + ex.getMessage());
+                Alerts.showAlert("TITLE_SERVER_ERROR",
+                        "CONTENT_SERVER_NOT_RESPONDING");
             } catch (AuthTokenExpiredException ex) {
-                Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
+                Alerts.showAlert("TITLE_AUTHENTICATION_ERROR",
+                        "CONTENT_AUTHENTICATION_ERROR");
             } catch (APIValidationException ex) {
-                Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
-    
+
     /**
-     * Creates DeleteTourOfferRequest. Then sends this request to the server
-     * as HttpDelete and processes the response from the server. Data in the 
-     * response contains boolean value. If the boolean value is true shows
-     * alert about successful deletion of tour. If the boolean value is false shows
+     * Creates DeleteTourOfferRequest. Then sends this request to the server as
+     * HttpDelete and processes the response from the server. Data in the
+     * response contains boolean value. If the boolean value is true shows alert
+     * about successful deletion of tour. If the boolean value is false shows
      * alert about not successful deletion of tour.
      *
      * @see DeleteTourOfferRequest
      * @see DeleteTourOfferResponse
      */
     private void sendDeleteTourOfferRequest() {
-        DeleteTourOfferRequest deleteTourOfferRequest = new DeleteTourOfferRequest(this.tour.getId());
+        DeleteTourOfferRequest deleteTourOfferRequest = new DeleteTourOfferRequest(
+                this.tour.getId());
         deleteTourOfferRequest.accept(new XMLRequestParser());
-
+        
         HttpDelete request = (HttpDelete) deleteTourOfferRequest.getRequest();
-
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-                CloseableHttpResponse response = httpClient.execute(request)) {
-
-            DeleteTourOfferResponse deleteTourOfferResponse = (DeleteTourOfferResponse) ResponseFactory.getFactory(ResponseFactory.ResponseFactoryType.DELETE_TOUR_OFFER_RESPONSE).parse(response);
+        
+        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
+                 CloseableHttpResponse response = httpClient.execute(request)) {
+            
+            DeleteTourOfferResponse deleteTourOfferResponse = (DeleteTourOfferResponse) ResponseFactory.
+                    getFactory(
+                            ResponseFactory.ResponseFactoryType.DELETE_TOUR_OFFER_RESPONSE).
+                    parse(response);
             
             if (deleteTourOfferResponse.isDeleted()) {
+                LOGGER.warn("Date of tour has been deleted");
                 Alerts.showAlert("TITLE_DELETED_TOUR");
             } else {
-                Alerts.showAlert("TITLE_NOT_DELETED_TOUR", "CONTENT_NOT_DELETED_TOUR");
+                LOGGER.warn(
+                        "Tour cannot be deleted, because somebody has already bought ticket for this tour");
+                Alerts.showAlert("TITLE_NOT_DELETED_TOUR",
+                        "CONTENT_NOT_DELETED_TOUR");
             }
             
         } catch (IOException ex) {
-            Logger.getLogger(SigninController.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("Server error" + ex.getMessage());
+            Alerts.showAlert("TITLE_SERVER_ERROR",
+                    "CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
-            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
+            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR",
+                    "CONTENT_AUTHENTICATION_ERROR");
         } catch (APIValidationException ex) {
-            Logger.getLogger(TourOfferController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Sets a new position of stage depending on the variables stored from
      * setOnMousePressed method when mouse is dragged.

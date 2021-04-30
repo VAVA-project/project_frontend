@@ -6,15 +6,13 @@ package sk.stu.fiit.parsers.Responses.V2.TourDatesResponses;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import sk.stu.fiit.parsers.Responses.V2.Response;
-import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.TourOfferResponseProcessor;
 import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
 
 /**
@@ -24,6 +22,9 @@ import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
  * @author adamf
  */
 public class CreateTourDateResponseProcessor extends XMLProcessor {
+
+    private static final Logger LOGGER = Logger.getLogger(
+            CreateTourDateResponseProcessor.class);
 
     private static final List<String> possibleValidationErrors
             = Arrays.asList("errors");
@@ -54,8 +55,9 @@ public class CreateTourDateResponseProcessor extends XMLProcessor {
             return new CreateTourDateResponse(id);
 
         } catch (XPathExpressionException ex) {
-            Logger.getLogger(TourOfferResponseProcessor.class.getName()).
-                    log(Level.SEVERE, null, ex);
+            LOGGER.warn(
+                    "Exception has been thrown while processing CreateTourDateResponse. Error message: " + ex.
+                            getMessage());
         }
 
         return null;
