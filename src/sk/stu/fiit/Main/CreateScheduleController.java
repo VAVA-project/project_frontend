@@ -113,6 +113,7 @@ public class CreateScheduleController implements Initializable {
     private void handleCreateTourButton(MouseEvent event) {
         sendCreateTourOfferRequest();
         sendCreateTourDatesRequests();
+        LOGGER.info("New tour has been created");
         Alerts.showAlert("TITLE_NEW_TOUR");
         ScreenSwitcher.getScreenSwitcher().switchToScreen(event,
                 "Views/ProfileGuide.fxml");
@@ -212,7 +213,10 @@ public class CreateScheduleController implements Initializable {
             LOGGER.error("Server error" + ex.getMessage());
             Alerts.showAlert("TITLE_SERVER_ERROR",
                     "CONTENT_SERVER_NOT_RESPONDING");
-        } catch (AuthTokenExpiredException | APIValidationException ex) {
+        } catch (AuthTokenExpiredException ex) {
+            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR",
+                    "CONTENT_AUTHENTICATION_ERROR");
+        } catch (APIValidationException ex) {
         }
     }
 
@@ -259,7 +263,10 @@ public class CreateScheduleController implements Initializable {
             LOGGER.error("Server error" + ex.getMessage());
             Alerts.showAlert("TITLE_SERVER_ERROR",
                     "CONTENT_SERVER_NOT_RESPONDING");
-        } catch (AuthTokenExpiredException | APIValidationException ex) {
+        } catch (AuthTokenExpiredException ex) {
+            Alerts.showAlert("TITLE_AUTHENTICATION_ERROR",
+                    "CONTENT_AUTHENTICATION_ERROR");
+        } catch (APIValidationException ex) {
         }
     }
 
