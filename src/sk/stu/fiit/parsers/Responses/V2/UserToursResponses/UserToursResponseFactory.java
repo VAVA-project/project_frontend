@@ -13,6 +13,8 @@ import sk.stu.fiit.parsers.Responses.V2.AbstractResponseFactory;
 import sk.stu.fiit.parsers.Responses.V2.Response;
 
 /**
+ * UserToursResponseFactory is used to check type of the received response and
+ * call particular response processor
  *
  * @author Adam Bublavý
  */
@@ -22,17 +24,25 @@ public class UserToursResponseFactory implements
     private UserToursResponseFactory() {
     }
 
+    /**
+     * @return Returns new instance of UserToursResponseFactory
+     */
     public static UserToursResponseFactory getInstance() {
         return new UserToursResponseFactory();
     }
 
+    /**
+     * {@inheritDoc }
+     *
+     * @see UserToursProcessor
+     */
     @Override
     public Response parse(CloseableHttpResponse response) throws
             AuthTokenExpiredException, APIValidationException {
         if (response.getStatusLine().getStatusCode() == HttpStatus.SC_FORBIDDEN) {
             throw new AuthTokenExpiredException();
         }
-        
+
         Header header = response.getFirstHeader("Content-Type");
 
         if (header.getValue().equals("application/xml;charset=UTF-8")) {
