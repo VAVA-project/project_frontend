@@ -272,9 +272,6 @@ public class TourTicketsController implements Initializable {
                         });
                         return;
                     }
-
-                    System.out.println(
-                            "Available tickets size: " + this.availableTickets.size());
                     synchronized (this) {
                         this.ticketsInCart.add(lockedTicket);
                         updateTicketCountLabel();

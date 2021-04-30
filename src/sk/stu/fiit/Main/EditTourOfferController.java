@@ -112,6 +112,8 @@ public class EditTourOfferController implements Initializable {
     @FXML
     private void handleDeleteTourButton(MouseEvent event) {
         sendDeleteTourOfferRequest();
+        ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/ProfileGuide.fxml");
+        
     }
     
     /**

@@ -252,7 +252,6 @@ public class CreateScheduleController implements Initializable {
         } catch (APIValidationException ex) {
             Logger.getLogger(TourTicketsController.class.getName()).
                     log(Level.SEVERE, null, ex);
-            ex.getValidationErrors().forEach(System.out::println);
         }
     }
     

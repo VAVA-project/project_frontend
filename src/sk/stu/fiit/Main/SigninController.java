@@ -127,8 +127,6 @@ public class SigninController {
             Singleton.getInstance().setJwtToken(loginResponse.getJwtToken());
             Singleton.getInstance().setUser(loginResponse.getUser());
 
-            System.out.println("Token: " + loginResponse.getJwtToken());
-            
             this.clearCart();
 
             this.gotToSearch(event);

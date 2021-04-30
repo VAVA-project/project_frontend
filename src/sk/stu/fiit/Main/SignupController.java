@@ -487,7 +487,6 @@ public class SignupController implements Initializable {
             }
             ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Welcome.fxml");
 
-            System.out.println("\ntoken:" + Singleton.getInstance().getJwtToken());
         } catch (IOException e) {
             Logger.getLogger(SignupController.class.getName()).
                     log(Level.SEVERE, null, e);

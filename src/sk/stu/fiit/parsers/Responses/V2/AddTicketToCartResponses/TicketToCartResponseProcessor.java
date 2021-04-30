@@ -51,9 +51,6 @@ public class TicketToCartResponseProcessor extends XMLProcessor {
                     "//Boolean/text()").
                     evaluate(document, XPathConstants.STRING);
 
-            System.out.println(
-                    "****IN RESPONSE PROCESSOR* isTicketAddedToCart = " + isTicketAddedToCart);
-
             return new TicketToCartResponse(Boolean.parseBoolean(
                     isTicketAddedToCart));
 
