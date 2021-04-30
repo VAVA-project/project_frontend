@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- *
+ * UserBooking represents user booking
  * @author Adam Bublavý
  */
 public class UserBooking {
@@ -18,6 +18,13 @@ public class UserBooking {
     private String comments;
     private double totalPrice;
 
+    /**
+     * Creates new UserBooking
+     * @param orderedTickets List of ordered tickets
+     * @param orderTime Order time
+     * @param comments Comments about order
+     * @param totalPrice Total order price
+     */
     public UserBooking(List<OrderedTicket> orderedTickets,
             LocalDateTime orderTime, String comments, double totalPrice) {
         this.orderedTickets = orderedTickets;

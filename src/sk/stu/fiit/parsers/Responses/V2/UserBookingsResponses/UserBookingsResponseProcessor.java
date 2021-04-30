@@ -26,16 +26,28 @@ import sk.stu.fiit.parsers.Responses.V2.TourOfferResponses.TourOfferResponseProc
 import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
 
 /**
+ * UserBookingsResponseProcessor is used to process XML response of fetching
+ * user's bookings
  *
  * @author Adam Bublavý
  */
 public class UserBookingsResponseProcessor extends XMLProcessor {
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public List<String> getPossibleValidationErrors() {
         return new ArrayList<>();
     }
 
+    /**
+     * {@inheritDoc }
+     *
+     * @return Returns parsed data mapped into UserBookingsResponse
+     *
+     * @see UserBookingsResponse
+     */
     @Override
     public Response parseOK(Document document) {
         Map<String, TourDate> tourDates = parseTourDates(document);
@@ -89,6 +101,14 @@ public class UserBookingsResponseProcessor extends XMLProcessor {
         return null;
     }
 
+    /**
+     * Parses ordered tickets from the response
+     *
+     * @param orderedTicketsList Node list of ordered tickets
+     * @param tourDates Extracted tour dates
+     * @param tourOffers Extracted tour offers
+     * @return Returns list of extracted ordered tickets
+     */
     private List<OrderedTicket> parseOrderedTickets(NodeList orderedTicketsList,
             Map<String, TourDate> tourDates, Map<String, Tour> tourOffers) {
 
@@ -122,6 +142,13 @@ public class UserBookingsResponseProcessor extends XMLProcessor {
         return orderedTickets;
     }
 
+    /**
+     * Parses tour dates from the response
+     *
+     * @param document Document created from received response
+     * @return Returns map of parsed tour dates, where key is tour date ID and
+     * value is tour date
+     */
     private Map<String, TourDate> parseTourDates(Document document) {
         Map<String, TourDate> tourDates = new HashMap<>();
 
@@ -157,6 +184,13 @@ public class UserBookingsResponseProcessor extends XMLProcessor {
         return tourDates;
     }
 
+    /**
+     * Parses tour offers from the response
+     *
+     * @param document Document created from received response
+     * @return Returns map of parsed tour offers, where key is tour offer ID and
+     * value is tour offer
+     */
     private Map<String, Tour> parseTourOffers(Document document) {
         Map<String, Tour> tourOffers = new HashMap<>();
         try {
@@ -182,10 +216,14 @@ public class UserBookingsResponseProcessor extends XMLProcessor {
                         "rating").item(0).getTextContent();
                 String averageRating = tourElement.getElementsByTagName(
                         "averageRating").item(0).getTextContent();
-                
-                if(rating.isEmpty()) rating = "0";
-                if(averageRating.isEmpty()) averageRating = "0";
-                
+
+                if (rating.isEmpty()) {
+                    rating = "0";
+                }
+                if (averageRating.isEmpty()) {
+                    averageRating = "0";
+                }
+
                 Tour tour = new Tour(id, null, startPlace,
                         destinationPlace, description, null, null, averageRating);
                 tour.setUserRating(rating);
