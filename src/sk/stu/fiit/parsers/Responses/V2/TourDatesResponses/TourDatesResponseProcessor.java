@@ -25,6 +25,8 @@ import sk.stu.fiit.parsers.Responses.V2.Response;
 import sk.stu.fiit.parsers.Responses.V2.XMLProcessor;
 
 /**
+ * TourDatesResponseProcessor is used to process XML response of fetching tour
+ * dates for specific tour offer
  *
  * @author adamf
  */
@@ -34,11 +36,21 @@ public class TourDatesResponseProcessor extends XMLProcessor {
             = Arrays.asList("errors", "sortBy", "sortDirection", "pageNumber",
                     "pageSize");
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public List<String> getPossibleValidationErrors() {
         return possibleValidationErrors;
     }
 
+    /**
+     * {@inheritDoc }
+     *
+     * @return Returns parsed data mapped into TourDatesResponse
+     *
+     * @see TourDatesResponse
+     */
     @Override
     public Response parseOK(Document document) {
 
@@ -73,10 +85,11 @@ public class TourDatesResponseProcessor extends XMLProcessor {
                         getTextContent();
                 Date StartDate = format1.parse(element.getElementsByTagName(
                         "startDate").item(0).getTextContent());
-                System.out.println("startDate = " + element.getElementsByTagName(
-                        "startDate").item(0).getTextContent());
+                System.out.println("startDate = " + element.
+                        getElementsByTagName(
+                                "startDate").item(0).getTextContent());
                 Date endDate = format1.parse(element.getElementsByTagName(
-                        "endDate").item(0).getTextContent()); 
+                        "endDate").item(0).getTextContent());
                 String createdAt = element.getElementsByTagName("createdAt").
                         item(0).getTextContent();
                 int numberOfSoldTickets = Integer.parseInt(element.
