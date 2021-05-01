@@ -32,6 +32,7 @@ import org.apache.http.impl.client.HttpClients;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.Internationalisation.I18n;
+import sk.stu.fiit.User.UserType;
 import sk.stu.fiit.parsers.Requests.XMLRequestParser;
 import sk.stu.fiit.parsers.Requests.dto.UserBookingsRequest;
 import sk.stu.fiit.parsers.Requests.dto.UserCompletedBookingsRequest;
@@ -45,10 +46,10 @@ import sk.stu.fiit.parsers.Responses.V2.UserBookingsResponses.UserBookingsRespon
  * @author adamf
  */
 public class ProfileCustomerController implements Initializable {
-    
+
     private double xOffset = 0;
     private double yOffset = 0;
-    
+
     private List<UserBooking> bookedTours;
     private List<UserBooking> completedTours;
 
@@ -68,7 +69,7 @@ public class ProfileCustomerController implements Initializable {
     private VBox vbBookedTours;
     @FXML
     private VBox vbCompletedTours;
-    
+
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(ProfileCustomerController.class);
 
     /**
@@ -93,6 +94,11 @@ public class ProfileCustomerController implements Initializable {
             actual_stage.setIconified(true);
         }
         if (event.getSource().equals(btnBack)) {
+            if (Singleton.getInstance().getUser().getUserType() == UserType.NORMAL_USER) {
+                ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/Search.fxml");
+            } else {
+                ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/ProfileGuide.fxml");
+            }
             ScreenSwitcher.getScreenSwitcher().
                     switchToScreen((MouseEvent) event, "Views/Search.fxml");
         }
@@ -101,10 +107,10 @@ public class ProfileCustomerController implements Initializable {
                     switchToScreen((MouseEvent) event, "Views/EditAccount.fxml");
         }
     }
-    
+
     /**
-     * Fills label and image view on this screen with data of
-     * a certain tour guide.
+     * Fills label and image view on this screen with data of a certain tour
+     * guide.
      */
     private void setProfileInformations() {
         // Setting profile photo
@@ -126,7 +132,7 @@ public class ProfileCustomerController implements Initializable {
                 Singleton.getInstance().getUser().getFirstName() + " " + Singleton.
                 getInstance().getUser().getLastName());
     }
-    
+
     /**
      * Calls method sendUserBookingsRequest and initializeTours.
      */
@@ -134,7 +140,7 @@ public class ProfileCustomerController implements Initializable {
         sendUserBookingsRequest();
         initializeTours(this.bookedTours, vbBookedTours, false);
     }
-    
+
     /**
      * Calls method sendUserCompletedBookingsRequest and initializeTours.
      */
@@ -142,13 +148,12 @@ public class ProfileCustomerController implements Initializable {
         sendUserCompletedBookingsRequest();
         initializeTours(this.completedTours, vbCompletedTours, true);
     }
-    
+
     /**
-     * Creates UserBookingsRequest. Then sends this request to the server
-     * as HttpGet and processes the response from the server. Data in the 
-     * response contains list of UserBooking objects. This list is stored
-     * in this class.
-     * 
+     * Creates UserBookingsRequest. Then sends this request to the server as
+     * HttpGet and processes the response from the server. Data in the response
+     * contains list of UserBooking objects. This list is stored in this class.
+     *
      * @see UserBookingsRequest
      * @see UserBookingsResponse
      * @see UserBooking
@@ -159,8 +164,8 @@ public class ProfileCustomerController implements Initializable {
 
         HttpGet request = (HttpGet) userBookingsRequest.getRequest();
 
-        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
-                 CloseableHttpResponse response = httpClient.execute(request)) {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
 
             UserBookingsResponse userBookingsResponse = (UserBookingsResponse) ResponseFactory.
                     getFactory(
@@ -176,13 +181,13 @@ public class ProfileCustomerController implements Initializable {
         } catch (APIValidationException ex) {
         }
     }
-    
+
     /**
-     * Creates UserCompletedBookingsRequest. Then sends this request to the server
-     * as HttpGet and processes the response from the server. Data in the 
-     * response contains list of UserBooking objects. This list is stored
-     * in this class.
-     * 
+     * Creates UserCompletedBookingsRequest. Then sends this request to the
+     * server as HttpGet and processes the response from the server. Data in the
+     * response contains list of UserBooking objects. This list is stored in
+     * this class.
+     *
      * @see UserCompletedBookingsRequest
      * @see UserBookingsResponse
      * @see UserBooking
@@ -193,8 +198,8 @@ public class ProfileCustomerController implements Initializable {
 
         HttpGet request = (HttpGet) userCompletedBookingsRequest.getRequest();
 
-        try ( CloseableHttpClient httpClient = HttpClients.createDefault();
-                 CloseableHttpResponse response = httpClient.execute(request)) {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                CloseableHttpResponse response = httpClient.execute(request)) {
 
             UserBookingsResponse userBookingsResponse = (UserBookingsResponse) ResponseFactory.
                     getFactory(
@@ -209,15 +214,15 @@ public class ProfileCustomerController implements Initializable {
         } catch (APIValidationException ex) {
         }
     }
-    
+
     /**
-     * Initializes tours on the screen. Loads a fxml element for every
-     * loaded UserBooking object from the list. When the fxml element
-     * is loaded, it is displayed.
-     * 
+     * Initializes tours on the screen. Loads a fxml element for every loaded
+     * UserBooking object from the list. When the fxml element is loaded, it is
+     * displayed.
+     *
      * @param tours
      * @param tourList
-     * @param showUserRating 
+     * @param showUserRating
      */
     private void initializeTours(List<UserBooking> tours, VBox tourList, boolean showUserRating) {
         tours.stream().forEach((bookedTour) -> {
@@ -243,10 +248,10 @@ public class ProfileCustomerController implements Initializable {
             }
         });
     }
-    
+
     /**
      * Loads one fxml element with the given data.
-     * 
+     *
      * @param tourOfferId
      * @param startPlace
      * @param startDate
@@ -258,7 +263,7 @@ public class ProfileCustomerController implements Initializable {
      * @param rating
      * @param showUserRating
      * @return Node
-     * 
+     *
      * @see BookedCompletedTourController
      */
     private Node loadTour(String tourOfferId, String startPlace,
@@ -277,7 +282,7 @@ public class ProfileCustomerController implements Initializable {
         }
         return null;
     }
-    
+
     /**
      * Sets a new position of stage depending on the variables stored from
      * setOnMousePressed method when mouse is dragged.
@@ -302,5 +307,5 @@ public class ProfileCustomerController implements Initializable {
         xOffset = event.getSceneX();
         yOffset = event.getSceneY();
     }
-    
+
 }
