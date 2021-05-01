@@ -38,6 +38,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import sk.stu.fiit.Exceptions.APIValidationError;
 import sk.stu.fiit.Exceptions.APIValidationException;
 import sk.stu.fiit.Exceptions.AuthTokenExpiredException;
 import sk.stu.fiit.Internationalisation.I18n;
@@ -482,8 +483,10 @@ public class SignupController implements Initializable {
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
                 CloseableHttpResponse response = httpClient.execute(httpPost)) {
+            RegisterResponse registerResponse = null;
+            boolean isRegistered = true;
             try {
-                RegisterResponse registerResponse = (RegisterResponse) ResponseFactory.
+                registerResponse = (RegisterResponse) ResponseFactory.
                         getFactory(ResponseFactory.ResponseFactoryType.REGISTER_RESPONSE).
                         parse(response);
 
@@ -493,8 +496,20 @@ public class SignupController implements Initializable {
 
             } catch (AuthTokenExpiredException ex) {
             } catch (APIValidationException ex) {
+                for (APIValidationError validationError : ex.getValidationErrors()) {
+                    if (validationError.getFieldName().equals("errors") && validationError.getErrorMessage().equals("Email " + tfEmail.getText() + " is already taken")) {
+                        isRegistered = false;
+                    }
+                }
             }
+            if (isRegistered) {
+                Singleton.getInstance().setJwtToken(registerResponse.getJwtToken());
+                Singleton.getInstance().setUser(new User(userType, email,
+                        firstName, lastName, photo, dateOfBirth));
             ScreenSwitcher.getScreenSwitcher().switchToScreen(event, "Views/Welcome.fxml");
+            } else {
+                Alerts.showAlert("TITLE_NOT_REGISTERED");
+            }
         } catch (IOException e) {
             LOGGER.error("Server error" + e.getMessage());
             Alerts.showAlert("TITLE_SERVER_ERROR", "CONTENT_SERVER_NOT_RESPONDING");
