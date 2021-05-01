@@ -340,7 +340,7 @@ public class SignupController implements Initializable {
                         paneSignupPhoto.getChildren().add(btnChangePhoto);
                     }
                 } else {
-                    LOGGER.info("Invalid email");
+                    LOGGER.info("Invalid date of birth");
                     Alerts.showAlert("TITLE_DATE_OF_BIRTH");
                 }
             } else {
