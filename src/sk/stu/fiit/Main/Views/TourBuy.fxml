@@ -137,7 +137,7 @@
                   <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                </effect>
             </Label>
-            <Label fx:id="taDescription" alignment="TOP_LEFT" styleClass="lbl-informations" wrapText="true">
+            <Label fx:id="taDescription" alignment="TOP_LEFT" prefWidth="200.0" styleClass="lbl-informations" wrapText="true">
                <effect>
                   <DropShadow color="#0000001a" height="30.0" offsetY="2.0" radius="14.5" spread="0.75" width="30.0" />
                </effect>

@@ -304,11 +304,9 @@ public class ToursController implements Initializable {
 
         if (Singleton.getInstance().getActualPageNumber()
                 != Singleton.getInstance().getLastPageNumber()) {
-            System.out.println("Singleton.getInstance().getActualPageNumber() = " + Singleton.getInstance().getActualPageNumber());
             paneMain.getChildren().add(btnNext);
         }
         if (Singleton.getInstance().getActualPageNumber() != 1) {
-            System.out.println("getActualPageNumber() = " + Singleton.getInstance().getActualPageNumber() );
             paneMain.getChildren().add(btnPrevious);
         }
     }

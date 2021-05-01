@@ -154,8 +154,7 @@ public class CreateScheduleController implements Initializable {
             Node tourDateNode = this.loadTourDate(tourDateCreate);
             this.vbTourDates.getChildren().add(tourDateNode);
         } catch (Exception e) {
-            LOGGER.warn("Exception has been thrown. Error message: " + e.
-                    getMessage());
+            LOGGER.warn("Exception has been thrown. Error message: " + e.getMessage());
         }
     }
 
@@ -175,9 +174,8 @@ public class CreateScheduleController implements Initializable {
         try {
             return loader.load();
         } catch (IOException ex) {
-            LOGGER.error(
-                    "IOException has been thrown while loading Views/OneTourDateSchedule.fxml. Error message: " + ex.
-                            getMessage());
+            LOGGER.error("IOException has been thrown while loading Views/OneTourDateSchedule.fxml. Error message: " 
+                    + ex.getMessage());
         }
         return null;
     }
@@ -216,8 +214,7 @@ public class CreateScheduleController implements Initializable {
             
         } catch (IOException ex) {
             LOGGER.error("Server error" + ex.getMessage());
-            Alerts.showAlert("TITLE_SERVER_ERROR",
-                    "CONTENT_SERVER_NOT_RESPONDING");
+            Alerts.showAlert("TITLE_SERVER_ERROR","CONTENT_SERVER_NOT_RESPONDING");
         } catch (AuthTokenExpiredException ex) {
             Alerts.showAlert("TITLE_AUTHENTICATION_ERROR",
                     "CONTENT_AUTHENTICATION_ERROR");

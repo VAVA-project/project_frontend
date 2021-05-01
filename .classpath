@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="dist/lib/commons-codec-1.15.jar"/>
+	<classpathentry kind="lib" path="dist/lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="dist/lib/controlsfx-8.40.18.jar"/>
+	<classpathentry kind="lib" path="dist/lib/httpclient-4.5.13.jar"/>
+	<classpathentry kind="lib" path="dist/lib/httpcore-4.4.14.jar"/>
+	<classpathentry kind="lib" path="dist/lib/log4j-1.2-api-2.14.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="dist/lib/log4j-1.2-api-2.14.1-sources.jar"/>
+	<classpathentry kind="lib" path="dist/lib/log4j-1.2-api-2.14.1.jar"/>
+	<classpathentry kind="lib" path="dist/lib/log4j-api-2.14.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="dist/lib/log4j-api-2.14.1-sources.jar"/>
+	<classpathentry kind="lib" path="dist/lib/log4j-api-2.14.1.jar"/>
+	<classpathentry kind="lib" path="dist/lib/log4j-core-2.14.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="dist/lib/log4j-core-2.14.1-sources.jar"/>
+	<classpathentry kind="lib" path="dist/lib/log4j-core-2.14.1.jar"/>
+	<classpathentry kind="lib" path="dist/VAVA_project.jar"/>
+	<classpathentry kind="lib" path="libs/commons-codec-1.15.jar"/>
+	<classpathentry kind="lib" path="libs/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="libs/controlsfx-8.40.18.jar"/>
+	<classpathentry kind="lib" path="libs/httpclient-4.5.13.jar"/>
+	<classpathentry kind="lib" path="libs/httpcore-4.4.14.jar"/>
+	<classpathentry kind="lib" path="libs/log4j-1.2-api-2.14.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="libs/log4j-1.2-api-2.14.1-sources.jar"/>
+	<classpathentry kind="lib" path="libs/log4j-1.2-api-2.14.1.jar"/>
+	<classpathentry kind="lib" path="libs/log4j-api-2.14.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="libs/log4j-api-2.14.1-sources.jar"/>
+	<classpathentry kind="lib" path="libs/log4j-api-2.14.1.jar"/>
+	<classpathentry kind="lib" path="libs/log4j-core-2.14.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="libs/log4j-core-2.14.1-sources.jar"/>
+	<classpathentry kind="lib" path="libs/log4j-core-2.14.1.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>
