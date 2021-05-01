@@ -94,7 +94,7 @@
     -fx-pref-height: 50px;
 }
 */
-.btn-buy {
+.btn-register {
     -fx-font-family: "Roboto";
     -fx-font-size: 14px;
     -fx-border-color: #5F2EEA;
@@ -103,7 +103,7 @@
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 16px;
     -fx-pref-height: 35px;
-    -fx-pref-width: 80px;
+    -fx-pref-width: 100px;
     -fx-background-insets: 0;
 }
 
