@@ -99,8 +99,6 @@ public class ProfileCustomerController implements Initializable {
             } else {
                 ScreenSwitcher.getScreenSwitcher().switchToScreen((MouseEvent) event, "Views/ProfileGuide.fxml");
             }
-            ScreenSwitcher.getScreenSwitcher().
-                    switchToScreen((MouseEvent) event, "Views/Search.fxml");
         }
         if (event.getSource().equals(btnEditInformations)) {
             ScreenSwitcher.getScreenSwitcher().
