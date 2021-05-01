@@ -244,7 +244,7 @@ public class EditTourScheduleController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(
                 "Views/OneTourDateSchedule.fxml"), I18n.getBundle());
         loader.setControllerFactory(c -> new OneTourDateScheduleController(
-                tourDate, tourToEdit, vbTourDates));
+                tourDate, tourToEdit, vbTourDates, this.tfStartTime.getText(), this.tfEndTime.getText()));
         try {
             return loader.load();
         } catch (IOException ex) {
@@ -319,7 +319,7 @@ public class EditTourScheduleController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(
                 "Views/OneTourDateSchedule.fxml"), I18n.getBundle());
         loader.setControllerFactory(c -> new OneTourDateScheduleController(
-                tourDate, this.tourToEdit, this.vbTourDates));
+                tourDate, this.tourToEdit, this.vbTourDates, this.tfStartTime.getText(), this.tfEndTime.getText()));
         try {
             return loader.load();
         } catch (IOException ex) {

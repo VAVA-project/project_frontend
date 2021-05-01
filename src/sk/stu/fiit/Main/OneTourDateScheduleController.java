@@ -36,6 +36,8 @@ public class OneTourDateScheduleController implements Initializable {
     private TourDate tourDate;
     private Tour tourToEdit;
     private VBox vbTourDates;
+    private String startTime = null;
+    private String endTime = null;
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm");
 
@@ -47,7 +49,7 @@ public class OneTourDateScheduleController implements Initializable {
     private Label lblStartDate;
     @FXML
     private Label lblEndDate;
-    
+
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(OneTourDateScheduleController.class);
 
     public OneTourDateScheduleController() {
@@ -59,11 +61,13 @@ public class OneTourDateScheduleController implements Initializable {
         this.vbTourDates = vbTourDates;
     }
 
-    public OneTourDateScheduleController(TourDate tourDate, Tour tourToEdit, VBox vbTourDates) {
+    public OneTourDateScheduleController(TourDate tourDate, Tour tourToEdit, VBox vbTourDates, String startTime, String endTime) {
         this.tourDate = tourDate;
         this.tourDateCreate = null;
         this.tourToEdit = tourToEdit;
         this.vbTourDates = vbTourDates;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     /**
@@ -110,14 +114,21 @@ public class OneTourDateScheduleController implements Initializable {
      * @see tourDate
      */
     private void initializeTourDate() {
-        this.lblCapacity.setText(String.valueOf(this.tourDate.getNumberOfTickets()));
-        this.lblStartDate.setText(this.tourDate.getStartDate());
-        this.lblEndDate.setText(this.tourDate.getEndDate());
+        if (this.startTime == null) {
+            this.lblCapacity.setText(String.valueOf(this.tourDate.getNumberOfTickets()));
+            this.lblStartDate.setText(this.tourDate.getStartDate());
+            this.lblEndDate.setText(this.tourDate.getEndDate());
+        } else {
+            this.lblCapacity.setText(String.valueOf(this.tourDate.getNumberOfTickets()));
+            this.lblStartDate.setText(this.tourDate.getStartDate() + ", " + this.startTime);
+            this.lblEndDate.setText(this.tourDate.getEndDate() + ", " + this.endTime);
+        }
     }
 
     /**
-     * Deletes TourDateCreate object from the Singleton class and from the screen.
-     * 
+     * Deletes TourDateCreate object from the Singleton class and from the
+     * screen.
+     *
      * @see Singleton
      */
     private void deleteTourDateCreate() {
@@ -129,16 +140,16 @@ public class OneTourDateScheduleController implements Initializable {
             }
         }
     }
-    
+
     /**
-     * Creates DeleteTourDateRequest. Then sends this request to the server
-     * as HttpDelete and processes the response from the server. Data in the 
-     * response contains boolean value. If the boolean value is true shows
-     * alert about a successful deletion of tour date, calls 
-     * deleteTourDateFromScreen method and sets in the Singleton class
-     * that the tour has been deleted. If the boolean value is 
-     * false shows alert about not successful deletion of tour date. 
-     * 
+     * Creates DeleteTourDateRequest. Then sends this request to the server as
+     * HttpDelete and processes the response from the server. Data in the
+     * response contains boolean value. If the boolean value is true shows alert
+     * about a successful deletion of tour date, calls deleteTourDateFromScreen
+     * method and sets in the Singleton class that the tour has been deleted. If
+     * the boolean value is false shows alert about not successful deletion of
+     * tour date.
+     *
      * @see DeleteTourDateRequest
      * @see DeleteTourDateResponse
      * @see Singleton
@@ -170,7 +181,7 @@ public class OneTourDateScheduleController implements Initializable {
         }
 
     }
-    
+
     /**
      * Deletes TourDate object from the Singleton class and from the screen.
      */
